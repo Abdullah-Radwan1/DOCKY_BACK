@@ -1,0 +1,165 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Organization {
+  id             String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name           String
+  slug           String    @unique
+  plan           String    @default("free")
+  documentsLimit Int?      @map("documents_limit") @default(3)
+  createdAt      DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+  updatedAt      DateTime? @map("updated_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+
+  profiles     Profile[]
+  documents    Document[]
+  activityLogs ActivityLog[]
+
+  @@map("organizations")
+}
+
+model Profile {
+  id             String    @id @db.Uuid
+  email          String
+  fullName       String?   @map("full_name")
+  avatarUrl      String?   @map("avatar_url")
+  role           String    @default("viewer") // admin, compliance_manager, auditor, viewer
+  organizationId String?   @map("organization_id") @db.Uuid
+  createdAt      DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+  updatedAt      DateTime? @map("updated_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+
+  organization      Organization?      @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  documents         Document[]         @relation("UploadedBy")
+  activityLogs      ActivityLog[]
+  complianceQueries ComplianceQuery[]
+  notifications     Notification[]
+
+  @@map("profiles")
+}
+
+model Document {
+  id              String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  organizationId  String    @map("organization_id") @db.Uuid
+  uploadedBy      String    @map("uploaded_by") @db.Uuid
+  filename        String
+  fileSize        Int?      @map("file_size")
+  status          String    @default("pending") // pending, analyzing, analyzed, failed
+  complianceScore Int?      @map("compliance_score")
+  riskLevel       String?   @map("risk_level") // low, medium, high
+  expirationDate  DateTime? @map("expiration_date") @db.Timestamptz // Added for expiration reminder notifications
+  createdAt       DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+  updatedAt       DateTime? @map("updated_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+
+  organization      Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  uploader          Profile            @relation("UploadedBy", fields: [uploadedBy], references: [id], onDelete: Cascade)
+  analyses          DocumentAnalysis[]
+  complianceQueries ComplianceQuery[]
+  notifications     Notification[]
+
+  @@map("documents")
+}
+
+model DocumentAnalysis {
+  id                    String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  documentId            String    @map("document_id") @db.Uuid
+  executiveSummary      String?   @map("executive_summary")
+  parties               Json?
+  obligations           Json?
+  paymentTerms          Json?     @map("payment_terms")
+  renewalTerms          Json?     @map("renewal_terms")
+  penalties             Json?
+  governingLaw          String?   @map("governing_law")
+  missingClauses        Json?     @map("missing_clauses")
+  unusualConditions     Json?     @map("unusual_conditions")
+  complianceRequirements Json?    @map("compliance_requirements")
+  policyViolations      Json?     @map("policy_violations")
+  regulatoryIssues      Json?     @map("regulatory_issues")
+  missingSignatures     Json?     @map("missing_signatures")
+  expirationDetected    Boolean?  @map("expiration_detected") @default(false)
+  risks                 Json?
+  recommendations       Json?
+  importantDates        Json?     @map("important_dates")
+  createdAt             DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("document_analyses")
+}
+
+model ActivityLog {
+  id             String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  userId         String?   @map("user_id") @db.Uuid
+  action         String
+  entityType     String?   @map("entity_type")
+  entityId       String?   @map("entity_id") @db.Uuid
+  metadata       Json?
+  createdAt      DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         Profile?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("activity_log")
+}
+
+// Model for compliance queries (user questions regarding policy/regulations on a document)
+model ComplianceQuery {
+  id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  queryText  String    @map("query_text")
+  status     String    @default("pending") // pending, processing, completed, failed
+  documentId String?   @map("document_id") @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  createdAt  DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+  updatedAt  DateTime? @map("updated_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+
+  document Document?    @relation(fields: [documentId], references: [id], onDelete: SetNull)
+  user     Profile      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  responses AIResponse[]
+
+  @@map("compliance_queries")
+}
+
+// Model for AI compliance checker responses
+model AIResponse {
+  id              String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  queryId         String    @map("query_id") @db.Uuid
+  responseText    String    @map("response_text")
+  confidenceScore Float?    @map("confidence_score")
+  metadata        Json?     // store model name, prompt tokens, execution time, etc.
+  createdAt       DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+
+  complianceQuery ComplianceQuery @relation(fields: [queryId], references: [id], onDelete: Cascade)
+
+  @@map("ai_responses")
+}
+
+// Modular, extensible notification engine schema
+model Notification {
+  id              String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId          String    @map("user_id") @db.Uuid
+  title           String
+  message         String
+  type            String    // e.g. "expiration_warning", "compliance_alert", "system_alert"
+  status          String    @default("unread") // e.g. "unread", "read", "archived"
+  deliveryChannel String    @map("delivery_channel") @default("in_app") // e.g. "in_app", "email", "push", "sms"
+  documentId      String?   @map("document_id") @db.Uuid
+  scheduledFor    DateTime? @map("scheduled_for") @db.Timestamptz
+  sentAt          DateTime? @map("sent_at") @db.Timestamptz
+  createdAt       DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+  updatedAt       DateTime? @map("updated_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+
+  user     Profile   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  document Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
+
+  @@map("notifications")
+}

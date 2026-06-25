@@ -20,11 +20,10 @@ let UsersService = class UsersService {
     async createUser(data) {
         return this.prisma.profile.create({
             data: {
-                id: data.id,
                 email: data.email,
                 fullName: data.fullName,
                 avatarUrl: data.avatarUrl,
-                role: data.role || 'viewer',
+                role: data.role,
                 organizationId: data.organizationId || null,
             },
         });

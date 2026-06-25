@@ -15,77 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentsController = void 0;
 const common_1 = require("@nestjs/common");
 const documents_service_1 = require("./documents.service");
-const class_validator_1 = require("class-validator");
-class CreateDocumentDto {
-    organizationId;
-    uploadedBy;
-    filename;
-    fileSize;
-    expirationDate;
-}
-__decorate([
-    (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateDocumentDto.prototype, "organizationId", void 0);
-__decorate([
-    (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateDocumentDto.prototype, "uploadedBy", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateDocumentDto.prototype, "filename", void 0);
-__decorate([
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Number)
-], CreateDocumentDto.prototype, "fileSize", void 0);
-__decorate([
-    (0, class_validator_1.IsDateString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateDocumentDto.prototype, "expirationDate", void 0);
-class UpdateDocumentDto {
-    filename;
-    fileSize;
-    status;
-    complianceScore;
-    riskLevel;
-    expirationDate;
-}
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], UpdateDocumentDto.prototype, "filename", void 0);
-__decorate([
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Number)
-], UpdateDocumentDto.prototype, "fileSize", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], UpdateDocumentDto.prototype, "status", void 0);
-__decorate([
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Number)
-], UpdateDocumentDto.prototype, "complianceScore", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], UpdateDocumentDto.prototype, "riskLevel", void 0);
-__decorate([
-    (0, class_validator_1.IsDateString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], UpdateDocumentDto.prototype, "expirationDate", void 0);
+const create_document_dto_1 = require("./dto/create-document.dto");
+const update_document_dto_1 = require("./dto/update-document.dto");
 let DocumentsController = class DocumentsController {
     documentsService;
     constructor(documentsService) {
@@ -94,7 +25,9 @@ let DocumentsController = class DocumentsController {
     async create(createDto) {
         return this.documentsService.createDocument({
             ...createDto,
-            expirationDate: createDto.expirationDate ? new Date(createDto.expirationDate) : undefined,
+            expirationDate: createDto.expirationDate
+                ? new Date(createDto.expirationDate)
+                : undefined,
         });
     }
     async get(id) {
@@ -106,7 +39,9 @@ let DocumentsController = class DocumentsController {
     async update(id, updateDto) {
         return this.documentsService.updateDocument(id, {
             ...updateDto,
-            expirationDate: updateDto.expirationDate ? new Date(updateDto.expirationDate) : undefined,
+            expirationDate: updateDto.expirationDate
+                ? new Date(updateDto.expirationDate)
+                : undefined,
         });
     }
     async delete(id) {
@@ -118,7 +53,7 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [CreateDocumentDto]),
+    __metadata("design:paramtypes", [create_document_dto_1.CreateDocumentDto]),
     __metadata("design:returntype", Promise)
 ], DocumentsController.prototype, "create", null);
 __decorate([
@@ -140,7 +75,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe())),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, UpdateDocumentDto]),
+    __metadata("design:paramtypes", [String, update_document_dto_1.UpdateDocumentDto]),
     __metadata("design:returntype", Promise)
 ], DocumentsController.prototype, "update", null);
 __decorate([

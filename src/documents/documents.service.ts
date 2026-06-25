@@ -1,25 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { DocumentStatus } from 'src/generated/prisma';
+import { DocumentEntity } from './entities/document.entity';
+import { CreateDocumentDto } from './dto/create-document.dto';
+import { UpdateDocumentDto } from './dto/update-document.dto';
+import { DocumentResponseDto } from './dto/document-response.dto';
 
 @Injectable()
 export class DocumentsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createDocument(data: {
-    organizationId: string;
-    uploadedBy: string; // profile UUID
-    filename: string;
-    fileSize?: number;
-    expirationDate?: Date;
-  }) {
+  async createDocument(data: CreateDocumentDto) {
     return this.prisma.document.create({
       data: {
+        originalFileName: data.originalFileName,
         organizationId: data.organizationId,
         uploadedBy: data.uploadedBy,
         filename: data.filename,
         fileSize: data.fileSize || null,
         expirationDate: data.expirationDate || null,
-        status: 'pending',
+        status: DocumentStatus.pending,
       },
     });
   }
@@ -45,17 +45,7 @@ export class DocumentsService {
     });
   }
 
-  async updateDocument(
-    id: string,
-    data: {
-      filename?: string;
-      fileSize?: number;
-      status?: string;
-      complianceScore?: number;
-      riskLevel?: string;
-      expirationDate?: Date | null;
-    },
-  ) {
+  async updateDocument(id: string, data: UpdateDocumentDto) {
     try {
       return await this.prisma.document.update({
         where: { id },

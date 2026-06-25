@@ -1,0 +1,13 @@
+import * as Prisma from './internal/prismaNamespaceBrowser.js';
+export { Prisma };
+export * as $Enums from './enums.js';
+export * from './enums.js';
+export type Organization = Prisma.OrganizationModel;
+export type Profile = Prisma.ProfileModel;
+export type Document = Prisma.DocumentModel;
+export type DocumentAnalysis = Prisma.DocumentAnalysisModel;
+export type Finding = Prisma.FindingModel;
+export type ActivityLog = Prisma.ActivityLogModel;
+export type ComplianceQuery = Prisma.ComplianceQueryModel;
+export type AIResponse = Prisma.AIResponseModel;
+export type Notification = Prisma.NotificationModel;

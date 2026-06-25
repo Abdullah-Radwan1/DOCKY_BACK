@@ -1,25 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { ProfileEntity } from './entities/profile.entity';
+import { CreateProfileDto } from './dto/create-profile.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createUser(data: {
-    id: string; // Auth UUID
-    email: string;
-    fullName?: string;
-    avatarUrl?: string;
-    role?: string;
-    organizationId?: string;
-  }) {
+  async createUser(data: CreateProfileDto) {
     return this.prisma.profile.create({
       data: {
-        id: data.id,
         email: data.email,
         fullName: data.fullName,
         avatarUrl: data.avatarUrl,
-        role: data.role || 'viewer',
+        role: data.role,
         organizationId: data.organizationId || null,
       },
     });
@@ -38,22 +33,16 @@ export class UsersService {
     return profile;
   }
 
-  async updateUser(
-    id: string,
-    data: {
-      fullName?: string;
-      avatarUrl?: string;
-      role?: string;
-      organizationId?: string;
-    },
-  ) {
+  async updateUser(id: string, data: UpdateProfileDto) {
     try {
       return await this.prisma.profile.update({
         where: { id },
         data,
       });
     } catch {
-      throw new NotFoundException(`User profile with ID ${id} not found to update`);
+      throw new NotFoundException(
+        `User profile with ID ${id} not found to update`,
+      );
     }
   }
 
@@ -63,7 +52,9 @@ export class UsersService {
         where: { id },
       });
     } catch {
-      throw new NotFoundException(`User profile with ID ${id} not found to delete`);
+      throw new NotFoundException(
+        `User profile with ID ${id} not found to delete`,
+      );
     }
   }
 }

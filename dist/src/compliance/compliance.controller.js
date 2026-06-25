@@ -15,52 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ComplianceController = void 0;
 const common_1 = require("@nestjs/common");
 const compliance_service_1 = require("./compliance.service");
-const class_validator_1 = require("class-validator");
-class CreateQueryDto {
-    queryText;
-    userId;
-    documentId;
-}
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateQueryDto.prototype, "queryText", void 0);
-__decorate([
-    (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateQueryDto.prototype, "userId", void 0);
-__decorate([
-    (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateQueryDto.prototype, "documentId", void 0);
-class CreateAIResponseDto {
-    queryId;
-    responseText;
-    confidenceScore;
-    metadata;
-}
-__decorate([
-    (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateAIResponseDto.prototype, "queryId", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateAIResponseDto.prototype, "responseText", void 0);
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Number)
-], CreateAIResponseDto.prototype, "confidenceScore", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Object)
-], CreateAIResponseDto.prototype, "metadata", void 0);
+const create_compliance_query_dto_1 = require("./dto/create-compliance-query.dto");
+const create_ai_response_dto_1 = require("./dto/create-ai-response.dto");
 let ComplianceController = class ComplianceController {
     complianceService;
     constructor(complianceService) {
@@ -84,7 +40,7 @@ __decorate([
     (0, common_1.Post)('query'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [CreateQueryDto]),
+    __metadata("design:paramtypes", [create_compliance_query_dto_1.CreateComplianceQueryDto]),
     __metadata("design:returntype", Promise)
 ], ComplianceController.prototype, "createQuery", null);
 __decorate([
@@ -105,7 +61,7 @@ __decorate([
     (0, common_1.Post)('response'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [CreateAIResponseDto]),
+    __metadata("design:paramtypes", [create_ai_response_dto_1.CreateAIResponseDto]),
     __metadata("design:returntype", Promise)
 ], ComplianceController.prototype, "addResponse", null);
 exports.ComplianceController = ComplianceController = __decorate([

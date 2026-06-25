@@ -13,9 +13,11 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const prisma_module_1 = require("./prisma/prisma.module");
 const users_module_1 = require("./users/users.module");
+const organizations_module_1 = require("./organizations/organizations.module");
 const documents_module_1 = require("./documents/documents.module");
 const compliance_module_1 = require("./compliance/compliance.module");
 const notifications_module_1 = require("./notifications/notifications.module");
+const activity_log_module_1 = require("./activity-log/activity-log.module");
 const scheduler_module_1 = require("./scheduler/scheduler.module");
 let AppModule = class AppModule {
 };
@@ -26,9 +28,11 @@ exports.AppModule = AppModule = __decorate([
             schedule_1.ScheduleModule.forRoot(),
             prisma_module_1.PrismaModule,
             users_module_1.UsersModule,
+            organizations_module_1.OrganizationsModule,
             documents_module_1.DocumentsModule,
             compliance_module_1.ComplianceModule,
             notifications_module_1.NotificationsModule,
+            activity_log_module_1.ActivityLogModule,
             scheduler_module_1.SchedulerModule,
         ],
         controllers: [app_controller_1.AppController],

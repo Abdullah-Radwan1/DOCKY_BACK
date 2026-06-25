@@ -1,67 +1,57 @@
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateProfileDto } from './dto/create-profile.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 export declare class UsersService {
     private readonly prisma;
     constructor(prisma: PrismaService);
-    createUser(data: {
-        id: string;
+    createUser(data: CreateProfileDto): Promise<{
         email: string;
-        fullName?: string;
-        avatarUrl?: string;
-        role?: string;
-        organizationId?: string;
-    }): Promise<{
         id: string;
-        email: string;
+        createdAt: Date;
+        updatedAt: Date;
         fullName: string | null;
         avatarUrl: string | null;
-        role: string;
-        createdAt: Date | null;
-        updatedAt: Date | null;
+        role: import("src/generated/prisma").UserRole;
         organizationId: string | null;
     }>;
     getUserById(id: string): Promise<{
         organization: {
             id: string;
-            createdAt: Date | null;
-            updatedAt: Date | null;
             name: string;
             slug: string;
-            plan: string;
+            plan: import("src/generated/prisma").PlanType;
             documentsLimit: number | null;
+            createdAt: Date;
+            updatedAt: Date;
         } | null;
     } & {
-        id: string;
         email: string;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
         fullName: string | null;
         avatarUrl: string | null;
-        role: string;
-        createdAt: Date | null;
-        updatedAt: Date | null;
+        role: import("src/generated/prisma").UserRole;
         organizationId: string | null;
     }>;
-    updateUser(id: string, data: {
-        fullName?: string;
-        avatarUrl?: string;
-        role?: string;
-        organizationId?: string;
-    }): Promise<{
-        id: string;
+    updateUser(id: string, data: UpdateProfileDto): Promise<{
         email: string;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
         fullName: string | null;
         avatarUrl: string | null;
-        role: string;
-        createdAt: Date | null;
-        updatedAt: Date | null;
+        role: import("src/generated/prisma").UserRole;
         organizationId: string | null;
     }>;
     deleteUser(id: string): Promise<{
-        id: string;
         email: string;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
         fullName: string | null;
         avatarUrl: string | null;
-        role: string;
-        createdAt: Date | null;
-        updatedAt: Date | null;
+        role: import("src/generated/prisma").UserRole;
         organizationId: string | null;
     }>;
 }

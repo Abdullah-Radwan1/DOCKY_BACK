@@ -1,50 +1,16 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Param,
+  Body,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { IsUUID, IsString, IsOptional, IsEmail, IsNotEmpty } from 'class-validator';
-
-class CreateProfileDto {
-  @IsUUID()
-  @IsNotEmpty()
-  id!: string;
-
-  @IsEmail()
-  @IsNotEmpty()
-  email!: string;
-
-  @IsString()
-  @IsOptional()
-  fullName?: string;
-
-  @IsString()
-  @IsOptional()
-  avatarUrl?: string;
-
-  @IsString()
-  @IsOptional()
-  role?: string;
-
-  @IsUUID()
-  @IsOptional()
-  organizationId?: string;
-}
-
-class UpdateProfileDto {
-  @IsString()
-  @IsOptional()
-  fullName?: string;
-
-  @IsString()
-  @IsOptional()
-  avatarUrl?: string;
-
-  @IsString()
-  @IsOptional()
-  role?: string;
-
-  @IsUUID()
-  @IsOptional()
-  organizationId?: string;
-}
+import { CreateProfileDto } from './dto/create-profile.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Controller('users')
 export class UsersController {

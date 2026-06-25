@@ -4,6 +4,8 @@ import { EmailDispatcher } from './dispatchers/email.dispatcher';
 import { SmsDispatcher } from './dispatchers/sms.dispatcher';
 import { PushDispatcher } from './dispatchers/push.dispatcher';
 import { NotificationDispatcher } from './interfaces/notification-dispatcher.interface';
+import { NotificationEntity } from './entities/notification.entity';
+import { CreateNotificationDto } from './dto/create-notification.dto';
 
 @Injectable()
 export class NotificationsService {
@@ -33,14 +35,7 @@ export class NotificationsService {
   /**
    * Creates a notification record and dispatches it via the selected delivery channel.
    */
-  async createNotification(data: {
-    userId: string;
-    title: string;
-    message: string;
-    type: string; // e.g. "expiration_warning", "compliance_alert", "system_alert"
-    deliveryChannel?: string; // defaults to "in_app"
-    documentId?: string;
-  }) {
+  async createNotification(data: CreateNotificationDto) {
     const channel = data.deliveryChannel || 'in_app';
 
     // 1. Create the database record

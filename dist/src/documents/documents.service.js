@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const prisma_1 = require("../generated/prisma/index.js");
 let DocumentsService = class DocumentsService {
     prisma;
     constructor(prisma) {
@@ -20,12 +21,13 @@ let DocumentsService = class DocumentsService {
     async createDocument(data) {
         return this.prisma.document.create({
             data: {
+                originalFileName: data.originalFileName,
                 organizationId: data.organizationId,
                 uploadedBy: data.uploadedBy,
                 filename: data.filename,
                 fileSize: data.fileSize || null,
                 expirationDate: data.expirationDate || null,
-                status: 'pending',
+                status: prisma_1.DocumentStatus.pending,
             },
         });
     }

@@ -1,32 +1,14 @@
-import { Controller, Get, Post, Patch, Param, Body, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Param,
+  Body,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
-import { IsUUID, IsString, IsOptional, IsNotEmpty } from 'class-validator';
-
-class CreateNotificationDto {
-  @IsUUID()
-  @IsNotEmpty()
-  userId!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  title!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  message!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  type!: string;
-
-  @IsString()
-  @IsOptional()
-  deliveryChannel?: string;
-
-  @IsUUID()
-  @IsOptional()
-  documentId?: string;
-}
+import { CreateNotificationDto } from './dto/create-notification.dto';
 
 @Controller('notifications')
 export class NotificationsController {

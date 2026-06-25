@@ -1,54 +1,16 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Param,
+  Body,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { DocumentsService } from './documents.service';
-import { IsUUID, IsString, IsOptional, IsInt, IsDateString, IsNotEmpty } from 'class-validator';
-
-class CreateDocumentDto {
-  @IsUUID()
-  @IsNotEmpty()
-  organizationId!: string;
-
-  @IsUUID()
-  @IsNotEmpty()
-  uploadedBy!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  filename!: string;
-
-  @IsInt()
-  @IsOptional()
-  fileSize?: number;
-
-  @IsDateString()
-  @IsOptional()
-  expirationDate?: string;
-}
-
-class UpdateDocumentDto {
-  @IsString()
-  @IsOptional()
-  filename?: string;
-
-  @IsInt()
-  @IsOptional()
-  fileSize?: number;
-
-  @IsString()
-  @IsOptional()
-  status?: string;
-
-  @IsInt()
-  @IsOptional()
-  complianceScore?: number;
-
-  @IsString()
-  @IsOptional()
-  riskLevel?: string;
-
-  @IsDateString()
-  @IsOptional()
-  expirationDate?: string;
-}
+import { CreateDocumentDto } from './dto/create-document.dto';
+import { UpdateDocumentDto } from './dto/update-document.dto';
 
 @Controller('documents')
 export class DocumentsController {
@@ -58,7 +20,9 @@ export class DocumentsController {
   async create(@Body() createDto: CreateDocumentDto) {
     return this.documentsService.createDocument({
       ...createDto,
-      expirationDate: createDto.expirationDate ? new Date(createDto.expirationDate) : undefined,
+      expirationDate: createDto.expirationDate
+        ? new Date(createDto.expirationDate)
+        : undefined,
     });
   }
 
@@ -68,7 +32,9 @@ export class DocumentsController {
   }
 
   @Get('organization/:organizationId')
-  async getByOrg(@Param('organizationId', new ParseUUIDPipe()) organizationId: string) {
+  async getByOrg(
+    @Param('organizationId', new ParseUUIDPipe()) organizationId: string,
+  ) {
     return this.documentsService.getDocumentsByOrganization(organizationId);
   }
 
@@ -79,7 +45,9 @@ export class DocumentsController {
   ) {
     return this.documentsService.updateDocument(id, {
       ...updateDto,
-      expirationDate: updateDto.expirationDate ? new Date(updateDto.expirationDate) : undefined,
+      expirationDate: updateDto.expirationDate
+        ? new Date(updateDto.expirationDate)
+        : undefined,
     });
   }
 

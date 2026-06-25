@@ -1,5 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { ComplianceQueryEntity } from './entities/compliance-query.entity';
+import { AIResponseEntity } from './entities/ai-response.entity';
+import { CreateComplianceQueryDto } from './dto/create-compliance-query.dto';
+import { CreateAIResponseDto } from './dto/create-ai-response.dto';
 
 @Injectable()
 export class ComplianceService {
@@ -8,11 +12,7 @@ export class ComplianceService {
   /**
    * Registers a new compliance query submitted by a user.
    */
-  async createQuery(data: {
-    queryText: string;
-    userId: string;
-    documentId?: string;
-  }) {
+  async createQuery(data: CreateComplianceQueryDto) {
     return this.prisma.complianceQuery.create({
       data: {
         queryText: data.queryText,
@@ -57,18 +57,15 @@ export class ComplianceService {
   /**
    * Submits an AI response to a compliance query, updating the query's status.
    */
-  async addAIResponse(data: {
-    queryId: string;
-    responseText: string;
-    confidenceScore?: number;
-    metadata?: any; // JSON metadata
-  }) {
+  async addAIResponse(data: CreateAIResponseDto) {
     // Check if query exists
     const query = await this.prisma.complianceQuery.findUnique({
       where: { id: data.queryId },
     });
     if (!query) {
-      throw new NotFoundException(`Compliance query with ID ${data.queryId} not found`);
+      throw new NotFoundException(
+        `Compliance query with ID ${data.queryId} not found`,
+      );
     }
 
     // Start transaction to record response and update status

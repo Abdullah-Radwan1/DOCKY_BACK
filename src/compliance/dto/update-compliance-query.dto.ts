@@ -1,14 +1,14 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateComplianceQueryDto } from './create-compliance-query.dto';
-import { ComplianceQueryStatus } from 'src/generated/prisma';
+import { AnalysisRequestStatus } from 'src/generated/prisma';
 import { IsOptional, IsString, IsEnum } from 'class-validator';
 
 export class UpdateComplianceQueryDto extends PartialType(
   CreateComplianceQueryDto,
 ) {
-  @IsEnum(ComplianceQueryStatus)
+  @IsEnum(AnalysisRequestStatus)
   @IsOptional()
-  status?: ComplianceQueryStatus;
+  status?: AnalysisRequestStatus;
 
   @IsString()
   @IsOptional()

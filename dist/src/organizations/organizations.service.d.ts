@@ -6,98 +6,94 @@ export declare class OrganizationsService {
     constructor(prisma: PrismaService);
     createOrganization(data: CreateOrganizationDto): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         slug: string;
         plan: import("src/generated/prisma").PlanType;
-        documentsLimit: number | null;
-        createdAt: Date;
-        updatedAt: Date;
+        documentsLimit: number;
     }>;
     getOrganizationById(id: string): Promise<{
         documents: {
+            organizationId: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            organizationId: string;
             uploadedBy: string;
             originalFileName: string;
-            filename: string;
             mimeType: string | null;
-            storageKey: string | null;
-            fileUrl: string | null;
             checksum: string | null;
             fileSize: number | null;
             pageCount: number | null;
             language: string | null;
-            status: import("src/generated/prisma").DocumentStatus;
-            complianceScore: number | null;
-            riskLevel: import("src/generated/prisma").RiskLevel | null;
             expirationDate: Date | null;
+            status: import("src/generated/prisma").DocumentStatus;
+            totalChunks: number | null;
         }[];
         profiles: {
             email: string;
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
             organizationId: string | null;
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
         }[];
     } & {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         slug: string;
         plan: import("src/generated/prisma").PlanType;
-        documentsLimit: number | null;
-        createdAt: Date;
-        updatedAt: Date;
+        documentsLimit: number;
     }>;
     getOrganizationBySlug(slug: string): Promise<{
         profiles: {
             email: string;
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
             organizationId: string | null;
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
         }[];
     } & {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         slug: string;
         plan: import("src/generated/prisma").PlanType;
-        documentsLimit: number | null;
-        createdAt: Date;
-        updatedAt: Date;
+        documentsLimit: number;
     }>;
     getAllOrganizations(): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         slug: string;
         plan: import("src/generated/prisma").PlanType;
-        documentsLimit: number | null;
-        createdAt: Date;
-        updatedAt: Date;
+        documentsLimit: number;
     }[]>;
     updateOrganization(id: string, data: UpdateOrganizationDto): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         slug: string;
         plan: import("src/generated/prisma").PlanType;
-        documentsLimit: number | null;
-        createdAt: Date;
-        updatedAt: Date;
+        documentsLimit: number;
     }>;
     deleteOrganization(id: string): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         name: string;
         slug: string;
         plan: import("src/generated/prisma").PlanType;
-        documentsLimit: number | null;
-        createdAt: Date;
-        updatedAt: Date;
+        documentsLimit: number;
     }>;
 }

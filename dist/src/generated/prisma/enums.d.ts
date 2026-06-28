@@ -12,9 +12,10 @@ export declare const PlanType: {
 };
 export type PlanType = (typeof PlanType)[keyof typeof PlanType];
 export declare const DocumentStatus: {
-    readonly pending: "pending";
-    readonly analyzing: "analyzing";
-    readonly analyzed: "analyzed";
+    readonly uploaded: "uploaded";
+    readonly extracting: "extracting";
+    readonly chunking: "chunking";
+    readonly ready: "ready";
     readonly failed: "failed";
 };
 export type DocumentStatus = (typeof DocumentStatus)[keyof typeof DocumentStatus];
@@ -24,13 +25,13 @@ export declare const RiskLevel: {
     readonly high: "high";
 };
 export type RiskLevel = (typeof RiskLevel)[keyof typeof RiskLevel];
-export declare const ComplianceQueryStatus: {
+export declare const AnalysisRequestStatus: {
     readonly pending: "pending";
     readonly processing: "processing";
     readonly completed: "completed";
     readonly failed: "failed";
 };
-export type ComplianceQueryStatus = (typeof ComplianceQueryStatus)[keyof typeof ComplianceQueryStatus];
+export type AnalysisRequestStatus = (typeof AnalysisRequestStatus)[keyof typeof AnalysisRequestStatus];
 export declare const NotificationStatus: {
     readonly unread: "unread";
     readonly read: "read";

@@ -1,9 +1,9 @@
-import { ComplianceQueryStatus } from 'src/generated/prisma';
+import { AnalysisRequestStatus } from 'src/generated/prisma';
 
 export class ComplianceQueryEntity {
   id: string;
   queryText: string;
-  status: ComplianceQueryStatus;
+  status: AnalysisRequestStatus;
   documentId?: string;
   userId: string;
   attemptCount: number;

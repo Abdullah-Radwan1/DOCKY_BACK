@@ -18,7 +18,7 @@ let ComplianceService = class ComplianceService {
         this.prisma = prisma;
     }
     async createQuery(data) {
-        return this.prisma.complianceQuery.create({
+        return this.prisma.analysisRequest.create({
             data: {
                 queryText: data.queryText,
                 userId: data.userId,
@@ -28,10 +28,10 @@ let ComplianceService = class ComplianceService {
         });
     }
     async getQueryById(id) {
-        const query = await this.prisma.complianceQuery.findUnique({
+        const query = await this.prisma.analysisRequest.findUnique({
             where: { id },
             include: {
-                responses: true,
+                response: true,
                 document: true,
                 user: true,
             },
@@ -42,16 +42,16 @@ let ComplianceService = class ComplianceService {
         return query;
     }
     async getQueriesByDocument(documentId) {
-        return this.prisma.complianceQuery.findMany({
+        return this.prisma.analysisRequest.findMany({
             where: { documentId },
             include: {
-                responses: true,
+                response: true,
             },
             orderBy: { createdAt: 'desc' },
         });
     }
     async addAIResponse(data) {
-        const query = await this.prisma.complianceQuery.findUnique({
+        const query = await this.prisma.analysisRequest.findUnique({
             where: { id: data.queryId },
         });
         if (!query) {
@@ -60,13 +60,13 @@ let ComplianceService = class ComplianceService {
         const [response] = await this.prisma.$transaction([
             this.prisma.aIResponse.create({
                 data: {
-                    queryId: data.queryId,
-                    responseText: data.responseText,
+                    requestId: data.queryId,
+                    response: data.responseText,
                     confidenceScore: data.confidenceScore || null,
                     metadata: data.metadata || null,
                 },
             }),
-            this.prisma.complianceQuery.update({
+            this.prisma.analysisRequest.update({
                 where: { id: data.queryId },
                 data: { status: 'completed' },
             }),

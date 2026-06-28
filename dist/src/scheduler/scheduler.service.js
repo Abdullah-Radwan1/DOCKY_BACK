@@ -57,11 +57,11 @@ let SchedulerService = SchedulerService_1 = class SchedulerService {
                     },
                 });
                 if (!existingNotification) {
-                    this.logger.log(`Triggering warning notifications for document "${doc.filename}" (ID: ${doc.id}) expiring in ${days} days.`);
+                    this.logger.log(`Triggering warning notifications for document "${doc.originalFileName}" (ID: ${doc.id}) expiring in ${days} days.`);
                     await this.notificationsService.createNotification({
                         userId: doc.uploadedBy,
                         title: 'Document Expiration Warning',
-                        message: `Your document "${doc.filename}" is expiring in ${days} days on ${doc.expirationDate?.toLocaleDateString()}.`,
+                        message: `Your document "${doc.originalFileName}" is expiring in ${days} days on ${doc.expirationDate?.toLocaleDateString()}.`,
                         type: 'expiration_warning',
                         deliveryChannel: 'in_app',
                         documentId: doc.id,
@@ -69,14 +69,14 @@ let SchedulerService = SchedulerService_1 = class SchedulerService {
                     await this.notificationsService.createNotification({
                         userId: doc.uploadedBy,
                         title: 'Document Expiration Warning',
-                        message: `Your document "${doc.filename}" is expiring in ${days} days on ${doc.expirationDate?.toLocaleDateString()}.`,
+                        message: `Your document "${doc.originalFileName}" is expiring in ${days} days on ${doc.expirationDate?.toLocaleDateString()}.`,
                         type: 'expiration_warning',
                         deliveryChannel: 'email',
                         documentId: doc.id,
                     });
                 }
                 else {
-                    this.logger.log(`Skipped. Expiration warning already exists for document "${doc.filename}" at the ${days} days threshold.`);
+                    this.logger.log(`Skipped. Expiration warning already exists for document "${doc.originalFileName}" at the ${days} days threshold.`);
                 }
             }
         }

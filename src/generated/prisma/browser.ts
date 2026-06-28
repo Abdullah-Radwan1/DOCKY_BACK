@@ -33,10 +33,15 @@ export type Profile = Prisma.ProfileModel
  */
 export type Document = Prisma.DocumentModel
 /**
- * Model DocumentAnalysis
+ * Model DocumentChunk
  * 
  */
-export type DocumentAnalysis = Prisma.DocumentAnalysisModel
+export type DocumentChunk = Prisma.DocumentChunkModel
+/**
+ * Model AnalysisResult
+ * 
+ */
+export type AnalysisResult = Prisma.AnalysisResultModel
 /**
  * Model Finding
  * 
@@ -48,10 +53,10 @@ export type Finding = Prisma.FindingModel
  */
 export type ActivityLog = Prisma.ActivityLogModel
 /**
- * Model ComplianceQuery
+ * Model AnalysisRequest
  * 
  */
-export type ComplianceQuery = Prisma.ComplianceQueryModel
+export type AnalysisRequest = Prisma.AnalysisRequestModel
 /**
  * Model AIResponse
  * 

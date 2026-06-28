@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateComplianceQueryDto = void 0;
 const mapped_types_1 = require("@nestjs/mapped-types");
 const create_compliance_query_dto_1 = require("./create-compliance-query.dto");
-const prisma_1 = require("../../generated/prisma/index.js");
+const prisma_1 = require("../../generated/prisma");
 const class_validator_1 = require("class-validator");
 class UpdateComplianceQueryDto extends (0, mapped_types_1.PartialType)(create_compliance_query_dto_1.CreateComplianceQueryDto) {
     status;
@@ -20,7 +20,7 @@ class UpdateComplianceQueryDto extends (0, mapped_types_1.PartialType)(create_co
 }
 exports.UpdateComplianceQueryDto = UpdateComplianceQueryDto;
 __decorate([
-    (0, class_validator_1.IsEnum)(prisma_1.ComplianceQueryStatus),
+    (0, class_validator_1.IsEnum)(prisma_1.AnalysisRequestStatus),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], UpdateComplianceQueryDto.prototype, "status", void 0);

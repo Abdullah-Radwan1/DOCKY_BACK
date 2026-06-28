@@ -10,14 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateDocumentDto = void 0;
-const prisma_1 = require("../../generated/prisma/index.js");
+const prisma_1 = require("../../generated/prisma");
 const mapped_types_1 = require("@nestjs/mapped-types");
 const create_document_dto_1 = require("./create-document.dto");
 const class_validator_1 = require("class-validator");
 class UpdateDocumentDto extends (0, mapped_types_1.PartialType)(create_document_dto_1.CreateDocumentDto) {
     status;
-    complianceScore;
-    riskLevel;
     expirationDate;
 }
 exports.UpdateDocumentDto = UpdateDocumentDto;
@@ -26,16 +24,6 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], UpdateDocumentDto.prototype, "status", void 0);
-__decorate([
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Number)
-], UpdateDocumentDto.prototype, "complianceScore", void 0);
-__decorate([
-    (0, class_validator_1.IsEnum)(prisma_1.RiskLevel),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], UpdateDocumentDto.prototype, "riskLevel", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Date)

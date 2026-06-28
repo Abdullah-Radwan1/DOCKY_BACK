@@ -1,4 +1,4 @@
-import { FindingSeverity } from "../../generated/prisma/index.js";
+import { FindingSeverity } from "../../generated/prisma";
 export declare class CreateFindingDto {
     analysisId: string;
     title: string;

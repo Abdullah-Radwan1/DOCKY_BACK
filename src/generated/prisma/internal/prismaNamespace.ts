@@ -387,10 +387,11 @@ export const ModelName = {
   Organization: 'Organization',
   Profile: 'Profile',
   Document: 'Document',
-  DocumentAnalysis: 'DocumentAnalysis',
+  DocumentChunk: 'DocumentChunk',
+  AnalysisResult: 'AnalysisResult',
   Finding: 'Finding',
   ActivityLog: 'ActivityLog',
-  ComplianceQuery: 'ComplianceQuery',
+  AnalysisRequest: 'AnalysisRequest',
   AIResponse: 'AIResponse',
   Notification: 'Notification'
 } as const
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organization" | "profile" | "document" | "documentAnalysis" | "finding" | "activityLog" | "complianceQuery" | "aIResponse" | "notification"
+    modelProps: "organization" | "profile" | "document" | "documentChunk" | "analysisResult" | "finding" | "activityLog" | "analysisRequest" | "aIResponse" | "notification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -634,77 +635,151 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    DocumentAnalysis: {
-      payload: Prisma.$DocumentAnalysisPayload<ExtArgs>
-      fields: Prisma.DocumentAnalysisFieldRefs
+    DocumentChunk: {
+      payload: Prisma.$DocumentChunkPayload<ExtArgs>
+      fields: Prisma.DocumentChunkFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.DocumentAnalysisFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload> | null
+          args: Prisma.DocumentChunkFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.DocumentAnalysisFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>
+          args: Prisma.DocumentChunkFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>
         }
         findFirst: {
-          args: Prisma.DocumentAnalysisFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload> | null
+          args: Prisma.DocumentChunkFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.DocumentAnalysisFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>
+          args: Prisma.DocumentChunkFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>
         }
         findMany: {
-          args: Prisma.DocumentAnalysisFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>[]
+          args: Prisma.DocumentChunkFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>[]
         }
         create: {
-          args: Prisma.DocumentAnalysisCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>
+          args: Prisma.DocumentChunkCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>
         }
         createMany: {
-          args: Prisma.DocumentAnalysisCreateManyArgs<ExtArgs>
+          args: Prisma.DocumentChunkCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.DocumentAnalysisCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>[]
+          args: Prisma.DocumentChunkCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>[]
         }
         delete: {
-          args: Prisma.DocumentAnalysisDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>
+          args: Prisma.DocumentChunkDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>
         }
         update: {
-          args: Prisma.DocumentAnalysisUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>
+          args: Prisma.DocumentChunkUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>
         }
         deleteMany: {
-          args: Prisma.DocumentAnalysisDeleteManyArgs<ExtArgs>
+          args: Prisma.DocumentChunkDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.DocumentAnalysisUpdateManyArgs<ExtArgs>
+          args: Prisma.DocumentChunkUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.DocumentAnalysisUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>[]
+          args: Prisma.DocumentChunkUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>[]
         }
         upsert: {
-          args: Prisma.DocumentAnalysisUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>
+          args: Prisma.DocumentChunkUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>
         }
         aggregate: {
-          args: Prisma.DocumentAnalysisAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentAnalysis>
+          args: Prisma.DocumentChunkAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentChunk>
         }
         groupBy: {
-          args: Prisma.DocumentAnalysisGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DocumentAnalysisGroupByOutputType>[]
+          args: Prisma.DocumentChunkGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentChunkGroupByOutputType>[]
         }
         count: {
-          args: Prisma.DocumentAnalysisCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DocumentAnalysisCountAggregateOutputType> | number
+          args: Prisma.DocumentChunkCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentChunkCountAggregateOutputType> | number
+        }
+      }
+    }
+    AnalysisResult: {
+      payload: Prisma.$AnalysisResultPayload<ExtArgs>
+      fields: Prisma.AnalysisResultFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AnalysisResultFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AnalysisResultFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>
+        }
+        findFirst: {
+          args: Prisma.AnalysisResultFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AnalysisResultFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>
+        }
+        findMany: {
+          args: Prisma.AnalysisResultFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>[]
+        }
+        create: {
+          args: Prisma.AnalysisResultCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>
+        }
+        createMany: {
+          args: Prisma.AnalysisResultCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AnalysisResultCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>[]
+        }
+        delete: {
+          args: Prisma.AnalysisResultDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>
+        }
+        update: {
+          args: Prisma.AnalysisResultUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>
+        }
+        deleteMany: {
+          args: Prisma.AnalysisResultDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AnalysisResultUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AnalysisResultUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>[]
+        }
+        upsert: {
+          args: Prisma.AnalysisResultUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>
+        }
+        aggregate: {
+          args: Prisma.AnalysisResultAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAnalysisResult>
+        }
+        groupBy: {
+          args: Prisma.AnalysisResultGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnalysisResultGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AnalysisResultCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnalysisResultCountAggregateOutputType> | number
         }
       }
     }
@@ -856,77 +931,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    ComplianceQuery: {
-      payload: Prisma.$ComplianceQueryPayload<ExtArgs>
-      fields: Prisma.ComplianceQueryFieldRefs
+    AnalysisRequest: {
+      payload: Prisma.$AnalysisRequestPayload<ExtArgs>
+      fields: Prisma.AnalysisRequestFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ComplianceQueryFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload> | null
+          args: Prisma.AnalysisRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ComplianceQueryFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>
+          args: Prisma.AnalysisRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>
         }
         findFirst: {
-          args: Prisma.ComplianceQueryFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload> | null
+          args: Prisma.AnalysisRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ComplianceQueryFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>
+          args: Prisma.AnalysisRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>
         }
         findMany: {
-          args: Prisma.ComplianceQueryFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>[]
+          args: Prisma.AnalysisRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>[]
         }
         create: {
-          args: Prisma.ComplianceQueryCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>
+          args: Prisma.AnalysisRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>
         }
         createMany: {
-          args: Prisma.ComplianceQueryCreateManyArgs<ExtArgs>
+          args: Prisma.AnalysisRequestCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.ComplianceQueryCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>[]
+          args: Prisma.AnalysisRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>[]
         }
         delete: {
-          args: Prisma.ComplianceQueryDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>
+          args: Prisma.AnalysisRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>
         }
         update: {
-          args: Prisma.ComplianceQueryUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>
+          args: Prisma.AnalysisRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>
         }
         deleteMany: {
-          args: Prisma.ComplianceQueryDeleteManyArgs<ExtArgs>
+          args: Prisma.AnalysisRequestDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ComplianceQueryUpdateManyArgs<ExtArgs>
+          args: Prisma.AnalysisRequestUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.ComplianceQueryUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>[]
+          args: Prisma.AnalysisRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>[]
         }
         upsert: {
-          args: Prisma.ComplianceQueryUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>
+          args: Prisma.AnalysisRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>
         }
         aggregate: {
-          args: Prisma.ComplianceQueryAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateComplianceQuery>
+          args: Prisma.AnalysisRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAnalysisRequest>
         }
         groupBy: {
-          args: Prisma.ComplianceQueryGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ComplianceQueryGroupByOutputType>[]
+          args: Prisma.AnalysisRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnalysisRequestGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ComplianceQueryCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ComplianceQueryCountAggregateOutputType> | number
+          args: Prisma.AnalysisRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnalysisRequestCountAggregateOutputType> | number
         }
       }
     }
@@ -1149,17 +1224,13 @@ export const DocumentScalarFieldEnum = {
   organizationId: 'organizationId',
   uploadedBy: 'uploadedBy',
   originalFileName: 'originalFileName',
-  filename: 'filename',
   mimeType: 'mimeType',
-  storageKey: 'storageKey',
-  fileUrl: 'fileUrl',
   checksum: 'checksum',
   fileSize: 'fileSize',
   pageCount: 'pageCount',
+  totalChunks: 'totalChunks',
   language: 'language',
   status: 'status',
-  complianceScore: 'complianceScore',
-  riskLevel: 'riskLevel',
   expirationDate: 'expirationDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1168,35 +1239,30 @@ export const DocumentScalarFieldEnum = {
 export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
 
 
-export const DocumentAnalysisScalarFieldEnum = {
+export const DocumentChunkScalarFieldEnum = {
   id: 'id',
   documentId: 'documentId',
-  executiveSummary: 'executiveSummary',
-  overallVerdict: 'overallVerdict',
-  confidenceScore: 'confidenceScore',
-  modelName: 'modelName',
-  promptVersion: 'promptVersion',
-  rulesetVersion: 'rulesetVersion',
-  parties: 'parties',
-  obligations: 'obligations',
-  paymentTerms: 'paymentTerms',
-  renewalTerms: 'renewalTerms',
-  penalties: 'penalties',
-  governingLaw: 'governingLaw',
-  missingClauses: 'missingClauses',
-  unusualConditions: 'unusualConditions',
-  complianceRequirements: 'complianceRequirements',
-  policyViolations: 'policyViolations',
-  regulatoryIssues: 'regulatoryIssues',
-  missingSignatures: 'missingSignatures',
-  expirationDetected: 'expirationDetected',
-  importantDates: 'importantDates',
-  risks: 'risks',
-  recommendations: 'recommendations',
+  chunkIndex: 'chunkIndex',
+  content: 'content',
+  pageNumber: 'pageNumber',
+  tokenCount: 'tokenCount',
   createdAt: 'createdAt'
 } as const
 
-export type DocumentAnalysisScalarFieldEnum = (typeof DocumentAnalysisScalarFieldEnum)[keyof typeof DocumentAnalysisScalarFieldEnum]
+export type DocumentChunkScalarFieldEnum = (typeof DocumentChunkScalarFieldEnum)[keyof typeof DocumentChunkScalarFieldEnum]
+
+
+export const AnalysisResultScalarFieldEnum = {
+  id: 'id',
+  summary: 'summary',
+  overallVerdict: 'overallVerdict',
+  confidence: 'confidence',
+  riskLevel: 'riskLevel',
+  createdAt: 'createdAt',
+  responseId: 'responseId'
+} as const
+
+export type AnalysisResultScalarFieldEnum = (typeof AnalysisResultScalarFieldEnum)[keyof typeof AnalysisResultScalarFieldEnum]
 
 
 export const FindingScalarFieldEnum = {
@@ -1230,7 +1296,7 @@ export const ActivityLogScalarFieldEnum = {
 export type ActivityLogScalarFieldEnum = (typeof ActivityLogScalarFieldEnum)[keyof typeof ActivityLogScalarFieldEnum]
 
 
-export const ComplianceQueryScalarFieldEnum = {
+export const AnalysisRequestScalarFieldEnum = {
   id: 'id',
   queryText: 'queryText',
   status: 'status',
@@ -1244,16 +1310,17 @@ export const ComplianceQueryScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type ComplianceQueryScalarFieldEnum = (typeof ComplianceQueryScalarFieldEnum)[keyof typeof ComplianceQueryScalarFieldEnum]
+export type AnalysisRequestScalarFieldEnum = (typeof AnalysisRequestScalarFieldEnum)[keyof typeof AnalysisRequestScalarFieldEnum]
 
 
 export const AIResponseScalarFieldEnum = {
   id: 'id',
-  queryId: 'queryId',
-  responseText: 'responseText',
+  requestId: 'requestId',
+  response: 'response',
   confidenceScore: 'confidenceScore',
   metadata: 'metadata',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  matchedChunks: 'matchedChunks'
 } as const
 
 export type AIResponseScalarFieldEnum = (typeof AIResponseScalarFieldEnum)[keyof typeof AIResponseScalarFieldEnum]
@@ -1291,6 +1358,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1409,20 +1483,6 @@ export type ListEnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
- * Reference to a field of type 'RiskLevel'
- */
-export type EnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel'>
-    
-
-
-/**
- * Reference to a field of type 'RiskLevel[]'
- */
-export type ListEnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel[]'>
-    
-
-
-/**
  * Reference to a field of type 'AnalysisVerdict'
  */
 export type EnumAnalysisVerdictFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnalysisVerdict'>
@@ -1451,23 +1511,16 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
 
 
 /**
- * Reference to a field of type 'Json'
+ * Reference to a field of type 'RiskLevel'
  */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+export type EnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel'>
     
 
 
 /**
- * Reference to a field of type 'QueryMode'
+ * Reference to a field of type 'RiskLevel[]'
  */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+export type ListEnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel[]'>
     
 
 
@@ -1486,16 +1539,30 @@ export type ListEnumFindingSeverityFieldRefInput<$PrismaModel> = FieldRefInputTy
 
 
 /**
- * Reference to a field of type 'ComplianceQueryStatus'
+ * Reference to a field of type 'Json'
  */
-export type EnumComplianceQueryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComplianceQueryStatus'>
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
     
 
 
 /**
- * Reference to a field of type 'ComplianceQueryStatus[]'
+ * Reference to a field of type 'QueryMode'
  */
-export type ListEnumComplianceQueryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComplianceQueryStatus[]'>
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'AnalysisRequestStatus'
+ */
+export type EnumAnalysisRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnalysisRequestStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AnalysisRequestStatus[]'
+ */
+export type ListEnumAnalysisRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnalysisRequestStatus[]'>
     
 
 
@@ -1653,10 +1720,11 @@ export type GlobalOmitConfig = {
   organization?: Prisma.OrganizationOmit
   profile?: Prisma.ProfileOmit
   document?: Prisma.DocumentOmit
-  documentAnalysis?: Prisma.DocumentAnalysisOmit
+  documentChunk?: Prisma.DocumentChunkOmit
+  analysisResult?: Prisma.AnalysisResultOmit
   finding?: Prisma.FindingOmit
   activityLog?: Prisma.ActivityLogOmit
-  complianceQuery?: Prisma.ComplianceQueryOmit
+  analysisRequest?: Prisma.AnalysisRequestOmit
   aIResponse?: Prisma.AIResponseOmit
   notification?: Prisma.NotificationOmit
 }

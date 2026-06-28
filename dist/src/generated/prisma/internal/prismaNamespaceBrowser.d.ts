@@ -14,10 +14,11 @@ export declare const ModelName: {
     readonly Organization: "Organization";
     readonly Profile: "Profile";
     readonly Document: "Document";
-    readonly DocumentAnalysis: "DocumentAnalysis";
+    readonly DocumentChunk: "DocumentChunk";
+    readonly AnalysisResult: "AnalysisResult";
     readonly Finding: "Finding";
     readonly ActivityLog: "ActivityLog";
-    readonly ComplianceQuery: "ComplianceQuery";
+    readonly AnalysisRequest: "AnalysisRequest";
     readonly AIResponse: "AIResponse";
     readonly Notification: "Notification";
 };
@@ -55,50 +56,38 @@ export declare const DocumentScalarFieldEnum: {
     readonly organizationId: "organizationId";
     readonly uploadedBy: "uploadedBy";
     readonly originalFileName: "originalFileName";
-    readonly filename: "filename";
     readonly mimeType: "mimeType";
-    readonly storageKey: "storageKey";
-    readonly fileUrl: "fileUrl";
     readonly checksum: "checksum";
     readonly fileSize: "fileSize";
     readonly pageCount: "pageCount";
+    readonly totalChunks: "totalChunks";
     readonly language: "language";
     readonly status: "status";
-    readonly complianceScore: "complianceScore";
-    readonly riskLevel: "riskLevel";
     readonly expirationDate: "expirationDate";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
 export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum];
-export declare const DocumentAnalysisScalarFieldEnum: {
+export declare const DocumentChunkScalarFieldEnum: {
     readonly id: "id";
     readonly documentId: "documentId";
-    readonly executiveSummary: "executiveSummary";
-    readonly overallVerdict: "overallVerdict";
-    readonly confidenceScore: "confidenceScore";
-    readonly modelName: "modelName";
-    readonly promptVersion: "promptVersion";
-    readonly rulesetVersion: "rulesetVersion";
-    readonly parties: "parties";
-    readonly obligations: "obligations";
-    readonly paymentTerms: "paymentTerms";
-    readonly renewalTerms: "renewalTerms";
-    readonly penalties: "penalties";
-    readonly governingLaw: "governingLaw";
-    readonly missingClauses: "missingClauses";
-    readonly unusualConditions: "unusualConditions";
-    readonly complianceRequirements: "complianceRequirements";
-    readonly policyViolations: "policyViolations";
-    readonly regulatoryIssues: "regulatoryIssues";
-    readonly missingSignatures: "missingSignatures";
-    readonly expirationDetected: "expirationDetected";
-    readonly importantDates: "importantDates";
-    readonly risks: "risks";
-    readonly recommendations: "recommendations";
+    readonly chunkIndex: "chunkIndex";
+    readonly content: "content";
+    readonly pageNumber: "pageNumber";
+    readonly tokenCount: "tokenCount";
     readonly createdAt: "createdAt";
 };
-export type DocumentAnalysisScalarFieldEnum = (typeof DocumentAnalysisScalarFieldEnum)[keyof typeof DocumentAnalysisScalarFieldEnum];
+export type DocumentChunkScalarFieldEnum = (typeof DocumentChunkScalarFieldEnum)[keyof typeof DocumentChunkScalarFieldEnum];
+export declare const AnalysisResultScalarFieldEnum: {
+    readonly id: "id";
+    readonly summary: "summary";
+    readonly overallVerdict: "overallVerdict";
+    readonly confidence: "confidence";
+    readonly riskLevel: "riskLevel";
+    readonly createdAt: "createdAt";
+    readonly responseId: "responseId";
+};
+export type AnalysisResultScalarFieldEnum = (typeof AnalysisResultScalarFieldEnum)[keyof typeof AnalysisResultScalarFieldEnum];
 export declare const FindingScalarFieldEnum: {
     readonly id: "id";
     readonly analysisId: "analysisId";
@@ -124,7 +113,7 @@ export declare const ActivityLogScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type ActivityLogScalarFieldEnum = (typeof ActivityLogScalarFieldEnum)[keyof typeof ActivityLogScalarFieldEnum];
-export declare const ComplianceQueryScalarFieldEnum: {
+export declare const AnalysisRequestScalarFieldEnum: {
     readonly id: "id";
     readonly queryText: "queryText";
     readonly status: "status";
@@ -137,14 +126,15 @@ export declare const ComplianceQueryScalarFieldEnum: {
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
-export type ComplianceQueryScalarFieldEnum = (typeof ComplianceQueryScalarFieldEnum)[keyof typeof ComplianceQueryScalarFieldEnum];
+export type AnalysisRequestScalarFieldEnum = (typeof AnalysisRequestScalarFieldEnum)[keyof typeof AnalysisRequestScalarFieldEnum];
 export declare const AIResponseScalarFieldEnum: {
     readonly id: "id";
-    readonly queryId: "queryId";
-    readonly responseText: "responseText";
+    readonly requestId: "requestId";
+    readonly response: "response";
     readonly confidenceScore: "confidenceScore";
     readonly metadata: "metadata";
     readonly createdAt: "createdAt";
+    readonly matchedChunks: "matchedChunks";
 };
 export type AIResponseScalarFieldEnum = (typeof AIResponseScalarFieldEnum)[keyof typeof AIResponseScalarFieldEnum];
 export declare const NotificationScalarFieldEnum: {
@@ -172,6 +162,10 @@ export declare const NullableJsonNullValueInput: {
     readonly JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
 };
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput];
+export declare const JsonNullValueInput: {
+    readonly JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
+};
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput];
 export declare const QueryMode: {
     readonly default: "default";
     readonly insensitive: "insensitive";

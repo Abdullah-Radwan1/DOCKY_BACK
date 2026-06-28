@@ -6,17 +6,13 @@ class DocumentEntity {
     organizationId;
     uploadedBy;
     originalFileName;
-    filename;
     mimeType;
-    storageKey;
-    fileUrl;
     checksum;
     fileSize;
     pageCount;
+    totalChunks;
     language;
     status;
-    complianceScore;
-    riskLevel;
     expirationDate;
     createdAt;
     updatedAt;

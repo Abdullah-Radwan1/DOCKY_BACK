@@ -8,10 +8,10 @@ export declare class ComplianceController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import("src/generated/prisma").ComplianceQueryStatus;
+        status: import("src/generated/prisma").AnalysisRequestStatus;
         documentId: string | null;
-        userId: string;
         queryText: string;
+        userId: string;
         attemptCount: number;
         errorMessage: string | null;
         processingStartedAt: Date | null;
@@ -19,73 +19,71 @@ export declare class ComplianceController {
     }>;
     getQuery(id: string): Promise<{
         document: {
+            organizationId: string;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            organizationId: string;
             uploadedBy: string;
             originalFileName: string;
-            filename: string;
             mimeType: string | null;
-            storageKey: string | null;
-            fileUrl: string | null;
             checksum: string | null;
             fileSize: number | null;
             pageCount: number | null;
             language: string | null;
-            status: import("src/generated/prisma").DocumentStatus;
-            complianceScore: number | null;
-            riskLevel: import("src/generated/prisma").RiskLevel | null;
             expirationDate: Date | null;
+            status: import("src/generated/prisma").DocumentStatus;
+            totalChunks: number | null;
         } | null;
         user: {
             email: string;
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
             organizationId: string | null;
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
         };
-        responses: {
+        response: {
             id: string;
             createdAt: Date;
             confidenceScore: number | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
-            queryId: string;
-            responseText: string;
-        }[];
+            response: import("@prisma/client/runtime/client").JsonValue;
+            requestId: string;
+            matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
+        } | null;
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import("src/generated/prisma").ComplianceQueryStatus;
+        status: import("src/generated/prisma").AnalysisRequestStatus;
         documentId: string | null;
-        userId: string;
         queryText: string;
+        userId: string;
         attemptCount: number;
         errorMessage: string | null;
         processingStartedAt: Date | null;
         processingFinishedAt: Date | null;
     }>;
     getByDocument(documentId: string): Promise<({
-        responses: {
+        response: {
             id: string;
             createdAt: Date;
             confidenceScore: number | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
-            queryId: string;
-            responseText: string;
-        }[];
+            response: import("@prisma/client/runtime/client").JsonValue;
+            requestId: string;
+            matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
+        } | null;
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import("src/generated/prisma").ComplianceQueryStatus;
+        status: import("src/generated/prisma").AnalysisRequestStatus;
         documentId: string | null;
-        userId: string;
         queryText: string;
+        userId: string;
         attemptCount: number;
         errorMessage: string | null;
         processingStartedAt: Date | null;
@@ -96,7 +94,8 @@ export declare class ComplianceController {
         createdAt: Date;
         confidenceScore: number | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
-        queryId: string;
-        responseText: string;
+        response: import("@prisma/client/runtime/client").JsonValue;
+        requestId: string;
+        matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
     }>;
 }

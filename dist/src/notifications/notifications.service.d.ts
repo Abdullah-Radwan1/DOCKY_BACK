@@ -18,8 +18,8 @@ export declare class NotificationsService {
         updatedAt: Date;
         status: import("src/generated/prisma").NotificationStatus;
         documentId: string | null;
-        title: string;
         userId: string;
+        title: string;
         message: string;
         type: import("src/generated/prisma").NotificationType;
         deliveryChannel: import("src/generated/prisma").DeliveryChannel;
@@ -32,8 +32,8 @@ export declare class NotificationsService {
         updatedAt: Date;
         status: import("src/generated/prisma").NotificationStatus;
         documentId: string | null;
-        title: string;
         userId: string;
+        title: string;
         message: string;
         type: import("src/generated/prisma").NotificationType;
         deliveryChannel: import("src/generated/prisma").DeliveryChannel;
@@ -46,8 +46,8 @@ export declare class NotificationsService {
         updatedAt: Date;
         status: import("src/generated/prisma").NotificationStatus;
         documentId: string | null;
-        title: string;
         userId: string;
+        title: string;
         message: string;
         type: import("src/generated/prisma").NotificationType;
         deliveryChannel: import("src/generated/prisma").DeliveryChannel;

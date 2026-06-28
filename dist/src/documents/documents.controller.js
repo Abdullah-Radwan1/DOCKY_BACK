@@ -14,13 +14,26 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentsController = void 0;
 const common_1 = require("@nestjs/common");
+const platform_express_1 = require("@nestjs/platform-express");
+const multer_1 = require("multer");
 const documents_service_1 = require("./documents.service");
+const document_upload_service_1 = require("./services/document-upload.service");
 const create_document_dto_1 = require("./dto/create-document.dto");
 const update_document_dto_1 = require("./dto/update-document.dto");
+const upload_document_dto_1 = require("./dto/upload-document.dto");
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
 let DocumentsController = class DocumentsController {
     documentsService;
-    constructor(documentsService) {
+    documentUploadService;
+    constructor(documentsService, documentUploadService) {
         this.documentsService = documentsService;
+        this.documentUploadService = documentUploadService;
+    }
+    async upload(file, body) {
+        if (!file) {
+            throw new common_1.BadRequestException('No file uploaded. Include a PDF under the "file" field.');
+        }
+        return this.documentUploadService.upload(file, body.organizationId, body.uploadedBy);
     }
     async create(createDto) {
         return this.documentsService.createDocument({
@@ -49,6 +62,27 @@ let DocumentsController = class DocumentsController {
     }
 };
 exports.DocumentsController = DocumentsController;
+__decorate([
+    (0, common_1.Post)('upload'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
+        storage: (0, multer_1.memoryStorage)(),
+        limits: { fileSize: MAX_FILE_SIZE },
+        fileFilter: (_req, file, cb) => {
+            if (file.mimetype !== 'application/pdf') {
+                cb(new common_1.BadRequestException(`Only PDF files are accepted. Received: ${file.mimetype}`), false);
+            }
+            else {
+                cb(null, true);
+            }
+        },
+    })),
+    __param(0, (0, common_1.UploadedFile)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, upload_document_dto_1.UploadDocumentDto]),
+    __metadata("design:returntype", Promise)
+], DocumentsController.prototype, "upload", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
@@ -87,6 +121,7 @@ __decorate([
 ], DocumentsController.prototype, "delete", null);
 exports.DocumentsController = DocumentsController = __decorate([
     (0, common_1.Controller)('documents'),
-    __metadata("design:paramtypes", [documents_service_1.DocumentsService])
+    __metadata("design:paramtypes", [documents_service_1.DocumentsService,
+        document_upload_service_1.DocumentUploadService])
 ], DocumentsController);
 //# sourceMappingURL=documents.controller.js.map

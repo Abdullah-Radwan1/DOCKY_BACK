@@ -39,7 +39,10 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get document(): Prisma.DocumentDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
-    get documentAnalysis(): Prisma.DocumentAnalysisDelegate<ExtArgs, {
+    get documentChunk(): Prisma.DocumentChunkDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get analysisResult(): Prisma.AnalysisResultDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
     get finding(): Prisma.FindingDelegate<ExtArgs, {
@@ -48,7 +51,7 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get activityLog(): Prisma.ActivityLogDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
-    get complianceQuery(): Prisma.ComplianceQueryDelegate<ExtArgs, {
+    get analysisRequest(): Prisma.AnalysisRequestDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
     get aIResponse(): Prisma.AIResponseDelegate<ExtArgs, {

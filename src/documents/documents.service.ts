@@ -1,10 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { DocumentStatus } from 'src/generated/prisma';
-import { DocumentEntity } from './entities/document.entity';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
-import { DocumentResponseDto } from './dto/document-response.dto';
 
 @Injectable()
 export class DocumentsService {
@@ -16,10 +14,13 @@ export class DocumentsService {
         originalFileName: data.originalFileName,
         organizationId: data.organizationId,
         uploadedBy: data.uploadedBy,
-        filename: data.filename,
-        fileSize: data.fileSize || null,
-        expirationDate: data.expirationDate || null,
-        status: DocumentStatus.pending,
+        mimeType: data.mimeType ?? null,
+        checksum: data.checksum ?? null,
+        fileSize: data.fileSize ?? null,
+        pageCount: data.pageCount ?? null,
+        language: data.language ?? null,
+        expirationDate: data.expirationDate ?? null,
+        status: DocumentStatus.uploaded,
       },
     });
   }
@@ -29,12 +30,23 @@ export class DocumentsService {
       where: { id },
       include: {
         uploader: true,
-        analyses: true,
+        chunks: {
+          orderBy: { chunkIndex: 'asc' },
+          select: {
+            id: true,
+            chunkIndex: true,
+            pageNumber: true,
+            tokenCount: true,
+            content: true,
+          },
+        },
       },
     });
+
     if (!document) {
       throw new NotFoundException(`Document with ID ${id} not found`);
     }
+
     return document;
   }
 
@@ -46,10 +58,18 @@ export class DocumentsService {
   }
 
   async updateDocument(id: string, data: UpdateDocumentDto) {
+    const {
+      // Omit relation-key fields — these should never change after creation
+      organizationId: _org,
+      uploadedBy: _uploader,
+      // Spread remaining updatable scalar fields
+      ...scalars
+    } = data;
+
     try {
       return await this.prisma.document.update({
         where: { id },
-        data,
+        data: scalars,
       });
     } catch {
       throw new NotFoundException(`Document with ID ${id} not found to update`);

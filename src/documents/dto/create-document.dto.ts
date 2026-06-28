@@ -1,9 +1,7 @@
-import { DocumentStatus, RiskLevel } from 'src/generated/prisma';
 import {
   IsString,
   IsOptional,
   IsInt,
-  IsEnum,
   IsUUID,
   IsNotEmpty,
   IsDate,
@@ -23,20 +21,8 @@ export class CreateDocumentDto {
   originalFileName: string;
 
   @IsString()
-  @IsNotEmpty()
-  filename: string;
-
-  @IsString()
   @IsOptional()
   mimeType?: string;
-
-  @IsString()
-  @IsOptional()
-  storageKey?: string;
-
-  @IsString()
-  @IsOptional()
-  fileUrl?: string;
 
   @IsString()
   @IsOptional()
@@ -57,8 +43,4 @@ export class CreateDocumentDto {
   @IsDate()
   @IsOptional()
   expirationDate?: Date;
-
-  @IsEnum(DocumentStatus)
-  @IsOptional()
-  status?: DocumentStatus = DocumentStatus.pending;
 }

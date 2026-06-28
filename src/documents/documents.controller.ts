@@ -7,14 +7,89 @@ import {
   Param,
   Body,
   ParseUUIDPipe,
+  UseInterceptors,
+  UploadedFile,
+  HttpCode,
+  HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 import { DocumentsService } from './documents.service';
+import { DocumentUploadService } from './services/document-upload.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
+import { UploadDocumentDto } from './dto/upload-document.dto';
+
+/** 20 MB in bytes — Multer's first line of defence against oversized uploads. */
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
 @Controller('documents')
 export class DocumentsController {
-  constructor(private readonly documentsService: DocumentsService) {}
+  constructor(
+    private readonly documentsService: DocumentsService,
+    private readonly documentUploadService: DocumentUploadService,
+  ) {}
+
+  // ── Upload endpoint ───────────────────────────────────────────────────────
+
+  /**
+   * POST /documents/upload
+   *
+   * Accepts a multipart/form-data request with:
+   *   - `file`           — the PDF binary (field name: "file")
+   *   - `organizationId` — UUID of the owning organisation
+   *   - `uploadedBy`     — UUID of the uploading user
+   *
+   * Pipeline: validate → deduplicate → extract text → chunk → store chunks.
+   *
+   * Possible error responses:
+   *   - 400  No file provided
+   *   - 409  Duplicate content (same SHA-256 checksum in this organisation)
+   *   - 413  File exceeds 20 MB
+   *   - 415  Not a valid PDF (MIME type or file signature mismatch)
+   *   - 500  Unexpected processing error
+   */
+  @Post('upload')
+  @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: memoryStorage(),
+      limits: { fileSize: MAX_FILE_SIZE },
+      fileFilter: (_req, file, cb) => {
+        // Fast gate: reject non-PDF MIME types before the buffer is even read.
+        // PdfValidatorService performs a deeper signature check afterwards.
+        if (file.mimetype !== 'application/pdf') {
+          cb(
+            new BadRequestException(
+              `Only PDF files are accepted. Received: ${file.mimetype}`,
+            ),
+            false,
+          );
+        } else {
+          cb(null, true);
+        }
+      },
+    }),
+  )
+  async upload(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: UploadDocumentDto,
+  ) {
+    if (!file) {
+      throw new BadRequestException(
+        'No file uploaded. Include a PDF under the "file" field.',
+      );
+    }
+
+    return this.documentUploadService.upload(
+      file,
+      body.organizationId,
+      body.uploadedBy,
+    );
+  }
+
+  // ── CRUD endpoints ────────────────────────────────────────────────────────
 
   @Post()
   async create(@Body() createDto: CreateDocumentDto) {

@@ -123,9 +123,9 @@ export type ProfileWhereInput = {
     updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string;
     organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null;
     documents?: Prisma.DocumentListRelationFilter;
-    activityLogs?: Prisma.ActivityLogListRelationFilter;
-    complianceQueries?: Prisma.ComplianceQueryListRelationFilter;
+    analysisRequests?: Prisma.AnalysisRequestListRelationFilter;
     notifications?: Prisma.NotificationListRelationFilter;
+    activityLogs?: Prisma.ActivityLogListRelationFilter;
 };
 export type ProfileOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -138,9 +138,9 @@ export type ProfileOrderByWithRelationInput = {
     updatedAt?: Prisma.SortOrder;
     organization?: Prisma.OrganizationOrderByWithRelationInput;
     documents?: Prisma.DocumentOrderByRelationAggregateInput;
-    activityLogs?: Prisma.ActivityLogOrderByRelationAggregateInput;
-    complianceQueries?: Prisma.ComplianceQueryOrderByRelationAggregateInput;
+    analysisRequests?: Prisma.AnalysisRequestOrderByRelationAggregateInput;
     notifications?: Prisma.NotificationOrderByRelationAggregateInput;
+    activityLogs?: Prisma.ActivityLogOrderByRelationAggregateInput;
 };
 export type ProfileWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -156,9 +156,9 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
     updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string;
     organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null;
     documents?: Prisma.DocumentListRelationFilter;
-    activityLogs?: Prisma.ActivityLogListRelationFilter;
-    complianceQueries?: Prisma.ComplianceQueryListRelationFilter;
+    analysisRequests?: Prisma.AnalysisRequestListRelationFilter;
     notifications?: Prisma.NotificationListRelationFilter;
+    activityLogs?: Prisma.ActivityLogListRelationFilter;
 }, "id" | "email">;
 export type ProfileOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -196,9 +196,9 @@ export type ProfileCreateInput = {
     updatedAt?: Date | string;
     organization?: Prisma.OrganizationCreateNestedOneWithoutProfilesInput;
     documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput;
-    activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
-    complianceQueries?: Prisma.ComplianceQueryCreateNestedManyWithoutUserInput;
+    analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+    activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
 };
 export type ProfileUncheckedCreateInput = {
     id?: string;
@@ -210,9 +210,9 @@ export type ProfileUncheckedCreateInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput;
-    activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
-    complianceQueries?: Prisma.ComplianceQueryUncheckedCreateNestedManyWithoutUserInput;
+    analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
+    activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
 };
 export type ProfileUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -224,9 +224,9 @@ export type ProfileUpdateInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     organization?: Prisma.OrganizationUpdateOneWithoutProfilesNestedInput;
     documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput;
-    activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
-    complianceQueries?: Prisma.ComplianceQueryUpdateManyWithoutUserNestedInput;
+    analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
+    activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
 };
 export type ProfileUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -238,9 +238,9 @@ export type ProfileUncheckedUpdateInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput;
-    activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
-    complianceQueries?: Prisma.ComplianceQueryUncheckedUpdateManyWithoutUserNestedInput;
+    analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+    activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type ProfileCreateManyInput = {
     id?: string;
@@ -387,17 +387,17 @@ export type ProfileUpdateOneWithoutActivityLogsNestedInput = {
     connect?: Prisma.ProfileWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutActivityLogsInput, Prisma.ProfileUpdateWithoutActivityLogsInput>, Prisma.ProfileUncheckedUpdateWithoutActivityLogsInput>;
 };
-export type ProfileCreateNestedOneWithoutComplianceQueriesInput = {
-    create?: Prisma.XOR<Prisma.ProfileCreateWithoutComplianceQueriesInput, Prisma.ProfileUncheckedCreateWithoutComplianceQueriesInput>;
-    connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutComplianceQueriesInput;
+export type ProfileCreateNestedOneWithoutAnalysisRequestsInput = {
+    create?: Prisma.XOR<Prisma.ProfileCreateWithoutAnalysisRequestsInput, Prisma.ProfileUncheckedCreateWithoutAnalysisRequestsInput>;
+    connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutAnalysisRequestsInput;
     connect?: Prisma.ProfileWhereUniqueInput;
 };
-export type ProfileUpdateOneRequiredWithoutComplianceQueriesNestedInput = {
-    create?: Prisma.XOR<Prisma.ProfileCreateWithoutComplianceQueriesInput, Prisma.ProfileUncheckedCreateWithoutComplianceQueriesInput>;
-    connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutComplianceQueriesInput;
-    upsert?: Prisma.ProfileUpsertWithoutComplianceQueriesInput;
+export type ProfileUpdateOneRequiredWithoutAnalysisRequestsNestedInput = {
+    create?: Prisma.XOR<Prisma.ProfileCreateWithoutAnalysisRequestsInput, Prisma.ProfileUncheckedCreateWithoutAnalysisRequestsInput>;
+    connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutAnalysisRequestsInput;
+    upsert?: Prisma.ProfileUpsertWithoutAnalysisRequestsInput;
     connect?: Prisma.ProfileWhereUniqueInput;
-    update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutComplianceQueriesInput, Prisma.ProfileUpdateWithoutComplianceQueriesInput>, Prisma.ProfileUncheckedUpdateWithoutComplianceQueriesInput>;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutAnalysisRequestsInput, Prisma.ProfileUpdateWithoutAnalysisRequestsInput>, Prisma.ProfileUncheckedUpdateWithoutAnalysisRequestsInput>;
 };
 export type ProfileCreateNestedOneWithoutNotificationsInput = {
     create?: Prisma.XOR<Prisma.ProfileCreateWithoutNotificationsInput, Prisma.ProfileUncheckedCreateWithoutNotificationsInput>;
@@ -420,9 +420,9 @@ export type ProfileCreateWithoutOrganizationInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput;
-    activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
-    complianceQueries?: Prisma.ComplianceQueryCreateNestedManyWithoutUserInput;
+    analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+    activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
 };
 export type ProfileUncheckedCreateWithoutOrganizationInput = {
     id?: string;
@@ -433,9 +433,9 @@ export type ProfileUncheckedCreateWithoutOrganizationInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput;
-    activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
-    complianceQueries?: Prisma.ComplianceQueryUncheckedCreateNestedManyWithoutUserInput;
+    analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
+    activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
 };
 export type ProfileCreateOrConnectWithoutOrganizationInput = {
     where: Prisma.ProfileWhereUniqueInput;
@@ -480,9 +480,9 @@ export type ProfileCreateWithoutDocumentsInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     organization?: Prisma.OrganizationCreateNestedOneWithoutProfilesInput;
-    activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
-    complianceQueries?: Prisma.ComplianceQueryCreateNestedManyWithoutUserInput;
+    analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+    activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
 };
 export type ProfileUncheckedCreateWithoutDocumentsInput = {
     id?: string;
@@ -493,9 +493,9 @@ export type ProfileUncheckedCreateWithoutDocumentsInput = {
     organizationId?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
-    complianceQueries?: Prisma.ComplianceQueryUncheckedCreateNestedManyWithoutUserInput;
+    analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
+    activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
 };
 export type ProfileCreateOrConnectWithoutDocumentsInput = {
     where: Prisma.ProfileWhereUniqueInput;
@@ -519,9 +519,9 @@ export type ProfileUpdateWithoutDocumentsInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     organization?: Prisma.OrganizationUpdateOneWithoutProfilesNestedInput;
-    activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
-    complianceQueries?: Prisma.ComplianceQueryUpdateManyWithoutUserNestedInput;
+    analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
+    activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
 };
 export type ProfileUncheckedUpdateWithoutDocumentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -532,9 +532,9 @@ export type ProfileUncheckedUpdateWithoutDocumentsInput = {
     organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
-    complianceQueries?: Prisma.ComplianceQueryUncheckedUpdateManyWithoutUserNestedInput;
+    analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+    activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type ProfileCreateWithoutActivityLogsInput = {
     id?: string;
@@ -546,7 +546,7 @@ export type ProfileCreateWithoutActivityLogsInput = {
     updatedAt?: Date | string;
     organization?: Prisma.OrganizationCreateNestedOneWithoutProfilesInput;
     documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput;
-    complianceQueries?: Prisma.ComplianceQueryCreateNestedManyWithoutUserInput;
+    analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
 };
 export type ProfileUncheckedCreateWithoutActivityLogsInput = {
@@ -559,7 +559,7 @@ export type ProfileUncheckedCreateWithoutActivityLogsInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput;
-    complianceQueries?: Prisma.ComplianceQueryUncheckedCreateNestedManyWithoutUserInput;
+    analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
 };
 export type ProfileCreateOrConnectWithoutActivityLogsInput = {
@@ -585,7 +585,7 @@ export type ProfileUpdateWithoutActivityLogsInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     organization?: Prisma.OrganizationUpdateOneWithoutProfilesNestedInput;
     documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput;
-    complianceQueries?: Prisma.ComplianceQueryUpdateManyWithoutUserNestedInput;
+    analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
 };
 export type ProfileUncheckedUpdateWithoutActivityLogsInput = {
@@ -598,10 +598,10 @@ export type ProfileUncheckedUpdateWithoutActivityLogsInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput;
-    complianceQueries?: Prisma.ComplianceQueryUncheckedUpdateManyWithoutUserNestedInput;
+    analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
 };
-export type ProfileCreateWithoutComplianceQueriesInput = {
+export type ProfileCreateWithoutAnalysisRequestsInput = {
     id?: string;
     email: string;
     fullName?: string | null;
@@ -611,10 +611,10 @@ export type ProfileCreateWithoutComplianceQueriesInput = {
     updatedAt?: Date | string;
     organization?: Prisma.OrganizationCreateNestedOneWithoutProfilesInput;
     documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput;
-    activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+    activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
 };
-export type ProfileUncheckedCreateWithoutComplianceQueriesInput = {
+export type ProfileUncheckedCreateWithoutAnalysisRequestsInput = {
     id?: string;
     email: string;
     fullName?: string | null;
@@ -624,23 +624,23 @@ export type ProfileUncheckedCreateWithoutComplianceQueriesInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput;
-    activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
+    activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
 };
-export type ProfileCreateOrConnectWithoutComplianceQueriesInput = {
+export type ProfileCreateOrConnectWithoutAnalysisRequestsInput = {
     where: Prisma.ProfileWhereUniqueInput;
-    create: Prisma.XOR<Prisma.ProfileCreateWithoutComplianceQueriesInput, Prisma.ProfileUncheckedCreateWithoutComplianceQueriesInput>;
+    create: Prisma.XOR<Prisma.ProfileCreateWithoutAnalysisRequestsInput, Prisma.ProfileUncheckedCreateWithoutAnalysisRequestsInput>;
 };
-export type ProfileUpsertWithoutComplianceQueriesInput = {
-    update: Prisma.XOR<Prisma.ProfileUpdateWithoutComplianceQueriesInput, Prisma.ProfileUncheckedUpdateWithoutComplianceQueriesInput>;
-    create: Prisma.XOR<Prisma.ProfileCreateWithoutComplianceQueriesInput, Prisma.ProfileUncheckedCreateWithoutComplianceQueriesInput>;
+export type ProfileUpsertWithoutAnalysisRequestsInput = {
+    update: Prisma.XOR<Prisma.ProfileUpdateWithoutAnalysisRequestsInput, Prisma.ProfileUncheckedUpdateWithoutAnalysisRequestsInput>;
+    create: Prisma.XOR<Prisma.ProfileCreateWithoutAnalysisRequestsInput, Prisma.ProfileUncheckedCreateWithoutAnalysisRequestsInput>;
     where?: Prisma.ProfileWhereInput;
 };
-export type ProfileUpdateToOneWithWhereWithoutComplianceQueriesInput = {
+export type ProfileUpdateToOneWithWhereWithoutAnalysisRequestsInput = {
     where?: Prisma.ProfileWhereInput;
-    data: Prisma.XOR<Prisma.ProfileUpdateWithoutComplianceQueriesInput, Prisma.ProfileUncheckedUpdateWithoutComplianceQueriesInput>;
+    data: Prisma.XOR<Prisma.ProfileUpdateWithoutAnalysisRequestsInput, Prisma.ProfileUncheckedUpdateWithoutAnalysisRequestsInput>;
 };
-export type ProfileUpdateWithoutComplianceQueriesInput = {
+export type ProfileUpdateWithoutAnalysisRequestsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -650,10 +650,10 @@ export type ProfileUpdateWithoutComplianceQueriesInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     organization?: Prisma.OrganizationUpdateOneWithoutProfilesNestedInput;
     documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput;
-    activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
+    activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
 };
-export type ProfileUncheckedUpdateWithoutComplianceQueriesInput = {
+export type ProfileUncheckedUpdateWithoutAnalysisRequestsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -663,8 +663,8 @@ export type ProfileUncheckedUpdateWithoutComplianceQueriesInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput;
-    activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+    activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type ProfileCreateWithoutNotificationsInput = {
     id?: string;
@@ -676,8 +676,8 @@ export type ProfileCreateWithoutNotificationsInput = {
     updatedAt?: Date | string;
     organization?: Prisma.OrganizationCreateNestedOneWithoutProfilesInput;
     documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput;
+    analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput;
     activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
-    complianceQueries?: Prisma.ComplianceQueryCreateNestedManyWithoutUserInput;
 };
 export type ProfileUncheckedCreateWithoutNotificationsInput = {
     id?: string;
@@ -689,8 +689,8 @@ export type ProfileUncheckedCreateWithoutNotificationsInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput;
+    analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput;
     activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
-    complianceQueries?: Prisma.ComplianceQueryUncheckedCreateNestedManyWithoutUserInput;
 };
 export type ProfileCreateOrConnectWithoutNotificationsInput = {
     where: Prisma.ProfileWhereUniqueInput;
@@ -715,8 +715,8 @@ export type ProfileUpdateWithoutNotificationsInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     organization?: Prisma.OrganizationUpdateOneWithoutProfilesNestedInput;
     documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput;
+    analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput;
     activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
-    complianceQueries?: Prisma.ComplianceQueryUpdateManyWithoutUserNestedInput;
 };
 export type ProfileUncheckedUpdateWithoutNotificationsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -728,8 +728,8 @@ export type ProfileUncheckedUpdateWithoutNotificationsInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput;
+    analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput;
     activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
-    complianceQueries?: Prisma.ComplianceQueryUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type ProfileCreateManyOrganizationInput = {
     id?: string;
@@ -749,9 +749,9 @@ export type ProfileUpdateWithoutOrganizationInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput;
-    activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
-    complianceQueries?: Prisma.ComplianceQueryUpdateManyWithoutUserNestedInput;
+    analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
+    activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
 };
 export type ProfileUncheckedUpdateWithoutOrganizationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -762,9 +762,9 @@ export type ProfileUncheckedUpdateWithoutOrganizationInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput;
-    activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
-    complianceQueries?: Prisma.ComplianceQueryUncheckedUpdateManyWithoutUserNestedInput;
+    analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+    activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type ProfileUncheckedUpdateManyWithoutOrganizationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -777,15 +777,15 @@ export type ProfileUncheckedUpdateManyWithoutOrganizationInput = {
 };
 export type ProfileCountOutputType = {
     documents: number;
-    activityLogs: number;
-    complianceQueries: number;
+    analysisRequests: number;
     notifications: number;
+    activityLogs: number;
 };
 export type ProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     documents?: boolean | ProfileCountOutputTypeCountDocumentsArgs;
-    activityLogs?: boolean | ProfileCountOutputTypeCountActivityLogsArgs;
-    complianceQueries?: boolean | ProfileCountOutputTypeCountComplianceQueriesArgs;
+    analysisRequests?: boolean | ProfileCountOutputTypeCountAnalysisRequestsArgs;
     notifications?: boolean | ProfileCountOutputTypeCountNotificationsArgs;
+    activityLogs?: boolean | ProfileCountOutputTypeCountActivityLogsArgs;
 };
 export type ProfileCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.ProfileCountOutputTypeSelect<ExtArgs> | null;
@@ -793,14 +793,14 @@ export type ProfileCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
 export type ProfileCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.DocumentWhereInput;
 };
-export type ProfileCountOutputTypeCountActivityLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.ActivityLogWhereInput;
-};
-export type ProfileCountOutputTypeCountComplianceQueriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.ComplianceQueryWhereInput;
+export type ProfileCountOutputTypeCountAnalysisRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.AnalysisRequestWhereInput;
 };
 export type ProfileCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.NotificationWhereInput;
+};
+export type ProfileCountOutputTypeCountActivityLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ActivityLogWhereInput;
 };
 export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -813,9 +813,9 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     updatedAt?: boolean;
     organization?: boolean | Prisma.Profile$organizationArgs<ExtArgs>;
     documents?: boolean | Prisma.Profile$documentsArgs<ExtArgs>;
-    activityLogs?: boolean | Prisma.Profile$activityLogsArgs<ExtArgs>;
-    complianceQueries?: boolean | Prisma.Profile$complianceQueriesArgs<ExtArgs>;
+    analysisRequests?: boolean | Prisma.Profile$analysisRequestsArgs<ExtArgs>;
     notifications?: boolean | Prisma.Profile$notificationsArgs<ExtArgs>;
+    activityLogs?: boolean | Prisma.Profile$activityLogsArgs<ExtArgs>;
     _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["profile"]>;
 export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -854,9 +854,9 @@ export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     organization?: boolean | Prisma.Profile$organizationArgs<ExtArgs>;
     documents?: boolean | Prisma.Profile$documentsArgs<ExtArgs>;
-    activityLogs?: boolean | Prisma.Profile$activityLogsArgs<ExtArgs>;
-    complianceQueries?: boolean | Prisma.Profile$complianceQueriesArgs<ExtArgs>;
+    analysisRequests?: boolean | Prisma.Profile$analysisRequestsArgs<ExtArgs>;
     notifications?: boolean | Prisma.Profile$notificationsArgs<ExtArgs>;
+    activityLogs?: boolean | Prisma.Profile$activityLogsArgs<ExtArgs>;
     _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type ProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -870,9 +870,9 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     objects: {
         organization: Prisma.$OrganizationPayload<ExtArgs> | null;
         documents: Prisma.$DocumentPayload<ExtArgs>[];
-        activityLogs: Prisma.$ActivityLogPayload<ExtArgs>[];
-        complianceQueries: Prisma.$ComplianceQueryPayload<ExtArgs>[];
+        analysisRequests: Prisma.$AnalysisRequestPayload<ExtArgs>[];
         notifications: Prisma.$NotificationPayload<ExtArgs>[];
+        activityLogs: Prisma.$ActivityLogPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -937,9 +937,9 @@ export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.
     readonly [Symbol.toStringTag]: "PrismaPromise";
     organization<T extends Prisma.Profile$organizationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$organizationArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     documents<T extends Prisma.Profile$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    activityLogs<T extends Prisma.Profile$activityLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$activityLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    complianceQueries<T extends Prisma.Profile$complianceQueriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$complianceQueriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComplianceQueryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    analysisRequests<T extends Prisma.Profile$analysisRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$analysisRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnalysisRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     notifications<T extends Prisma.Profile$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    activityLogs<T extends Prisma.Profile$activityLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$activityLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -1071,27 +1071,16 @@ export type Profile$documentsArgs<ExtArgs extends runtime.Types.Extensions.Inter
     skip?: number;
     distinct?: Prisma.DocumentScalarFieldEnum | Prisma.DocumentScalarFieldEnum[];
 };
-export type Profile$activityLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    select?: Prisma.ActivityLogSelect<ExtArgs> | null;
-    omit?: Prisma.ActivityLogOmit<ExtArgs> | null;
-    include?: Prisma.ActivityLogInclude<ExtArgs> | null;
-    where?: Prisma.ActivityLogWhereInput;
-    orderBy?: Prisma.ActivityLogOrderByWithRelationInput | Prisma.ActivityLogOrderByWithRelationInput[];
-    cursor?: Prisma.ActivityLogWhereUniqueInput;
+export type Profile$analysisRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.AnalysisRequestSelect<ExtArgs> | null;
+    omit?: Prisma.AnalysisRequestOmit<ExtArgs> | null;
+    include?: Prisma.AnalysisRequestInclude<ExtArgs> | null;
+    where?: Prisma.AnalysisRequestWhereInput;
+    orderBy?: Prisma.AnalysisRequestOrderByWithRelationInput | Prisma.AnalysisRequestOrderByWithRelationInput[];
+    cursor?: Prisma.AnalysisRequestWhereUniqueInput;
     take?: number;
     skip?: number;
-    distinct?: Prisma.ActivityLogScalarFieldEnum | Prisma.ActivityLogScalarFieldEnum[];
-};
-export type Profile$complianceQueriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    select?: Prisma.ComplianceQuerySelect<ExtArgs> | null;
-    omit?: Prisma.ComplianceQueryOmit<ExtArgs> | null;
-    include?: Prisma.ComplianceQueryInclude<ExtArgs> | null;
-    where?: Prisma.ComplianceQueryWhereInput;
-    orderBy?: Prisma.ComplianceQueryOrderByWithRelationInput | Prisma.ComplianceQueryOrderByWithRelationInput[];
-    cursor?: Prisma.ComplianceQueryWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.ComplianceQueryScalarFieldEnum | Prisma.ComplianceQueryScalarFieldEnum[];
+    distinct?: Prisma.AnalysisRequestScalarFieldEnum | Prisma.AnalysisRequestScalarFieldEnum[];
 };
 export type Profile$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.NotificationSelect<ExtArgs> | null;
@@ -1103,6 +1092,17 @@ export type Profile$notificationsArgs<ExtArgs extends runtime.Types.Extensions.I
     take?: number;
     skip?: number;
     distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[];
+};
+export type Profile$activityLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.ActivityLogSelect<ExtArgs> | null;
+    omit?: Prisma.ActivityLogOmit<ExtArgs> | null;
+    include?: Prisma.ActivityLogInclude<ExtArgs> | null;
+    where?: Prisma.ActivityLogWhereInput;
+    orderBy?: Prisma.ActivityLogOrderByWithRelationInput | Prisma.ActivityLogOrderByWithRelationInput[];
+    cursor?: Prisma.ActivityLogWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ActivityLogScalarFieldEnum | Prisma.ActivityLogScalarFieldEnum[];
 };
 export type ProfileDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.ProfileSelect<ExtArgs> | null;

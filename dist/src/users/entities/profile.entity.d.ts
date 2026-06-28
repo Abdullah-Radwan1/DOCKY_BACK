@@ -1,4 +1,4 @@
-import { UserRole } from "../../generated/prisma/index.js";
+import { UserRole } from "../../generated/prisma";
 export declare class ProfileEntity {
     id: string;
     email: string;

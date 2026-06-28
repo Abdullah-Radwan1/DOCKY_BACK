@@ -1,7 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ComplianceQueryEntity } from './entities/compliance-query.entity';
-import { AIResponseEntity } from './entities/ai-response.entity';
 import { CreateComplianceQueryDto } from './dto/create-compliance-query.dto';
 import { CreateAIResponseDto } from './dto/create-ai-response.dto';
 
@@ -13,7 +11,7 @@ export class ComplianceService {
    * Registers a new compliance query submitted by a user.
    */
   async createQuery(data: CreateComplianceQueryDto) {
-    return this.prisma.complianceQuery.create({
+    return this.prisma.analysisRequest.create({
       data: {
         queryText: data.queryText,
         userId: data.userId,
@@ -27,10 +25,10 @@ export class ComplianceService {
    * Fetches a single query along with its AI responses.
    */
   async getQueryById(id: string) {
-    const query = await this.prisma.complianceQuery.findUnique({
+    const query = await this.prisma.analysisRequest.findUnique({
       where: { id },
       include: {
-        responses: true,
+        response: true,
         document: true,
         user: true,
       },
@@ -45,10 +43,10 @@ export class ComplianceService {
    * Fetches all compliance queries for a document.
    */
   async getQueriesByDocument(documentId: string) {
-    return this.prisma.complianceQuery.findMany({
+    return this.prisma.analysisRequest.findMany({
       where: { documentId },
       include: {
-        responses: true,
+        response: true,
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -59,7 +57,7 @@ export class ComplianceService {
    */
   async addAIResponse(data: CreateAIResponseDto) {
     // Check if query exists
-    const query = await this.prisma.complianceQuery.findUnique({
+    const query = await this.prisma.analysisRequest.findUnique({
       where: { id: data.queryId },
     });
     if (!query) {
@@ -72,13 +70,13 @@ export class ComplianceService {
     const [response] = await this.prisma.$transaction([
       this.prisma.aIResponse.create({
         data: {
-          queryId: data.queryId,
-          responseText: data.responseText,
+          requestId: data.queryId,
+          response: data.responseText,
           confidenceScore: data.confidenceScore || null,
           metadata: data.metadata || null,
         },
       }),
-      this.prisma.complianceQuery.update({
+      this.prisma.analysisRequest.update({
         where: { id: data.queryId },
         data: { status: 'completed' },
       }),

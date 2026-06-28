@@ -10,22 +10,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateDocumentDto = void 0;
-const prisma_1 = require("../../generated/prisma/index.js");
 const class_validator_1 = require("class-validator");
 class CreateDocumentDto {
     organizationId;
     uploadedBy;
     originalFileName;
-    filename;
     mimeType;
-    storageKey;
-    fileUrl;
     checksum;
     fileSize;
     pageCount;
     language;
     expirationDate;
-    status = prisma_1.DocumentStatus.pending;
 }
 exports.CreateDocumentDto = CreateDocumentDto;
 __decorate([
@@ -45,24 +40,9 @@ __decorate([
 ], CreateDocumentDto.prototype, "originalFileName", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateDocumentDto.prototype, "filename", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateDocumentDto.prototype, "mimeType", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateDocumentDto.prototype, "storageKey", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateDocumentDto.prototype, "fileUrl", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -88,9 +68,4 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Date)
 ], CreateDocumentDto.prototype, "expirationDate", void 0);
-__decorate([
-    (0, class_validator_1.IsEnum)(prisma_1.DocumentStatus),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateDocumentDto.prototype, "status", void 0);
 //# sourceMappingURL=create-document.dto.js.map

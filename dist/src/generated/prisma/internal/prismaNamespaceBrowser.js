@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.NullableJsonNullValueInput = exports.SortOrder = exports.NotificationScalarFieldEnum = exports.AIResponseScalarFieldEnum = exports.ComplianceQueryScalarFieldEnum = exports.ActivityLogScalarFieldEnum = exports.FindingScalarFieldEnum = exports.DocumentAnalysisScalarFieldEnum = exports.DocumentScalarFieldEnum = exports.ProfileScalarFieldEnum = exports.OrganizationScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.NotificationScalarFieldEnum = exports.AIResponseScalarFieldEnum = exports.AnalysisRequestScalarFieldEnum = exports.ActivityLogScalarFieldEnum = exports.FindingScalarFieldEnum = exports.AnalysisResultScalarFieldEnum = exports.DocumentChunkScalarFieldEnum = exports.DocumentScalarFieldEnum = exports.ProfileScalarFieldEnum = exports.OrganizationScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -48,10 +48,11 @@ exports.ModelName = {
     Organization: 'Organization',
     Profile: 'Profile',
     Document: 'Document',
-    DocumentAnalysis: 'DocumentAnalysis',
+    DocumentChunk: 'DocumentChunk',
+    AnalysisResult: 'AnalysisResult',
     Finding: 'Finding',
     ActivityLog: 'ActivityLog',
-    ComplianceQuery: 'ComplianceQuery',
+    AnalysisRequest: 'AnalysisRequest',
     AIResponse: 'AIResponse',
     Notification: 'Notification'
 };
@@ -85,47 +86,34 @@ exports.DocumentScalarFieldEnum = {
     organizationId: 'organizationId',
     uploadedBy: 'uploadedBy',
     originalFileName: 'originalFileName',
-    filename: 'filename',
     mimeType: 'mimeType',
-    storageKey: 'storageKey',
-    fileUrl: 'fileUrl',
     checksum: 'checksum',
     fileSize: 'fileSize',
     pageCount: 'pageCount',
+    totalChunks: 'totalChunks',
     language: 'language',
     status: 'status',
-    complianceScore: 'complianceScore',
-    riskLevel: 'riskLevel',
     expirationDate: 'expirationDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
-exports.DocumentAnalysisScalarFieldEnum = {
+exports.DocumentChunkScalarFieldEnum = {
     id: 'id',
     documentId: 'documentId',
-    executiveSummary: 'executiveSummary',
-    overallVerdict: 'overallVerdict',
-    confidenceScore: 'confidenceScore',
-    modelName: 'modelName',
-    promptVersion: 'promptVersion',
-    rulesetVersion: 'rulesetVersion',
-    parties: 'parties',
-    obligations: 'obligations',
-    paymentTerms: 'paymentTerms',
-    renewalTerms: 'renewalTerms',
-    penalties: 'penalties',
-    governingLaw: 'governingLaw',
-    missingClauses: 'missingClauses',
-    unusualConditions: 'unusualConditions',
-    complianceRequirements: 'complianceRequirements',
-    policyViolations: 'policyViolations',
-    regulatoryIssues: 'regulatoryIssues',
-    missingSignatures: 'missingSignatures',
-    expirationDetected: 'expirationDetected',
-    importantDates: 'importantDates',
-    risks: 'risks',
-    recommendations: 'recommendations',
+    chunkIndex: 'chunkIndex',
+    content: 'content',
+    pageNumber: 'pageNumber',
+    tokenCount: 'tokenCount',
     createdAt: 'createdAt'
+};
+exports.AnalysisResultScalarFieldEnum = {
+    id: 'id',
+    summary: 'summary',
+    overallVerdict: 'overallVerdict',
+    confidence: 'confidence',
+    riskLevel: 'riskLevel',
+    createdAt: 'createdAt',
+    responseId: 'responseId'
 };
 exports.FindingScalarFieldEnum = {
     id: 'id',
@@ -150,7 +138,7 @@ exports.ActivityLogScalarFieldEnum = {
     metadata: 'metadata',
     createdAt: 'createdAt'
 };
-exports.ComplianceQueryScalarFieldEnum = {
+exports.AnalysisRequestScalarFieldEnum = {
     id: 'id',
     queryText: 'queryText',
     status: 'status',
@@ -165,11 +153,12 @@ exports.ComplianceQueryScalarFieldEnum = {
 };
 exports.AIResponseScalarFieldEnum = {
     id: 'id',
-    queryId: 'queryId',
-    responseText: 'responseText',
+    requestId: 'requestId',
+    response: 'response',
     confidenceScore: 'confidenceScore',
     metadata: 'metadata',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    matchedChunks: 'matchedChunks'
 };
 exports.NotificationScalarFieldEnum = {
     id: 'id',
@@ -191,6 +180,9 @@ exports.SortOrder = {
 };
 exports.NullableJsonNullValueInput = {
     DbNull: exports.DbNull,
+    JsonNull: exports.JsonNull
+};
+exports.JsonNullValueInput = {
     JsonNull: exports.JsonNull
 };
 exports.QueryMode = {

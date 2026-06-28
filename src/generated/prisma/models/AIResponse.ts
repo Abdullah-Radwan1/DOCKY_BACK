@@ -36,27 +36,26 @@ export type AIResponseSumAggregateOutputType = {
 
 export type AIResponseMinAggregateOutputType = {
   id: string | null
-  queryId: string | null
-  responseText: string | null
+  requestId: string | null
   confidenceScore: number | null
   createdAt: Date | null
 }
 
 export type AIResponseMaxAggregateOutputType = {
   id: string | null
-  queryId: string | null
-  responseText: string | null
+  requestId: string | null
   confidenceScore: number | null
   createdAt: Date | null
 }
 
 export type AIResponseCountAggregateOutputType = {
   id: number
-  queryId: number
-  responseText: number
+  requestId: number
+  response: number
   confidenceScore: number
   metadata: number
   createdAt: number
+  matchedChunks: number
   _all: number
 }
 
@@ -71,27 +70,26 @@ export type AIResponseSumAggregateInputType = {
 
 export type AIResponseMinAggregateInputType = {
   id?: true
-  queryId?: true
-  responseText?: true
+  requestId?: true
   confidenceScore?: true
   createdAt?: true
 }
 
 export type AIResponseMaxAggregateInputType = {
   id?: true
-  queryId?: true
-  responseText?: true
+  requestId?: true
   confidenceScore?: true
   createdAt?: true
 }
 
 export type AIResponseCountAggregateInputType = {
   id?: true
-  queryId?: true
-  responseText?: true
+  requestId?: true
+  response?: true
   confidenceScore?: true
   metadata?: true
   createdAt?: true
+  matchedChunks?: true
   _all?: true
 }
 
@@ -183,11 +181,12 @@ export type AIResponseGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type AIResponseGroupByOutputType = {
   id: string
-  queryId: string
-  responseText: string
+  requestId: string
+  response: runtime.JsonValue
   confidenceScore: number | null
   metadata: runtime.JsonValue | null
   createdAt: Date
+  matchedChunks: runtime.JsonValue | null
   _count: AIResponseCountAggregateOutputType | null
   _avg: AIResponseAvgAggregateOutputType | null
   _sum: AIResponseSumAggregateOutputType | null
@@ -215,44 +214,51 @@ export type AIResponseWhereInput = {
   OR?: Prisma.AIResponseWhereInput[]
   NOT?: Prisma.AIResponseWhereInput | Prisma.AIResponseWhereInput[]
   id?: Prisma.UuidFilter<"AIResponse"> | string
-  queryId?: Prisma.UuidFilter<"AIResponse"> | string
-  responseText?: Prisma.StringFilter<"AIResponse"> | string
+  requestId?: Prisma.UuidFilter<"AIResponse"> | string
+  response?: Prisma.JsonFilter<"AIResponse">
   confidenceScore?: Prisma.FloatNullableFilter<"AIResponse"> | number | null
   metadata?: Prisma.JsonNullableFilter<"AIResponse">
   createdAt?: Prisma.DateTimeFilter<"AIResponse"> | Date | string
-  complianceQuery?: Prisma.XOR<Prisma.ComplianceQueryScalarRelationFilter, Prisma.ComplianceQueryWhereInput>
+  matchedChunks?: Prisma.JsonNullableFilter<"AIResponse">
+  AnalysisRequest?: Prisma.XOR<Prisma.AnalysisRequestScalarRelationFilter, Prisma.AnalysisRequestWhereInput>
+  AnalysisResult?: Prisma.XOR<Prisma.AnalysisResultNullableScalarRelationFilter, Prisma.AnalysisResultWhereInput> | null
 }
 
 export type AIResponseOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  queryId?: Prisma.SortOrder
-  responseText?: Prisma.SortOrder
+  requestId?: Prisma.SortOrder
+  response?: Prisma.SortOrder
   confidenceScore?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  complianceQuery?: Prisma.ComplianceQueryOrderByWithRelationInput
+  matchedChunks?: Prisma.SortOrderInput | Prisma.SortOrder
+  AnalysisRequest?: Prisma.AnalysisRequestOrderByWithRelationInput
+  AnalysisResult?: Prisma.AnalysisResultOrderByWithRelationInput
 }
 
 export type AIResponseWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  requestId?: string
   AND?: Prisma.AIResponseWhereInput | Prisma.AIResponseWhereInput[]
   OR?: Prisma.AIResponseWhereInput[]
   NOT?: Prisma.AIResponseWhereInput | Prisma.AIResponseWhereInput[]
-  queryId?: Prisma.UuidFilter<"AIResponse"> | string
-  responseText?: Prisma.StringFilter<"AIResponse"> | string
+  response?: Prisma.JsonFilter<"AIResponse">
   confidenceScore?: Prisma.FloatNullableFilter<"AIResponse"> | number | null
   metadata?: Prisma.JsonNullableFilter<"AIResponse">
   createdAt?: Prisma.DateTimeFilter<"AIResponse"> | Date | string
-  complianceQuery?: Prisma.XOR<Prisma.ComplianceQueryScalarRelationFilter, Prisma.ComplianceQueryWhereInput>
-}, "id">
+  matchedChunks?: Prisma.JsonNullableFilter<"AIResponse">
+  AnalysisRequest?: Prisma.XOR<Prisma.AnalysisRequestScalarRelationFilter, Prisma.AnalysisRequestWhereInput>
+  AnalysisResult?: Prisma.XOR<Prisma.AnalysisResultNullableScalarRelationFilter, Prisma.AnalysisResultWhereInput> | null
+}, "id" | "requestId">
 
 export type AIResponseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  queryId?: Prisma.SortOrder
-  responseText?: Prisma.SortOrder
+  requestId?: Prisma.SortOrder
+  response?: Prisma.SortOrder
   confidenceScore?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  matchedChunks?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AIResponseCountOrderByAggregateInput
   _avg?: Prisma.AIResponseAvgOrderByAggregateInput
   _max?: Prisma.AIResponseMaxOrderByAggregateInput
@@ -265,92 +271,105 @@ export type AIResponseScalarWhereWithAggregatesInput = {
   OR?: Prisma.AIResponseScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AIResponseScalarWhereWithAggregatesInput | Prisma.AIResponseScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"AIResponse"> | string
-  queryId?: Prisma.UuidWithAggregatesFilter<"AIResponse"> | string
-  responseText?: Prisma.StringWithAggregatesFilter<"AIResponse"> | string
+  requestId?: Prisma.UuidWithAggregatesFilter<"AIResponse"> | string
+  response?: Prisma.JsonWithAggregatesFilter<"AIResponse">
   confidenceScore?: Prisma.FloatNullableWithAggregatesFilter<"AIResponse"> | number | null
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"AIResponse">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AIResponse"> | Date | string
+  matchedChunks?: Prisma.JsonNullableWithAggregatesFilter<"AIResponse">
 }
 
 export type AIResponseCreateInput = {
   id?: string
-  responseText: string
+  response: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
-  complianceQuery: Prisma.ComplianceQueryCreateNestedOneWithoutResponsesInput
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  AnalysisRequest: Prisma.AnalysisRequestCreateNestedOneWithoutResponseInput
+  AnalysisResult?: Prisma.AnalysisResultCreateNestedOneWithoutResponseInput
 }
 
 export type AIResponseUncheckedCreateInput = {
   id?: string
-  queryId: string
-  responseText: string
+  requestId: string
+  response: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  AnalysisResult?: Prisma.AnalysisResultUncheckedCreateNestedOneWithoutResponseInput
 }
 
 export type AIResponseUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  responseText?: Prisma.StringFieldUpdateOperationsInput | string
+  response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  complianceQuery?: Prisma.ComplianceQueryUpdateOneRequiredWithoutResponsesNestedInput
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  AnalysisRequest?: Prisma.AnalysisRequestUpdateOneRequiredWithoutResponseNestedInput
+  AnalysisResult?: Prisma.AnalysisResultUpdateOneWithoutResponseNestedInput
 }
 
 export type AIResponseUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  queryId?: Prisma.StringFieldUpdateOperationsInput | string
-  responseText?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  AnalysisResult?: Prisma.AnalysisResultUncheckedUpdateOneWithoutResponseNestedInput
 }
 
 export type AIResponseCreateManyInput = {
   id?: string
-  queryId: string
-  responseText: string
+  requestId: string
+  response: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type AIResponseUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  responseText?: Prisma.StringFieldUpdateOperationsInput | string
+  response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type AIResponseUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  queryId?: Prisma.StringFieldUpdateOperationsInput | string
-  responseText?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
-export type AIResponseListRelationFilter = {
-  every?: Prisma.AIResponseWhereInput
-  some?: Prisma.AIResponseWhereInput
-  none?: Prisma.AIResponseWhereInput
+export type AIResponseScalarRelationFilter = {
+  is?: Prisma.AIResponseWhereInput
+  isNot?: Prisma.AIResponseWhereInput
 }
 
-export type AIResponseOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
+export type AIResponseNullableScalarRelationFilter = {
+  is?: Prisma.AIResponseWhereInput | null
+  isNot?: Prisma.AIResponseWhereInput | null
 }
 
 export type AIResponseCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  queryId?: Prisma.SortOrder
-  responseText?: Prisma.SortOrder
+  requestId?: Prisma.SortOrder
+  response?: Prisma.SortOrder
   confidenceScore?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  matchedChunks?: Prisma.SortOrder
 }
 
 export type AIResponseAvgOrderByAggregateInput = {
@@ -359,16 +378,14 @@ export type AIResponseAvgOrderByAggregateInput = {
 
 export type AIResponseMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  queryId?: Prisma.SortOrder
-  responseText?: Prisma.SortOrder
+  requestId?: Prisma.SortOrder
   confidenceScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type AIResponseMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  queryId?: Prisma.SortOrder
-  responseText?: Prisma.SortOrder
+  requestId?: Prisma.SortOrder
   confidenceScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -377,198 +394,236 @@ export type AIResponseSumOrderByAggregateInput = {
   confidenceScore?: Prisma.SortOrder
 }
 
-export type AIResponseCreateNestedManyWithoutComplianceQueryInput = {
-  create?: Prisma.XOR<Prisma.AIResponseCreateWithoutComplianceQueryInput, Prisma.AIResponseUncheckedCreateWithoutComplianceQueryInput> | Prisma.AIResponseCreateWithoutComplianceQueryInput[] | Prisma.AIResponseUncheckedCreateWithoutComplianceQueryInput[]
-  connectOrCreate?: Prisma.AIResponseCreateOrConnectWithoutComplianceQueryInput | Prisma.AIResponseCreateOrConnectWithoutComplianceQueryInput[]
-  createMany?: Prisma.AIResponseCreateManyComplianceQueryInputEnvelope
-  connect?: Prisma.AIResponseWhereUniqueInput | Prisma.AIResponseWhereUniqueInput[]
+export type AIResponseCreateNestedOneWithoutAnalysisResultInput = {
+  create?: Prisma.XOR<Prisma.AIResponseCreateWithoutAnalysisResultInput, Prisma.AIResponseUncheckedCreateWithoutAnalysisResultInput>
+  connectOrCreate?: Prisma.AIResponseCreateOrConnectWithoutAnalysisResultInput
+  connect?: Prisma.AIResponseWhereUniqueInput
 }
 
-export type AIResponseUncheckedCreateNestedManyWithoutComplianceQueryInput = {
-  create?: Prisma.XOR<Prisma.AIResponseCreateWithoutComplianceQueryInput, Prisma.AIResponseUncheckedCreateWithoutComplianceQueryInput> | Prisma.AIResponseCreateWithoutComplianceQueryInput[] | Prisma.AIResponseUncheckedCreateWithoutComplianceQueryInput[]
-  connectOrCreate?: Prisma.AIResponseCreateOrConnectWithoutComplianceQueryInput | Prisma.AIResponseCreateOrConnectWithoutComplianceQueryInput[]
-  createMany?: Prisma.AIResponseCreateManyComplianceQueryInputEnvelope
-  connect?: Prisma.AIResponseWhereUniqueInput | Prisma.AIResponseWhereUniqueInput[]
+export type AIResponseUpdateOneRequiredWithoutAnalysisResultNestedInput = {
+  create?: Prisma.XOR<Prisma.AIResponseCreateWithoutAnalysisResultInput, Prisma.AIResponseUncheckedCreateWithoutAnalysisResultInput>
+  connectOrCreate?: Prisma.AIResponseCreateOrConnectWithoutAnalysisResultInput
+  upsert?: Prisma.AIResponseUpsertWithoutAnalysisResultInput
+  connect?: Prisma.AIResponseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AIResponseUpdateToOneWithWhereWithoutAnalysisResultInput, Prisma.AIResponseUpdateWithoutAnalysisResultInput>, Prisma.AIResponseUncheckedUpdateWithoutAnalysisResultInput>
 }
 
-export type AIResponseUpdateManyWithoutComplianceQueryNestedInput = {
-  create?: Prisma.XOR<Prisma.AIResponseCreateWithoutComplianceQueryInput, Prisma.AIResponseUncheckedCreateWithoutComplianceQueryInput> | Prisma.AIResponseCreateWithoutComplianceQueryInput[] | Prisma.AIResponseUncheckedCreateWithoutComplianceQueryInput[]
-  connectOrCreate?: Prisma.AIResponseCreateOrConnectWithoutComplianceQueryInput | Prisma.AIResponseCreateOrConnectWithoutComplianceQueryInput[]
-  upsert?: Prisma.AIResponseUpsertWithWhereUniqueWithoutComplianceQueryInput | Prisma.AIResponseUpsertWithWhereUniqueWithoutComplianceQueryInput[]
-  createMany?: Prisma.AIResponseCreateManyComplianceQueryInputEnvelope
-  set?: Prisma.AIResponseWhereUniqueInput | Prisma.AIResponseWhereUniqueInput[]
-  disconnect?: Prisma.AIResponseWhereUniqueInput | Prisma.AIResponseWhereUniqueInput[]
-  delete?: Prisma.AIResponseWhereUniqueInput | Prisma.AIResponseWhereUniqueInput[]
-  connect?: Prisma.AIResponseWhereUniqueInput | Prisma.AIResponseWhereUniqueInput[]
-  update?: Prisma.AIResponseUpdateWithWhereUniqueWithoutComplianceQueryInput | Prisma.AIResponseUpdateWithWhereUniqueWithoutComplianceQueryInput[]
-  updateMany?: Prisma.AIResponseUpdateManyWithWhereWithoutComplianceQueryInput | Prisma.AIResponseUpdateManyWithWhereWithoutComplianceQueryInput[]
-  deleteMany?: Prisma.AIResponseScalarWhereInput | Prisma.AIResponseScalarWhereInput[]
+export type AIResponseCreateNestedOneWithoutAnalysisRequestInput = {
+  create?: Prisma.XOR<Prisma.AIResponseCreateWithoutAnalysisRequestInput, Prisma.AIResponseUncheckedCreateWithoutAnalysisRequestInput>
+  connectOrCreate?: Prisma.AIResponseCreateOrConnectWithoutAnalysisRequestInput
+  connect?: Prisma.AIResponseWhereUniqueInput
 }
 
-export type AIResponseUncheckedUpdateManyWithoutComplianceQueryNestedInput = {
-  create?: Prisma.XOR<Prisma.AIResponseCreateWithoutComplianceQueryInput, Prisma.AIResponseUncheckedCreateWithoutComplianceQueryInput> | Prisma.AIResponseCreateWithoutComplianceQueryInput[] | Prisma.AIResponseUncheckedCreateWithoutComplianceQueryInput[]
-  connectOrCreate?: Prisma.AIResponseCreateOrConnectWithoutComplianceQueryInput | Prisma.AIResponseCreateOrConnectWithoutComplianceQueryInput[]
-  upsert?: Prisma.AIResponseUpsertWithWhereUniqueWithoutComplianceQueryInput | Prisma.AIResponseUpsertWithWhereUniqueWithoutComplianceQueryInput[]
-  createMany?: Prisma.AIResponseCreateManyComplianceQueryInputEnvelope
-  set?: Prisma.AIResponseWhereUniqueInput | Prisma.AIResponseWhereUniqueInput[]
-  disconnect?: Prisma.AIResponseWhereUniqueInput | Prisma.AIResponseWhereUniqueInput[]
-  delete?: Prisma.AIResponseWhereUniqueInput | Prisma.AIResponseWhereUniqueInput[]
-  connect?: Prisma.AIResponseWhereUniqueInput | Prisma.AIResponseWhereUniqueInput[]
-  update?: Prisma.AIResponseUpdateWithWhereUniqueWithoutComplianceQueryInput | Prisma.AIResponseUpdateWithWhereUniqueWithoutComplianceQueryInput[]
-  updateMany?: Prisma.AIResponseUpdateManyWithWhereWithoutComplianceQueryInput | Prisma.AIResponseUpdateManyWithWhereWithoutComplianceQueryInput[]
-  deleteMany?: Prisma.AIResponseScalarWhereInput | Prisma.AIResponseScalarWhereInput[]
+export type AIResponseUncheckedCreateNestedOneWithoutAnalysisRequestInput = {
+  create?: Prisma.XOR<Prisma.AIResponseCreateWithoutAnalysisRequestInput, Prisma.AIResponseUncheckedCreateWithoutAnalysisRequestInput>
+  connectOrCreate?: Prisma.AIResponseCreateOrConnectWithoutAnalysisRequestInput
+  connect?: Prisma.AIResponseWhereUniqueInput
 }
 
-export type AIResponseCreateWithoutComplianceQueryInput = {
+export type AIResponseUpdateOneWithoutAnalysisRequestNestedInput = {
+  create?: Prisma.XOR<Prisma.AIResponseCreateWithoutAnalysisRequestInput, Prisma.AIResponseUncheckedCreateWithoutAnalysisRequestInput>
+  connectOrCreate?: Prisma.AIResponseCreateOrConnectWithoutAnalysisRequestInput
+  upsert?: Prisma.AIResponseUpsertWithoutAnalysisRequestInput
+  disconnect?: Prisma.AIResponseWhereInput | boolean
+  delete?: Prisma.AIResponseWhereInput | boolean
+  connect?: Prisma.AIResponseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AIResponseUpdateToOneWithWhereWithoutAnalysisRequestInput, Prisma.AIResponseUpdateWithoutAnalysisRequestInput>, Prisma.AIResponseUncheckedUpdateWithoutAnalysisRequestInput>
+}
+
+export type AIResponseUncheckedUpdateOneWithoutAnalysisRequestNestedInput = {
+  create?: Prisma.XOR<Prisma.AIResponseCreateWithoutAnalysisRequestInput, Prisma.AIResponseUncheckedCreateWithoutAnalysisRequestInput>
+  connectOrCreate?: Prisma.AIResponseCreateOrConnectWithoutAnalysisRequestInput
+  upsert?: Prisma.AIResponseUpsertWithoutAnalysisRequestInput
+  disconnect?: Prisma.AIResponseWhereInput | boolean
+  delete?: Prisma.AIResponseWhereInput | boolean
+  connect?: Prisma.AIResponseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AIResponseUpdateToOneWithWhereWithoutAnalysisRequestInput, Prisma.AIResponseUpdateWithoutAnalysisRequestInput>, Prisma.AIResponseUncheckedUpdateWithoutAnalysisRequestInput>
+}
+
+export type AIResponseCreateWithoutAnalysisResultInput = {
   id?: string
-  responseText: string
+  response: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  AnalysisRequest: Prisma.AnalysisRequestCreateNestedOneWithoutResponseInput
 }
 
-export type AIResponseUncheckedCreateWithoutComplianceQueryInput = {
+export type AIResponseUncheckedCreateWithoutAnalysisResultInput = {
   id?: string
-  responseText: string
+  requestId: string
+  response: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
-export type AIResponseCreateOrConnectWithoutComplianceQueryInput = {
+export type AIResponseCreateOrConnectWithoutAnalysisResultInput = {
   where: Prisma.AIResponseWhereUniqueInput
-  create: Prisma.XOR<Prisma.AIResponseCreateWithoutComplianceQueryInput, Prisma.AIResponseUncheckedCreateWithoutComplianceQueryInput>
+  create: Prisma.XOR<Prisma.AIResponseCreateWithoutAnalysisResultInput, Prisma.AIResponseUncheckedCreateWithoutAnalysisResultInput>
 }
 
-export type AIResponseCreateManyComplianceQueryInputEnvelope = {
-  data: Prisma.AIResponseCreateManyComplianceQueryInput | Prisma.AIResponseCreateManyComplianceQueryInput[]
-  skipDuplicates?: boolean
+export type AIResponseUpsertWithoutAnalysisResultInput = {
+  update: Prisma.XOR<Prisma.AIResponseUpdateWithoutAnalysisResultInput, Prisma.AIResponseUncheckedUpdateWithoutAnalysisResultInput>
+  create: Prisma.XOR<Prisma.AIResponseCreateWithoutAnalysisResultInput, Prisma.AIResponseUncheckedCreateWithoutAnalysisResultInput>
+  where?: Prisma.AIResponseWhereInput
 }
 
-export type AIResponseUpsertWithWhereUniqueWithoutComplianceQueryInput = {
-  where: Prisma.AIResponseWhereUniqueInput
-  update: Prisma.XOR<Prisma.AIResponseUpdateWithoutComplianceQueryInput, Prisma.AIResponseUncheckedUpdateWithoutComplianceQueryInput>
-  create: Prisma.XOR<Prisma.AIResponseCreateWithoutComplianceQueryInput, Prisma.AIResponseUncheckedCreateWithoutComplianceQueryInput>
+export type AIResponseUpdateToOneWithWhereWithoutAnalysisResultInput = {
+  where?: Prisma.AIResponseWhereInput
+  data: Prisma.XOR<Prisma.AIResponseUpdateWithoutAnalysisResultInput, Prisma.AIResponseUncheckedUpdateWithoutAnalysisResultInput>
 }
 
-export type AIResponseUpdateWithWhereUniqueWithoutComplianceQueryInput = {
-  where: Prisma.AIResponseWhereUniqueInput
-  data: Prisma.XOR<Prisma.AIResponseUpdateWithoutComplianceQueryInput, Prisma.AIResponseUncheckedUpdateWithoutComplianceQueryInput>
+export type AIResponseUpdateWithoutAnalysisResultInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  AnalysisRequest?: Prisma.AnalysisRequestUpdateOneRequiredWithoutResponseNestedInput
 }
 
-export type AIResponseUpdateManyWithWhereWithoutComplianceQueryInput = {
-  where: Prisma.AIResponseScalarWhereInput
-  data: Prisma.XOR<Prisma.AIResponseUpdateManyMutationInput, Prisma.AIResponseUncheckedUpdateManyWithoutComplianceQueryInput>
+export type AIResponseUncheckedUpdateWithoutAnalysisResultInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
-export type AIResponseScalarWhereInput = {
-  AND?: Prisma.AIResponseScalarWhereInput | Prisma.AIResponseScalarWhereInput[]
-  OR?: Prisma.AIResponseScalarWhereInput[]
-  NOT?: Prisma.AIResponseScalarWhereInput | Prisma.AIResponseScalarWhereInput[]
-  id?: Prisma.UuidFilter<"AIResponse"> | string
-  queryId?: Prisma.UuidFilter<"AIResponse"> | string
-  responseText?: Prisma.StringFilter<"AIResponse"> | string
-  confidenceScore?: Prisma.FloatNullableFilter<"AIResponse"> | number | null
-  metadata?: Prisma.JsonNullableFilter<"AIResponse">
-  createdAt?: Prisma.DateTimeFilter<"AIResponse"> | Date | string
-}
-
-export type AIResponseCreateManyComplianceQueryInput = {
+export type AIResponseCreateWithoutAnalysisRequestInput = {
   id?: string
-  responseText: string
+  response: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  AnalysisResult?: Prisma.AnalysisResultCreateNestedOneWithoutResponseInput
 }
 
-export type AIResponseUpdateWithoutComplianceQueryInput = {
+export type AIResponseUncheckedCreateWithoutAnalysisRequestInput = {
+  id?: string
+  response: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  confidenceScore?: number | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  AnalysisResult?: Prisma.AnalysisResultUncheckedCreateNestedOneWithoutResponseInput
+}
+
+export type AIResponseCreateOrConnectWithoutAnalysisRequestInput = {
+  where: Prisma.AIResponseWhereUniqueInput
+  create: Prisma.XOR<Prisma.AIResponseCreateWithoutAnalysisRequestInput, Prisma.AIResponseUncheckedCreateWithoutAnalysisRequestInput>
+}
+
+export type AIResponseUpsertWithoutAnalysisRequestInput = {
+  update: Prisma.XOR<Prisma.AIResponseUpdateWithoutAnalysisRequestInput, Prisma.AIResponseUncheckedUpdateWithoutAnalysisRequestInput>
+  create: Prisma.XOR<Prisma.AIResponseCreateWithoutAnalysisRequestInput, Prisma.AIResponseUncheckedCreateWithoutAnalysisRequestInput>
+  where?: Prisma.AIResponseWhereInput
+}
+
+export type AIResponseUpdateToOneWithWhereWithoutAnalysisRequestInput = {
+  where?: Prisma.AIResponseWhereInput
+  data: Prisma.XOR<Prisma.AIResponseUpdateWithoutAnalysisRequestInput, Prisma.AIResponseUncheckedUpdateWithoutAnalysisRequestInput>
+}
+
+export type AIResponseUpdateWithoutAnalysisRequestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  responseText?: Prisma.StringFieldUpdateOperationsInput | string
+  response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  AnalysisResult?: Prisma.AnalysisResultUpdateOneWithoutResponseNestedInput
 }
 
-export type AIResponseUncheckedUpdateWithoutComplianceQueryInput = {
+export type AIResponseUncheckedUpdateWithoutAnalysisRequestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  responseText?: Prisma.StringFieldUpdateOperationsInput | string
+  response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type AIResponseUncheckedUpdateManyWithoutComplianceQueryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  responseText?: Prisma.StringFieldUpdateOperationsInput | string
-  confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  AnalysisResult?: Prisma.AnalysisResultUncheckedUpdateOneWithoutResponseNestedInput
 }
 
 
 
 export type AIResponseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  queryId?: boolean
-  responseText?: boolean
+  requestId?: boolean
+  response?: boolean
   confidenceScore?: boolean
   metadata?: boolean
   createdAt?: boolean
-  complianceQuery?: boolean | Prisma.ComplianceQueryDefaultArgs<ExtArgs>
+  matchedChunks?: boolean
+  AnalysisRequest?: boolean | Prisma.AnalysisRequestDefaultArgs<ExtArgs>
+  AnalysisResult?: boolean | Prisma.AIResponse$AnalysisResultArgs<ExtArgs>
 }, ExtArgs["result"]["aIResponse"]>
 
 export type AIResponseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  queryId?: boolean
-  responseText?: boolean
+  requestId?: boolean
+  response?: boolean
   confidenceScore?: boolean
   metadata?: boolean
   createdAt?: boolean
-  complianceQuery?: boolean | Prisma.ComplianceQueryDefaultArgs<ExtArgs>
+  matchedChunks?: boolean
+  AnalysisRequest?: boolean | Prisma.AnalysisRequestDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["aIResponse"]>
 
 export type AIResponseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  queryId?: boolean
-  responseText?: boolean
+  requestId?: boolean
+  response?: boolean
   confidenceScore?: boolean
   metadata?: boolean
   createdAt?: boolean
-  complianceQuery?: boolean | Prisma.ComplianceQueryDefaultArgs<ExtArgs>
+  matchedChunks?: boolean
+  AnalysisRequest?: boolean | Prisma.AnalysisRequestDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["aIResponse"]>
 
 export type AIResponseSelectScalar = {
   id?: boolean
-  queryId?: boolean
-  responseText?: boolean
+  requestId?: boolean
+  response?: boolean
   confidenceScore?: boolean
   metadata?: boolean
   createdAt?: boolean
+  matchedChunks?: boolean
 }
 
-export type AIResponseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "queryId" | "responseText" | "confidenceScore" | "metadata" | "createdAt", ExtArgs["result"]["aIResponse"]>
+export type AIResponseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "requestId" | "response" | "confidenceScore" | "metadata" | "createdAt" | "matchedChunks", ExtArgs["result"]["aIResponse"]>
 export type AIResponseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  complianceQuery?: boolean | Prisma.ComplianceQueryDefaultArgs<ExtArgs>
+  AnalysisRequest?: boolean | Prisma.AnalysisRequestDefaultArgs<ExtArgs>
+  AnalysisResult?: boolean | Prisma.AIResponse$AnalysisResultArgs<ExtArgs>
 }
 export type AIResponseIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  complianceQuery?: boolean | Prisma.ComplianceQueryDefaultArgs<ExtArgs>
+  AnalysisRequest?: boolean | Prisma.AnalysisRequestDefaultArgs<ExtArgs>
 }
 export type AIResponseIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  complianceQuery?: boolean | Prisma.ComplianceQueryDefaultArgs<ExtArgs>
+  AnalysisRequest?: boolean | Prisma.AnalysisRequestDefaultArgs<ExtArgs>
 }
 
 export type $AIResponsePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AIResponse"
   objects: {
-    complianceQuery: Prisma.$ComplianceQueryPayload<ExtArgs>
+    AnalysisRequest: Prisma.$AnalysisRequestPayload<ExtArgs>
+    AnalysisResult: Prisma.$AnalysisResultPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    queryId: string
-    responseText: string
+    requestId: string
+    response: runtime.JsonValue
     confidenceScore: number | null
     metadata: runtime.JsonValue | null
     createdAt: Date
+    matchedChunks: runtime.JsonValue | null
   }, ExtArgs["result"]["aIResponse"]>
   composites: {}
 }
@@ -963,7 +1018,8 @@ readonly fields: AIResponseFieldRefs;
  */
 export interface Prisma__AIResponseClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  complianceQuery<T extends Prisma.ComplianceQueryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ComplianceQueryDefaultArgs<ExtArgs>>): Prisma.Prisma__ComplianceQueryClient<runtime.Types.Result.GetResult<Prisma.$ComplianceQueryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  AnalysisRequest<T extends Prisma.AnalysisRequestDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AnalysisRequestDefaultArgs<ExtArgs>>): Prisma.Prisma__AnalysisRequestClient<runtime.Types.Result.GetResult<Prisma.$AnalysisRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  AnalysisResult<T extends Prisma.AIResponse$AnalysisResultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AIResponse$AnalysisResultArgs<ExtArgs>>): Prisma.Prisma__AnalysisResultClient<runtime.Types.Result.GetResult<Prisma.$AnalysisResultPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -994,11 +1050,12 @@ export interface Prisma__AIResponseClient<T, Null = never, ExtArgs extends runti
  */
 export interface AIResponseFieldRefs {
   readonly id: Prisma.FieldRef<"AIResponse", 'String'>
-  readonly queryId: Prisma.FieldRef<"AIResponse", 'String'>
-  readonly responseText: Prisma.FieldRef<"AIResponse", 'String'>
+  readonly requestId: Prisma.FieldRef<"AIResponse", 'String'>
+  readonly response: Prisma.FieldRef<"AIResponse", 'Json'>
   readonly confidenceScore: Prisma.FieldRef<"AIResponse", 'Float'>
   readonly metadata: Prisma.FieldRef<"AIResponse", 'Json'>
   readonly createdAt: Prisma.FieldRef<"AIResponse", 'DateTime'>
+  readonly matchedChunks: Prisma.FieldRef<"AIResponse", 'Json'>
 }
     
 
@@ -1397,6 +1454,25 @@ export type AIResponseDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many AIResponses to delete.
    */
   limit?: number
+}
+
+/**
+ * AIResponse.AnalysisResult
+ */
+export type AIResponse$AnalysisResultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AnalysisResult
+   */
+  select?: Prisma.AnalysisResultSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AnalysisResult
+   */
+  omit?: Prisma.AnalysisResultOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnalysisResultInclude<ExtArgs> | null
+  where?: Prisma.AnalysisResultWhereInput
 }
 
 /**

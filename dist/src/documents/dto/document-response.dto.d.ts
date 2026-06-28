@@ -1,21 +1,17 @@
-import { DocumentStatus, RiskLevel } from "../../generated/prisma/index.js";
+import { DocumentStatus } from "../../generated/prisma";
 export declare class DocumentResponseDto {
     id: string;
     organizationId: string;
     uploadedBy: string;
     originalFileName: string;
-    filename: string;
     mimeType?: string;
-    fileUrl?: string;
+    checksum?: string;
     fileSize?: number;
     pageCount?: number;
+    totalChunks?: number;
     language?: string;
     status: DocumentStatus;
-    complianceScore?: number;
-    riskLevel?: RiskLevel;
     expirationDate?: Date;
     createdAt: Date;
     updatedAt: Date;
-    storageKey?: string;
-    checksum?: string;
 }

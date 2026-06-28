@@ -54,10 +54,11 @@ export const ModelName = {
   Organization: 'Organization',
   Profile: 'Profile',
   Document: 'Document',
-  DocumentAnalysis: 'DocumentAnalysis',
+  DocumentChunk: 'DocumentChunk',
+  AnalysisResult: 'AnalysisResult',
   Finding: 'Finding',
   ActivityLog: 'ActivityLog',
-  ComplianceQuery: 'ComplianceQuery',
+  AnalysisRequest: 'AnalysisRequest',
   AIResponse: 'AIResponse',
   Notification: 'Notification'
 } as const
@@ -110,17 +111,13 @@ export const DocumentScalarFieldEnum = {
   organizationId: 'organizationId',
   uploadedBy: 'uploadedBy',
   originalFileName: 'originalFileName',
-  filename: 'filename',
   mimeType: 'mimeType',
-  storageKey: 'storageKey',
-  fileUrl: 'fileUrl',
   checksum: 'checksum',
   fileSize: 'fileSize',
   pageCount: 'pageCount',
+  totalChunks: 'totalChunks',
   language: 'language',
   status: 'status',
-  complianceScore: 'complianceScore',
-  riskLevel: 'riskLevel',
   expirationDate: 'expirationDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -129,35 +126,30 @@ export const DocumentScalarFieldEnum = {
 export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
 
 
-export const DocumentAnalysisScalarFieldEnum = {
+export const DocumentChunkScalarFieldEnum = {
   id: 'id',
   documentId: 'documentId',
-  executiveSummary: 'executiveSummary',
-  overallVerdict: 'overallVerdict',
-  confidenceScore: 'confidenceScore',
-  modelName: 'modelName',
-  promptVersion: 'promptVersion',
-  rulesetVersion: 'rulesetVersion',
-  parties: 'parties',
-  obligations: 'obligations',
-  paymentTerms: 'paymentTerms',
-  renewalTerms: 'renewalTerms',
-  penalties: 'penalties',
-  governingLaw: 'governingLaw',
-  missingClauses: 'missingClauses',
-  unusualConditions: 'unusualConditions',
-  complianceRequirements: 'complianceRequirements',
-  policyViolations: 'policyViolations',
-  regulatoryIssues: 'regulatoryIssues',
-  missingSignatures: 'missingSignatures',
-  expirationDetected: 'expirationDetected',
-  importantDates: 'importantDates',
-  risks: 'risks',
-  recommendations: 'recommendations',
+  chunkIndex: 'chunkIndex',
+  content: 'content',
+  pageNumber: 'pageNumber',
+  tokenCount: 'tokenCount',
   createdAt: 'createdAt'
 } as const
 
-export type DocumentAnalysisScalarFieldEnum = (typeof DocumentAnalysisScalarFieldEnum)[keyof typeof DocumentAnalysisScalarFieldEnum]
+export type DocumentChunkScalarFieldEnum = (typeof DocumentChunkScalarFieldEnum)[keyof typeof DocumentChunkScalarFieldEnum]
+
+
+export const AnalysisResultScalarFieldEnum = {
+  id: 'id',
+  summary: 'summary',
+  overallVerdict: 'overallVerdict',
+  confidence: 'confidence',
+  riskLevel: 'riskLevel',
+  createdAt: 'createdAt',
+  responseId: 'responseId'
+} as const
+
+export type AnalysisResultScalarFieldEnum = (typeof AnalysisResultScalarFieldEnum)[keyof typeof AnalysisResultScalarFieldEnum]
 
 
 export const FindingScalarFieldEnum = {
@@ -191,7 +183,7 @@ export const ActivityLogScalarFieldEnum = {
 export type ActivityLogScalarFieldEnum = (typeof ActivityLogScalarFieldEnum)[keyof typeof ActivityLogScalarFieldEnum]
 
 
-export const ComplianceQueryScalarFieldEnum = {
+export const AnalysisRequestScalarFieldEnum = {
   id: 'id',
   queryText: 'queryText',
   status: 'status',
@@ -205,16 +197,17 @@ export const ComplianceQueryScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type ComplianceQueryScalarFieldEnum = (typeof ComplianceQueryScalarFieldEnum)[keyof typeof ComplianceQueryScalarFieldEnum]
+export type AnalysisRequestScalarFieldEnum = (typeof AnalysisRequestScalarFieldEnum)[keyof typeof AnalysisRequestScalarFieldEnum]
 
 
 export const AIResponseScalarFieldEnum = {
   id: 'id',
-  queryId: 'queryId',
-  responseText: 'responseText',
+  requestId: 'requestId',
+  response: 'response',
   confidenceScore: 'confidenceScore',
   metadata: 'metadata',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  matchedChunks: 'matchedChunks'
 } as const
 
 export type AIResponseScalarFieldEnum = (typeof AIResponseScalarFieldEnum)[keyof typeof AIResponseScalarFieldEnum]
@@ -252,6 +245,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

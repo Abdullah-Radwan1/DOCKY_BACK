@@ -196,7 +196,7 @@ export type OrganizationGroupByOutputType = {
   name: string
   slug: string
   plan: $Enums.PlanType
-  documentsLimit: number | null
+  documentsLimit: number
   createdAt: Date
   updatedAt: Date
   _count: OrganizationCountAggregateOutputType | null
@@ -229,7 +229,7 @@ export type OrganizationWhereInput = {
   name?: Prisma.StringFilter<"Organization"> | string
   slug?: Prisma.StringFilter<"Organization"> | string
   plan?: Prisma.EnumPlanTypeFilter<"Organization"> | $Enums.PlanType
-  documentsLimit?: Prisma.IntNullableFilter<"Organization"> | number | null
+  documentsLimit?: Prisma.IntFilter<"Organization"> | number
   createdAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   profiles?: Prisma.ProfileListRelationFilter
@@ -242,7 +242,7 @@ export type OrganizationOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   plan?: Prisma.SortOrder
-  documentsLimit?: Prisma.SortOrderInput | Prisma.SortOrder
+  documentsLimit?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   profiles?: Prisma.ProfileOrderByRelationAggregateInput
@@ -258,7 +258,7 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.OrganizationWhereInput | Prisma.OrganizationWhereInput[]
   name?: Prisma.StringFilter<"Organization"> | string
   plan?: Prisma.EnumPlanTypeFilter<"Organization"> | $Enums.PlanType
-  documentsLimit?: Prisma.IntNullableFilter<"Organization"> | number | null
+  documentsLimit?: Prisma.IntFilter<"Organization"> | number
   createdAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   profiles?: Prisma.ProfileListRelationFilter
@@ -271,7 +271,7 @@ export type OrganizationOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   plan?: Prisma.SortOrder
-  documentsLimit?: Prisma.SortOrderInput | Prisma.SortOrder
+  documentsLimit?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.OrganizationCountOrderByAggregateInput
@@ -289,7 +289,7 @@ export type OrganizationScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Organization"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Organization"> | string
   plan?: Prisma.EnumPlanTypeWithAggregatesFilter<"Organization"> | $Enums.PlanType
-  documentsLimit?: Prisma.IntNullableWithAggregatesFilter<"Organization"> | number | null
+  documentsLimit?: Prisma.IntWithAggregatesFilter<"Organization"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Organization"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Organization"> | Date | string
 }
@@ -299,7 +299,7 @@ export type OrganizationCreateInput = {
   name: string
   slug: string
   plan?: $Enums.PlanType
-  documentsLimit?: number | null
+  documentsLimit?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   profiles?: Prisma.ProfileCreateNestedManyWithoutOrganizationInput
@@ -312,7 +312,7 @@ export type OrganizationUncheckedCreateInput = {
   name: string
   slug: string
   plan?: $Enums.PlanType
-  documentsLimit?: number | null
+  documentsLimit?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   profiles?: Prisma.ProfileUncheckedCreateNestedManyWithoutOrganizationInput
@@ -325,7 +325,7 @@ export type OrganizationUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
-  documentsLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  documentsLimit?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profiles?: Prisma.ProfileUpdateManyWithoutOrganizationNestedInput
@@ -338,7 +338,7 @@ export type OrganizationUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
-  documentsLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  documentsLimit?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profiles?: Prisma.ProfileUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -351,7 +351,7 @@ export type OrganizationCreateManyInput = {
   name: string
   slug: string
   plan?: $Enums.PlanType
-  documentsLimit?: number | null
+  documentsLimit?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -361,7 +361,7 @@ export type OrganizationUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
-  documentsLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  documentsLimit?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -371,7 +371,7 @@ export type OrganizationUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
-  documentsLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  documentsLimit?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -432,8 +432,8 @@ export type EnumPlanTypeFieldUpdateOperationsInput = {
   set?: $Enums.PlanType
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
+export type IntFieldUpdateOperationsInput = {
+  set?: number
   increment?: number
   decrement?: number
   multiply?: number
@@ -493,7 +493,7 @@ export type OrganizationCreateWithoutProfilesInput = {
   name: string
   slug: string
   plan?: $Enums.PlanType
-  documentsLimit?: number | null
+  documentsLimit?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   documents?: Prisma.DocumentCreateNestedManyWithoutOrganizationInput
@@ -505,7 +505,7 @@ export type OrganizationUncheckedCreateWithoutProfilesInput = {
   name: string
   slug: string
   plan?: $Enums.PlanType
-  documentsLimit?: number | null
+  documentsLimit?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutOrganizationInput
@@ -533,7 +533,7 @@ export type OrganizationUpdateWithoutProfilesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
-  documentsLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  documentsLimit?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.DocumentUpdateManyWithoutOrganizationNestedInput
@@ -545,7 +545,7 @@ export type OrganizationUncheckedUpdateWithoutProfilesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
-  documentsLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  documentsLimit?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -557,7 +557,7 @@ export type OrganizationCreateWithoutDocumentsInput = {
   name: string
   slug: string
   plan?: $Enums.PlanType
-  documentsLimit?: number | null
+  documentsLimit?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   profiles?: Prisma.ProfileCreateNestedManyWithoutOrganizationInput
@@ -569,7 +569,7 @@ export type OrganizationUncheckedCreateWithoutDocumentsInput = {
   name: string
   slug: string
   plan?: $Enums.PlanType
-  documentsLimit?: number | null
+  documentsLimit?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   profiles?: Prisma.ProfileUncheckedCreateNestedManyWithoutOrganizationInput
@@ -597,7 +597,7 @@ export type OrganizationUpdateWithoutDocumentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
-  documentsLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  documentsLimit?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profiles?: Prisma.ProfileUpdateManyWithoutOrganizationNestedInput
@@ -609,7 +609,7 @@ export type OrganizationUncheckedUpdateWithoutDocumentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
-  documentsLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  documentsLimit?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profiles?: Prisma.ProfileUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -621,7 +621,7 @@ export type OrganizationCreateWithoutActivityLogsInput = {
   name: string
   slug: string
   plan?: $Enums.PlanType
-  documentsLimit?: number | null
+  documentsLimit?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   profiles?: Prisma.ProfileCreateNestedManyWithoutOrganizationInput
@@ -633,7 +633,7 @@ export type OrganizationUncheckedCreateWithoutActivityLogsInput = {
   name: string
   slug: string
   plan?: $Enums.PlanType
-  documentsLimit?: number | null
+  documentsLimit?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   profiles?: Prisma.ProfileUncheckedCreateNestedManyWithoutOrganizationInput
@@ -661,7 +661,7 @@ export type OrganizationUpdateWithoutActivityLogsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
-  documentsLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  documentsLimit?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profiles?: Prisma.ProfileUpdateManyWithoutOrganizationNestedInput
@@ -673,7 +673,7 @@ export type OrganizationUncheckedUpdateWithoutActivityLogsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
-  documentsLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  documentsLimit?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profiles?: Prisma.ProfileUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -795,7 +795,7 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     name: string
     slug: string
     plan: $Enums.PlanType
-    documentsLimit: number | null
+    documentsLimit: number
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["organization"]>

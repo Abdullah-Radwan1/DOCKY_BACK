@@ -260,7 +260,7 @@ export type FindingWhereInput = {
   recommendation?: Prisma.StringNullableFilter<"Finding"> | string | null
   metadata?: Prisma.JsonNullableFilter<"Finding">
   createdAt?: Prisma.DateTimeFilter<"Finding"> | Date | string
-  analysis?: Prisma.XOR<Prisma.DocumentAnalysisScalarRelationFilter, Prisma.DocumentAnalysisWhereInput>
+  analysis?: Prisma.XOR<Prisma.AnalysisResultScalarRelationFilter, Prisma.AnalysisResultWhereInput>
 }
 
 export type FindingOrderByWithRelationInput = {
@@ -275,7 +275,7 @@ export type FindingOrderByWithRelationInput = {
   recommendation?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  analysis?: Prisma.DocumentAnalysisOrderByWithRelationInput
+  analysis?: Prisma.AnalysisResultOrderByWithRelationInput
 }
 
 export type FindingWhereUniqueInput = Prisma.AtLeast<{
@@ -293,7 +293,7 @@ export type FindingWhereUniqueInput = Prisma.AtLeast<{
   recommendation?: Prisma.StringNullableFilter<"Finding"> | string | null
   metadata?: Prisma.JsonNullableFilter<"Finding">
   createdAt?: Prisma.DateTimeFilter<"Finding"> | Date | string
-  analysis?: Prisma.XOR<Prisma.DocumentAnalysisScalarRelationFilter, Prisma.DocumentAnalysisWhereInput>
+  analysis?: Prisma.XOR<Prisma.AnalysisResultScalarRelationFilter, Prisma.AnalysisResultWhereInput>
 }, "id">
 
 export type FindingOrderByWithAggregationInput = {
@@ -343,7 +343,7 @@ export type FindingCreateInput = {
   recommendation?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
-  analysis: Prisma.DocumentAnalysisCreateNestedOneWithoutFindingsInput
+  analysis: Prisma.AnalysisResultCreateNestedOneWithoutFindingsInput
 }
 
 export type FindingUncheckedCreateInput = {
@@ -371,7 +371,7 @@ export type FindingUpdateInput = {
   recommendation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  analysis?: Prisma.DocumentAnalysisUpdateOneRequiredWithoutFindingsNestedInput
+  analysis?: Prisma.AnalysisResultUpdateOneRequiredWithoutFindingsNestedInput
 }
 
 export type FindingUncheckedUpdateInput = {
@@ -668,7 +668,7 @@ export type FindingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   recommendation?: boolean
   metadata?: boolean
   createdAt?: boolean
-  analysis?: boolean | Prisma.DocumentAnalysisDefaultArgs<ExtArgs>
+  analysis?: boolean | Prisma.AnalysisResultDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["finding"]>
 
 export type FindingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -683,7 +683,7 @@ export type FindingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   recommendation?: boolean
   metadata?: boolean
   createdAt?: boolean
-  analysis?: boolean | Prisma.DocumentAnalysisDefaultArgs<ExtArgs>
+  analysis?: boolean | Prisma.AnalysisResultDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["finding"]>
 
 export type FindingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -698,7 +698,7 @@ export type FindingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   recommendation?: boolean
   metadata?: boolean
   createdAt?: boolean
-  analysis?: boolean | Prisma.DocumentAnalysisDefaultArgs<ExtArgs>
+  analysis?: boolean | Prisma.AnalysisResultDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["finding"]>
 
 export type FindingSelectScalar = {
@@ -717,19 +717,19 @@ export type FindingSelectScalar = {
 
 export type FindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "analysisId" | "title" | "description" | "severity" | "clauseReference" | "pageNumber" | "excerpt" | "recommendation" | "metadata" | "createdAt", ExtArgs["result"]["finding"]>
 export type FindingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  analysis?: boolean | Prisma.DocumentAnalysisDefaultArgs<ExtArgs>
+  analysis?: boolean | Prisma.AnalysisResultDefaultArgs<ExtArgs>
 }
 export type FindingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  analysis?: boolean | Prisma.DocumentAnalysisDefaultArgs<ExtArgs>
+  analysis?: boolean | Prisma.AnalysisResultDefaultArgs<ExtArgs>
 }
 export type FindingIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  analysis?: boolean | Prisma.DocumentAnalysisDefaultArgs<ExtArgs>
+  analysis?: boolean | Prisma.AnalysisResultDefaultArgs<ExtArgs>
 }
 
 export type $FindingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Finding"
   objects: {
-    analysis: Prisma.$DocumentAnalysisPayload<ExtArgs>
+    analysis: Prisma.$AnalysisResultPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1137,7 +1137,7 @@ readonly fields: FindingFieldRefs;
  */
 export interface Prisma__FindingClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  analysis<T extends Prisma.DocumentAnalysisDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentAnalysisDefaultArgs<ExtArgs>>): Prisma.Prisma__DocumentAnalysisClient<runtime.Types.Result.GetResult<Prisma.$DocumentAnalysisPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  analysis<T extends Prisma.AnalysisResultDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AnalysisResultDefaultArgs<ExtArgs>>): Prisma.Prisma__AnalysisResultClient<runtime.Types.Result.GetResult<Prisma.$AnalysisResultPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

@@ -160,10 +160,11 @@ export declare const ModelName: {
     readonly Organization: "Organization";
     readonly Profile: "Profile";
     readonly Document: "Document";
-    readonly DocumentAnalysis: "DocumentAnalysis";
+    readonly DocumentChunk: "DocumentChunk";
+    readonly AnalysisResult: "AnalysisResult";
     readonly Finding: "Finding";
     readonly ActivityLog: "ActivityLog";
-    readonly ComplianceQuery: "ComplianceQuery";
+    readonly AnalysisRequest: "AnalysisRequest";
     readonly AIResponse: "AIResponse";
     readonly Notification: "Notification";
 };
@@ -178,7 +179,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "organization" | "profile" | "document" | "documentAnalysis" | "finding" | "activityLog" | "complianceQuery" | "aIResponse" | "notification";
+        modelProps: "organization" | "profile" | "document" | "documentChunk" | "analysisResult" | "finding" | "activityLog" | "analysisRequest" | "aIResponse" | "notification";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -404,77 +405,151 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
-        DocumentAnalysis: {
-            payload: Prisma.$DocumentAnalysisPayload<ExtArgs>;
-            fields: Prisma.DocumentAnalysisFieldRefs;
+        DocumentChunk: {
+            payload: Prisma.$DocumentChunkPayload<ExtArgs>;
+            fields: Prisma.DocumentChunkFieldRefs;
             operations: {
                 findUnique: {
-                    args: Prisma.DocumentAnalysisFindUniqueArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload> | null;
+                    args: Prisma.DocumentChunkFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload> | null;
                 };
                 findUniqueOrThrow: {
-                    args: Prisma.DocumentAnalysisFindUniqueOrThrowArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>;
+                    args: Prisma.DocumentChunkFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>;
                 };
                 findFirst: {
-                    args: Prisma.DocumentAnalysisFindFirstArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload> | null;
+                    args: Prisma.DocumentChunkFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload> | null;
                 };
                 findFirstOrThrow: {
-                    args: Prisma.DocumentAnalysisFindFirstOrThrowArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>;
+                    args: Prisma.DocumentChunkFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>;
                 };
                 findMany: {
-                    args: Prisma.DocumentAnalysisFindManyArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>[];
+                    args: Prisma.DocumentChunkFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>[];
                 };
                 create: {
-                    args: Prisma.DocumentAnalysisCreateArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>;
+                    args: Prisma.DocumentChunkCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>;
                 };
                 createMany: {
-                    args: Prisma.DocumentAnalysisCreateManyArgs<ExtArgs>;
+                    args: Prisma.DocumentChunkCreateManyArgs<ExtArgs>;
                     result: BatchPayload;
                 };
                 createManyAndReturn: {
-                    args: Prisma.DocumentAnalysisCreateManyAndReturnArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>[];
+                    args: Prisma.DocumentChunkCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>[];
                 };
                 delete: {
-                    args: Prisma.DocumentAnalysisDeleteArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>;
+                    args: Prisma.DocumentChunkDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>;
                 };
                 update: {
-                    args: Prisma.DocumentAnalysisUpdateArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>;
+                    args: Prisma.DocumentChunkUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>;
                 };
                 deleteMany: {
-                    args: Prisma.DocumentAnalysisDeleteManyArgs<ExtArgs>;
+                    args: Prisma.DocumentChunkDeleteManyArgs<ExtArgs>;
                     result: BatchPayload;
                 };
                 updateMany: {
-                    args: Prisma.DocumentAnalysisUpdateManyArgs<ExtArgs>;
+                    args: Prisma.DocumentChunkUpdateManyArgs<ExtArgs>;
                     result: BatchPayload;
                 };
                 updateManyAndReturn: {
-                    args: Prisma.DocumentAnalysisUpdateManyAndReturnArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>[];
+                    args: Prisma.DocumentChunkUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>[];
                 };
                 upsert: {
-                    args: Prisma.DocumentAnalysisUpsertArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAnalysisPayload>;
+                    args: Prisma.DocumentChunkUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentChunkPayload>;
                 };
                 aggregate: {
-                    args: Prisma.DocumentAnalysisAggregateArgs<ExtArgs>;
-                    result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentAnalysis>;
+                    args: Prisma.DocumentChunkAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentChunk>;
                 };
                 groupBy: {
-                    args: Prisma.DocumentAnalysisGroupByArgs<ExtArgs>;
-                    result: runtime.Types.Utils.Optional<Prisma.DocumentAnalysisGroupByOutputType>[];
+                    args: Prisma.DocumentChunkGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.DocumentChunkGroupByOutputType>[];
                 };
                 count: {
-                    args: Prisma.DocumentAnalysisCountArgs<ExtArgs>;
-                    result: runtime.Types.Utils.Optional<Prisma.DocumentAnalysisCountAggregateOutputType> | number;
+                    args: Prisma.DocumentChunkCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.DocumentChunkCountAggregateOutputType> | number;
+                };
+            };
+        };
+        AnalysisResult: {
+            payload: Prisma.$AnalysisResultPayload<ExtArgs>;
+            fields: Prisma.AnalysisResultFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.AnalysisResultFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.AnalysisResultFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>;
+                };
+                findFirst: {
+                    args: Prisma.AnalysisResultFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.AnalysisResultFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>;
+                };
+                findMany: {
+                    args: Prisma.AnalysisResultFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>[];
+                };
+                create: {
+                    args: Prisma.AnalysisResultCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>;
+                };
+                createMany: {
+                    args: Prisma.AnalysisResultCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.AnalysisResultCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>[];
+                };
+                delete: {
+                    args: Prisma.AnalysisResultDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>;
+                };
+                update: {
+                    args: Prisma.AnalysisResultUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.AnalysisResultDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.AnalysisResultUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.AnalysisResultUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>[];
+                };
+                upsert: {
+                    args: Prisma.AnalysisResultUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisResultPayload>;
+                };
+                aggregate: {
+                    args: Prisma.AnalysisResultAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateAnalysisResult>;
+                };
+                groupBy: {
+                    args: Prisma.AnalysisResultGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AnalysisResultGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.AnalysisResultCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AnalysisResultCountAggregateOutputType> | number;
                 };
             };
         };
@@ -626,77 +701,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
-        ComplianceQuery: {
-            payload: Prisma.$ComplianceQueryPayload<ExtArgs>;
-            fields: Prisma.ComplianceQueryFieldRefs;
+        AnalysisRequest: {
+            payload: Prisma.$AnalysisRequestPayload<ExtArgs>;
+            fields: Prisma.AnalysisRequestFieldRefs;
             operations: {
                 findUnique: {
-                    args: Prisma.ComplianceQueryFindUniqueArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload> | null;
+                    args: Prisma.AnalysisRequestFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload> | null;
                 };
                 findUniqueOrThrow: {
-                    args: Prisma.ComplianceQueryFindUniqueOrThrowArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>;
+                    args: Prisma.AnalysisRequestFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>;
                 };
                 findFirst: {
-                    args: Prisma.ComplianceQueryFindFirstArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload> | null;
+                    args: Prisma.AnalysisRequestFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload> | null;
                 };
                 findFirstOrThrow: {
-                    args: Prisma.ComplianceQueryFindFirstOrThrowArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>;
+                    args: Prisma.AnalysisRequestFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>;
                 };
                 findMany: {
-                    args: Prisma.ComplianceQueryFindManyArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>[];
+                    args: Prisma.AnalysisRequestFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>[];
                 };
                 create: {
-                    args: Prisma.ComplianceQueryCreateArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>;
+                    args: Prisma.AnalysisRequestCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>;
                 };
                 createMany: {
-                    args: Prisma.ComplianceQueryCreateManyArgs<ExtArgs>;
+                    args: Prisma.AnalysisRequestCreateManyArgs<ExtArgs>;
                     result: BatchPayload;
                 };
                 createManyAndReturn: {
-                    args: Prisma.ComplianceQueryCreateManyAndReturnArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>[];
+                    args: Prisma.AnalysisRequestCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>[];
                 };
                 delete: {
-                    args: Prisma.ComplianceQueryDeleteArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>;
+                    args: Prisma.AnalysisRequestDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>;
                 };
                 update: {
-                    args: Prisma.ComplianceQueryUpdateArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>;
+                    args: Prisma.AnalysisRequestUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>;
                 };
                 deleteMany: {
-                    args: Prisma.ComplianceQueryDeleteManyArgs<ExtArgs>;
+                    args: Prisma.AnalysisRequestDeleteManyArgs<ExtArgs>;
                     result: BatchPayload;
                 };
                 updateMany: {
-                    args: Prisma.ComplianceQueryUpdateManyArgs<ExtArgs>;
+                    args: Prisma.AnalysisRequestUpdateManyArgs<ExtArgs>;
                     result: BatchPayload;
                 };
                 updateManyAndReturn: {
-                    args: Prisma.ComplianceQueryUpdateManyAndReturnArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>[];
+                    args: Prisma.AnalysisRequestUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>[];
                 };
                 upsert: {
-                    args: Prisma.ComplianceQueryUpsertArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ComplianceQueryPayload>;
+                    args: Prisma.AnalysisRequestUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AnalysisRequestPayload>;
                 };
                 aggregate: {
-                    args: Prisma.ComplianceQueryAggregateArgs<ExtArgs>;
-                    result: runtime.Types.Utils.Optional<Prisma.AggregateComplianceQuery>;
+                    args: Prisma.AnalysisRequestAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateAnalysisRequest>;
                 };
                 groupBy: {
-                    args: Prisma.ComplianceQueryGroupByArgs<ExtArgs>;
-                    result: runtime.Types.Utils.Optional<Prisma.ComplianceQueryGroupByOutputType>[];
+                    args: Prisma.AnalysisRequestGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AnalysisRequestGroupByOutputType>[];
                 };
                 count: {
-                    args: Prisma.ComplianceQueryCountArgs<ExtArgs>;
-                    result: runtime.Types.Utils.Optional<Prisma.ComplianceQueryCountAggregateOutputType> | number;
+                    args: Prisma.AnalysisRequestCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AnalysisRequestCountAggregateOutputType> | number;
                 };
             };
         };
@@ -905,50 +980,38 @@ export declare const DocumentScalarFieldEnum: {
     readonly organizationId: "organizationId";
     readonly uploadedBy: "uploadedBy";
     readonly originalFileName: "originalFileName";
-    readonly filename: "filename";
     readonly mimeType: "mimeType";
-    readonly storageKey: "storageKey";
-    readonly fileUrl: "fileUrl";
     readonly checksum: "checksum";
     readonly fileSize: "fileSize";
     readonly pageCount: "pageCount";
+    readonly totalChunks: "totalChunks";
     readonly language: "language";
     readonly status: "status";
-    readonly complianceScore: "complianceScore";
-    readonly riskLevel: "riskLevel";
     readonly expirationDate: "expirationDate";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
 export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum];
-export declare const DocumentAnalysisScalarFieldEnum: {
+export declare const DocumentChunkScalarFieldEnum: {
     readonly id: "id";
     readonly documentId: "documentId";
-    readonly executiveSummary: "executiveSummary";
-    readonly overallVerdict: "overallVerdict";
-    readonly confidenceScore: "confidenceScore";
-    readonly modelName: "modelName";
-    readonly promptVersion: "promptVersion";
-    readonly rulesetVersion: "rulesetVersion";
-    readonly parties: "parties";
-    readonly obligations: "obligations";
-    readonly paymentTerms: "paymentTerms";
-    readonly renewalTerms: "renewalTerms";
-    readonly penalties: "penalties";
-    readonly governingLaw: "governingLaw";
-    readonly missingClauses: "missingClauses";
-    readonly unusualConditions: "unusualConditions";
-    readonly complianceRequirements: "complianceRequirements";
-    readonly policyViolations: "policyViolations";
-    readonly regulatoryIssues: "regulatoryIssues";
-    readonly missingSignatures: "missingSignatures";
-    readonly expirationDetected: "expirationDetected";
-    readonly importantDates: "importantDates";
-    readonly risks: "risks";
-    readonly recommendations: "recommendations";
+    readonly chunkIndex: "chunkIndex";
+    readonly content: "content";
+    readonly pageNumber: "pageNumber";
+    readonly tokenCount: "tokenCount";
     readonly createdAt: "createdAt";
 };
-export type DocumentAnalysisScalarFieldEnum = (typeof DocumentAnalysisScalarFieldEnum)[keyof typeof DocumentAnalysisScalarFieldEnum];
+export type DocumentChunkScalarFieldEnum = (typeof DocumentChunkScalarFieldEnum)[keyof typeof DocumentChunkScalarFieldEnum];
+export declare const AnalysisResultScalarFieldEnum: {
+    readonly id: "id";
+    readonly summary: "summary";
+    readonly overallVerdict: "overallVerdict";
+    readonly confidence: "confidence";
+    readonly riskLevel: "riskLevel";
+    readonly createdAt: "createdAt";
+    readonly responseId: "responseId";
+};
+export type AnalysisResultScalarFieldEnum = (typeof AnalysisResultScalarFieldEnum)[keyof typeof AnalysisResultScalarFieldEnum];
 export declare const FindingScalarFieldEnum: {
     readonly id: "id";
     readonly analysisId: "analysisId";
@@ -974,7 +1037,7 @@ export declare const ActivityLogScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type ActivityLogScalarFieldEnum = (typeof ActivityLogScalarFieldEnum)[keyof typeof ActivityLogScalarFieldEnum];
-export declare const ComplianceQueryScalarFieldEnum: {
+export declare const AnalysisRequestScalarFieldEnum: {
     readonly id: "id";
     readonly queryText: "queryText";
     readonly status: "status";
@@ -987,14 +1050,15 @@ export declare const ComplianceQueryScalarFieldEnum: {
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
-export type ComplianceQueryScalarFieldEnum = (typeof ComplianceQueryScalarFieldEnum)[keyof typeof ComplianceQueryScalarFieldEnum];
+export type AnalysisRequestScalarFieldEnum = (typeof AnalysisRequestScalarFieldEnum)[keyof typeof AnalysisRequestScalarFieldEnum];
 export declare const AIResponseScalarFieldEnum: {
     readonly id: "id";
-    readonly queryId: "queryId";
-    readonly responseText: "responseText";
+    readonly requestId: "requestId";
+    readonly response: "response";
     readonly confidenceScore: "confidenceScore";
     readonly metadata: "metadata";
     readonly createdAt: "createdAt";
+    readonly matchedChunks: "matchedChunks";
 };
 export type AIResponseScalarFieldEnum = (typeof AIResponseScalarFieldEnum)[keyof typeof AIResponseScalarFieldEnum];
 export declare const NotificationScalarFieldEnum: {
@@ -1022,6 +1086,10 @@ export declare const NullableJsonNullValueInput: {
     readonly JsonNull: runtime.JsonNullClass;
 };
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput];
+export declare const JsonNullValueInput: {
+    readonly JsonNull: runtime.JsonNullClass;
+};
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput];
 export declare const QueryMode: {
     readonly default: "default";
     readonly insensitive: "insensitive";
@@ -1050,19 +1118,18 @@ export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>;
 export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus'>;
 export type ListEnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus[]'>;
-export type EnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel'>;
-export type ListEnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel[]'>;
 export type EnumAnalysisVerdictFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnalysisVerdict'>;
 export type ListEnumAnalysisVerdictFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnalysisVerdict[]'>;
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>;
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>;
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>;
+export type EnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel'>;
+export type ListEnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel[]'>;
 export type EnumFindingSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingSeverity'>;
 export type ListEnumFindingSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingSeverity[]'>;
-export type EnumComplianceQueryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComplianceQueryStatus'>;
-export type ListEnumComplianceQueryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComplianceQueryStatus[]'>;
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>;
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>;
+export type EnumAnalysisRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnalysisRequestStatus'>;
+export type ListEnumAnalysisRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnalysisRequestStatus[]'>;
 export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>;
 export type ListEnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType[]'>;
 export type EnumNotificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationStatus'>;
@@ -1097,10 +1164,11 @@ export type GlobalOmitConfig = {
     organization?: Prisma.OrganizationOmit;
     profile?: Prisma.ProfileOmit;
     document?: Prisma.DocumentOmit;
-    documentAnalysis?: Prisma.DocumentAnalysisOmit;
+    documentChunk?: Prisma.DocumentChunkOmit;
+    analysisResult?: Prisma.AnalysisResultOmit;
     finding?: Prisma.FindingOmit;
     activityLog?: Prisma.ActivityLogOmit;
-    complianceQuery?: Prisma.ComplianceQueryOmit;
+    analysisRequest?: Prisma.AnalysisRequestOmit;
     aIResponse?: Prisma.AIResponseOmit;
     notification?: Prisma.NotificationOmit;
 };

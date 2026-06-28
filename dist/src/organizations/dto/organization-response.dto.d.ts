@@ -1,4 +1,4 @@
-import { PlanType } from "../../generated/prisma/index.js";
+import { PlanType } from "../../generated/prisma";
 export declare class OrganizationResponseDto {
     id: string;
     name: string;

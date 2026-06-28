@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateNotificationDto = void 0;
 const mapped_types_1 = require("@nestjs/mapped-types");
 const create_notification_dto_1 = require("./create-notification.dto");
-const prisma_1 = require("../../generated/prisma/index.js");
+const prisma_1 = require("../../generated/prisma");
 const class_validator_1 = require("class-validator");
 class UpdateNotificationDto extends (0, mapped_types_1.PartialType)(create_notification_dto_1.CreateNotificationDto) {
     status;

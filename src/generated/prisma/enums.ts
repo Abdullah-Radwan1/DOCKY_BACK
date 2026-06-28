@@ -29,9 +29,10 @@ export type PlanType = (typeof PlanType)[keyof typeof PlanType]
 
 
 export const DocumentStatus = {
-  pending: 'pending',
-  analyzing: 'analyzing',
-  analyzed: 'analyzed',
+  uploaded: 'uploaded',
+  extracting: 'extracting',
+  chunking: 'chunking',
+  ready: 'ready',
   failed: 'failed'
 } as const
 
@@ -47,14 +48,14 @@ export const RiskLevel = {
 export type RiskLevel = (typeof RiskLevel)[keyof typeof RiskLevel]
 
 
-export const ComplianceQueryStatus = {
+export const AnalysisRequestStatus = {
   pending: 'pending',
   processing: 'processing',
   completed: 'completed',
   failed: 'failed'
 } as const
 
-export type ComplianceQueryStatus = (typeof ComplianceQueryStatus)[keyof typeof ComplianceQueryStatus]
+export type AnalysisRequestStatus = (typeof AnalysisRequestStatus)[keyof typeof AnalysisRequestStatus]
 
 
 export const NotificationStatus = {

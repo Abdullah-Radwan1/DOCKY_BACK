@@ -4,11 +4,11 @@ export declare class ActivityLogService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     createLog(data: CreateActivityLogDto): Promise<{
+        organizationId: string;
         id: string;
         createdAt: Date;
-        organizationId: string;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         userId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
         entityType: string | null;
         entityId: string | null;
@@ -16,29 +16,29 @@ export declare class ActivityLogService {
     getLogById(id: string): Promise<{
         organization: {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             name: string;
             slug: string;
             plan: import("src/generated/prisma").PlanType;
-            documentsLimit: number | null;
-            createdAt: Date;
-            updatedAt: Date;
+            documentsLimit: number;
         };
         user: {
             email: string;
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
             organizationId: string | null;
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
         } | null;
     } & {
+        organizationId: string;
         id: string;
         createdAt: Date;
-        organizationId: string;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         userId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
         entityType: string | null;
         entityId: string | null;
@@ -46,30 +46,30 @@ export declare class ActivityLogService {
     getLogsByOrganization(organizationId: string): Promise<({
         user: {
             email: string;
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
             organizationId: string | null;
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
         } | null;
     } & {
+        organizationId: string;
         id: string;
         createdAt: Date;
-        organizationId: string;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         userId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
         entityType: string | null;
         entityId: string | null;
     })[]>;
     getLogsByUser(userId: string): Promise<{
+        organizationId: string;
         id: string;
         createdAt: Date;
-        organizationId: string;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         userId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
         entityType: string | null;
         entityId: string | null;
@@ -77,20 +77,20 @@ export declare class ActivityLogService {
     getLogsByEntity(entityType: string, entityId: string): Promise<({
         user: {
             email: string;
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
             organizationId: string | null;
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
         } | null;
     } & {
+        organizationId: string;
         id: string;
         createdAt: Date;
-        organizationId: string;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         userId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
         entityType: string | null;
         entityId: string | null;

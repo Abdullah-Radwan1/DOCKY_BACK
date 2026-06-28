@@ -1,4 +1,4 @@
-import { DeliveryChannel, NotificationStatus, NotificationType } from "../../generated/prisma/index.js";
+import { DeliveryChannel, NotificationStatus, NotificationType } from "../../generated/prisma";
 export declare class NotificationEntity {
     id: string;
     userId: string;

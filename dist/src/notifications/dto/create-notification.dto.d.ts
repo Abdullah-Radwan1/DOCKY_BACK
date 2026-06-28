@@ -1,4 +1,4 @@
-import { NotificationType, DeliveryChannel } from "../../generated/prisma/index.js";
+import { NotificationType, DeliveryChannel } from "../../generated/prisma";
 export declare class CreateNotificationDto {
     userId: string;
     title: string;

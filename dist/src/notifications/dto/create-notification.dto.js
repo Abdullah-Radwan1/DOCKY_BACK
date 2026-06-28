@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateNotificationDto = void 0;
-const prisma_1 = require("../../generated/prisma/index.js");
+const prisma_1 = require("../../generated/prisma");
 const class_validator_1 = require("class-validator");
 class CreateNotificationDto {
     userId;

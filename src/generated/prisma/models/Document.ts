@@ -29,13 +29,13 @@ export type AggregateDocument = {
 export type DocumentAvgAggregateOutputType = {
   fileSize: number | null
   pageCount: number | null
-  complianceScore: number | null
+  totalChunks: number | null
 }
 
 export type DocumentSumAggregateOutputType = {
   fileSize: number | null
   pageCount: number | null
-  complianceScore: number | null
+  totalChunks: number | null
 }
 
 export type DocumentMinAggregateOutputType = {
@@ -43,17 +43,13 @@ export type DocumentMinAggregateOutputType = {
   organizationId: string | null
   uploadedBy: string | null
   originalFileName: string | null
-  filename: string | null
   mimeType: string | null
-  storageKey: string | null
-  fileUrl: string | null
   checksum: string | null
   fileSize: number | null
   pageCount: number | null
+  totalChunks: number | null
   language: string | null
   status: $Enums.DocumentStatus | null
-  complianceScore: number | null
-  riskLevel: $Enums.RiskLevel | null
   expirationDate: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -64,17 +60,13 @@ export type DocumentMaxAggregateOutputType = {
   organizationId: string | null
   uploadedBy: string | null
   originalFileName: string | null
-  filename: string | null
   mimeType: string | null
-  storageKey: string | null
-  fileUrl: string | null
   checksum: string | null
   fileSize: number | null
   pageCount: number | null
+  totalChunks: number | null
   language: string | null
   status: $Enums.DocumentStatus | null
-  complianceScore: number | null
-  riskLevel: $Enums.RiskLevel | null
   expirationDate: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -85,17 +77,13 @@ export type DocumentCountAggregateOutputType = {
   organizationId: number
   uploadedBy: number
   originalFileName: number
-  filename: number
   mimeType: number
-  storageKey: number
-  fileUrl: number
   checksum: number
   fileSize: number
   pageCount: number
+  totalChunks: number
   language: number
   status: number
-  complianceScore: number
-  riskLevel: number
   expirationDate: number
   createdAt: number
   updatedAt: number
@@ -106,13 +94,13 @@ export type DocumentCountAggregateOutputType = {
 export type DocumentAvgAggregateInputType = {
   fileSize?: true
   pageCount?: true
-  complianceScore?: true
+  totalChunks?: true
 }
 
 export type DocumentSumAggregateInputType = {
   fileSize?: true
   pageCount?: true
-  complianceScore?: true
+  totalChunks?: true
 }
 
 export type DocumentMinAggregateInputType = {
@@ -120,17 +108,13 @@ export type DocumentMinAggregateInputType = {
   organizationId?: true
   uploadedBy?: true
   originalFileName?: true
-  filename?: true
   mimeType?: true
-  storageKey?: true
-  fileUrl?: true
   checksum?: true
   fileSize?: true
   pageCount?: true
+  totalChunks?: true
   language?: true
   status?: true
-  complianceScore?: true
-  riskLevel?: true
   expirationDate?: true
   createdAt?: true
   updatedAt?: true
@@ -141,17 +125,13 @@ export type DocumentMaxAggregateInputType = {
   organizationId?: true
   uploadedBy?: true
   originalFileName?: true
-  filename?: true
   mimeType?: true
-  storageKey?: true
-  fileUrl?: true
   checksum?: true
   fileSize?: true
   pageCount?: true
+  totalChunks?: true
   language?: true
   status?: true
-  complianceScore?: true
-  riskLevel?: true
   expirationDate?: true
   createdAt?: true
   updatedAt?: true
@@ -162,17 +142,13 @@ export type DocumentCountAggregateInputType = {
   organizationId?: true
   uploadedBy?: true
   originalFileName?: true
-  filename?: true
   mimeType?: true
-  storageKey?: true
-  fileUrl?: true
   checksum?: true
   fileSize?: true
   pageCount?: true
+  totalChunks?: true
   language?: true
   status?: true
-  complianceScore?: true
-  riskLevel?: true
   expirationDate?: true
   createdAt?: true
   updatedAt?: true
@@ -270,17 +246,13 @@ export type DocumentGroupByOutputType = {
   organizationId: string
   uploadedBy: string
   originalFileName: string
-  filename: string
   mimeType: string | null
-  storageKey: string | null
-  fileUrl: string | null
   checksum: string | null
   fileSize: number | null
   pageCount: number | null
+  totalChunks: number | null
   language: string | null
   status: $Enums.DocumentStatus
-  complianceScore: number | null
-  riskLevel: $Enums.RiskLevel | null
   expirationDate: Date | null
   createdAt: Date
   updatedAt: Date
@@ -314,24 +286,20 @@ export type DocumentWhereInput = {
   organizationId?: Prisma.UuidFilter<"Document"> | string
   uploadedBy?: Prisma.UuidFilter<"Document"> | string
   originalFileName?: Prisma.StringFilter<"Document"> | string
-  filename?: Prisma.StringFilter<"Document"> | string
   mimeType?: Prisma.StringNullableFilter<"Document"> | string | null
-  storageKey?: Prisma.StringNullableFilter<"Document"> | string | null
-  fileUrl?: Prisma.StringNullableFilter<"Document"> | string | null
   checksum?: Prisma.StringNullableFilter<"Document"> | string | null
   fileSize?: Prisma.IntNullableFilter<"Document"> | number | null
   pageCount?: Prisma.IntNullableFilter<"Document"> | number | null
+  totalChunks?: Prisma.IntNullableFilter<"Document"> | number | null
   language?: Prisma.StringNullableFilter<"Document"> | string | null
   status?: Prisma.EnumDocumentStatusFilter<"Document"> | $Enums.DocumentStatus
-  complianceScore?: Prisma.IntNullableFilter<"Document"> | number | null
-  riskLevel?: Prisma.EnumRiskLevelNullableFilter<"Document"> | $Enums.RiskLevel | null
   expirationDate?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   uploader?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
-  analyses?: Prisma.DocumentAnalysisListRelationFilter
-  complianceQueries?: Prisma.ComplianceQueryListRelationFilter
+  chunks?: Prisma.DocumentChunkListRelationFilter
+  analysisRequests?: Prisma.AnalysisRequestListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
 }
 
@@ -340,24 +308,20 @@ export type DocumentOrderByWithRelationInput = {
   organizationId?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
   originalFileName?: Prisma.SortOrder
-  filename?: Prisma.SortOrder
   mimeType?: Prisma.SortOrderInput | Prisma.SortOrder
-  storageKey?: Prisma.SortOrderInput | Prisma.SortOrder
-  fileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   checksum?: Prisma.SortOrderInput | Prisma.SortOrder
   fileSize?: Prisma.SortOrderInput | Prisma.SortOrder
   pageCount?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalChunks?: Prisma.SortOrderInput | Prisma.SortOrder
   language?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
-  complianceScore?: Prisma.SortOrderInput | Prisma.SortOrder
-  riskLevel?: Prisma.SortOrderInput | Prisma.SortOrder
   expirationDate?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
   uploader?: Prisma.ProfileOrderByWithRelationInput
-  analyses?: Prisma.DocumentAnalysisOrderByRelationAggregateInput
-  complianceQueries?: Prisma.ComplianceQueryOrderByRelationAggregateInput
+  chunks?: Prisma.DocumentChunkOrderByRelationAggregateInput
+  analysisRequests?: Prisma.AnalysisRequestOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
 }
 
@@ -369,24 +333,20 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   organizationId?: Prisma.UuidFilter<"Document"> | string
   uploadedBy?: Prisma.UuidFilter<"Document"> | string
   originalFileName?: Prisma.StringFilter<"Document"> | string
-  filename?: Prisma.StringFilter<"Document"> | string
   mimeType?: Prisma.StringNullableFilter<"Document"> | string | null
-  storageKey?: Prisma.StringNullableFilter<"Document"> | string | null
-  fileUrl?: Prisma.StringNullableFilter<"Document"> | string | null
   checksum?: Prisma.StringNullableFilter<"Document"> | string | null
   fileSize?: Prisma.IntNullableFilter<"Document"> | number | null
   pageCount?: Prisma.IntNullableFilter<"Document"> | number | null
+  totalChunks?: Prisma.IntNullableFilter<"Document"> | number | null
   language?: Prisma.StringNullableFilter<"Document"> | string | null
   status?: Prisma.EnumDocumentStatusFilter<"Document"> | $Enums.DocumentStatus
-  complianceScore?: Prisma.IntNullableFilter<"Document"> | number | null
-  riskLevel?: Prisma.EnumRiskLevelNullableFilter<"Document"> | $Enums.RiskLevel | null
   expirationDate?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   uploader?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
-  analyses?: Prisma.DocumentAnalysisListRelationFilter
-  complianceQueries?: Prisma.ComplianceQueryListRelationFilter
+  chunks?: Prisma.DocumentChunkListRelationFilter
+  analysisRequests?: Prisma.AnalysisRequestListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
 }, "id">
 
@@ -395,17 +355,13 @@ export type DocumentOrderByWithAggregationInput = {
   organizationId?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
   originalFileName?: Prisma.SortOrder
-  filename?: Prisma.SortOrder
   mimeType?: Prisma.SortOrderInput | Prisma.SortOrder
-  storageKey?: Prisma.SortOrderInput | Prisma.SortOrder
-  fileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   checksum?: Prisma.SortOrderInput | Prisma.SortOrder
   fileSize?: Prisma.SortOrderInput | Prisma.SortOrder
   pageCount?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalChunks?: Prisma.SortOrderInput | Prisma.SortOrder
   language?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
-  complianceScore?: Prisma.SortOrderInput | Prisma.SortOrder
-  riskLevel?: Prisma.SortOrderInput | Prisma.SortOrder
   expirationDate?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -424,17 +380,13 @@ export type DocumentScalarWhereWithAggregatesInput = {
   organizationId?: Prisma.UuidWithAggregatesFilter<"Document"> | string
   uploadedBy?: Prisma.UuidWithAggregatesFilter<"Document"> | string
   originalFileName?: Prisma.StringWithAggregatesFilter<"Document"> | string
-  filename?: Prisma.StringWithAggregatesFilter<"Document"> | string
   mimeType?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
-  storageKey?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
-  fileUrl?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   checksum?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   fileSize?: Prisma.IntNullableWithAggregatesFilter<"Document"> | number | null
   pageCount?: Prisma.IntNullableWithAggregatesFilter<"Document"> | number | null
+  totalChunks?: Prisma.IntNullableWithAggregatesFilter<"Document"> | number | null
   language?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   status?: Prisma.EnumDocumentStatusWithAggregatesFilter<"Document"> | $Enums.DocumentStatus
-  complianceScore?: Prisma.IntNullableWithAggregatesFilter<"Document"> | number | null
-  riskLevel?: Prisma.EnumRiskLevelNullableWithAggregatesFilter<"Document"> | $Enums.RiskLevel | null
   expirationDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Document"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Document"> | Date | string
@@ -443,24 +395,20 @@ export type DocumentScalarWhereWithAggregatesInput = {
 export type DocumentCreateInput = {
   id?: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutDocumentsInput
   uploader: Prisma.ProfileCreateNestedOneWithoutDocumentsInput
-  analyses?: Prisma.DocumentAnalysisCreateNestedManyWithoutDocumentInput
-  complianceQueries?: Prisma.ComplianceQueryCreateNestedManyWithoutDocumentInput
+  chunks?: Prisma.DocumentChunkCreateNestedManyWithoutDocumentInput
+  analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutDocumentInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutDocumentInput
 }
 
@@ -469,46 +417,38 @@ export type DocumentUncheckedCreateInput = {
   organizationId: string
   uploadedBy: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  analyses?: Prisma.DocumentAnalysisUncheckedCreateNestedManyWithoutDocumentInput
-  complianceQueries?: Prisma.ComplianceQueryUncheckedCreateNestedManyWithoutDocumentInput
+  chunks?: Prisma.DocumentChunkUncheckedCreateNestedManyWithoutDocumentInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutDocumentInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutDocumentsNestedInput
   uploader?: Prisma.ProfileUpdateOneRequiredWithoutDocumentsNestedInput
-  analyses?: Prisma.DocumentAnalysisUpdateManyWithoutDocumentNestedInput
-  complianceQueries?: Prisma.ComplianceQueryUpdateManyWithoutDocumentNestedInput
+  chunks?: Prisma.DocumentChunkUpdateManyWithoutDocumentNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutDocumentNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutDocumentNestedInput
 }
 
@@ -517,22 +457,18 @@ export type DocumentUncheckedUpdateInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  analyses?: Prisma.DocumentAnalysisUncheckedUpdateManyWithoutDocumentNestedInput
-  complianceQueries?: Prisma.ComplianceQueryUncheckedUpdateManyWithoutDocumentNestedInput
+  chunks?: Prisma.DocumentChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutDocumentNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
@@ -541,17 +477,13 @@ export type DocumentCreateManyInput = {
   organizationId: string
   uploadedBy: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -560,17 +492,13 @@ export type DocumentCreateManyInput = {
 export type DocumentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -581,17 +509,13 @@ export type DocumentUncheckedUpdateManyInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -612,17 +536,13 @@ export type DocumentCountOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
   originalFileName?: Prisma.SortOrder
-  filename?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
-  storageKey?: Prisma.SortOrder
-  fileUrl?: Prisma.SortOrder
   checksum?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
   pageCount?: Prisma.SortOrder
+  totalChunks?: Prisma.SortOrder
   language?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  complianceScore?: Prisma.SortOrder
-  riskLevel?: Prisma.SortOrder
   expirationDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -631,7 +551,7 @@ export type DocumentCountOrderByAggregateInput = {
 export type DocumentAvgOrderByAggregateInput = {
   fileSize?: Prisma.SortOrder
   pageCount?: Prisma.SortOrder
-  complianceScore?: Prisma.SortOrder
+  totalChunks?: Prisma.SortOrder
 }
 
 export type DocumentMaxOrderByAggregateInput = {
@@ -639,17 +559,13 @@ export type DocumentMaxOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
   originalFileName?: Prisma.SortOrder
-  filename?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
-  storageKey?: Prisma.SortOrder
-  fileUrl?: Prisma.SortOrder
   checksum?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
   pageCount?: Prisma.SortOrder
+  totalChunks?: Prisma.SortOrder
   language?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  complianceScore?: Prisma.SortOrder
-  riskLevel?: Prisma.SortOrder
   expirationDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -660,17 +576,13 @@ export type DocumentMinOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
   originalFileName?: Prisma.SortOrder
-  filename?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
-  storageKey?: Prisma.SortOrder
-  fileUrl?: Prisma.SortOrder
   checksum?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
   pageCount?: Prisma.SortOrder
+  totalChunks?: Prisma.SortOrder
   language?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  complianceScore?: Prisma.SortOrder
-  riskLevel?: Prisma.SortOrder
   expirationDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -679,7 +591,7 @@ export type DocumentMinOrderByAggregateInput = {
 export type DocumentSumOrderByAggregateInput = {
   fileSize?: Prisma.SortOrder
   pageCount?: Prisma.SortOrder
-  complianceScore?: Prisma.SortOrder
+  totalChunks?: Prisma.SortOrder
 }
 
 export type DocumentScalarRelationFilter = {
@@ -776,46 +688,50 @@ export type DocumentUncheckedUpdateManyWithoutUploaderNestedInput = {
   deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
 }
 
-export type EnumDocumentStatusFieldUpdateOperationsInput = {
-  set?: $Enums.DocumentStatus
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
-export type NullableEnumRiskLevelFieldUpdateOperationsInput = {
-  set?: $Enums.RiskLevel | null
+export type EnumDocumentStatusFieldUpdateOperationsInput = {
+  set?: $Enums.DocumentStatus
 }
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
-export type DocumentCreateNestedOneWithoutAnalysesInput = {
-  create?: Prisma.XOR<Prisma.DocumentCreateWithoutAnalysesInput, Prisma.DocumentUncheckedCreateWithoutAnalysesInput>
-  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutAnalysesInput
+export type DocumentCreateNestedOneWithoutChunksInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutChunksInput, Prisma.DocumentUncheckedCreateWithoutChunksInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutChunksInput
   connect?: Prisma.DocumentWhereUniqueInput
 }
 
-export type DocumentUpdateOneRequiredWithoutAnalysesNestedInput = {
-  create?: Prisma.XOR<Prisma.DocumentCreateWithoutAnalysesInput, Prisma.DocumentUncheckedCreateWithoutAnalysesInput>
-  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutAnalysesInput
-  upsert?: Prisma.DocumentUpsertWithoutAnalysesInput
+export type DocumentUpdateOneRequiredWithoutChunksNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutChunksInput, Prisma.DocumentUncheckedCreateWithoutChunksInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutChunksInput
+  upsert?: Prisma.DocumentUpsertWithoutChunksInput
   connect?: Prisma.DocumentWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutAnalysesInput, Prisma.DocumentUpdateWithoutAnalysesInput>, Prisma.DocumentUncheckedUpdateWithoutAnalysesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutChunksInput, Prisma.DocumentUpdateWithoutChunksInput>, Prisma.DocumentUncheckedUpdateWithoutChunksInput>
 }
 
-export type DocumentCreateNestedOneWithoutComplianceQueriesInput = {
-  create?: Prisma.XOR<Prisma.DocumentCreateWithoutComplianceQueriesInput, Prisma.DocumentUncheckedCreateWithoutComplianceQueriesInput>
-  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutComplianceQueriesInput
+export type DocumentCreateNestedOneWithoutAnalysisRequestsInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutAnalysisRequestsInput, Prisma.DocumentUncheckedCreateWithoutAnalysisRequestsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutAnalysisRequestsInput
   connect?: Prisma.DocumentWhereUniqueInput
 }
 
-export type DocumentUpdateOneWithoutComplianceQueriesNestedInput = {
-  create?: Prisma.XOR<Prisma.DocumentCreateWithoutComplianceQueriesInput, Prisma.DocumentUncheckedCreateWithoutComplianceQueriesInput>
-  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutComplianceQueriesInput
-  upsert?: Prisma.DocumentUpsertWithoutComplianceQueriesInput
+export type DocumentUpdateOneWithoutAnalysisRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutAnalysisRequestsInput, Prisma.DocumentUncheckedCreateWithoutAnalysisRequestsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutAnalysisRequestsInput
+  upsert?: Prisma.DocumentUpsertWithoutAnalysisRequestsInput
   disconnect?: Prisma.DocumentWhereInput | boolean
   delete?: Prisma.DocumentWhereInput | boolean
   connect?: Prisma.DocumentWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutComplianceQueriesInput, Prisma.DocumentUpdateWithoutComplianceQueriesInput>, Prisma.DocumentUncheckedUpdateWithoutComplianceQueriesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutAnalysisRequestsInput, Prisma.DocumentUpdateWithoutAnalysisRequestsInput>, Prisma.DocumentUncheckedUpdateWithoutAnalysisRequestsInput>
 }
 
 export type DocumentCreateNestedOneWithoutNotificationsInput = {
@@ -837,23 +753,19 @@ export type DocumentUpdateOneWithoutNotificationsNestedInput = {
 export type DocumentCreateWithoutOrganizationInput = {
   id?: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   uploader: Prisma.ProfileCreateNestedOneWithoutDocumentsInput
-  analyses?: Prisma.DocumentAnalysisCreateNestedManyWithoutDocumentInput
-  complianceQueries?: Prisma.ComplianceQueryCreateNestedManyWithoutDocumentInput
+  chunks?: Prisma.DocumentChunkCreateNestedManyWithoutDocumentInput
+  analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutDocumentInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutDocumentInput
 }
 
@@ -861,22 +773,18 @@ export type DocumentUncheckedCreateWithoutOrganizationInput = {
   id?: string
   uploadedBy: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  analyses?: Prisma.DocumentAnalysisUncheckedCreateNestedManyWithoutDocumentInput
-  complianceQueries?: Prisma.ComplianceQueryUncheckedCreateNestedManyWithoutDocumentInput
+  chunks?: Prisma.DocumentChunkUncheckedCreateNestedManyWithoutDocumentInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutDocumentInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutDocumentInput
 }
 
@@ -914,17 +822,13 @@ export type DocumentScalarWhereInput = {
   organizationId?: Prisma.UuidFilter<"Document"> | string
   uploadedBy?: Prisma.UuidFilter<"Document"> | string
   originalFileName?: Prisma.StringFilter<"Document"> | string
-  filename?: Prisma.StringFilter<"Document"> | string
   mimeType?: Prisma.StringNullableFilter<"Document"> | string | null
-  storageKey?: Prisma.StringNullableFilter<"Document"> | string | null
-  fileUrl?: Prisma.StringNullableFilter<"Document"> | string | null
   checksum?: Prisma.StringNullableFilter<"Document"> | string | null
   fileSize?: Prisma.IntNullableFilter<"Document"> | number | null
   pageCount?: Prisma.IntNullableFilter<"Document"> | number | null
+  totalChunks?: Prisma.IntNullableFilter<"Document"> | number | null
   language?: Prisma.StringNullableFilter<"Document"> | string | null
   status?: Prisma.EnumDocumentStatusFilter<"Document"> | $Enums.DocumentStatus
-  complianceScore?: Prisma.IntNullableFilter<"Document"> | number | null
-  riskLevel?: Prisma.EnumRiskLevelNullableFilter<"Document"> | $Enums.RiskLevel | null
   expirationDate?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
@@ -933,23 +837,19 @@ export type DocumentScalarWhereInput = {
 export type DocumentCreateWithoutUploaderInput = {
   id?: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutDocumentsInput
-  analyses?: Prisma.DocumentAnalysisCreateNestedManyWithoutDocumentInput
-  complianceQueries?: Prisma.ComplianceQueryCreateNestedManyWithoutDocumentInput
+  chunks?: Prisma.DocumentChunkCreateNestedManyWithoutDocumentInput
+  analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutDocumentInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutDocumentInput
 }
 
@@ -957,22 +857,18 @@ export type DocumentUncheckedCreateWithoutUploaderInput = {
   id?: string
   organizationId: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  analyses?: Prisma.DocumentAnalysisUncheckedCreateNestedManyWithoutDocumentInput
-  complianceQueries?: Prisma.ComplianceQueryUncheckedCreateNestedManyWithoutDocumentInput
+  chunks?: Prisma.DocumentChunkUncheckedCreateNestedManyWithoutDocumentInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutDocumentInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutDocumentInput
 }
 
@@ -1002,243 +898,207 @@ export type DocumentUpdateManyWithWhereWithoutUploaderInput = {
   data: Prisma.XOR<Prisma.DocumentUpdateManyMutationInput, Prisma.DocumentUncheckedUpdateManyWithoutUploaderInput>
 }
 
-export type DocumentCreateWithoutAnalysesInput = {
+export type DocumentCreateWithoutChunksInput = {
   id?: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutDocumentsInput
   uploader: Prisma.ProfileCreateNestedOneWithoutDocumentsInput
-  complianceQueries?: Prisma.ComplianceQueryCreateNestedManyWithoutDocumentInput
+  analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutDocumentInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutDocumentInput
 }
 
-export type DocumentUncheckedCreateWithoutAnalysesInput = {
+export type DocumentUncheckedCreateWithoutChunksInput = {
   id?: string
   organizationId: string
   uploadedBy: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  complianceQueries?: Prisma.ComplianceQueryUncheckedCreateNestedManyWithoutDocumentInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutDocumentInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutDocumentInput
 }
 
-export type DocumentCreateOrConnectWithoutAnalysesInput = {
+export type DocumentCreateOrConnectWithoutChunksInput = {
   where: Prisma.DocumentWhereUniqueInput
-  create: Prisma.XOR<Prisma.DocumentCreateWithoutAnalysesInput, Prisma.DocumentUncheckedCreateWithoutAnalysesInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutChunksInput, Prisma.DocumentUncheckedCreateWithoutChunksInput>
 }
 
-export type DocumentUpsertWithoutAnalysesInput = {
-  update: Prisma.XOR<Prisma.DocumentUpdateWithoutAnalysesInput, Prisma.DocumentUncheckedUpdateWithoutAnalysesInput>
-  create: Prisma.XOR<Prisma.DocumentCreateWithoutAnalysesInput, Prisma.DocumentUncheckedCreateWithoutAnalysesInput>
+export type DocumentUpsertWithoutChunksInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutChunksInput, Prisma.DocumentUncheckedUpdateWithoutChunksInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutChunksInput, Prisma.DocumentUncheckedCreateWithoutChunksInput>
   where?: Prisma.DocumentWhereInput
 }
 
-export type DocumentUpdateToOneWithWhereWithoutAnalysesInput = {
+export type DocumentUpdateToOneWithWhereWithoutChunksInput = {
   where?: Prisma.DocumentWhereInput
-  data: Prisma.XOR<Prisma.DocumentUpdateWithoutAnalysesInput, Prisma.DocumentUncheckedUpdateWithoutAnalysesInput>
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutChunksInput, Prisma.DocumentUncheckedUpdateWithoutChunksInput>
 }
 
-export type DocumentUpdateWithoutAnalysesInput = {
+export type DocumentUpdateWithoutChunksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutDocumentsNestedInput
   uploader?: Prisma.ProfileUpdateOneRequiredWithoutDocumentsNestedInput
-  complianceQueries?: Prisma.ComplianceQueryUpdateManyWithoutDocumentNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutDocumentNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutDocumentNestedInput
 }
 
-export type DocumentUncheckedUpdateWithoutAnalysesInput = {
+export type DocumentUncheckedUpdateWithoutChunksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  complianceQueries?: Prisma.ComplianceQueryUncheckedUpdateManyWithoutDocumentNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutDocumentNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
-export type DocumentCreateWithoutComplianceQueriesInput = {
+export type DocumentCreateWithoutAnalysisRequestsInput = {
   id?: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutDocumentsInput
   uploader: Prisma.ProfileCreateNestedOneWithoutDocumentsInput
-  analyses?: Prisma.DocumentAnalysisCreateNestedManyWithoutDocumentInput
+  chunks?: Prisma.DocumentChunkCreateNestedManyWithoutDocumentInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutDocumentInput
 }
 
-export type DocumentUncheckedCreateWithoutComplianceQueriesInput = {
+export type DocumentUncheckedCreateWithoutAnalysisRequestsInput = {
   id?: string
   organizationId: string
   uploadedBy: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  analyses?: Prisma.DocumentAnalysisUncheckedCreateNestedManyWithoutDocumentInput
+  chunks?: Prisma.DocumentChunkUncheckedCreateNestedManyWithoutDocumentInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutDocumentInput
 }
 
-export type DocumentCreateOrConnectWithoutComplianceQueriesInput = {
+export type DocumentCreateOrConnectWithoutAnalysisRequestsInput = {
   where: Prisma.DocumentWhereUniqueInput
-  create: Prisma.XOR<Prisma.DocumentCreateWithoutComplianceQueriesInput, Prisma.DocumentUncheckedCreateWithoutComplianceQueriesInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutAnalysisRequestsInput, Prisma.DocumentUncheckedCreateWithoutAnalysisRequestsInput>
 }
 
-export type DocumentUpsertWithoutComplianceQueriesInput = {
-  update: Prisma.XOR<Prisma.DocumentUpdateWithoutComplianceQueriesInput, Prisma.DocumentUncheckedUpdateWithoutComplianceQueriesInput>
-  create: Prisma.XOR<Prisma.DocumentCreateWithoutComplianceQueriesInput, Prisma.DocumentUncheckedCreateWithoutComplianceQueriesInput>
+export type DocumentUpsertWithoutAnalysisRequestsInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutAnalysisRequestsInput, Prisma.DocumentUncheckedUpdateWithoutAnalysisRequestsInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutAnalysisRequestsInput, Prisma.DocumentUncheckedCreateWithoutAnalysisRequestsInput>
   where?: Prisma.DocumentWhereInput
 }
 
-export type DocumentUpdateToOneWithWhereWithoutComplianceQueriesInput = {
+export type DocumentUpdateToOneWithWhereWithoutAnalysisRequestsInput = {
   where?: Prisma.DocumentWhereInput
-  data: Prisma.XOR<Prisma.DocumentUpdateWithoutComplianceQueriesInput, Prisma.DocumentUncheckedUpdateWithoutComplianceQueriesInput>
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutAnalysisRequestsInput, Prisma.DocumentUncheckedUpdateWithoutAnalysisRequestsInput>
 }
 
-export type DocumentUpdateWithoutComplianceQueriesInput = {
+export type DocumentUpdateWithoutAnalysisRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutDocumentsNestedInput
   uploader?: Prisma.ProfileUpdateOneRequiredWithoutDocumentsNestedInput
-  analyses?: Prisma.DocumentAnalysisUpdateManyWithoutDocumentNestedInput
+  chunks?: Prisma.DocumentChunkUpdateManyWithoutDocumentNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutDocumentNestedInput
 }
 
-export type DocumentUncheckedUpdateWithoutComplianceQueriesInput = {
+export type DocumentUncheckedUpdateWithoutAnalysisRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  analyses?: Prisma.DocumentAnalysisUncheckedUpdateManyWithoutDocumentNestedInput
+  chunks?: Prisma.DocumentChunkUncheckedUpdateManyWithoutDocumentNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentCreateWithoutNotificationsInput = {
   id?: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutDocumentsInput
   uploader: Prisma.ProfileCreateNestedOneWithoutDocumentsInput
-  analyses?: Prisma.DocumentAnalysisCreateNestedManyWithoutDocumentInput
-  complianceQueries?: Prisma.ComplianceQueryCreateNestedManyWithoutDocumentInput
+  chunks?: Prisma.DocumentChunkCreateNestedManyWithoutDocumentInput
+  analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutNotificationsInput = {
@@ -1246,22 +1106,18 @@ export type DocumentUncheckedCreateWithoutNotificationsInput = {
   organizationId: string
   uploadedBy: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  analyses?: Prisma.DocumentAnalysisUncheckedCreateNestedManyWithoutDocumentInput
-  complianceQueries?: Prisma.ComplianceQueryUncheckedCreateNestedManyWithoutDocumentInput
+  chunks?: Prisma.DocumentChunkUncheckedCreateNestedManyWithoutDocumentInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutNotificationsInput = {
@@ -1283,24 +1139,20 @@ export type DocumentUpdateToOneWithWhereWithoutNotificationsInput = {
 export type DocumentUpdateWithoutNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutDocumentsNestedInput
   uploader?: Prisma.ProfileUpdateOneRequiredWithoutDocumentsNestedInput
-  analyses?: Prisma.DocumentAnalysisUpdateManyWithoutDocumentNestedInput
-  complianceQueries?: Prisma.ComplianceQueryUpdateManyWithoutDocumentNestedInput
+  chunks?: Prisma.DocumentChunkUpdateManyWithoutDocumentNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutNotificationsInput = {
@@ -1308,39 +1160,31 @@ export type DocumentUncheckedUpdateWithoutNotificationsInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  analyses?: Prisma.DocumentAnalysisUncheckedUpdateManyWithoutDocumentNestedInput
-  complianceQueries?: Prisma.ComplianceQueryUncheckedUpdateManyWithoutDocumentNestedInput
+  chunks?: Prisma.DocumentChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentCreateManyOrganizationInput = {
   id?: string
   uploadedBy: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1349,23 +1193,19 @@ export type DocumentCreateManyOrganizationInput = {
 export type DocumentUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploader?: Prisma.ProfileUpdateOneRequiredWithoutDocumentsNestedInput
-  analyses?: Prisma.DocumentAnalysisUpdateManyWithoutDocumentNestedInput
-  complianceQueries?: Prisma.ComplianceQueryUpdateManyWithoutDocumentNestedInput
+  chunks?: Prisma.DocumentChunkUpdateManyWithoutDocumentNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutDocumentNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutDocumentNestedInput
 }
 
@@ -1373,22 +1213,18 @@ export type DocumentUncheckedUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  analyses?: Prisma.DocumentAnalysisUncheckedUpdateManyWithoutDocumentNestedInput
-  complianceQueries?: Prisma.ComplianceQueryUncheckedUpdateManyWithoutDocumentNestedInput
+  chunks?: Prisma.DocumentChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutDocumentNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
@@ -1396,17 +1232,13 @@ export type DocumentUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1416,17 +1248,13 @@ export type DocumentCreateManyUploaderInput = {
   id?: string
   organizationId: string
   originalFileName: string
-  filename: string
   mimeType?: string | null
-  storageKey?: string | null
-  fileUrl?: string | null
   checksum?: string | null
   fileSize?: number | null
   pageCount?: number | null
+  totalChunks?: number | null
   language?: string | null
   status?: $Enums.DocumentStatus
-  complianceScore?: number | null
-  riskLevel?: $Enums.RiskLevel | null
   expirationDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1435,23 +1263,19 @@ export type DocumentCreateManyUploaderInput = {
 export type DocumentUpdateWithoutUploaderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutDocumentsNestedInput
-  analyses?: Prisma.DocumentAnalysisUpdateManyWithoutDocumentNestedInput
-  complianceQueries?: Prisma.ComplianceQueryUpdateManyWithoutDocumentNestedInput
+  chunks?: Prisma.DocumentChunkUpdateManyWithoutDocumentNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutDocumentNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutDocumentNestedInput
 }
 
@@ -1459,22 +1283,18 @@ export type DocumentUncheckedUpdateWithoutUploaderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  analyses?: Prisma.DocumentAnalysisUncheckedUpdateManyWithoutDocumentNestedInput
-  complianceQueries?: Prisma.ComplianceQueryUncheckedUpdateManyWithoutDocumentNestedInput
+  chunks?: Prisma.DocumentChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutDocumentNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
@@ -1482,17 +1302,13 @@ export type DocumentUncheckedUpdateManyWithoutUploaderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
-  filename?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
-  complianceScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1504,14 +1320,14 @@ export type DocumentUncheckedUpdateManyWithoutUploaderInput = {
  */
 
 export type DocumentCountOutputType = {
-  analyses: number
-  complianceQueries: number
+  chunks: number
+  analysisRequests: number
   notifications: number
 }
 
 export type DocumentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  analyses?: boolean | DocumentCountOutputTypeCountAnalysesArgs
-  complianceQueries?: boolean | DocumentCountOutputTypeCountComplianceQueriesArgs
+  chunks?: boolean | DocumentCountOutputTypeCountChunksArgs
+  analysisRequests?: boolean | DocumentCountOutputTypeCountAnalysisRequestsArgs
   notifications?: boolean | DocumentCountOutputTypeCountNotificationsArgs
 }
 
@@ -1528,15 +1344,15 @@ export type DocumentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
 /**
  * DocumentCountOutputType without action
  */
-export type DocumentCountOutputTypeCountAnalysesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.DocumentAnalysisWhereInput
+export type DocumentCountOutputTypeCountChunksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentChunkWhereInput
 }
 
 /**
  * DocumentCountOutputType without action
  */
-export type DocumentCountOutputTypeCountComplianceQueriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ComplianceQueryWhereInput
+export type DocumentCountOutputTypeCountAnalysisRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AnalysisRequestWhereInput
 }
 
 /**
@@ -1552,24 +1368,20 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   organizationId?: boolean
   uploadedBy?: boolean
   originalFileName?: boolean
-  filename?: boolean
   mimeType?: boolean
-  storageKey?: boolean
-  fileUrl?: boolean
   checksum?: boolean
   fileSize?: boolean
   pageCount?: boolean
+  totalChunks?: boolean
   language?: boolean
   status?: boolean
-  complianceScore?: boolean
-  riskLevel?: boolean
   expirationDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   uploader?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
-  analyses?: boolean | Prisma.Document$analysesArgs<ExtArgs>
-  complianceQueries?: boolean | Prisma.Document$complianceQueriesArgs<ExtArgs>
+  chunks?: boolean | Prisma.Document$chunksArgs<ExtArgs>
+  analysisRequests?: boolean | Prisma.Document$analysisRequestsArgs<ExtArgs>
   notifications?: boolean | Prisma.Document$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
@@ -1579,17 +1391,13 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   organizationId?: boolean
   uploadedBy?: boolean
   originalFileName?: boolean
-  filename?: boolean
   mimeType?: boolean
-  storageKey?: boolean
-  fileUrl?: boolean
   checksum?: boolean
   fileSize?: boolean
   pageCount?: boolean
+  totalChunks?: boolean
   language?: boolean
   status?: boolean
-  complianceScore?: boolean
-  riskLevel?: boolean
   expirationDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1602,17 +1410,13 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   organizationId?: boolean
   uploadedBy?: boolean
   originalFileName?: boolean
-  filename?: boolean
   mimeType?: boolean
-  storageKey?: boolean
-  fileUrl?: boolean
   checksum?: boolean
   fileSize?: boolean
   pageCount?: boolean
+  totalChunks?: boolean
   language?: boolean
   status?: boolean
-  complianceScore?: boolean
-  riskLevel?: boolean
   expirationDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1625,28 +1429,24 @@ export type DocumentSelectScalar = {
   organizationId?: boolean
   uploadedBy?: boolean
   originalFileName?: boolean
-  filename?: boolean
   mimeType?: boolean
-  storageKey?: boolean
-  fileUrl?: boolean
   checksum?: boolean
   fileSize?: boolean
   pageCount?: boolean
+  totalChunks?: boolean
   language?: boolean
   status?: boolean
-  complianceScore?: boolean
-  riskLevel?: boolean
   expirationDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "uploadedBy" | "originalFileName" | "filename" | "mimeType" | "storageKey" | "fileUrl" | "checksum" | "fileSize" | "pageCount" | "language" | "status" | "complianceScore" | "riskLevel" | "expirationDate" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "uploadedBy" | "originalFileName" | "mimeType" | "checksum" | "fileSize" | "pageCount" | "totalChunks" | "language" | "status" | "expirationDate" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   uploader?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
-  analyses?: boolean | Prisma.Document$analysesArgs<ExtArgs>
-  complianceQueries?: boolean | Prisma.Document$complianceQueriesArgs<ExtArgs>
+  chunks?: boolean | Prisma.Document$chunksArgs<ExtArgs>
+  analysisRequests?: boolean | Prisma.Document$analysisRequestsArgs<ExtArgs>
   notifications?: boolean | Prisma.Document$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1664,8 +1464,8 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     organization: Prisma.$OrganizationPayload<ExtArgs>
     uploader: Prisma.$ProfilePayload<ExtArgs>
-    analyses: Prisma.$DocumentAnalysisPayload<ExtArgs>[]
-    complianceQueries: Prisma.$ComplianceQueryPayload<ExtArgs>[]
+    chunks: Prisma.$DocumentChunkPayload<ExtArgs>[]
+    analysisRequests: Prisma.$AnalysisRequestPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1673,17 +1473,13 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     organizationId: string
     uploadedBy: string
     originalFileName: string
-    filename: string
     mimeType: string | null
-    storageKey: string | null
-    fileUrl: string | null
     checksum: string | null
     fileSize: number | null
     pageCount: number | null
+    totalChunks: number | null
     language: string | null
     status: $Enums.DocumentStatus
-    complianceScore: number | null
-    riskLevel: $Enums.RiskLevel | null
     expirationDate: Date | null
     createdAt: Date
     updatedAt: Date
@@ -2083,8 +1879,8 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   uploader<T extends Prisma.ProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  analyses<T extends Prisma.Document$analysesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$analysesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentAnalysisPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  complianceQueries<T extends Prisma.Document$complianceQueriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$complianceQueriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComplianceQueryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  chunks<T extends Prisma.Document$chunksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$chunksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  analysisRequests<T extends Prisma.Document$analysisRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$analysisRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnalysisRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.Document$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2119,17 +1915,13 @@ export interface DocumentFieldRefs {
   readonly organizationId: Prisma.FieldRef<"Document", 'String'>
   readonly uploadedBy: Prisma.FieldRef<"Document", 'String'>
   readonly originalFileName: Prisma.FieldRef<"Document", 'String'>
-  readonly filename: Prisma.FieldRef<"Document", 'String'>
   readonly mimeType: Prisma.FieldRef<"Document", 'String'>
-  readonly storageKey: Prisma.FieldRef<"Document", 'String'>
-  readonly fileUrl: Prisma.FieldRef<"Document", 'String'>
   readonly checksum: Prisma.FieldRef<"Document", 'String'>
   readonly fileSize: Prisma.FieldRef<"Document", 'Int'>
   readonly pageCount: Prisma.FieldRef<"Document", 'Int'>
+  readonly totalChunks: Prisma.FieldRef<"Document", 'Int'>
   readonly language: Prisma.FieldRef<"Document", 'String'>
   readonly status: Prisma.FieldRef<"Document", 'DocumentStatus'>
-  readonly complianceScore: Prisma.FieldRef<"Document", 'Int'>
-  readonly riskLevel: Prisma.FieldRef<"Document", 'RiskLevel'>
   readonly expirationDate: Prisma.FieldRef<"Document", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Document", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Document", 'DateTime'>
@@ -2534,51 +2326,51 @@ export type DocumentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * Document.analyses
+ * Document.chunks
  */
-export type Document$analysesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Document$chunksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the DocumentAnalysis
+   * Select specific fields to fetch from the DocumentChunk
    */
-  select?: Prisma.DocumentAnalysisSelect<ExtArgs> | null
+  select?: Prisma.DocumentChunkSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the DocumentAnalysis
+   * Omit specific fields from the DocumentChunk
    */
-  omit?: Prisma.DocumentAnalysisOmit<ExtArgs> | null
+  omit?: Prisma.DocumentChunkOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.DocumentAnalysisInclude<ExtArgs> | null
-  where?: Prisma.DocumentAnalysisWhereInput
-  orderBy?: Prisma.DocumentAnalysisOrderByWithRelationInput | Prisma.DocumentAnalysisOrderByWithRelationInput[]
-  cursor?: Prisma.DocumentAnalysisWhereUniqueInput
+  include?: Prisma.DocumentChunkInclude<ExtArgs> | null
+  where?: Prisma.DocumentChunkWhereInput
+  orderBy?: Prisma.DocumentChunkOrderByWithRelationInput | Prisma.DocumentChunkOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentChunkWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.DocumentAnalysisScalarFieldEnum | Prisma.DocumentAnalysisScalarFieldEnum[]
+  distinct?: Prisma.DocumentChunkScalarFieldEnum | Prisma.DocumentChunkScalarFieldEnum[]
 }
 
 /**
- * Document.complianceQueries
+ * Document.analysisRequests
  */
-export type Document$complianceQueriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Document$analysisRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ComplianceQuery
+   * Select specific fields to fetch from the AnalysisRequest
    */
-  select?: Prisma.ComplianceQuerySelect<ExtArgs> | null
+  select?: Prisma.AnalysisRequestSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ComplianceQuery
+   * Omit specific fields from the AnalysisRequest
    */
-  omit?: Prisma.ComplianceQueryOmit<ExtArgs> | null
+  omit?: Prisma.AnalysisRequestOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ComplianceQueryInclude<ExtArgs> | null
-  where?: Prisma.ComplianceQueryWhereInput
-  orderBy?: Prisma.ComplianceQueryOrderByWithRelationInput | Prisma.ComplianceQueryOrderByWithRelationInput[]
-  cursor?: Prisma.ComplianceQueryWhereUniqueInput
+  include?: Prisma.AnalysisRequestInclude<ExtArgs> | null
+  where?: Prisma.AnalysisRequestWhereInput
+  orderBy?: Prisma.AnalysisRequestOrderByWithRelationInput | Prisma.AnalysisRequestOrderByWithRelationInput[]
+  cursor?: Prisma.AnalysisRequestWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ComplianceQueryScalarFieldEnum | Prisma.ComplianceQueryScalarFieldEnum[]
+  distinct?: Prisma.AnalysisRequestScalarFieldEnum | Prisma.AnalysisRequestScalarFieldEnum[]
 }
 
 /**

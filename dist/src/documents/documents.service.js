@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
-const prisma_1 = require("../generated/prisma/index.js");
+const prisma_1 = require("../generated/prisma");
 let DocumentsService = class DocumentsService {
     prisma;
     constructor(prisma) {
@@ -24,10 +24,13 @@ let DocumentsService = class DocumentsService {
                 originalFileName: data.originalFileName,
                 organizationId: data.organizationId,
                 uploadedBy: data.uploadedBy,
-                filename: data.filename,
-                fileSize: data.fileSize || null,
-                expirationDate: data.expirationDate || null,
-                status: prisma_1.DocumentStatus.pending,
+                mimeType: data.mimeType ?? null,
+                checksum: data.checksum ?? null,
+                fileSize: data.fileSize ?? null,
+                pageCount: data.pageCount ?? null,
+                language: data.language ?? null,
+                expirationDate: data.expirationDate ?? null,
+                status: prisma_1.DocumentStatus.uploaded,
             },
         });
     }
@@ -36,7 +39,16 @@ let DocumentsService = class DocumentsService {
             where: { id },
             include: {
                 uploader: true,
-                analyses: true,
+                chunks: {
+                    orderBy: { chunkIndex: 'asc' },
+                    select: {
+                        id: true,
+                        chunkIndex: true,
+                        pageNumber: true,
+                        tokenCount: true,
+                        content: true,
+                    },
+                },
             },
         });
         if (!document) {
@@ -51,10 +63,11 @@ let DocumentsService = class DocumentsService {
         });
     }
     async updateDocument(id, data) {
+        const { organizationId: _org, uploadedBy: _uploader, ...scalars } = data;
         try {
             return await this.prisma.document.update({
                 where: { id },
-                data,
+                data: scalars,
             });
         }
         catch {

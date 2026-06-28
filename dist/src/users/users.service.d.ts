@@ -6,52 +6,52 @@ export declare class UsersService {
     constructor(prisma: PrismaService);
     createUser(data: CreateProfileDto): Promise<{
         email: string;
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
         organizationId: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     getUserById(id: string): Promise<{
         organization: {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             name: string;
             slug: string;
             plan: import("src/generated/prisma").PlanType;
-            documentsLimit: number | null;
-            createdAt: Date;
-            updatedAt: Date;
+            documentsLimit: number;
         } | null;
     } & {
         email: string;
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
         organizationId: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     updateUser(id: string, data: UpdateProfileDto): Promise<{
         email: string;
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
         organizationId: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     deleteUser(id: string): Promise<{
         email: string;
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
         organizationId: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
 }

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AnalysisVerdict = exports.FindingSeverity = exports.DeliveryChannel = exports.NotificationType = exports.NotificationStatus = exports.ComplianceQueryStatus = exports.RiskLevel = exports.DocumentStatus = exports.PlanType = exports.UserRole = void 0;
+exports.AnalysisVerdict = exports.FindingSeverity = exports.DeliveryChannel = exports.NotificationType = exports.NotificationStatus = exports.AnalysisRequestStatus = exports.RiskLevel = exports.DocumentStatus = exports.PlanType = exports.UserRole = void 0;
 exports.UserRole = {
     admin: 'admin',
     compliance_manager: 'compliance_manager',
@@ -13,9 +13,10 @@ exports.PlanType = {
     enterprise: 'enterprise'
 };
 exports.DocumentStatus = {
-    pending: 'pending',
-    analyzing: 'analyzing',
-    analyzed: 'analyzed',
+    uploaded: 'uploaded',
+    extracting: 'extracting',
+    chunking: 'chunking',
+    ready: 'ready',
     failed: 'failed'
 };
 exports.RiskLevel = {
@@ -23,7 +24,7 @@ exports.RiskLevel = {
     medium: 'medium',
     high: 'high'
 };
-exports.ComplianceQueryStatus = {
+exports.AnalysisRequestStatus = {
     pending: 'pending',
     processing: 'processing',
     completed: 'completed',

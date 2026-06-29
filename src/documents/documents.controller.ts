@@ -74,6 +74,7 @@ export class DocumentsController {
   )
   async upload(
     @UploadedFile() file: Express.Multer.File,
+
     @Body() body: UploadDocumentDto,
   ) {
     if (!file) {

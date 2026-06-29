@@ -35,7 +35,7 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
         const checksum = this.computeChecksum(file.buffer);
         this.logger.log(`SHA-256 checksum for "${file.originalname}": ${checksum}`);
         const existing = await this.prisma.document.findFirst({
-            where: { checksum, organizationId },
+            where: { checksum, ...(organizationId && { organizationId }) },
             select: { id: true, originalFileName: true },
         });
         if (existing) {
@@ -47,8 +47,8 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
         }
         const document = await this.prisma.document.create({
             data: {
-                organizationId,
-                uploadedBy,
+                organizationId: organizationId ?? null,
+                uploadedBy: uploadedBy ?? null,
                 originalFileName: file.originalname,
                 mimeType: file.mimetype,
                 fileSize: file.size,

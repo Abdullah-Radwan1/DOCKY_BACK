@@ -24,22 +24,22 @@ class CreateNotificationDto {
 exports.CreateNotificationDto = CreateNotificationDto;
 __decorate([
     (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateNotificationDto.prototype, "userId", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateNotificationDto.prototype, "title", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateNotificationDto.prototype, "message", void 0);
 __decorate([
     (0, class_validator_1.IsEnum)(prisma_1.NotificationType),
-    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateNotificationDto.prototype, "type", void 0);
 __decorate([

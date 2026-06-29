@@ -1,8 +1,8 @@
 import { DocumentStatus } from "../../generated/prisma";
 export declare class DocumentResponseDto {
     id: string;
-    organizationId: string;
-    uploadedBy: string;
+    organizationId?: string;
+    uploadedBy?: string;
     originalFileName: string;
     mimeType?: string;
     checksum?: string;

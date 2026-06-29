@@ -9,7 +9,7 @@ var PdfExtractorService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PdfExtractorService = void 0;
 const common_1 = require("@nestjs/common");
-const pdfParse = require('pdf-parse');
+const pdfParse = require('pdf-parse/lib/pdf-parse.js');
 let PdfExtractorService = PdfExtractorService_1 = class PdfExtractorService {
     logger = new common_1.Logger(PdfExtractorService_1.name);
     async extract(buffer, fileName) {

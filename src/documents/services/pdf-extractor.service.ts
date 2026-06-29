@@ -5,12 +5,14 @@ import {
 } from '@nestjs/common';
 import { PdfData } from '../interfaces/pdf-data.interface';
 
-// pdf-parse is a CommonJS module. TypeScript's namespace import (`import * as`)
-// wraps it in a Module object with no call signatures, so we use require directly.
+// pdf-parse v2.x runs a test-file check on require('pdf-parse') which can
+// throw errors in non-standard working directories. We import the raw
+// implementation directly to bypass that behaviour.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const pdfParse = require('pdf-parse') as (
+const pdfParse: (
   buffer: Buffer,
-) => Promise<{ text: string; numpages: number }>;
+  options?: object,
+) => Promise<{ text: string; numpages: number }> = require('pdf-parse/lib/pdf-parse.js');
 
 @Injectable()
 export class PdfExtractorService {

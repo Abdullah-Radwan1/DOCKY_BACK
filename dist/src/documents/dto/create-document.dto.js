@@ -25,12 +25,12 @@ class CreateDocumentDto {
 exports.CreateDocumentDto = CreateDocumentDto;
 __decorate([
     (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateDocumentDto.prototype, "organizationId", void 0);
 __decorate([
     (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateDocumentDto.prototype, "uploadedBy", void 0);
 __decorate([

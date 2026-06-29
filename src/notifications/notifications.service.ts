@@ -41,10 +41,10 @@ export class NotificationsService {
     // 1. Create the database record
     const notification = await this.prisma.notification.create({
       data: {
-        userId: data.userId,
-        title: data.title,
-        message: data.message,
-        type: data.type,
+        userId: data.userId ?? '',
+        title: data.title ?? '',
+        message: data.message ?? '',
+        type: data.type!,
         deliveryChannel: channel,
         documentId: data.documentId || null,
         status: 'unread',
@@ -57,9 +57,9 @@ export class NotificationsService {
       if (dispatcher) {
         try {
           const success = await dispatcher.send(
-            data.userId,
-            data.title,
-            data.message,
+            data.userId ?? '',
+            data.title ?? '',
+            data.message ?? '',
             data.documentId,
           );
           if (success) {

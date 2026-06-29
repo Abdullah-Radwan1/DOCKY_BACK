@@ -309,13 +309,13 @@ export type ProfileMinOrderByAggregateInput = {
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
-export type ProfileScalarRelationFilter = {
-    is?: Prisma.ProfileWhereInput;
-    isNot?: Prisma.ProfileWhereInput;
-};
 export type ProfileNullableScalarRelationFilter = {
     is?: Prisma.ProfileWhereInput | null;
     isNot?: Prisma.ProfileWhereInput | null;
+};
+export type ProfileScalarRelationFilter = {
+    is?: Prisma.ProfileWhereInput;
+    isNot?: Prisma.ProfileWhereInput;
 };
 export type ProfileCreateNestedManyWithoutOrganizationInput = {
     create?: Prisma.XOR<Prisma.ProfileCreateWithoutOrganizationInput, Prisma.ProfileUncheckedCreateWithoutOrganizationInput> | Prisma.ProfileCreateWithoutOrganizationInput[] | Prisma.ProfileUncheckedCreateWithoutOrganizationInput[];
@@ -366,10 +366,12 @@ export type ProfileCreateNestedOneWithoutDocumentsInput = {
     connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutDocumentsInput;
     connect?: Prisma.ProfileWhereUniqueInput;
 };
-export type ProfileUpdateOneRequiredWithoutDocumentsNestedInput = {
+export type ProfileUpdateOneWithoutDocumentsNestedInput = {
     create?: Prisma.XOR<Prisma.ProfileCreateWithoutDocumentsInput, Prisma.ProfileUncheckedCreateWithoutDocumentsInput>;
     connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutDocumentsInput;
     upsert?: Prisma.ProfileUpsertWithoutDocumentsInput;
+    disconnect?: Prisma.ProfileWhereInput | boolean;
+    delete?: Prisma.ProfileWhereInput | boolean;
     connect?: Prisma.ProfileWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutDocumentsInput, Prisma.ProfileUpdateWithoutDocumentsInput>, Prisma.ProfileUncheckedUpdateWithoutDocumentsInput>;
 };

@@ -1,4 +1,4 @@
-import { IsUUID, IsNotEmpty } from 'class-validator';
+import { IsUUID, IsNotEmpty, IsOptional } from 'class-validator';
 
 /**
  * Multipart form fields that must accompany the PDF file on POST /documents/upload.
@@ -6,10 +6,10 @@ import { IsUUID, IsNotEmpty } from 'class-validator';
  */
 export class UploadDocumentDto {
   @IsUUID()
-  @IsNotEmpty()
-  organizationId: string;
+  @IsOptional()
+  organizationId?: string;
 
   @IsUUID()
-  @IsNotEmpty()
-  uploadedBy: string;
+  @IsOptional()
+  uploadedBy?: string;
 }

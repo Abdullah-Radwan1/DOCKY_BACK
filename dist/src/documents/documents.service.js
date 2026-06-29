@@ -22,8 +22,8 @@ let DocumentsService = class DocumentsService {
         return this.prisma.document.create({
             data: {
                 originalFileName: data.originalFileName,
-                organizationId: data.organizationId,
-                uploadedBy: data.uploadedBy,
+                organizationId: data.organizationId ?? null,
+                uploadedBy: data.uploadedBy ?? null,
                 mimeType: data.mimeType ?? null,
                 checksum: data.checksum ?? null,
                 fileSize: data.fileSize ?? null,

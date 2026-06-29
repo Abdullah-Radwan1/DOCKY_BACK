@@ -11,7 +11,7 @@ import {
 export class CreateProfileDto {
   @IsEmail()
   @IsNotEmpty()
-  email: string;
+  email!: string;
 
   @IsString()
   @IsOptional()

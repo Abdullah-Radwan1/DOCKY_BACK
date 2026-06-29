@@ -1,8 +1,8 @@
 import { NotificationType, DeliveryChannel } from "../../generated/prisma";
 export declare class CreateNotificationDto {
-    userId: string;
-    title: string;
-    message: string;
+    userId?: string;
+    title?: string;
+    message?: string;
     type: NotificationType;
     deliveryChannel?: DeliveryChannel;
     documentId?: string;

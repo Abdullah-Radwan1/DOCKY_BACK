@@ -10,7 +10,7 @@ export declare class DocumentUploadService {
     private readonly chunker;
     private readonly logger;
     constructor(prisma: PrismaService, validator: PdfValidatorService, extractor: PdfExtractorService, chunker: ChunkingService);
-    upload(file: Express.Multer.File, organizationId: string, uploadedBy: string): Promise<UploadDocumentResponseDto>;
+    upload(file: Express.Multer.File, organizationId?: string, uploadedBy?: string): Promise<UploadDocumentResponseDto>;
     private computeChecksum;
     private toResponseDto;
 }

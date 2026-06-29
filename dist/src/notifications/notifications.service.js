@@ -39,9 +39,9 @@ let NotificationsService = NotificationsService_1 = class NotificationsService {
         const channel = data.deliveryChannel || 'in_app';
         const notification = await this.prisma.notification.create({
             data: {
-                userId: data.userId,
-                title: data.title,
-                message: data.message,
+                userId: data.userId ?? '',
+                title: data.title ?? '',
+                message: data.message ?? '',
                 type: data.type,
                 deliveryChannel: channel,
                 documentId: data.documentId || null,
@@ -52,7 +52,7 @@ let NotificationsService = NotificationsService_1 = class NotificationsService {
             const dispatcher = this.dispatchers.get(channel);
             if (dispatcher) {
                 try {
-                    const success = await dispatcher.send(data.userId, data.title, data.message, data.documentId);
+                    const success = await dispatcher.send(data.userId ?? '', data.title ?? '', data.message ?? '', data.documentId);
                     if (success) {
                         return await this.prisma.notification.update({
                             where: { id: notification.id },

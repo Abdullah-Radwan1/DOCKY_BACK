@@ -341,10 +341,12 @@ export type OrganizationCreateNestedOneWithoutDocumentsInput = {
     connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutDocumentsInput;
     connect?: Prisma.OrganizationWhereUniqueInput;
 };
-export type OrganizationUpdateOneRequiredWithoutDocumentsNestedInput = {
+export type OrganizationUpdateOneWithoutDocumentsNestedInput = {
     create?: Prisma.XOR<Prisma.OrganizationCreateWithoutDocumentsInput, Prisma.OrganizationUncheckedCreateWithoutDocumentsInput>;
     connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutDocumentsInput;
     upsert?: Prisma.OrganizationUpsertWithoutDocumentsInput;
+    disconnect?: Prisma.OrganizationWhereInput | boolean;
+    delete?: Prisma.OrganizationWhereInput | boolean;
     connect?: Prisma.OrganizationWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutDocumentsInput, Prisma.OrganizationUpdateWithoutDocumentsInput>, Prisma.OrganizationUncheckedUpdateWithoutDocumentsInput>;
 };

@@ -1,4 +1,4 @@
 export declare class UploadDocumentDto {
-    organizationId: string;
-    uploadedBy: string;
+    organizationId?: string;
+    uploadedBy?: string;
 }

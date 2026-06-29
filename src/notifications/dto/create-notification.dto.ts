@@ -9,19 +9,19 @@ import {
 
 export class CreateNotificationDto {
   @IsUUID()
-  @IsNotEmpty()
-  userId: string;
+  @IsOptional()
+  userId?: string;
+
+  @IsString()
+  @IsOptional()
+  title?: string;
 
   @IsString()
   @IsNotEmpty()
-  title: string;
-
-  @IsString()
-  @IsNotEmpty()
-  message: string;
+  @IsOptional()
+  message?: string;
 
   @IsEnum(NotificationType)
-  @IsNotEmpty()
   type: NotificationType;
 
   @IsEnum(DeliveryChannel)

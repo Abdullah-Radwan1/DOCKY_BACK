@@ -16,7 +16,7 @@ const adapter_pg_1 = require("@prisma/adapter-pg");
 let PrismaService = class PrismaService extends client_1.PrismaClient {
     constructor() {
         const adapter = new adapter_pg_1.PrismaPg({
-            connectionString: process.env.DATABASE_URL,
+            connectionString: 'postgresql://neondb_owner:npg_LAwk7mrqzXI1@ep-fancy-cloud-atwfvq7q-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
         });
         super({ adapter });
     }

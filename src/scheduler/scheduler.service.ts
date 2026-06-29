@@ -58,7 +58,7 @@ export class SchedulerService {
         // Check if an expiration warning notification has already been created for this document and threshold
         const existingNotification = await this.prisma.notification.findFirst({
           where: {
-            userId: doc.uploadedBy,
+            userId: doc.uploadedBy ?? '',
             documentId: doc.id,
             type: 'expiration_warning',
             message: {
@@ -74,7 +74,7 @@ export class SchedulerService {
 
           // 1. Create In-App Notification
           await this.notificationsService.createNotification({
-            userId: doc.uploadedBy,
+            userId: doc.uploadedBy ?? '',
             title: 'Document Expiration Warning',
             message: `Your document "${doc.originalFileName}" is expiring in ${days} days on ${doc.expirationDate?.toLocaleDateString()}.`,
             type: 'expiration_warning',
@@ -84,7 +84,7 @@ export class SchedulerService {
 
           // 2. Dispatch Email Notification
           await this.notificationsService.createNotification({
-            userId: doc.uploadedBy,
+            userId: doc.uploadedBy ?? '',
             title: 'Document Expiration Warning',
             message: `Your document "${doc.originalFileName}" is expiring in ${days} days on ${doc.expirationDate?.toLocaleDateString()}.`,
             type: 'expiration_warning',

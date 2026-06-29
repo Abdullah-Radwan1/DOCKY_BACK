@@ -48,7 +48,7 @@ let SchedulerService = SchedulerService_1 = class SchedulerService {
             for (const doc of expiringDocuments) {
                 const existingNotification = await this.prisma.notification.findFirst({
                     where: {
-                        userId: doc.uploadedBy,
+                        userId: doc.uploadedBy ?? '',
                         documentId: doc.id,
                         type: 'expiration_warning',
                         message: {
@@ -59,7 +59,7 @@ let SchedulerService = SchedulerService_1 = class SchedulerService {
                 if (!existingNotification) {
                     this.logger.log(`Triggering warning notifications for document "${doc.originalFileName}" (ID: ${doc.id}) expiring in ${days} days.`);
                     await this.notificationsService.createNotification({
-                        userId: doc.uploadedBy,
+                        userId: doc.uploadedBy ?? '',
                         title: 'Document Expiration Warning',
                         message: `Your document "${doc.originalFileName}" is expiring in ${days} days on ${doc.expirationDate?.toLocaleDateString()}.`,
                         type: 'expiration_warning',
@@ -67,7 +67,7 @@ let SchedulerService = SchedulerService_1 = class SchedulerService {
                         documentId: doc.id,
                     });
                     await this.notificationsService.createNotification({
-                        userId: doc.uploadedBy,
+                        userId: doc.uploadedBy ?? '',
                         title: 'Document Expiration Warning',
                         message: `Your document "${doc.originalFileName}" is expiring in ${days} days on ${doc.expirationDate?.toLocaleDateString()}.`,
                         type: 'expiration_warning',

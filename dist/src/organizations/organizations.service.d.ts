@@ -15,11 +15,11 @@ export declare class OrganizationsService {
     }>;
     getOrganizationById(id: string): Promise<{
         documents: {
-            organizationId: string;
+            organizationId: string | null;
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            uploadedBy: string;
+            uploadedBy: string | null;
             originalFileName: string;
             mimeType: string | null;
             checksum: string | null;

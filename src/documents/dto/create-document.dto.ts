@@ -9,12 +9,12 @@ import {
 
 export class CreateDocumentDto {
   @IsUUID()
-  @IsNotEmpty()
-  organizationId: string;
+  @IsOptional()
+  organizationId?: string;
 
   @IsUUID()
-  @IsNotEmpty()
-  uploadedBy: string;
+  @IsOptional()
+  uploadedBy?: string;
 
   @IsString()
   @IsNotEmpty()

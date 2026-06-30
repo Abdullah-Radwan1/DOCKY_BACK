@@ -12,6 +12,7 @@ export type ProfileMinAggregateOutputType = {
     email: string | null;
     fullName: string | null;
     avatarUrl: string | null;
+    passwordHash: string | null;
     role: $Enums.UserRole | null;
     organizationId: string | null;
     createdAt: Date | null;
@@ -22,6 +23,7 @@ export type ProfileMaxAggregateOutputType = {
     email: string | null;
     fullName: string | null;
     avatarUrl: string | null;
+    passwordHash: string | null;
     role: $Enums.UserRole | null;
     organizationId: string | null;
     createdAt: Date | null;
@@ -32,6 +34,7 @@ export type ProfileCountAggregateOutputType = {
     email: number;
     fullName: number;
     avatarUrl: number;
+    passwordHash: number;
     role: number;
     organizationId: number;
     createdAt: number;
@@ -43,6 +46,7 @@ export type ProfileMinAggregateInputType = {
     email?: true;
     fullName?: true;
     avatarUrl?: true;
+    passwordHash?: true;
     role?: true;
     organizationId?: true;
     createdAt?: true;
@@ -53,6 +57,7 @@ export type ProfileMaxAggregateInputType = {
     email?: true;
     fullName?: true;
     avatarUrl?: true;
+    passwordHash?: true;
     role?: true;
     organizationId?: true;
     createdAt?: true;
@@ -63,6 +68,7 @@ export type ProfileCountAggregateInputType = {
     email?: true;
     fullName?: true;
     avatarUrl?: true;
+    passwordHash?: true;
     role?: true;
     organizationId?: true;
     createdAt?: true;
@@ -98,6 +104,7 @@ export type ProfileGroupByOutputType = {
     email: string;
     fullName: string | null;
     avatarUrl: string | null;
+    passwordHash: string | null;
     role: $Enums.UserRole;
     organizationId: string | null;
     createdAt: Date;
@@ -117,6 +124,7 @@ export type ProfileWhereInput = {
     email?: Prisma.StringFilter<"Profile"> | string;
     fullName?: Prisma.StringNullableFilter<"Profile"> | string | null;
     avatarUrl?: Prisma.StringNullableFilter<"Profile"> | string | null;
+    passwordHash?: Prisma.StringNullableFilter<"Profile"> | string | null;
     role?: Prisma.EnumUserRoleFilter<"Profile"> | $Enums.UserRole;
     organizationId?: Prisma.UuidNullableFilter<"Profile"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string;
@@ -132,6 +140,7 @@ export type ProfileOrderByWithRelationInput = {
     email?: Prisma.SortOrder;
     fullName?: Prisma.SortOrderInput | Prisma.SortOrder;
     avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
+    passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder;
     role?: Prisma.SortOrder;
     organizationId?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
@@ -150,6 +159,7 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
     NOT?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[];
     fullName?: Prisma.StringNullableFilter<"Profile"> | string | null;
     avatarUrl?: Prisma.StringNullableFilter<"Profile"> | string | null;
+    passwordHash?: Prisma.StringNullableFilter<"Profile"> | string | null;
     role?: Prisma.EnumUserRoleFilter<"Profile"> | $Enums.UserRole;
     organizationId?: Prisma.UuidNullableFilter<"Profile"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string;
@@ -165,6 +175,7 @@ export type ProfileOrderByWithAggregationInput = {
     email?: Prisma.SortOrder;
     fullName?: Prisma.SortOrderInput | Prisma.SortOrder;
     avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
+    passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder;
     role?: Prisma.SortOrder;
     organizationId?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
@@ -181,6 +192,7 @@ export type ProfileScalarWhereWithAggregatesInput = {
     email?: Prisma.StringWithAggregatesFilter<"Profile"> | string;
     fullName?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null;
     avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null;
+    passwordHash?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null;
     role?: Prisma.EnumUserRoleWithAggregatesFilter<"Profile"> | $Enums.UserRole;
     organizationId?: Prisma.UuidNullableWithAggregatesFilter<"Profile"> | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Profile"> | Date | string;
@@ -191,6 +203,7 @@ export type ProfileCreateInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -205,6 +218,7 @@ export type ProfileUncheckedCreateInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     organizationId?: string | null;
     createdAt?: Date | string;
@@ -219,6 +233,7 @@ export type ProfileUpdateInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -233,6 +248,7 @@ export type ProfileUncheckedUpdateInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -247,6 +263,7 @@ export type ProfileCreateManyInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     organizationId?: string | null;
     createdAt?: Date | string;
@@ -257,6 +274,7 @@ export type ProfileUpdateManyMutationInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -266,6 +284,7 @@ export type ProfileUncheckedUpdateManyInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -284,6 +303,7 @@ export type ProfileCountOrderByAggregateInput = {
     email?: Prisma.SortOrder;
     fullName?: Prisma.SortOrder;
     avatarUrl?: Prisma.SortOrder;
+    passwordHash?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     organizationId?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
@@ -294,6 +314,7 @@ export type ProfileMaxOrderByAggregateInput = {
     email?: Prisma.SortOrder;
     fullName?: Prisma.SortOrder;
     avatarUrl?: Prisma.SortOrder;
+    passwordHash?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     organizationId?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
@@ -304,6 +325,7 @@ export type ProfileMinOrderByAggregateInput = {
     email?: Prisma.SortOrder;
     fullName?: Prisma.SortOrder;
     avatarUrl?: Prisma.SortOrder;
+    passwordHash?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
     organizationId?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
@@ -418,6 +440,7 @@ export type ProfileCreateWithoutOrganizationInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -431,6 +454,7 @@ export type ProfileUncheckedCreateWithoutOrganizationInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -468,6 +492,7 @@ export type ProfileScalarWhereInput = {
     email?: Prisma.StringFilter<"Profile"> | string;
     fullName?: Prisma.StringNullableFilter<"Profile"> | string | null;
     avatarUrl?: Prisma.StringNullableFilter<"Profile"> | string | null;
+    passwordHash?: Prisma.StringNullableFilter<"Profile"> | string | null;
     role?: Prisma.EnumUserRoleFilter<"Profile"> | $Enums.UserRole;
     organizationId?: Prisma.UuidNullableFilter<"Profile"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string;
@@ -478,6 +503,7 @@ export type ProfileCreateWithoutDocumentsInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -491,6 +517,7 @@ export type ProfileUncheckedCreateWithoutDocumentsInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     organizationId?: string | null;
     createdAt?: Date | string;
@@ -517,6 +544,7 @@ export type ProfileUpdateWithoutDocumentsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -530,6 +558,7 @@ export type ProfileUncheckedUpdateWithoutDocumentsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -543,6 +572,7 @@ export type ProfileCreateWithoutActivityLogsInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -556,6 +586,7 @@ export type ProfileUncheckedCreateWithoutActivityLogsInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     organizationId?: string | null;
     createdAt?: Date | string;
@@ -582,6 +613,7 @@ export type ProfileUpdateWithoutActivityLogsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -595,6 +627,7 @@ export type ProfileUncheckedUpdateWithoutActivityLogsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -608,6 +641,7 @@ export type ProfileCreateWithoutAnalysisRequestsInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -621,6 +655,7 @@ export type ProfileUncheckedCreateWithoutAnalysisRequestsInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     organizationId?: string | null;
     createdAt?: Date | string;
@@ -647,6 +682,7 @@ export type ProfileUpdateWithoutAnalysisRequestsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -660,6 +696,7 @@ export type ProfileUncheckedUpdateWithoutAnalysisRequestsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -673,6 +710,7 @@ export type ProfileCreateWithoutNotificationsInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -686,6 +724,7 @@ export type ProfileUncheckedCreateWithoutNotificationsInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     organizationId?: string | null;
     createdAt?: Date | string;
@@ -712,6 +751,7 @@ export type ProfileUpdateWithoutNotificationsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -725,6 +765,7 @@ export type ProfileUncheckedUpdateWithoutNotificationsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -738,6 +779,7 @@ export type ProfileCreateManyOrganizationInput = {
     email: string;
     fullName?: string | null;
     avatarUrl?: string | null;
+    passwordHash?: string | null;
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -747,6 +789,7 @@ export type ProfileUpdateWithoutOrganizationInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -760,6 +803,7 @@ export type ProfileUncheckedUpdateWithoutOrganizationInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -773,6 +817,7 @@ export type ProfileUncheckedUpdateManyWithoutOrganizationInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -809,6 +854,7 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     email?: boolean;
     fullName?: boolean;
     avatarUrl?: boolean;
+    passwordHash?: boolean;
     role?: boolean;
     organizationId?: boolean;
     createdAt?: boolean;
@@ -825,6 +871,7 @@ export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
     email?: boolean;
     fullName?: boolean;
     avatarUrl?: boolean;
+    passwordHash?: boolean;
     role?: boolean;
     organizationId?: boolean;
     createdAt?: boolean;
@@ -836,6 +883,7 @@ export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
     email?: boolean;
     fullName?: boolean;
     avatarUrl?: boolean;
+    passwordHash?: boolean;
     role?: boolean;
     organizationId?: boolean;
     createdAt?: boolean;
@@ -847,12 +895,13 @@ export type ProfileSelectScalar = {
     email?: boolean;
     fullName?: boolean;
     avatarUrl?: boolean;
+    passwordHash?: boolean;
     role?: boolean;
     organizationId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "fullName" | "avatarUrl" | "role" | "organizationId" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>;
+export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "fullName" | "avatarUrl" | "passwordHash" | "role" | "organizationId" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>;
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     organization?: boolean | Prisma.Profile$organizationArgs<ExtArgs>;
     documents?: boolean | Prisma.Profile$documentsArgs<ExtArgs>;
@@ -881,6 +930,7 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
         email: string;
         fullName: string | null;
         avatarUrl: string | null;
+        passwordHash: string | null;
         role: $Enums.UserRole;
         organizationId: string | null;
         createdAt: Date;
@@ -951,6 +1001,7 @@ export interface ProfileFieldRefs {
     readonly email: Prisma.FieldRef<"Profile", 'String'>;
     readonly fullName: Prisma.FieldRef<"Profile", 'String'>;
     readonly avatarUrl: Prisma.FieldRef<"Profile", 'String'>;
+    readonly passwordHash: Prisma.FieldRef<"Profile", 'String'>;
     readonly role: Prisma.FieldRef<"Profile", 'UserRole'>;
     readonly organizationId: Prisma.FieldRef<"Profile", 'String'>;
     readonly createdAt: Prisma.FieldRef<"Profile", 'DateTime'>;

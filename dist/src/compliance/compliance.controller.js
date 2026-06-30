@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const compliance_service_1 = require("./compliance.service");
 const create_compliance_query_dto_1 = require("./dto/create-compliance-query.dto");
 const create_ai_response_dto_1 = require("./dto/create-ai-response.dto");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 let ComplianceController = class ComplianceController {
     complianceService;
     constructor(complianceService) {
@@ -65,6 +66,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ComplianceController.prototype, "addResponse", null);
 exports.ComplianceController = ComplianceController = __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Controller)('compliance'),
     __metadata("design:paramtypes", [compliance_service_1.ComplianceService])
 ], ComplianceController);

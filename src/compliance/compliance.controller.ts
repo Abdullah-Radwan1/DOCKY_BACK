@@ -5,11 +5,14 @@ import {
   Param,
   Body,
   ParseUUIDPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ComplianceService } from './compliance.service';
 import { CreateComplianceQueryDto } from './dto/create-compliance-query.dto';
 import { CreateAIResponseDto } from './dto/create-ai-response.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('compliance')
 export class ComplianceController {
   constructor(private readonly complianceService: ComplianceService) {}

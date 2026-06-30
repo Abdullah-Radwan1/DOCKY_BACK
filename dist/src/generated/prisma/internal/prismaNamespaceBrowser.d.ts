@@ -45,6 +45,7 @@ export declare const ProfileScalarFieldEnum: {
     readonly email: "email";
     readonly fullName: "fullName";
     readonly avatarUrl: "avatarUrl";
+    readonly passwordHash: "passwordHash";
     readonly role: "role";
     readonly organizationId: "organizationId";
     readonly createdAt: "createdAt";

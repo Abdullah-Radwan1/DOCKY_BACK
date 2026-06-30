@@ -22,6 +22,7 @@ const create_document_dto_1 = require("./dto/create-document.dto");
 const update_document_dto_1 = require("./dto/update-document.dto");
 const upload_document_dto_1 = require("./dto/upload-document.dto");
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 let DocumentsController = class DocumentsController {
     documentsService;
     documentUploadService;
@@ -120,6 +121,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], DocumentsController.prototype, "delete", null);
 exports.DocumentsController = DocumentsController = __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Controller)('documents'),
     __metadata("design:paramtypes", [documents_service_1.DocumentsService,
         document_upload_service_1.DocumentUploadService])

@@ -19,6 +19,7 @@ const compliance_module_1 = require("./compliance/compliance.module");
 const notifications_module_1 = require("./notifications/notifications.module");
 const activity_log_module_1 = require("./activity-log/activity-log.module");
 const scheduler_module_1 = require("./scheduler/scheduler.module");
+const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -27,6 +28,7 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             schedule_1.ScheduleModule.forRoot(),
             prisma_module_1.PrismaModule,
+            auth_module_1.AuthModule,
             users_module_1.UsersModule,
             organizations_module_1.OrganizationsModule,
             documents_module_1.DocumentsModule,

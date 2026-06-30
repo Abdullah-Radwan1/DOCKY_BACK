@@ -12,6 +12,7 @@ import {
   HttpCode,
   HttpStatus,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
@@ -24,6 +25,9 @@ import { UploadDocumentDto } from './dto/upload-document.dto';
 /** 20 MB in bytes — Multer's first line of defence against oversized uploads. */
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+
+@UseGuards(JwtAuthGuard)
 @Controller('documents')
 export class DocumentsController {
   constructor(

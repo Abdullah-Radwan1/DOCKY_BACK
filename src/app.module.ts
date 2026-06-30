@@ -10,11 +10,13 @@ import { ComplianceModule } from './compliance/compliance.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ActivityLogModule } from './activity-log/activity-log.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
     PrismaModule,
+    AuthModule,
     UsersModule,
     OrganizationsModule,
     DocumentsModule,

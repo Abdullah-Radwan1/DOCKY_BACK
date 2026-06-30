@@ -41,6 +41,7 @@ export declare class ComplianceService {
             role: import("src/generated/prisma").UserRole;
             organizationId: string | null;
             id: string;
+            passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
         };

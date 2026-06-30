@@ -110,6 +110,8 @@ model Profile {
 
   avatarUrl String? @map("avatar_url")
 
+  passwordHash String? @map("password_hash")
+
   role UserRole @default(viewer)
 
   organizationId String? @map("organization_id") @db.Uuid

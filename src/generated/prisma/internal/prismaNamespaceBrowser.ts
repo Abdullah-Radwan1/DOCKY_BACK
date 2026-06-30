@@ -97,6 +97,7 @@ export const ProfileScalarFieldEnum = {
   email: 'email',
   fullName: 'fullName',
   avatarUrl: 'avatarUrl',
+  passwordHash: 'passwordHash',
   role: 'role',
   organizationId: 'organizationId',
   createdAt: 'createdAt',

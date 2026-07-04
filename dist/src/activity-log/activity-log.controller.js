@@ -27,9 +27,6 @@ let ActivityLogController = class ActivityLogController {
     async get(id) {
         return this.activityLogService.getLogById(id);
     }
-    async getByOrganization(organizationId) {
-        return this.activityLogService.getLogsByOrganization(organizationId);
-    }
     async getByUser(userId) {
         return this.activityLogService.getLogsByUser(userId);
     }
@@ -52,13 +49,6 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ActivityLogController.prototype, "get", null);
-__decorate([
-    (0, common_1.Get)('organization/:organizationId'),
-    __param(0, (0, common_1.Param)('organizationId', new common_1.ParseUUIDPipe())),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], ActivityLogController.prototype, "getByOrganization", null);
 __decorate([
     (0, common_1.Get)('user/:userId'),
     __param(0, (0, common_1.Param)('userId', new common_1.ParseUUIDPipe())),

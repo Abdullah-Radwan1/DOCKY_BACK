@@ -9,53 +9,43 @@ export declare class UsersController {
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
-        organizationId: string | null;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
     }>;
     get(id: string): Promise<{
-        organization: {
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            slug: string;
-            plan: import("src/generated/prisma").PlanType;
-            documentsLimit: number;
-        } | null;
-    } & {
         email: string;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
-        organizationId: string | null;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
     }>;
     update(id: string, updateDto: UpdateProfileDto): Promise<{
         email: string;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
-        organizationId: string | null;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
     }>;
     delete(id: string): Promise<{
         email: string;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
-        organizationId: string | null;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
     }>;
 }

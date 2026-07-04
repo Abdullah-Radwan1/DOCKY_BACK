@@ -4,7 +4,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
-import { OrganizationsModule } from './organizations/organizations.module';
 import { DocumentsModule } from './documents/documents.module';
 import { ComplianceModule } from './compliance/compliance.module';
 import { NotificationsModule } from './notifications/notifications.module';
@@ -18,7 +17,6 @@ import { AuthModule } from './auth/auth.module';
     PrismaModule,
     AuthModule,
     UsersModule,
-    OrganizationsModule,
     DocumentsModule,
     ComplianceModule,
     NotificationsModule,

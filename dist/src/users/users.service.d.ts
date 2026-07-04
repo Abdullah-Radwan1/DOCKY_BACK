@@ -9,53 +9,43 @@ export declare class UsersService {
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
-        organizationId: string | null;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
     }>;
     getUserById(id: string): Promise<{
-        organization: {
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            slug: string;
-            plan: import("src/generated/prisma").PlanType;
-            documentsLimit: number;
-        } | null;
-    } & {
         email: string;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
-        organizationId: string | null;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
     }>;
     updateUser(id: string, data: UpdateProfileDto): Promise<{
         email: string;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
-        organizationId: string | null;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
     }>;
     deleteUser(id: string): Promise<{
         email: string;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
-        organizationId: string | null;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
     }>;
 }

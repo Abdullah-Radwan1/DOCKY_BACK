@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateDocumentDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateDocumentDto {
-    organizationId;
     uploadedBy;
     originalFileName;
     mimeType;
@@ -23,11 +22,6 @@ class CreateDocumentDto {
     expirationDate;
 }
 exports.CreateDocumentDto = CreateDocumentDto;
-__decorate([
-    (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateDocumentDto.prototype, "organizationId", void 0);
 __decorate([
     (0, class_validator_1.IsUUID)(),
     (0, class_validator_1.IsOptional)(),

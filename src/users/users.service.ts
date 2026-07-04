@@ -15,7 +15,6 @@ export class UsersService {
         fullName: data.fullName,
         avatarUrl: data.avatarUrl,
         role: data.role,
-        organizationId: data.organizationId || null,
       },
     });
   }
@@ -23,9 +22,6 @@ export class UsersService {
   async getUserById(id: string) {
     const profile = await this.prisma.profile.findUnique({
       where: { id },
-      include: {
-        organization: true,
-      },
     });
     if (!profile) {
       throw new NotFoundException(`User profile with ID ${id} not found`);

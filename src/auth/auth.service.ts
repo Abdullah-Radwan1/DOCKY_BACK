@@ -47,7 +47,6 @@ export class AuthService {
   async login(dto: LoginDto) {
     const profile = await this.prisma.profile.findUnique({
       where: { email: dto.email },
-      include: { organization: true },
     });
 
     if (!profile || !profile.passwordHash) {
@@ -68,7 +67,6 @@ export class AuthService {
   async getMe(userId: string) {
     const profile = await this.prisma.profile.findUnique({
       where: { id: userId },
-      include: { organization: true },
     });
 
     if (!profile) {
@@ -106,15 +104,12 @@ export class AuthService {
     fullName: string | null;
     role: string;
     organizationId: string | null;
-    organization?: { name: string } | null;
   }) {
     return {
       id: profile.id,
       email: profile.email,
       full_name: profile.fullName,
       role: profile.role,
-      organization_id: profile.organizationId,
-      organization_name: profile.organization?.name ?? null,
     };
   }
 }

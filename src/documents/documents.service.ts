@@ -12,7 +12,6 @@ export class DocumentsService {
     return this.prisma.document.create({
       data: {
         originalFileName: data.originalFileName,
-        organizationId: data.organizationId ?? null,
         uploadedBy: data.uploadedBy ?? null,
         mimeType: data.mimeType ?? null,
         checksum: data.checksum ?? null,
@@ -50,21 +49,14 @@ export class DocumentsService {
     return document;
   }
 
-  async getDocumentsByOrganization(organizationId: string) {
+  async getDocuments() {
     return this.prisma.document.findMany({
-      where: { organizationId },
       orderBy: { createdAt: 'desc' },
     });
   }
 
   async updateDocument(id: string, data: UpdateDocumentDto) {
-    const {
-      // Omit relation-key fields — these should never change after creation
-      organizationId: _org,
-      uploadedBy: _uploader,
-      // Spread remaining updatable scalar fields
-      ...scalars
-    } = data;
+    const { uploadedBy: _uploader, ...scalars } = data;
 
     try {
       return await this.prisma.document.update({

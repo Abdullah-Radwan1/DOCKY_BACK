@@ -5,7 +5,6 @@ export declare class ProfileResponseDto {
     fullName?: string;
     avatarUrl?: string;
     role: UserRole;
-    organizationId?: string;
     createdAt: Date;
     updatedAt: Date;
 }

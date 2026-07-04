@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentResponseDto = void 0;
 class DocumentResponseDto {
     id;
-    organizationId;
     uploadedBy;
     originalFileName;
     mimeType;

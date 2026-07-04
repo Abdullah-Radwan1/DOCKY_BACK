@@ -24,16 +24,12 @@ let UsersService = class UsersService {
                 fullName: data.fullName,
                 avatarUrl: data.avatarUrl,
                 role: data.role,
-                organizationId: data.organizationId || null,
             },
         });
     }
     async getUserById(id) {
         const profile = await this.prisma.profile.findUnique({
             where: { id },
-            include: {
-                organization: true,
-            },
         });
         if (!profile) {
             throw new common_1.NotFoundException(`User profile with ID ${id} not found`);

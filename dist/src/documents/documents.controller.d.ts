@@ -9,10 +9,10 @@ export declare class DocumentsController {
     constructor(documentsService: DocumentsService, documentUploadService: DocumentUploadService);
     upload(file: Express.Multer.File, body: UploadDocumentDto): Promise<import("./dto/upload-document-response.dto").UploadDocumentResponseDto>;
     create(createDto: CreateDocumentDto): Promise<{
-        organizationId: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -30,11 +30,11 @@ export declare class DocumentsController {
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
-            organizationId: string | null;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
+            organizationId: string | null;
         } | null;
         chunks: {
             id: string;
@@ -44,10 +44,10 @@ export declare class DocumentsController {
             tokenCount: number | null;
         }[];
     } & {
-        organizationId: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -59,11 +59,11 @@ export declare class DocumentsController {
         status: import("src/generated/prisma").DocumentStatus;
         totalChunks: number | null;
     }>;
-    getByOrg(organizationId: string): Promise<{
-        organizationId: string | null;
+    getAll(): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -76,10 +76,10 @@ export declare class DocumentsController {
         totalChunks: number | null;
     }[]>;
     update(id: string, updateDto: UpdateDocumentDto): Promise<{
-        organizationId: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -92,10 +92,10 @@ export declare class DocumentsController {
         totalChunks: number | null;
     }>;
     delete(id: string): Promise<{
-        organizationId: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;

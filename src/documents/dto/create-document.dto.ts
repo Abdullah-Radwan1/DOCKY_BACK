@@ -10,10 +10,6 @@ import {
 export class CreateDocumentDto {
   @IsUUID()
   @IsOptional()
-  organizationId?: string;
-
-  @IsUUID()
-  @IsOptional()
   uploadedBy?: string;
 
   @IsString()

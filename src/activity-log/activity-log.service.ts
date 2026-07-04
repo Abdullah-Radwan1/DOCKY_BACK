@@ -13,7 +13,7 @@ export class ActivityLogService {
   async createLog(data: CreateActivityLogDto) {
     return this.prisma.activityLog.create({
       data: {
-        organizationId: data.organizationId,
+        organizationId: data.userId ?? '00000000-0000-0000-0000-000000000000',
         userId: data.userId || null,
         action: data.action,
         entityType: data.entityType || null,
@@ -38,19 +38,6 @@ export class ActivityLogService {
       throw new NotFoundException(`Activity log with ID ${id} not found`);
     }
     return log;
-  }
-
-  /**
-   * Fetches all activity logs for an organization, ordered by newest first.
-   */
-  async getLogsByOrganization(organizationId: string) {
-    return this.prisma.activityLog.findMany({
-      where: { organizationId },
-      include: {
-        user: true,
-      },
-      orderBy: { createdAt: 'desc' },
-    });
   }
 
   /**

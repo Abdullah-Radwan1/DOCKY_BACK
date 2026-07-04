@@ -7,7 +7,6 @@ class ProfileResponseDto {
     fullName;
     avatarUrl;
     role;
-    organizationId;
     createdAt;
     updatedAt;
 }

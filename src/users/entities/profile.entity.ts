@@ -6,7 +6,6 @@ export class ProfileEntity {
   fullName?: string;
   avatarUrl?: string;
   role: UserRole;
-  organizationId?: string;
   createdAt: Date;
   updatedAt: Date;
 }

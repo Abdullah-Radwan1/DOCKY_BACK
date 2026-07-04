@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActivityLogEntity = void 0;
 class ActivityLogEntity {
     id;
-    organizationId;
     userId;
     action;
     entityType;

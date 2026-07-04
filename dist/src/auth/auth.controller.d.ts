@@ -11,8 +11,6 @@ export declare class AuthController {
             email: string;
             full_name: string | null;
             role: string;
-            organization_id: string | null;
-            organization_name: string | null;
         };
     }>;
     login(dto: LoginDto, res: Response): Promise<{
@@ -21,8 +19,6 @@ export declare class AuthController {
             email: string;
             full_name: string | null;
             role: string;
-            organization_id: string | null;
-            organization_name: string | null;
         };
     }>;
     me(req: Request & {
@@ -35,8 +31,6 @@ export declare class AuthController {
             email: string;
             full_name: string | null;
             role: string;
-            organization_id: string | null;
-            organization_name: string | null;
         };
     }>;
     logout(res: Response): {

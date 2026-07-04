@@ -20,7 +20,7 @@ let ActivityLogService = class ActivityLogService {
     async createLog(data) {
         return this.prisma.activityLog.create({
             data: {
-                organizationId: data.organizationId,
+                organizationId: data.userId ?? '00000000-0000-0000-0000-000000000000',
                 userId: data.userId || null,
                 action: data.action,
                 entityType: data.entityType || null,
@@ -41,15 +41,6 @@ let ActivityLogService = class ActivityLogService {
             throw new common_1.NotFoundException(`Activity log with ID ${id} not found`);
         }
         return log;
-    }
-    async getLogsByOrganization(organizationId) {
-        return this.prisma.activityLog.findMany({
-            where: { organizationId },
-            include: {
-                user: true,
-            },
-            orderBy: { createdAt: 'desc' },
-        });
     }
     async getLogsByUser(userId) {
         return this.prisma.activityLog.findMany({

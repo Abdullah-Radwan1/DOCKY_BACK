@@ -6,10 +6,10 @@ export declare class DocumentsService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     createDocument(data: CreateDocumentDto): Promise<{
-        organizationId: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -27,11 +27,11 @@ export declare class DocumentsService {
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
-            organizationId: string | null;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
+            organizationId: string | null;
         } | null;
         chunks: {
             id: string;
@@ -41,10 +41,10 @@ export declare class DocumentsService {
             tokenCount: number | null;
         }[];
     } & {
-        organizationId: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -56,11 +56,11 @@ export declare class DocumentsService {
         status: DocumentStatus;
         totalChunks: number | null;
     }>;
-    getDocumentsByOrganization(organizationId: string): Promise<{
-        organizationId: string | null;
+    getDocuments(): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -73,10 +73,10 @@ export declare class DocumentsService {
         totalChunks: number | null;
     }[]>;
     updateDocument(id: string, data: UpdateDocumentDto): Promise<{
-        organizationId: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -89,10 +89,10 @@ export declare class DocumentsService {
         totalChunks: number | null;
     }>;
     deleteDocument(id: string): Promise<{
-        organizationId: string | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        organizationId: string | null;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;

@@ -1,7 +1,6 @@
 import { DocumentStatus } from "../../generated/prisma";
 export declare class DocumentEntity {
     id: string;
-    organizationId?: string;
     uploadedBy?: string;
     originalFileName: string;
     mimeType?: string;

@@ -13,8 +13,6 @@ export declare class AuthService {
             email: string;
             full_name: string | null;
             role: string;
-            organization_id: string | null;
-            organization_name: string | null;
         };
     }>;
     login(dto: LoginDto): Promise<{
@@ -24,8 +22,6 @@ export declare class AuthService {
             email: string;
             full_name: string | null;
             role: string;
-            organization_id: string | null;
-            organization_name: string | null;
         };
     }>;
     getMe(userId: string): Promise<{
@@ -33,8 +29,6 @@ export declare class AuthService {
         email: string;
         full_name: string | null;
         role: string;
-        organization_id: string | null;
-        organization_name: string | null;
     }>;
     private buildResponse;
     private sanitize;

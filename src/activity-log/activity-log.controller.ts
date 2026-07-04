@@ -23,13 +23,6 @@ export class ActivityLogController {
     return this.activityLogService.getLogById(id);
   }
 
-  @Get('organization/:organizationId')
-  async getByOrganization(
-    @Param('organizationId', new ParseUUIDPipe()) organizationId: string,
-  ) {
-    return this.activityLogService.getLogsByOrganization(organizationId);
-  }
-
   @Get('user/:userId')
   async getByUser(@Param('userId', new ParseUUIDPipe()) userId: string) {
     return this.activityLogService.getLogsByUser(userId);

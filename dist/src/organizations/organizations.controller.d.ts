@@ -24,10 +24,10 @@ export declare class OrganizationsController {
     }[]>;
     get(id: string): Promise<{
         documents: {
-            organizationId: string | null;
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            organizationId: string | null;
             uploadedBy: string | null;
             originalFileName: string;
             mimeType: string | null;
@@ -44,11 +44,11 @@ export declare class OrganizationsController {
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
-            organizationId: string | null;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
+            organizationId: string | null;
         }[];
     } & {
         id: string;
@@ -65,11 +65,11 @@ export declare class OrganizationsController {
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
-            organizationId: string | null;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
+            organizationId: string | null;
         }[];
     } & {
         id: string;

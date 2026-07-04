@@ -30,12 +30,12 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
         this.extractor = extractor;
         this.chunker = chunker;
     }
-    async upload(file, organizationId, uploadedBy) {
+    async upload(file, uploadedBy) {
         await this.validator.validate(file);
         const checksum = this.computeChecksum(file.buffer);
         this.logger.log(`SHA-256 checksum for "${file.originalname}": ${checksum}`);
         const existing = await this.prisma.document.findFirst({
-            where: { checksum, ...(organizationId && { organizationId }) },
+            where: { checksum },
             select: { id: true, originalFileName: true },
         });
         if (existing) {
@@ -47,7 +47,6 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
         }
         const document = await this.prisma.document.create({
             data: {
-                organizationId: organizationId ?? null,
                 uploadedBy: uploadedBy ?? null,
                 originalFileName: file.originalname,
                 mimeType: file.mimetype,

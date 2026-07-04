@@ -8,10 +8,6 @@ import {
 
 export class CreateActivityLogDto {
   @IsUUID()
-  @IsNotEmpty()
-  organizationId: string;
-
-  @IsUUID()
   @IsOptional()
   userId?: string;
 

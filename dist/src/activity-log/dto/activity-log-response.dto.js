@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActivityLogResponseDto = void 0;
 class ActivityLogResponseDto {
     id;
-    organizationId;
     userId;
     action;
     entityType;

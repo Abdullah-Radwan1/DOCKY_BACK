@@ -12,15 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UploadDocumentDto = void 0;
 const class_validator_1 = require("class-validator");
 class UploadDocumentDto {
-    organizationId;
     uploadedBy;
 }
 exports.UploadDocumentDto = UploadDocumentDto;
-__decorate([
-    (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], UploadDocumentDto.prototype, "organizationId", void 0);
 __decorate([
     (0, class_validator_1.IsUUID)(),
     (0, class_validator_1.IsOptional)(),

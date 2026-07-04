@@ -34,7 +34,7 @@ let DocumentsController = class DocumentsController {
         if (!file) {
             throw new common_1.BadRequestException('No file uploaded. Include a PDF under the "file" field.');
         }
-        return this.documentUploadService.upload(file, body.organizationId, body.uploadedBy);
+        return this.documentUploadService.upload(file, body.uploadedBy);
     }
     async create(createDto) {
         return this.documentsService.createDocument({
@@ -47,8 +47,8 @@ let DocumentsController = class DocumentsController {
     async get(id) {
         return this.documentsService.getDocumentById(id);
     }
-    async getByOrg(organizationId) {
-        return this.documentsService.getDocumentsByOrganization(organizationId);
+    async getAll() {
+        return this.documentsService.getDocuments();
     }
     async update(id, updateDto) {
         return this.documentsService.updateDocument(id, {
@@ -99,12 +99,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], DocumentsController.prototype, "get", null);
 __decorate([
-    (0, common_1.Get)('organization/:organizationId'),
-    __param(0, (0, common_1.Param)('organizationId', new common_1.ParseUUIDPipe())),
+    (0, common_1.Get)(),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], DocumentsController.prototype, "getByOrg", null);
+], DocumentsController.prototype, "getAll", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe())),

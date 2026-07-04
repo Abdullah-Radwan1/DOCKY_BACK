@@ -74,7 +74,6 @@ let AuthService = class AuthService {
     async login(dto) {
         const profile = await this.prisma.profile.findUnique({
             where: { email: dto.email },
-            include: { organization: true },
         });
         if (!profile || !profile.passwordHash) {
             throw new common_1.UnauthorizedException('Invalid email or password.');
@@ -88,7 +87,6 @@ let AuthService = class AuthService {
     async getMe(userId) {
         const profile = await this.prisma.profile.findUnique({
             where: { id: userId },
-            include: { organization: true },
         });
         if (!profile) {
             throw new common_1.UnauthorizedException('User not found.');
@@ -112,8 +110,6 @@ let AuthService = class AuthService {
             email: profile.email,
             full_name: profile.fullName,
             role: profile.role,
-            organization_id: profile.organizationId,
-            organization_name: profile.organization?.name ?? null,
         };
     }
 };

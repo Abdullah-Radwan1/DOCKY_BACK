@@ -7,7 +7,6 @@ class ProfileEntity {
     fullName;
     avatarUrl;
     role;
-    organizationId;
     createdAt;
     updatedAt;
 }

@@ -19,10 +19,10 @@ export declare class ComplianceService {
     }>;
     getQueryById(id: string): Promise<{
         document: {
-            organizationId: string | null;
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            organizationId: string | null;
             uploadedBy: string | null;
             originalFileName: string;
             mimeType: string | null;
@@ -39,11 +39,11 @@ export declare class ComplianceService {
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
-            organizationId: string | null;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
+            organizationId: string | null;
         };
         response: {
             id: string;

@@ -4,5 +4,4 @@ export declare class CreateProfileDto {
     fullName?: string;
     avatarUrl?: string;
     role?: UserRole;
-    organizationId?: string;
 }

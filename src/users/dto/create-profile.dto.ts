@@ -2,7 +2,6 @@ import { UserRole } from 'src/generated/prisma';
 import {
   IsString,
   IsOptional,
-  IsUUID,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -24,8 +23,4 @@ export class CreateProfileDto {
   @IsEnum(UserRole)
   @IsOptional()
   role?: UserRole;
-
-  @IsUUID()
-  @IsOptional()
-  organizationId?: string;
 }

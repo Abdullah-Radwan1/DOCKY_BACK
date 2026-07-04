@@ -4,9 +4,9 @@ export declare class ActivityLogController {
     private readonly activityLogService;
     constructor(activityLogService: ActivityLogService);
     create(createDto: CreateActivityLogDto): Promise<{
-        organizationId: string;
         id: string;
         createdAt: Date;
+        organizationId: string;
         userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
@@ -28,48 +28,26 @@ export declare class ActivityLogController {
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
-            organizationId: string | null;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
+            organizationId: string | null;
         } | null;
     } & {
-        organizationId: string;
         id: string;
         createdAt: Date;
+        organizationId: string;
         userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
         entityType: string | null;
         entityId: string | null;
     }>;
-    getByOrganization(organizationId: string): Promise<({
-        user: {
-            email: string;
-            fullName: string | null;
-            avatarUrl: string | null;
-            role: import("src/generated/prisma").UserRole;
-            organizationId: string | null;
-            id: string;
-            passwordHash: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-        } | null;
-    } & {
-        organizationId: string;
-        id: string;
-        createdAt: Date;
-        userId: string | null;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
-        action: string;
-        entityType: string | null;
-        entityId: string | null;
-    })[]>;
     getByUser(userId: string): Promise<{
-        organizationId: string;
         id: string;
         createdAt: Date;
+        organizationId: string;
         userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
@@ -82,16 +60,16 @@ export declare class ActivityLogController {
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
-            organizationId: string | null;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
+            organizationId: string | null;
         } | null;
     } & {
-        organizationId: string;
         id: string;
         createdAt: Date;
+        organizationId: string;
         userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;

@@ -38,7 +38,6 @@ export class DocumentUploadService {
    */
   async upload(
     file: Express.Multer.File,
-    organizationId?: string,
     uploadedBy?: string,
   ): Promise<UploadDocumentResponseDto> {
     // ── 1. Validate ────────────────────────────────────────────────────────
@@ -49,7 +48,7 @@ export class DocumentUploadService {
     this.logger.log(`SHA-256 checksum for "${file.originalname}": ${checksum}`);
 
     const existing = await this.prisma.document.findFirst({
-      where: { checksum, ...(organizationId && { organizationId }) },
+      where: { checksum },
       select: { id: true, originalFileName: true },
     });
 
@@ -66,7 +65,6 @@ export class DocumentUploadService {
     // ── 3. Create Document record (status = uploaded) ──────────────────────
     const document = await this.prisma.document.create({
       data: {
-        organizationId: organizationId ?? null,
         uploadedBy: uploadedBy ?? null,
         originalFileName: file.originalname,
         mimeType: file.mimetype,

@@ -41,9 +41,8 @@ export class DocumentsController {
    * POST /documents/upload
    *
    * Accepts a multipart/form-data request with:
-   *   - `file`           — the PDF binary (field name: "file")
-   *   - `organizationId` — UUID of the owning organisation
-   *   - `uploadedBy`     — UUID of the uploading user
+   *   - `file`       — the PDF binary (field name: "file")
+   *   - `uploadedBy` — UUID of the uploading user
    *
    * Pipeline: validate → deduplicate → extract text → chunk → store chunks.
    *
@@ -87,11 +86,7 @@ export class DocumentsController {
       );
     }
 
-    return this.documentUploadService.upload(
-      file,
-      body.organizationId,
-      body.uploadedBy,
-    );
+    return this.documentUploadService.upload(file, body.uploadedBy);
   }
 
   // ── CRUD endpoints ────────────────────────────────────────────────────────
@@ -111,11 +106,9 @@ export class DocumentsController {
     return this.documentsService.getDocumentById(id);
   }
 
-  @Get('organization/:organizationId')
-  async getByOrg(
-    @Param('organizationId', new ParseUUIDPipe()) organizationId: string,
-  ) {
-    return this.documentsService.getDocumentsByOrganization(organizationId);
+  @Get()
+  async getAll() {
+    return this.documentsService.getDocuments();
   }
 
   @Patch(':id')

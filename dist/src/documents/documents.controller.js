@@ -24,6 +24,7 @@ const update_document_dto_1 = require("./dto/update-document.dto");
 const upload_document_dto_1 = require("./dto/upload-document.dto");
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const public_decorator_1 = require("../auth/decorators/public.decorator");
 let DocumentsController = class DocumentsController {
     documentsService;
     documentUploadService;
@@ -65,6 +66,7 @@ let DocumentsController = class DocumentsController {
 };
 exports.DocumentsController = DocumentsController;
 __decorate([
+    (0, public_decorator_1.Public)(),
     (0, common_1.Post)('upload'),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {

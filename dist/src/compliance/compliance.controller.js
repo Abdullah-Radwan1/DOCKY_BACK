@@ -16,12 +16,19 @@ exports.ComplianceController = void 0;
 const common_1 = require("@nestjs/common");
 const compliance_service_1 = require("./compliance.service");
 const create_compliance_query_dto_1 = require("./dto/create-compliance-query.dto");
-const create_ai_response_dto_1 = require("./dto/create-ai-response.dto");
+const create_analysis_request_dto_1 = require("./dto/create-analysis-request.dto");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const public_decorator_1 = require("../auth/decorators/public.decorator");
 let ComplianceController = class ComplianceController {
     complianceService;
     constructor(complianceService) {
         this.complianceService = complianceService;
+    }
+    async analyzeDocument(dto) {
+        return this.complianceService.submitAnalysis(dto);
+    }
+    async getAnalysis(id) {
+        return this.complianceService.getAnalysisResult(id);
     }
     async createQuery(queryDto) {
         return this.complianceService.createQuery(queryDto);
@@ -32,11 +39,24 @@ let ComplianceController = class ComplianceController {
     async getByDocument(documentId) {
         return this.complianceService.getQueriesByDocument(documentId);
     }
-    async addResponse(responseDto) {
-        return this.complianceService.addAIResponse(responseDto);
-    }
 };
 exports.ComplianceController = ComplianceController;
+__decorate([
+    (0, public_decorator_1.Public)(),
+    (0, common_1.Post)('analyze'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_analysis_request_dto_1.CreateAnalysisRequestDto]),
+    __metadata("design:returntype", Promise)
+], ComplianceController.prototype, "analyzeDocument", null);
+__decorate([
+    (0, public_decorator_1.Public)(),
+    (0, common_1.Get)('analysis/:id'),
+    __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe())),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ComplianceController.prototype, "getAnalysis", null);
 __decorate([
     (0, common_1.Post)('query'),
     __param(0, (0, common_1.Body)()),
@@ -58,13 +78,6 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ComplianceController.prototype, "getByDocument", null);
-__decorate([
-    (0, common_1.Post)('response'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_ai_response_dto_1.CreateAIResponseDto]),
-    __metadata("design:returntype", Promise)
-], ComplianceController.prototype, "addResponse", null);
 exports.ComplianceController = ComplianceController = __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Controller)('compliance'),

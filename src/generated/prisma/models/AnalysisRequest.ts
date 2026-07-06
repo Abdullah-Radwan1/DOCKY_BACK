@@ -40,6 +40,7 @@ export type AnalysisRequestMinAggregateOutputType = {
   status: $Enums.AnalysisRequestStatus | null
   documentId: string | null
   userId: string | null
+  guestId: string | null
   attemptCount: number | null
   errorMessage: string | null
   processingStartedAt: Date | null
@@ -54,6 +55,7 @@ export type AnalysisRequestMaxAggregateOutputType = {
   status: $Enums.AnalysisRequestStatus | null
   documentId: string | null
   userId: string | null
+  guestId: string | null
   attemptCount: number | null
   errorMessage: string | null
   processingStartedAt: Date | null
@@ -68,6 +70,7 @@ export type AnalysisRequestCountAggregateOutputType = {
   status: number
   documentId: number
   userId: number
+  guestId: number
   attemptCount: number
   errorMessage: number
   processingStartedAt: number
@@ -92,6 +95,7 @@ export type AnalysisRequestMinAggregateInputType = {
   status?: true
   documentId?: true
   userId?: true
+  guestId?: true
   attemptCount?: true
   errorMessage?: true
   processingStartedAt?: true
@@ -106,6 +110,7 @@ export type AnalysisRequestMaxAggregateInputType = {
   status?: true
   documentId?: true
   userId?: true
+  guestId?: true
   attemptCount?: true
   errorMessage?: true
   processingStartedAt?: true
@@ -120,6 +125,7 @@ export type AnalysisRequestCountAggregateInputType = {
   status?: true
   documentId?: true
   userId?: true
+  guestId?: true
   attemptCount?: true
   errorMessage?: true
   processingStartedAt?: true
@@ -220,7 +226,8 @@ export type AnalysisRequestGroupByOutputType = {
   queryText: string
   status: $Enums.AnalysisRequestStatus
   documentId: string | null
-  userId: string
+  userId: string | null
+  guestId: string | null
   attemptCount: number
   errorMessage: string | null
   processingStartedAt: Date | null
@@ -257,7 +264,8 @@ export type AnalysisRequestWhereInput = {
   queryText?: Prisma.StringFilter<"AnalysisRequest"> | string
   status?: Prisma.EnumAnalysisRequestStatusFilter<"AnalysisRequest"> | $Enums.AnalysisRequestStatus
   documentId?: Prisma.UuidNullableFilter<"AnalysisRequest"> | string | null
-  userId?: Prisma.UuidFilter<"AnalysisRequest"> | string
+  userId?: Prisma.UuidNullableFilter<"AnalysisRequest"> | string | null
+  guestId?: Prisma.StringNullableFilter<"AnalysisRequest"> | string | null
   attemptCount?: Prisma.IntFilter<"AnalysisRequest"> | number
   errorMessage?: Prisma.StringNullableFilter<"AnalysisRequest"> | string | null
   processingStartedAt?: Prisma.DateTimeNullableFilter<"AnalysisRequest"> | Date | string | null
@@ -265,7 +273,7 @@ export type AnalysisRequestWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"AnalysisRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AnalysisRequest"> | Date | string
   document?: Prisma.XOR<Prisma.DocumentNullableScalarRelationFilter, Prisma.DocumentWhereInput> | null
-  user?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
+  user?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
   response?: Prisma.XOR<Prisma.AIResponseNullableScalarRelationFilter, Prisma.AIResponseWhereInput> | null
 }
 
@@ -274,7 +282,8 @@ export type AnalysisRequestOrderByWithRelationInput = {
   queryText?: Prisma.SortOrder
   status?: Prisma.SortOrder
   documentId?: Prisma.SortOrderInput | Prisma.SortOrder
-  userId?: Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  guestId?: Prisma.SortOrderInput | Prisma.SortOrder
   attemptCount?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrderInput | Prisma.SortOrder
   processingStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -294,7 +303,8 @@ export type AnalysisRequestWhereUniqueInput = Prisma.AtLeast<{
   queryText?: Prisma.StringFilter<"AnalysisRequest"> | string
   status?: Prisma.EnumAnalysisRequestStatusFilter<"AnalysisRequest"> | $Enums.AnalysisRequestStatus
   documentId?: Prisma.UuidNullableFilter<"AnalysisRequest"> | string | null
-  userId?: Prisma.UuidFilter<"AnalysisRequest"> | string
+  userId?: Prisma.UuidNullableFilter<"AnalysisRequest"> | string | null
+  guestId?: Prisma.StringNullableFilter<"AnalysisRequest"> | string | null
   attemptCount?: Prisma.IntFilter<"AnalysisRequest"> | number
   errorMessage?: Prisma.StringNullableFilter<"AnalysisRequest"> | string | null
   processingStartedAt?: Prisma.DateTimeNullableFilter<"AnalysisRequest"> | Date | string | null
@@ -302,7 +312,7 @@ export type AnalysisRequestWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"AnalysisRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AnalysisRequest"> | Date | string
   document?: Prisma.XOR<Prisma.DocumentNullableScalarRelationFilter, Prisma.DocumentWhereInput> | null
-  user?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
+  user?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
   response?: Prisma.XOR<Prisma.AIResponseNullableScalarRelationFilter, Prisma.AIResponseWhereInput> | null
 }, "id">
 
@@ -311,7 +321,8 @@ export type AnalysisRequestOrderByWithAggregationInput = {
   queryText?: Prisma.SortOrder
   status?: Prisma.SortOrder
   documentId?: Prisma.SortOrderInput | Prisma.SortOrder
-  userId?: Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  guestId?: Prisma.SortOrderInput | Prisma.SortOrder
   attemptCount?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrderInput | Prisma.SortOrder
   processingStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -333,7 +344,8 @@ export type AnalysisRequestScalarWhereWithAggregatesInput = {
   queryText?: Prisma.StringWithAggregatesFilter<"AnalysisRequest"> | string
   status?: Prisma.EnumAnalysisRequestStatusWithAggregatesFilter<"AnalysisRequest"> | $Enums.AnalysisRequestStatus
   documentId?: Prisma.UuidNullableWithAggregatesFilter<"AnalysisRequest"> | string | null
-  userId?: Prisma.UuidWithAggregatesFilter<"AnalysisRequest"> | string
+  userId?: Prisma.UuidNullableWithAggregatesFilter<"AnalysisRequest"> | string | null
+  guestId?: Prisma.StringNullableWithAggregatesFilter<"AnalysisRequest"> | string | null
   attemptCount?: Prisma.IntWithAggregatesFilter<"AnalysisRequest"> | number
   errorMessage?: Prisma.StringNullableWithAggregatesFilter<"AnalysisRequest"> | string | null
   processingStartedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AnalysisRequest"> | Date | string | null
@@ -346,6 +358,7 @@ export type AnalysisRequestCreateInput = {
   id?: string
   queryText: string
   status?: $Enums.AnalysisRequestStatus
+  guestId?: string | null
   attemptCount?: number
   errorMessage?: string | null
   processingStartedAt?: Date | string | null
@@ -353,7 +366,7 @@ export type AnalysisRequestCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   document?: Prisma.DocumentCreateNestedOneWithoutAnalysisRequestsInput
-  user: Prisma.ProfileCreateNestedOneWithoutAnalysisRequestsInput
+  user?: Prisma.ProfileCreateNestedOneWithoutAnalysisRequestsInput
   response?: Prisma.AIResponseCreateNestedOneWithoutAnalysisRequestInput
 }
 
@@ -362,7 +375,8 @@ export type AnalysisRequestUncheckedCreateInput = {
   queryText: string
   status?: $Enums.AnalysisRequestStatus
   documentId?: string | null
-  userId: string
+  userId?: string | null
+  guestId?: string | null
   attemptCount?: number
   errorMessage?: string | null
   processingStartedAt?: Date | string | null
@@ -376,6 +390,7 @@ export type AnalysisRequestUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   queryText?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAnalysisRequestStatusFieldUpdateOperationsInput | $Enums.AnalysisRequestStatus
+  guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -383,7 +398,7 @@ export type AnalysisRequestUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   document?: Prisma.DocumentUpdateOneWithoutAnalysisRequestsNestedInput
-  user?: Prisma.ProfileUpdateOneRequiredWithoutAnalysisRequestsNestedInput
+  user?: Prisma.ProfileUpdateOneWithoutAnalysisRequestsNestedInput
   response?: Prisma.AIResponseUpdateOneWithoutAnalysisRequestNestedInput
 }
 
@@ -392,7 +407,8 @@ export type AnalysisRequestUncheckedUpdateInput = {
   queryText?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAnalysisRequestStatusFieldUpdateOperationsInput | $Enums.AnalysisRequestStatus
   documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -407,7 +423,8 @@ export type AnalysisRequestCreateManyInput = {
   queryText: string
   status?: $Enums.AnalysisRequestStatus
   documentId?: string | null
-  userId: string
+  userId?: string | null
+  guestId?: string | null
   attemptCount?: number
   errorMessage?: string | null
   processingStartedAt?: Date | string | null
@@ -420,6 +437,7 @@ export type AnalysisRequestUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   queryText?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAnalysisRequestStatusFieldUpdateOperationsInput | $Enums.AnalysisRequestStatus
+  guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -433,7 +451,8 @@ export type AnalysisRequestUncheckedUpdateManyInput = {
   queryText?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAnalysisRequestStatusFieldUpdateOperationsInput | $Enums.AnalysisRequestStatus
   documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -458,6 +477,7 @@ export type AnalysisRequestCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  guestId?: Prisma.SortOrder
   attemptCount?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrder
   processingStartedAt?: Prisma.SortOrder
@@ -476,6 +496,7 @@ export type AnalysisRequestMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  guestId?: Prisma.SortOrder
   attemptCount?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrder
   processingStartedAt?: Prisma.SortOrder
@@ -490,6 +511,7 @@ export type AnalysisRequestMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  guestId?: Prisma.SortOrder
   attemptCount?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrder
   processingStartedAt?: Prisma.SortOrder
@@ -613,6 +635,7 @@ export type AnalysisRequestCreateWithoutUserInput = {
   id?: string
   queryText: string
   status?: $Enums.AnalysisRequestStatus
+  guestId?: string | null
   attemptCount?: number
   errorMessage?: string | null
   processingStartedAt?: Date | string | null
@@ -628,6 +651,7 @@ export type AnalysisRequestUncheckedCreateWithoutUserInput = {
   queryText: string
   status?: $Enums.AnalysisRequestStatus
   documentId?: string | null
+  guestId?: string | null
   attemptCount?: number
   errorMessage?: string | null
   processingStartedAt?: Date | string | null
@@ -671,7 +695,8 @@ export type AnalysisRequestScalarWhereInput = {
   queryText?: Prisma.StringFilter<"AnalysisRequest"> | string
   status?: Prisma.EnumAnalysisRequestStatusFilter<"AnalysisRequest"> | $Enums.AnalysisRequestStatus
   documentId?: Prisma.UuidNullableFilter<"AnalysisRequest"> | string | null
-  userId?: Prisma.UuidFilter<"AnalysisRequest"> | string
+  userId?: Prisma.UuidNullableFilter<"AnalysisRequest"> | string | null
+  guestId?: Prisma.StringNullableFilter<"AnalysisRequest"> | string | null
   attemptCount?: Prisma.IntFilter<"AnalysisRequest"> | number
   errorMessage?: Prisma.StringNullableFilter<"AnalysisRequest"> | string | null
   processingStartedAt?: Prisma.DateTimeNullableFilter<"AnalysisRequest"> | Date | string | null
@@ -684,13 +709,14 @@ export type AnalysisRequestCreateWithoutDocumentInput = {
   id?: string
   queryText: string
   status?: $Enums.AnalysisRequestStatus
+  guestId?: string | null
   attemptCount?: number
   errorMessage?: string | null
   processingStartedAt?: Date | string | null
   processingFinishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  user: Prisma.ProfileCreateNestedOneWithoutAnalysisRequestsInput
+  user?: Prisma.ProfileCreateNestedOneWithoutAnalysisRequestsInput
   response?: Prisma.AIResponseCreateNestedOneWithoutAnalysisRequestInput
 }
 
@@ -698,7 +724,8 @@ export type AnalysisRequestUncheckedCreateWithoutDocumentInput = {
   id?: string
   queryText: string
   status?: $Enums.AnalysisRequestStatus
-  userId: string
+  userId?: string | null
+  guestId?: string | null
   attemptCount?: number
   errorMessage?: string | null
   processingStartedAt?: Date | string | null
@@ -738,6 +765,7 @@ export type AnalysisRequestCreateWithoutResponseInput = {
   id?: string
   queryText: string
   status?: $Enums.AnalysisRequestStatus
+  guestId?: string | null
   attemptCount?: number
   errorMessage?: string | null
   processingStartedAt?: Date | string | null
@@ -745,7 +773,7 @@ export type AnalysisRequestCreateWithoutResponseInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   document?: Prisma.DocumentCreateNestedOneWithoutAnalysisRequestsInput
-  user: Prisma.ProfileCreateNestedOneWithoutAnalysisRequestsInput
+  user?: Prisma.ProfileCreateNestedOneWithoutAnalysisRequestsInput
 }
 
 export type AnalysisRequestUncheckedCreateWithoutResponseInput = {
@@ -753,7 +781,8 @@ export type AnalysisRequestUncheckedCreateWithoutResponseInput = {
   queryText: string
   status?: $Enums.AnalysisRequestStatus
   documentId?: string | null
-  userId: string
+  userId?: string | null
+  guestId?: string | null
   attemptCount?: number
   errorMessage?: string | null
   processingStartedAt?: Date | string | null
@@ -782,6 +811,7 @@ export type AnalysisRequestUpdateWithoutResponseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   queryText?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAnalysisRequestStatusFieldUpdateOperationsInput | $Enums.AnalysisRequestStatus
+  guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -789,7 +819,7 @@ export type AnalysisRequestUpdateWithoutResponseInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   document?: Prisma.DocumentUpdateOneWithoutAnalysisRequestsNestedInput
-  user?: Prisma.ProfileUpdateOneRequiredWithoutAnalysisRequestsNestedInput
+  user?: Prisma.ProfileUpdateOneWithoutAnalysisRequestsNestedInput
 }
 
 export type AnalysisRequestUncheckedUpdateWithoutResponseInput = {
@@ -797,7 +827,8 @@ export type AnalysisRequestUncheckedUpdateWithoutResponseInput = {
   queryText?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAnalysisRequestStatusFieldUpdateOperationsInput | $Enums.AnalysisRequestStatus
   documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -811,6 +842,7 @@ export type AnalysisRequestCreateManyUserInput = {
   queryText: string
   status?: $Enums.AnalysisRequestStatus
   documentId?: string | null
+  guestId?: string | null
   attemptCount?: number
   errorMessage?: string | null
   processingStartedAt?: Date | string | null
@@ -823,6 +855,7 @@ export type AnalysisRequestUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   queryText?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAnalysisRequestStatusFieldUpdateOperationsInput | $Enums.AnalysisRequestStatus
+  guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -838,6 +871,7 @@ export type AnalysisRequestUncheckedUpdateWithoutUserInput = {
   queryText?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAnalysisRequestStatusFieldUpdateOperationsInput | $Enums.AnalysisRequestStatus
   documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -852,6 +886,7 @@ export type AnalysisRequestUncheckedUpdateManyWithoutUserInput = {
   queryText?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAnalysisRequestStatusFieldUpdateOperationsInput | $Enums.AnalysisRequestStatus
   documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -864,7 +899,8 @@ export type AnalysisRequestCreateManyDocumentInput = {
   id?: string
   queryText: string
   status?: $Enums.AnalysisRequestStatus
-  userId: string
+  userId?: string | null
+  guestId?: string | null
   attemptCount?: number
   errorMessage?: string | null
   processingStartedAt?: Date | string | null
@@ -877,13 +913,14 @@ export type AnalysisRequestUpdateWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   queryText?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAnalysisRequestStatusFieldUpdateOperationsInput | $Enums.AnalysisRequestStatus
+  guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   processingFinishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.ProfileUpdateOneRequiredWithoutAnalysisRequestsNestedInput
+  user?: Prisma.ProfileUpdateOneWithoutAnalysisRequestsNestedInput
   response?: Prisma.AIResponseUpdateOneWithoutAnalysisRequestNestedInput
 }
 
@@ -891,7 +928,8 @@ export type AnalysisRequestUncheckedUpdateWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   queryText?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAnalysisRequestStatusFieldUpdateOperationsInput | $Enums.AnalysisRequestStatus
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -905,7 +943,8 @@ export type AnalysisRequestUncheckedUpdateManyWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   queryText?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumAnalysisRequestStatusFieldUpdateOperationsInput | $Enums.AnalysisRequestStatus
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processingStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -922,6 +961,7 @@ export type AnalysisRequestSelect<ExtArgs extends runtime.Types.Extensions.Inter
   status?: boolean
   documentId?: boolean
   userId?: boolean
+  guestId?: boolean
   attemptCount?: boolean
   errorMessage?: boolean
   processingStartedAt?: boolean
@@ -929,7 +969,7 @@ export type AnalysisRequestSelect<ExtArgs extends runtime.Types.Extensions.Inter
   createdAt?: boolean
   updatedAt?: boolean
   document?: boolean | Prisma.AnalysisRequest$documentArgs<ExtArgs>
-  user?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.AnalysisRequest$userArgs<ExtArgs>
   response?: boolean | Prisma.AnalysisRequest$responseArgs<ExtArgs>
 }, ExtArgs["result"]["analysisRequest"]>
 
@@ -939,6 +979,7 @@ export type AnalysisRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   status?: boolean
   documentId?: boolean
   userId?: boolean
+  guestId?: boolean
   attemptCount?: boolean
   errorMessage?: boolean
   processingStartedAt?: boolean
@@ -946,7 +987,7 @@ export type AnalysisRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   createdAt?: boolean
   updatedAt?: boolean
   document?: boolean | Prisma.AnalysisRequest$documentArgs<ExtArgs>
-  user?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.AnalysisRequest$userArgs<ExtArgs>
 }, ExtArgs["result"]["analysisRequest"]>
 
 export type AnalysisRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -955,6 +996,7 @@ export type AnalysisRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   status?: boolean
   documentId?: boolean
   userId?: boolean
+  guestId?: boolean
   attemptCount?: boolean
   errorMessage?: boolean
   processingStartedAt?: boolean
@@ -962,7 +1004,7 @@ export type AnalysisRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   createdAt?: boolean
   updatedAt?: boolean
   document?: boolean | Prisma.AnalysisRequest$documentArgs<ExtArgs>
-  user?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.AnalysisRequest$userArgs<ExtArgs>
 }, ExtArgs["result"]["analysisRequest"]>
 
 export type AnalysisRequestSelectScalar = {
@@ -971,6 +1013,7 @@ export type AnalysisRequestSelectScalar = {
   status?: boolean
   documentId?: boolean
   userId?: boolean
+  guestId?: boolean
   attemptCount?: boolean
   errorMessage?: boolean
   processingStartedAt?: boolean
@@ -979,26 +1022,26 @@ export type AnalysisRequestSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AnalysisRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "queryText" | "status" | "documentId" | "userId" | "attemptCount" | "errorMessage" | "processingStartedAt" | "processingFinishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["analysisRequest"]>
+export type AnalysisRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "queryText" | "status" | "documentId" | "userId" | "guestId" | "attemptCount" | "errorMessage" | "processingStartedAt" | "processingFinishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["analysisRequest"]>
 export type AnalysisRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   document?: boolean | Prisma.AnalysisRequest$documentArgs<ExtArgs>
-  user?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.AnalysisRequest$userArgs<ExtArgs>
   response?: boolean | Prisma.AnalysisRequest$responseArgs<ExtArgs>
 }
 export type AnalysisRequestIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   document?: boolean | Prisma.AnalysisRequest$documentArgs<ExtArgs>
-  user?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.AnalysisRequest$userArgs<ExtArgs>
 }
 export type AnalysisRequestIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   document?: boolean | Prisma.AnalysisRequest$documentArgs<ExtArgs>
-  user?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.AnalysisRequest$userArgs<ExtArgs>
 }
 
 export type $AnalysisRequestPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AnalysisRequest"
   objects: {
     document: Prisma.$DocumentPayload<ExtArgs> | null
-    user: Prisma.$ProfilePayload<ExtArgs>
+    user: Prisma.$ProfilePayload<ExtArgs> | null
     response: Prisma.$AIResponsePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1006,7 +1049,8 @@ export type $AnalysisRequestPayload<ExtArgs extends runtime.Types.Extensions.Int
     queryText: string
     status: $Enums.AnalysisRequestStatus
     documentId: string | null
-    userId: string
+    userId: string | null
+    guestId: string | null
     attemptCount: number
     errorMessage: string | null
     processingStartedAt: Date | null
@@ -1408,7 +1452,7 @@ readonly fields: AnalysisRequestFieldRefs;
 export interface Prisma__AnalysisRequestClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   document<T extends Prisma.AnalysisRequest$documentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AnalysisRequest$documentArgs<ExtArgs>>): Prisma.Prisma__DocumentClient<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  user<T extends Prisma.ProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.AnalysisRequest$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AnalysisRequest$userArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   response<T extends Prisma.AnalysisRequest$responseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AnalysisRequest$responseArgs<ExtArgs>>): Prisma.Prisma__AIResponseClient<runtime.Types.Result.GetResult<Prisma.$AIResponsePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1444,6 +1488,7 @@ export interface AnalysisRequestFieldRefs {
   readonly status: Prisma.FieldRef<"AnalysisRequest", 'AnalysisRequestStatus'>
   readonly documentId: Prisma.FieldRef<"AnalysisRequest", 'String'>
   readonly userId: Prisma.FieldRef<"AnalysisRequest", 'String'>
+  readonly guestId: Prisma.FieldRef<"AnalysisRequest", 'String'>
   readonly attemptCount: Prisma.FieldRef<"AnalysisRequest", 'Int'>
   readonly errorMessage: Prisma.FieldRef<"AnalysisRequest", 'String'>
   readonly processingStartedAt: Prisma.FieldRef<"AnalysisRequest", 'DateTime'>
@@ -1867,6 +1912,25 @@ export type AnalysisRequest$documentArgs<ExtArgs extends runtime.Types.Extension
    */
   include?: Prisma.DocumentInclude<ExtArgs> | null
   where?: Prisma.DocumentWhereInput
+}
+
+/**
+ * AnalysisRequest.user
+ */
+export type AnalysisRequest$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Profile
+   */
+  select?: Prisma.ProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Profile
+   */
+  omit?: Prisma.ProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProfileInclude<ExtArgs> | null
+  where?: Prisma.ProfileWhereInput
 }
 
 /**

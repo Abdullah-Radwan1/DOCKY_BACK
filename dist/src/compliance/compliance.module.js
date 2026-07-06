@@ -10,11 +10,13 @@ exports.ComplianceModule = void 0;
 const common_1 = require("@nestjs/common");
 const compliance_service_1 = require("./compliance.service");
 const compliance_controller_1 = require("./compliance.controller");
+const ai_module_1 = require("../ai/ai.module");
 let ComplianceModule = class ComplianceModule {
 };
 exports.ComplianceModule = ComplianceModule;
 exports.ComplianceModule = ComplianceModule = __decorate([
     (0, common_1.Module)({
+        imports: [ai_module_1.AiModule],
         providers: [compliance_service_1.ComplianceService],
         controllers: [compliance_controller_1.ComplianceController],
         exports: [compliance_service_1.ComplianceService],

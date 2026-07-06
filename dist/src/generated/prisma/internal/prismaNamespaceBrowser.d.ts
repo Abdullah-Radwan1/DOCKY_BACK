@@ -113,6 +113,7 @@ export declare const AnalysisRequestScalarFieldEnum: {
     readonly status: "status";
     readonly documentId: "documentId";
     readonly userId: "userId";
+    readonly guestId: "guestId";
     readonly attemptCount: "attemptCount";
     readonly errorMessage: "errorMessage";
     readonly processingStartedAt: "processingStartedAt";

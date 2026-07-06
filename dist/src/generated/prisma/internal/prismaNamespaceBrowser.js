@@ -139,6 +139,7 @@ exports.AnalysisRequestScalarFieldEnum = {
     status: 'status',
     documentId: 'documentId',
     userId: 'userId',
+    guestId: 'guestId',
     attemptCount: 'attemptCount',
     errorMessage: 'errorMessage',
     processingStartedAt: 'processingStartedAt',

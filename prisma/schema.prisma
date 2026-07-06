@@ -242,7 +242,8 @@ model AnalysisRequest {
   queryText            String                @map("query_text")
   status               AnalysisRequestStatus @default(pending)
   documentId           String?               @map("document_id") @db.Uuid
-  userId               String                @map("user_id") @db.Uuid
+  userId               String?               @map("user_id") @db.Uuid
+  guestId              String?               @map("guest_id")
   attemptCount         Int                   @default(0) @map("attempt_count")
   errorMessage         String?               @map("error_message")
   processingStartedAt  DateTime?             @map("processing_started_at") @db.Timestamptz
@@ -251,7 +252,7 @@ model AnalysisRequest {
   updatedAt            DateTime              @default(dbgenerated("NOW()")) @map("updated_at") @db.Timestamptz
 
   document Document?   @relation(fields: [documentId], references: [id], onDelete: SetNull)
-  user     Profile     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     Profile?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   response AIResponse? // 1:1 on this side is fine
 
   @@index([userId, createdAt])

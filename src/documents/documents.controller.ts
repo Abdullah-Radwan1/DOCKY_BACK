@@ -29,6 +29,7 @@ import { UploadDocumentDto } from './dto/upload-document.dto';
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Public } from '../auth/decorators/public.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller('documents')
@@ -56,6 +57,7 @@ export class DocumentsController {
    *   - 415  Not a valid PDF (MIME type or file signature mismatch)
    *   - 500  Unexpected processing error
    */
+  @Public()
   @Post('upload')
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(

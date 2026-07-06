@@ -31,9 +31,12 @@ export type ProfileMinAggregateOutputType = {
   avatarUrl: string | null
   passwordHash: string | null
   role: $Enums.UserRole | null
-  organizationId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  allowEmailNotifications: boolean | null
+  allowExpiryReminders: boolean | null
+  allowRiskAlerts: boolean | null
+  allowAnalysisAlerts: boolean | null
 }
 
 export type ProfileMaxAggregateOutputType = {
@@ -43,9 +46,12 @@ export type ProfileMaxAggregateOutputType = {
   avatarUrl: string | null
   passwordHash: string | null
   role: $Enums.UserRole | null
-  organizationId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  allowEmailNotifications: boolean | null
+  allowExpiryReminders: boolean | null
+  allowRiskAlerts: boolean | null
+  allowAnalysisAlerts: boolean | null
 }
 
 export type ProfileCountAggregateOutputType = {
@@ -55,9 +61,12 @@ export type ProfileCountAggregateOutputType = {
   avatarUrl: number
   passwordHash: number
   role: number
-  organizationId: number
   createdAt: number
   updatedAt: number
+  allowEmailNotifications: number
+  allowExpiryReminders: number
+  allowRiskAlerts: number
+  allowAnalysisAlerts: number
   _all: number
 }
 
@@ -69,9 +78,12 @@ export type ProfileMinAggregateInputType = {
   avatarUrl?: true
   passwordHash?: true
   role?: true
-  organizationId?: true
   createdAt?: true
   updatedAt?: true
+  allowEmailNotifications?: true
+  allowExpiryReminders?: true
+  allowRiskAlerts?: true
+  allowAnalysisAlerts?: true
 }
 
 export type ProfileMaxAggregateInputType = {
@@ -81,9 +93,12 @@ export type ProfileMaxAggregateInputType = {
   avatarUrl?: true
   passwordHash?: true
   role?: true
-  organizationId?: true
   createdAt?: true
   updatedAt?: true
+  allowEmailNotifications?: true
+  allowExpiryReminders?: true
+  allowRiskAlerts?: true
+  allowAnalysisAlerts?: true
 }
 
 export type ProfileCountAggregateInputType = {
@@ -93,9 +108,12 @@ export type ProfileCountAggregateInputType = {
   avatarUrl?: true
   passwordHash?: true
   role?: true
-  organizationId?: true
   createdAt?: true
   updatedAt?: true
+  allowEmailNotifications?: true
+  allowExpiryReminders?: true
+  allowRiskAlerts?: true
+  allowAnalysisAlerts?: true
   _all?: true
 }
 
@@ -178,9 +196,12 @@ export type ProfileGroupByOutputType = {
   avatarUrl: string | null
   passwordHash: string | null
   role: $Enums.UserRole
-  organizationId: string | null
   createdAt: Date
   updatedAt: Date
+  allowEmailNotifications: boolean
+  allowExpiryReminders: boolean
+  allowRiskAlerts: boolean
+  allowAnalysisAlerts: boolean
   _count: ProfileCountAggregateOutputType | null
   _min: ProfileMinAggregateOutputType | null
   _max: ProfileMaxAggregateOutputType | null
@@ -211,14 +232,17 @@ export type ProfileWhereInput = {
   avatarUrl?: Prisma.StringNullableFilter<"Profile"> | string | null
   passwordHash?: Prisma.StringNullableFilter<"Profile"> | string | null
   role?: Prisma.EnumUserRoleFilter<"Profile"> | $Enums.UserRole
-  organizationId?: Prisma.UuidNullableFilter<"Profile"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
-  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
+  allowEmailNotifications?: Prisma.BoolFilter<"Profile"> | boolean
+  allowExpiryReminders?: Prisma.BoolFilter<"Profile"> | boolean
+  allowRiskAlerts?: Prisma.BoolFilter<"Profile"> | boolean
+  allowAnalysisAlerts?: Prisma.BoolFilter<"Profile"> | boolean
   documents?: Prisma.DocumentListRelationFilter
   analysisRequests?: Prisma.AnalysisRequestListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   activityLogs?: Prisma.ActivityLogListRelationFilter
+  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
 }
 
 export type ProfileOrderByWithRelationInput = {
@@ -228,14 +252,17 @@ export type ProfileOrderByWithRelationInput = {
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
-  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  organization?: Prisma.OrganizationOrderByWithRelationInput
+  allowEmailNotifications?: Prisma.SortOrder
+  allowExpiryReminders?: Prisma.SortOrder
+  allowRiskAlerts?: Prisma.SortOrder
+  allowAnalysisAlerts?: Prisma.SortOrder
   documents?: Prisma.DocumentOrderByRelationAggregateInput
   analysisRequests?: Prisma.AnalysisRequestOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
   activityLogs?: Prisma.ActivityLogOrderByRelationAggregateInput
+  passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput
 }
 
 export type ProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -248,14 +275,17 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   avatarUrl?: Prisma.StringNullableFilter<"Profile"> | string | null
   passwordHash?: Prisma.StringNullableFilter<"Profile"> | string | null
   role?: Prisma.EnumUserRoleFilter<"Profile"> | $Enums.UserRole
-  organizationId?: Prisma.UuidNullableFilter<"Profile"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
-  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
+  allowEmailNotifications?: Prisma.BoolFilter<"Profile"> | boolean
+  allowExpiryReminders?: Prisma.BoolFilter<"Profile"> | boolean
+  allowRiskAlerts?: Prisma.BoolFilter<"Profile"> | boolean
+  allowAnalysisAlerts?: Prisma.BoolFilter<"Profile"> | boolean
   documents?: Prisma.DocumentListRelationFilter
   analysisRequests?: Prisma.AnalysisRequestListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   activityLogs?: Prisma.ActivityLogListRelationFilter
+  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
 }, "id" | "email">
 
 export type ProfileOrderByWithAggregationInput = {
@@ -265,9 +295,12 @@ export type ProfileOrderByWithAggregationInput = {
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
-  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  allowEmailNotifications?: Prisma.SortOrder
+  allowExpiryReminders?: Prisma.SortOrder
+  allowRiskAlerts?: Prisma.SortOrder
+  allowAnalysisAlerts?: Prisma.SortOrder
   _count?: Prisma.ProfileCountOrderByAggregateInput
   _max?: Prisma.ProfileMaxOrderByAggregateInput
   _min?: Prisma.ProfileMinOrderByAggregateInput
@@ -283,9 +316,12 @@ export type ProfileScalarWhereWithAggregatesInput = {
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   passwordHash?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   role?: Prisma.EnumUserRoleWithAggregatesFilter<"Profile"> | $Enums.UserRole
-  organizationId?: Prisma.UuidNullableWithAggregatesFilter<"Profile"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Profile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Profile"> | Date | string
+  allowEmailNotifications?: Prisma.BoolWithAggregatesFilter<"Profile"> | boolean
+  allowExpiryReminders?: Prisma.BoolWithAggregatesFilter<"Profile"> | boolean
+  allowRiskAlerts?: Prisma.BoolWithAggregatesFilter<"Profile"> | boolean
+  allowAnalysisAlerts?: Prisma.BoolWithAggregatesFilter<"Profile"> | boolean
 }
 
 export type ProfileCreateInput = {
@@ -297,11 +333,15 @@ export type ProfileCreateInput = {
   role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
-  organization?: Prisma.OrganizationCreateNestedOneWithoutProfilesInput
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type ProfileUncheckedCreateInput = {
@@ -311,13 +351,17 @@ export type ProfileUncheckedCreateInput = {
   avatarUrl?: string | null
   passwordHash?: string | null
   role?: $Enums.UserRole
-  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type ProfileUpdateInput = {
@@ -329,11 +373,15 @@ export type ProfileUpdateInput = {
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.OrganizationUpdateOneWithoutProfilesNestedInput
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type ProfileUncheckedUpdateInput = {
@@ -343,13 +391,17 @@ export type ProfileUncheckedUpdateInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type ProfileCreateManyInput = {
@@ -359,9 +411,12 @@ export type ProfileCreateManyInput = {
   avatarUrl?: string | null
   passwordHash?: string | null
   role?: $Enums.UserRole
-  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
 }
 
 export type ProfileUpdateManyMutationInput = {
@@ -373,6 +428,10 @@ export type ProfileUpdateManyMutationInput = {
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type ProfileUncheckedUpdateManyInput = {
@@ -382,19 +441,12 @@ export type ProfileUncheckedUpdateManyInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type ProfileListRelationFilter = {
-  every?: Prisma.ProfileWhereInput
-  some?: Prisma.ProfileWhereInput
-  none?: Prisma.ProfileWhereInput
-}
-
-export type ProfileOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type ProfileCountOrderByAggregateInput = {
@@ -404,9 +456,12 @@ export type ProfileCountOrderByAggregateInput = {
   avatarUrl?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  allowEmailNotifications?: Prisma.SortOrder
+  allowExpiryReminders?: Prisma.SortOrder
+  allowRiskAlerts?: Prisma.SortOrder
+  allowAnalysisAlerts?: Prisma.SortOrder
 }
 
 export type ProfileMaxOrderByAggregateInput = {
@@ -416,9 +471,12 @@ export type ProfileMaxOrderByAggregateInput = {
   avatarUrl?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  allowEmailNotifications?: Prisma.SortOrder
+  allowExpiryReminders?: Prisma.SortOrder
+  allowRiskAlerts?: Prisma.SortOrder
+  allowAnalysisAlerts?: Prisma.SortOrder
 }
 
 export type ProfileMinOrderByAggregateInput = {
@@ -428,9 +486,12 @@ export type ProfileMinOrderByAggregateInput = {
   avatarUrl?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  allowEmailNotifications?: Prisma.SortOrder
+  allowExpiryReminders?: Prisma.SortOrder
+  allowRiskAlerts?: Prisma.SortOrder
+  allowAnalysisAlerts?: Prisma.SortOrder
 }
 
 export type ProfileNullableScalarRelationFilter = {
@@ -443,46 +504,8 @@ export type ProfileScalarRelationFilter = {
   isNot?: Prisma.ProfileWhereInput
 }
 
-export type ProfileCreateNestedManyWithoutOrganizationInput = {
-  create?: Prisma.XOR<Prisma.ProfileCreateWithoutOrganizationInput, Prisma.ProfileUncheckedCreateWithoutOrganizationInput> | Prisma.ProfileCreateWithoutOrganizationInput[] | Prisma.ProfileUncheckedCreateWithoutOrganizationInput[]
-  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutOrganizationInput | Prisma.ProfileCreateOrConnectWithoutOrganizationInput[]
-  createMany?: Prisma.ProfileCreateManyOrganizationInputEnvelope
-  connect?: Prisma.ProfileWhereUniqueInput | Prisma.ProfileWhereUniqueInput[]
-}
-
-export type ProfileUncheckedCreateNestedManyWithoutOrganizationInput = {
-  create?: Prisma.XOR<Prisma.ProfileCreateWithoutOrganizationInput, Prisma.ProfileUncheckedCreateWithoutOrganizationInput> | Prisma.ProfileCreateWithoutOrganizationInput[] | Prisma.ProfileUncheckedCreateWithoutOrganizationInput[]
-  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutOrganizationInput | Prisma.ProfileCreateOrConnectWithoutOrganizationInput[]
-  createMany?: Prisma.ProfileCreateManyOrganizationInputEnvelope
-  connect?: Prisma.ProfileWhereUniqueInput | Prisma.ProfileWhereUniqueInput[]
-}
-
-export type ProfileUpdateManyWithoutOrganizationNestedInput = {
-  create?: Prisma.XOR<Prisma.ProfileCreateWithoutOrganizationInput, Prisma.ProfileUncheckedCreateWithoutOrganizationInput> | Prisma.ProfileCreateWithoutOrganizationInput[] | Prisma.ProfileUncheckedCreateWithoutOrganizationInput[]
-  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutOrganizationInput | Prisma.ProfileCreateOrConnectWithoutOrganizationInput[]
-  upsert?: Prisma.ProfileUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.ProfileUpsertWithWhereUniqueWithoutOrganizationInput[]
-  createMany?: Prisma.ProfileCreateManyOrganizationInputEnvelope
-  set?: Prisma.ProfileWhereUniqueInput | Prisma.ProfileWhereUniqueInput[]
-  disconnect?: Prisma.ProfileWhereUniqueInput | Prisma.ProfileWhereUniqueInput[]
-  delete?: Prisma.ProfileWhereUniqueInput | Prisma.ProfileWhereUniqueInput[]
-  connect?: Prisma.ProfileWhereUniqueInput | Prisma.ProfileWhereUniqueInput[]
-  update?: Prisma.ProfileUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.ProfileUpdateWithWhereUniqueWithoutOrganizationInput[]
-  updateMany?: Prisma.ProfileUpdateManyWithWhereWithoutOrganizationInput | Prisma.ProfileUpdateManyWithWhereWithoutOrganizationInput[]
-  deleteMany?: Prisma.ProfileScalarWhereInput | Prisma.ProfileScalarWhereInput[]
-}
-
-export type ProfileUncheckedUpdateManyWithoutOrganizationNestedInput = {
-  create?: Prisma.XOR<Prisma.ProfileCreateWithoutOrganizationInput, Prisma.ProfileUncheckedCreateWithoutOrganizationInput> | Prisma.ProfileCreateWithoutOrganizationInput[] | Prisma.ProfileUncheckedCreateWithoutOrganizationInput[]
-  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutOrganizationInput | Prisma.ProfileCreateOrConnectWithoutOrganizationInput[]
-  upsert?: Prisma.ProfileUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.ProfileUpsertWithWhereUniqueWithoutOrganizationInput[]
-  createMany?: Prisma.ProfileCreateManyOrganizationInputEnvelope
-  set?: Prisma.ProfileWhereUniqueInput | Prisma.ProfileWhereUniqueInput[]
-  disconnect?: Prisma.ProfileWhereUniqueInput | Prisma.ProfileWhereUniqueInput[]
-  delete?: Prisma.ProfileWhereUniqueInput | Prisma.ProfileWhereUniqueInput[]
-  connect?: Prisma.ProfileWhereUniqueInput | Prisma.ProfileWhereUniqueInput[]
-  update?: Prisma.ProfileUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.ProfileUpdateWithWhereUniqueWithoutOrganizationInput[]
-  updateMany?: Prisma.ProfileUpdateManyWithWhereWithoutOrganizationInput | Prisma.ProfileUpdateManyWithWhereWithoutOrganizationInput[]
-  deleteMany?: Prisma.ProfileScalarWhereInput | Prisma.ProfileScalarWhereInput[]
+export type StringFieldUpdateOperationsInput = {
+  set?: string
 }
 
 export type NullableStringFieldUpdateOperationsInput = {
@@ -491,6 +514,14 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type EnumUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.UserRole
+}
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type ProfileCreateNestedOneWithoutDocumentsInput = {
@@ -539,6 +570,20 @@ export type ProfileUpdateOneRequiredWithoutAnalysisRequestsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutAnalysisRequestsInput, Prisma.ProfileUpdateWithoutAnalysisRequestsInput>, Prisma.ProfileUncheckedUpdateWithoutAnalysisRequestsInput>
 }
 
+export type ProfileCreateNestedOneWithoutPasswordResetTokensInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutPasswordResetTokensInput, Prisma.ProfileUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutPasswordResetTokensInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutPasswordResetTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutPasswordResetTokensInput, Prisma.ProfileUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutPasswordResetTokensInput
+  upsert?: Prisma.ProfileUpsertWithoutPasswordResetTokensInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutPasswordResetTokensInput, Prisma.ProfileUpdateWithoutPasswordResetTokensInput>, Prisma.ProfileUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
 export type ProfileCreateNestedOneWithoutNotificationsInput = {
   create?: Prisma.XOR<Prisma.ProfileCreateWithoutNotificationsInput, Prisma.ProfileUncheckedCreateWithoutNotificationsInput>
   connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutNotificationsInput
@@ -553,77 +598,6 @@ export type ProfileUpdateOneRequiredWithoutNotificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutNotificationsInput, Prisma.ProfileUpdateWithoutNotificationsInput>, Prisma.ProfileUncheckedUpdateWithoutNotificationsInput>
 }
 
-export type ProfileCreateWithoutOrganizationInput = {
-  id?: string
-  email: string
-  fullName?: string | null
-  avatarUrl?: string | null
-  passwordHash?: string | null
-  role?: $Enums.UserRole
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
-  analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
-  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
-}
-
-export type ProfileUncheckedCreateWithoutOrganizationInput = {
-  id?: string
-  email: string
-  fullName?: string | null
-  avatarUrl?: string | null
-  passwordHash?: string | null
-  role?: $Enums.UserRole
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
-  analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
-  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type ProfileCreateOrConnectWithoutOrganizationInput = {
-  where: Prisma.ProfileWhereUniqueInput
-  create: Prisma.XOR<Prisma.ProfileCreateWithoutOrganizationInput, Prisma.ProfileUncheckedCreateWithoutOrganizationInput>
-}
-
-export type ProfileCreateManyOrganizationInputEnvelope = {
-  data: Prisma.ProfileCreateManyOrganizationInput | Prisma.ProfileCreateManyOrganizationInput[]
-  skipDuplicates?: boolean
-}
-
-export type ProfileUpsertWithWhereUniqueWithoutOrganizationInput = {
-  where: Prisma.ProfileWhereUniqueInput
-  update: Prisma.XOR<Prisma.ProfileUpdateWithoutOrganizationInput, Prisma.ProfileUncheckedUpdateWithoutOrganizationInput>
-  create: Prisma.XOR<Prisma.ProfileCreateWithoutOrganizationInput, Prisma.ProfileUncheckedCreateWithoutOrganizationInput>
-}
-
-export type ProfileUpdateWithWhereUniqueWithoutOrganizationInput = {
-  where: Prisma.ProfileWhereUniqueInput
-  data: Prisma.XOR<Prisma.ProfileUpdateWithoutOrganizationInput, Prisma.ProfileUncheckedUpdateWithoutOrganizationInput>
-}
-
-export type ProfileUpdateManyWithWhereWithoutOrganizationInput = {
-  where: Prisma.ProfileScalarWhereInput
-  data: Prisma.XOR<Prisma.ProfileUpdateManyMutationInput, Prisma.ProfileUncheckedUpdateManyWithoutOrganizationInput>
-}
-
-export type ProfileScalarWhereInput = {
-  AND?: Prisma.ProfileScalarWhereInput | Prisma.ProfileScalarWhereInput[]
-  OR?: Prisma.ProfileScalarWhereInput[]
-  NOT?: Prisma.ProfileScalarWhereInput | Prisma.ProfileScalarWhereInput[]
-  id?: Prisma.UuidFilter<"Profile"> | string
-  email?: Prisma.StringFilter<"Profile"> | string
-  fullName?: Prisma.StringNullableFilter<"Profile"> | string | null
-  avatarUrl?: Prisma.StringNullableFilter<"Profile"> | string | null
-  passwordHash?: Prisma.StringNullableFilter<"Profile"> | string | null
-  role?: Prisma.EnumUserRoleFilter<"Profile"> | $Enums.UserRole
-  organizationId?: Prisma.UuidNullableFilter<"Profile"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
-}
-
 export type ProfileCreateWithoutDocumentsInput = {
   id?: string
   email: string
@@ -633,10 +607,14 @@ export type ProfileCreateWithoutDocumentsInput = {
   role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
-  organization?: Prisma.OrganizationCreateNestedOneWithoutProfilesInput
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
   analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type ProfileUncheckedCreateWithoutDocumentsInput = {
@@ -646,12 +624,16 @@ export type ProfileUncheckedCreateWithoutDocumentsInput = {
   avatarUrl?: string | null
   passwordHash?: string | null
   role?: $Enums.UserRole
-  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
   analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type ProfileCreateOrConnectWithoutDocumentsInput = {
@@ -679,10 +661,14 @@ export type ProfileUpdateWithoutDocumentsInput = {
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.OrganizationUpdateOneWithoutProfilesNestedInput
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutDocumentsInput = {
@@ -692,12 +678,16 @@ export type ProfileUncheckedUpdateWithoutDocumentsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type ProfileCreateWithoutActivityLogsInput = {
@@ -709,10 +699,14 @@ export type ProfileCreateWithoutActivityLogsInput = {
   role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
-  organization?: Prisma.OrganizationCreateNestedOneWithoutProfilesInput
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type ProfileUncheckedCreateWithoutActivityLogsInput = {
@@ -722,12 +716,16 @@ export type ProfileUncheckedCreateWithoutActivityLogsInput = {
   avatarUrl?: string | null
   passwordHash?: string | null
   role?: $Enums.UserRole
-  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type ProfileCreateOrConnectWithoutActivityLogsInput = {
@@ -755,10 +753,14 @@ export type ProfileUpdateWithoutActivityLogsInput = {
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.OrganizationUpdateOneWithoutProfilesNestedInput
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutActivityLogsInput = {
@@ -768,12 +770,16 @@ export type ProfileUncheckedUpdateWithoutActivityLogsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type ProfileCreateWithoutAnalysisRequestsInput = {
@@ -785,10 +791,14 @@ export type ProfileCreateWithoutAnalysisRequestsInput = {
   role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
-  organization?: Prisma.OrganizationCreateNestedOneWithoutProfilesInput
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type ProfileUncheckedCreateWithoutAnalysisRequestsInput = {
@@ -798,12 +808,16 @@ export type ProfileUncheckedCreateWithoutAnalysisRequestsInput = {
   avatarUrl?: string | null
   passwordHash?: string | null
   role?: $Enums.UserRole
-  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type ProfileCreateOrConnectWithoutAnalysisRequestsInput = {
@@ -831,10 +845,14 @@ export type ProfileUpdateWithoutAnalysisRequestsInput = {
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.OrganizationUpdateOneWithoutProfilesNestedInput
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutAnalysisRequestsInput = {
@@ -844,10 +862,106 @@ export type ProfileUncheckedUpdateWithoutAnalysisRequestsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type ProfileCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  email: string
+  fullName?: string | null
+  avatarUrl?: string | null
+  passwordHash?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
+  documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
+  analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
+}
+
+export type ProfileUncheckedCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  email: string
+  fullName?: string | null
+  avatarUrl?: string | null
+  passwordHash?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type ProfileCreateOrConnectWithoutPasswordResetTokensInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutPasswordResetTokensInput, Prisma.ProfileUncheckedCreateWithoutPasswordResetTokensInput>
+}
+
+export type ProfileUpsertWithoutPasswordResetTokensInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutPasswordResetTokensInput, Prisma.ProfileUncheckedUpdateWithoutPasswordResetTokensInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutPasswordResetTokensInput, Prisma.ProfileUncheckedCreateWithoutPasswordResetTokensInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutPasswordResetTokensInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutPasswordResetTokensInput, Prisma.ProfileUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type ProfileUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -861,10 +975,14 @@ export type ProfileCreateWithoutNotificationsInput = {
   role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
-  organization?: Prisma.OrganizationCreateNestedOneWithoutProfilesInput
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type ProfileUncheckedCreateWithoutNotificationsInput = {
@@ -874,12 +992,16 @@ export type ProfileUncheckedCreateWithoutNotificationsInput = {
   avatarUrl?: string | null
   passwordHash?: string | null
   role?: $Enums.UserRole
-  organizationId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type ProfileCreateOrConnectWithoutNotificationsInput = {
@@ -907,10 +1029,14 @@ export type ProfileUpdateWithoutNotificationsInput = {
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.OrganizationUpdateOneWithoutProfilesNestedInput
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutNotificationsInput = {
@@ -920,64 +1046,16 @@ export type ProfileUncheckedUpdateWithoutNotificationsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type ProfileCreateManyOrganizationInput = {
-  id?: string
-  email: string
-  fullName?: string | null
-  avatarUrl?: string | null
-  passwordHash?: string | null
-  role?: $Enums.UserRole
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type ProfileUpdateWithoutOrganizationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
-  analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
-  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
-}
-
-export type ProfileUncheckedUpdateWithoutOrganizationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
-  analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
-  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type ProfileUncheckedUpdateManyWithoutOrganizationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -990,6 +1068,7 @@ export type ProfileCountOutputType = {
   analysisRequests: number
   notifications: number
   activityLogs: number
+  passwordResetTokens: number
 }
 
 export type ProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -997,6 +1076,7 @@ export type ProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   analysisRequests?: boolean | ProfileCountOutputTypeCountAnalysisRequestsArgs
   notifications?: boolean | ProfileCountOutputTypeCountNotificationsArgs
   activityLogs?: boolean | ProfileCountOutputTypeCountActivityLogsArgs
+  passwordResetTokens?: boolean | ProfileCountOutputTypeCountPasswordResetTokensArgs
 }
 
 /**
@@ -1037,6 +1117,13 @@ export type ProfileCountOutputTypeCountActivityLogsArgs<ExtArgs extends runtime.
   where?: Prisma.ActivityLogWhereInput
 }
 
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PasswordResetTokenWhereInput
+}
+
 
 export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1045,14 +1132,17 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   avatarUrl?: boolean
   passwordHash?: boolean
   role?: boolean
-  organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  organization?: boolean | Prisma.Profile$organizationArgs<ExtArgs>
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
   documents?: boolean | Prisma.Profile$documentsArgs<ExtArgs>
   analysisRequests?: boolean | Prisma.Profile$analysisRequestsArgs<ExtArgs>
   notifications?: boolean | Prisma.Profile$notificationsArgs<ExtArgs>
   activityLogs?: boolean | Prisma.Profile$activityLogsArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.Profile$passwordResetTokensArgs<ExtArgs>
   _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profile"]>
 
@@ -1063,10 +1153,12 @@ export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   avatarUrl?: boolean
   passwordHash?: boolean
   role?: boolean
-  organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  organization?: boolean | Prisma.Profile$organizationArgs<ExtArgs>
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
 }, ExtArgs["result"]["profile"]>
 
 export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1076,10 +1168,12 @@ export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   avatarUrl?: boolean
   passwordHash?: boolean
   role?: boolean
-  organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  organization?: boolean | Prisma.Profile$organizationArgs<ExtArgs>
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
 }, ExtArgs["result"]["profile"]>
 
 export type ProfileSelectScalar = {
@@ -1089,35 +1183,34 @@ export type ProfileSelectScalar = {
   avatarUrl?: boolean
   passwordHash?: boolean
   role?: boolean
-  organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
 }
 
-export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "fullName" | "avatarUrl" | "passwordHash" | "role" | "organizationId" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>
+export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "fullName" | "avatarUrl" | "passwordHash" | "role" | "createdAt" | "updatedAt" | "allowEmailNotifications" | "allowExpiryReminders" | "allowRiskAlerts" | "allowAnalysisAlerts", ExtArgs["result"]["profile"]>
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  organization?: boolean | Prisma.Profile$organizationArgs<ExtArgs>
   documents?: boolean | Prisma.Profile$documentsArgs<ExtArgs>
   analysisRequests?: boolean | Prisma.Profile$analysisRequestsArgs<ExtArgs>
   notifications?: boolean | Prisma.Profile$notificationsArgs<ExtArgs>
   activityLogs?: boolean | Prisma.Profile$activityLogsArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.Profile$passwordResetTokensArgs<ExtArgs>
   _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type ProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  organization?: boolean | Prisma.Profile$organizationArgs<ExtArgs>
-}
-export type ProfileIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  organization?: boolean | Prisma.Profile$organizationArgs<ExtArgs>
-}
+export type ProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ProfileIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Profile"
   objects: {
-    organization: Prisma.$OrganizationPayload<ExtArgs> | null
     documents: Prisma.$DocumentPayload<ExtArgs>[]
     analysisRequests: Prisma.$AnalysisRequestPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
     activityLogs: Prisma.$ActivityLogPayload<ExtArgs>[]
+    passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1126,9 +1219,12 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     avatarUrl: string | null
     passwordHash: string | null
     role: $Enums.UserRole
-    organizationId: string | null
     createdAt: Date
     updatedAt: Date
+    allowEmailNotifications: boolean
+    allowExpiryReminders: boolean
+    allowRiskAlerts: boolean
+    allowAnalysisAlerts: boolean
   }, ExtArgs["result"]["profile"]>
   composites: {}
 }
@@ -1523,11 +1619,11 @@ readonly fields: ProfileFieldRefs;
  */
 export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  organization<T extends Prisma.Profile$organizationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$organizationArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   documents<T extends Prisma.Profile$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   analysisRequests<T extends Prisma.Profile$analysisRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$analysisRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnalysisRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.Profile$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   activityLogs<T extends Prisma.Profile$activityLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$activityLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  passwordResetTokens<T extends Prisma.Profile$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1563,9 +1659,12 @@ export interface ProfileFieldRefs {
   readonly avatarUrl: Prisma.FieldRef<"Profile", 'String'>
   readonly passwordHash: Prisma.FieldRef<"Profile", 'String'>
   readonly role: Prisma.FieldRef<"Profile", 'UserRole'>
-  readonly organizationId: Prisma.FieldRef<"Profile", 'String'>
   readonly createdAt: Prisma.FieldRef<"Profile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Profile", 'DateTime'>
+  readonly allowEmailNotifications: Prisma.FieldRef<"Profile", 'Boolean'>
+  readonly allowExpiryReminders: Prisma.FieldRef<"Profile", 'Boolean'>
+  readonly allowRiskAlerts: Prisma.FieldRef<"Profile", 'Boolean'>
+  readonly allowAnalysisAlerts: Prisma.FieldRef<"Profile", 'Boolean'>
 }
     
 
@@ -1820,10 +1919,6 @@ export type ProfileCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    */
   data: Prisma.ProfileCreateManyInput | Prisma.ProfileCreateManyInput[]
   skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ProfileIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1894,10 +1989,6 @@ export type ProfileUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many Profiles to update.
    */
   limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ProfileIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1964,25 +2055,6 @@ export type ProfileDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Profiles to delete.
    */
   limit?: number
-}
-
-/**
- * Profile.organization
- */
-export type Profile$organizationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Organization
-   */
-  select?: Prisma.OrganizationSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Organization
-   */
-  omit?: Prisma.OrganizationOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.OrganizationInclude<ExtArgs> | null
-  where?: Prisma.OrganizationWhereInput
 }
 
 /**
@@ -2079,6 +2151,30 @@ export type Profile$activityLogsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.ActivityLogScalarFieldEnum | Prisma.ActivityLogScalarFieldEnum[]
+}
+
+/**
+ * Profile.passwordResetTokens
+ */
+export type Profile$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PasswordResetToken
+   */
+  select?: Prisma.PasswordResetTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PasswordResetToken
+   */
+  omit?: Prisma.PasswordResetTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PasswordResetTokenInclude<ExtArgs> | null
+  where?: Prisma.PasswordResetTokenWhereInput
+  orderBy?: Prisma.PasswordResetTokenOrderByWithRelationInput | Prisma.PasswordResetTokenOrderByWithRelationInput[]
+  cursor?: Prisma.PasswordResetTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PasswordResetTokenScalarFieldEnum | Prisma.PasswordResetTokenScalarFieldEnum[]
 }
 
 /**

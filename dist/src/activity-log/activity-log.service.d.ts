@@ -6,7 +6,6 @@ export declare class ActivityLogService {
     createLog(data: CreateActivityLogDto): Promise<{
         id: string;
         createdAt: Date;
-        organizationId: string;
         userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
@@ -14,30 +13,23 @@ export declare class ActivityLogService {
         entityId: string | null;
     }>;
     getLogById(id: string): Promise<{
-        organization: {
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            slug: string;
-            plan: import("src/generated/prisma").PlanType;
-            documentsLimit: number;
-        };
         user: {
             email: string;
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
+            allowEmailNotifications: boolean;
+            allowExpiryReminders: boolean;
+            allowRiskAlerts: boolean;
+            allowAnalysisAlerts: boolean;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
-            organizationId: string | null;
         } | null;
     } & {
         id: string;
         createdAt: Date;
-        organizationId: string;
         userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
@@ -47,7 +39,6 @@ export declare class ActivityLogService {
     getLogsByUser(userId: string): Promise<{
         id: string;
         createdAt: Date;
-        organizationId: string;
         userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
@@ -60,16 +51,18 @@ export declare class ActivityLogService {
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
+            allowEmailNotifications: boolean;
+            allowExpiryReminders: boolean;
+            allowRiskAlerts: boolean;
+            allowAnalysisAlerts: boolean;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
-            organizationId: string | null;
         } | null;
     } & {
         id: string;
         createdAt: Date;
-        organizationId: string;
         userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;

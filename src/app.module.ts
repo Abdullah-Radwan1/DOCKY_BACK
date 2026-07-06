@@ -10,6 +10,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { ActivityLogModule } from './activity-log/activity-log.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { AuthModule } from './auth/auth.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './auth/auth.module';
     NotificationsModule,
     ActivityLogModule,
     SchedulerModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

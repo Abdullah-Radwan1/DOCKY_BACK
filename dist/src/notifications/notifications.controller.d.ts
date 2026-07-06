@@ -1,49 +1,70 @@
+import type { Request } from 'express';
 import { NotificationsService } from './notifications.service';
-import { CreateNotificationDto } from './dto/create-notification.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 export declare class NotificationsController {
     private readonly notificationsService;
     constructor(notificationsService: NotificationsService);
-    create(createDto: CreateNotificationDto): Promise<{
+    getMyNotifications(req: Request & {
+        user: {
+            id: string;
+        };
+    }, query: PaginationQueryDto): Promise<{
+        data: ({
+            document: {
+                originalFileName: string;
+            } | null;
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string;
+            title: string;
+            message: string;
+            type: import("src/generated/prisma").NotificationType;
+            deliveryChannel: import("src/generated/prisma").DeliveryChannel;
+            documentId: string | null;
+            scheduledFor: Date | null;
+            status: import("src/generated/prisma").NotificationStatus;
+            sentAt: Date | null;
+        })[];
+        meta: {
+            totalItems: number;
+            itemCount: number;
+            itemsPerPage: number;
+            totalPages: number;
+            currentPage: number;
+        };
+    }>;
+    getUnreadCount(req: Request & {
+        user: {
+            id: string;
+        };
+    }): Promise<{
+        count: number;
+    }>;
+    markRead(id: string, req: Request & {
+        user: {
+            id: string;
+        };
+    }): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import("src/generated/prisma").NotificationStatus;
-        documentId: string | null;
         userId: string;
         title: string;
         message: string;
         type: import("src/generated/prisma").NotificationType;
         deliveryChannel: import("src/generated/prisma").DeliveryChannel;
+        documentId: string | null;
         scheduledFor: Date | null;
+        status: import("src/generated/prisma").NotificationStatus;
         sentAt: Date | null;
     }>;
-    getNotifications(userId: string): Promise<{
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        status: import("src/generated/prisma").NotificationStatus;
-        documentId: string | null;
-        userId: string;
-        title: string;
+    readAll(req: Request & {
+        user: {
+            id: string;
+        };
+    }): Promise<{
         message: string;
-        type: import("src/generated/prisma").NotificationType;
-        deliveryChannel: import("src/generated/prisma").DeliveryChannel;
-        scheduledFor: Date | null;
-        sentAt: Date | null;
-    }[]>;
-    markRead(id: string): Promise<{
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        status: import("src/generated/prisma").NotificationStatus;
-        documentId: string | null;
-        userId: string;
-        title: string;
-        message: string;
-        type: import("src/generated/prisma").NotificationType;
-        deliveryChannel: import("src/generated/prisma").DeliveryChannel;
-        scheduledFor: Date | null;
-        sentAt: Date | null;
     }>;
-    readAll(userId: string): Promise<import("src/generated/prisma/internal/prismaNamespace").BatchPayload>;
 }

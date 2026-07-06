@@ -1,3 +1,4 @@
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { DocumentsService } from './documents.service';
 import { DocumentUploadService } from './services/document-upload.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
@@ -12,17 +13,16 @@ export declare class DocumentsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        organizationId: string | null;
+        status: import("src/generated/prisma").DocumentStatus;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
         checksum: string | null;
         fileSize: number | null;
         pageCount: number | null;
+        totalChunks: number | null;
         language: string | null;
         expirationDate: Date | null;
-        status: import("src/generated/prisma").DocumentStatus;
-        totalChunks: number | null;
     }>;
     get(id: string): Promise<{
         uploader: {
@@ -30,11 +30,14 @@ export declare class DocumentsController {
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
+            allowEmailNotifications: boolean;
+            allowExpiryReminders: boolean;
+            allowRiskAlerts: boolean;
+            allowAnalysisAlerts: boolean;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
-            organizationId: string | null;
         } | null;
         chunks: {
             id: string;
@@ -47,64 +50,50 @@ export declare class DocumentsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        organizationId: string | null;
+        status: import("src/generated/prisma").DocumentStatus;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
         checksum: string | null;
         fileSize: number | null;
         pageCount: number | null;
+        totalChunks: number | null;
         language: string | null;
         expirationDate: Date | null;
-        status: import("src/generated/prisma").DocumentStatus;
-        totalChunks: number | null;
     }>;
-    getAll(): Promise<{
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        organizationId: string | null;
-        uploadedBy: string | null;
-        originalFileName: string;
-        mimeType: string | null;
-        checksum: string | null;
-        fileSize: number | null;
-        pageCount: number | null;
-        language: string | null;
-        expirationDate: Date | null;
-        status: import("src/generated/prisma").DocumentStatus;
-        totalChunks: number | null;
-    }[]>;
+    getAll(req: {
+        user: {
+            id: string;
+        };
+    }, query: PaginationQueryDto): Promise<import("../common/utils/pagination.utils").PaginatedResult<any>>;
     update(id: string, updateDto: UpdateDocumentDto): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        organizationId: string | null;
+        status: import("src/generated/prisma").DocumentStatus;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
         checksum: string | null;
         fileSize: number | null;
         pageCount: number | null;
+        totalChunks: number | null;
         language: string | null;
         expirationDate: Date | null;
-        status: import("src/generated/prisma").DocumentStatus;
-        totalChunks: number | null;
     }>;
     delete(id: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        organizationId: string | null;
+        status: import("src/generated/prisma").DocumentStatus;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
         checksum: string | null;
         fileSize: number | null;
         pageCount: number | null;
+        totalChunks: number | null;
         language: string | null;
         expirationDate: Date | null;
-        status: import("src/generated/prisma").DocumentStatus;
-        totalChunks: number | null;
     }>;
 }

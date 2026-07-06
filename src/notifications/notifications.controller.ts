@@ -4,33 +4,61 @@ import {
   Post,
   Patch,
   Param,
-  Body,
+  Query,
   ParseUUIDPipe,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
+import type { Request } from 'express';
 import { NotificationsService } from './notifications.service';
-import { CreateNotificationDto } from './dto/create-notification.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('notifications')
 export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}
 
-  @Post()
-  async create(@Body() createDto: CreateNotificationDto) {
-    return this.notificationsService.createNotification(createDto);
+  /**
+   * GET /notifications/me
+   * Returns paginated notifications for the logged-in user.
+   * Supports ?page=, ?limit=, ?status=unread|read|archived|all
+   */
+  @Get('me')
+  async getMyNotifications(
+    @Req() req: Request & { user: { id: string } },
+    @Query() query: PaginationQueryDto,
+  ) {
+    return this.notificationsService.getUserNotificationsPaginated(req.user.id, query);
   }
 
-  @Get('user/:userId')
-  async getNotifications(@Param('userId', new ParseUUIDPipe()) userId: string) {
-    return this.notificationsService.getUserNotifications(userId);
+  /**
+   * GET /notifications/me/unread-count
+   * Returns the number of unread notifications for the logged-in user.
+   */
+  @Get('me/unread-count')
+  async getUnreadCount(@Req() req: Request & { user: { id: string } }) {
+    return this.notificationsService.getUnreadCount(req.user.id);
   }
 
+  /**
+   * PATCH /notifications/:id/read
+   * Marks a specific notification as read (ownership enforced).
+   */
   @Patch(':id/read')
-  async markRead(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.notificationsService.markAsRead(id);
+  async markRead(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Req() req: Request & { user: { id: string } },
+  ) {
+    return this.notificationsService.markAsRead(id, req.user.id);
   }
 
-  @Post('user/:userId/read-all')
-  async readAll(@Param('userId', new ParseUUIDPipe()) userId: string) {
-    return this.notificationsService.markAllAsRead(userId);
+  /**
+   * POST /notifications/me/read-all
+   * Marks all of the logged-in user's notifications as read.
+   */
+  @Post('me/read-all')
+  async readAll(@Req() req: Request & { user: { id: string } }) {
+    return this.notificationsService.markAllAsRead(req.user.id);
   }
 }

@@ -70,28 +70,66 @@ let NotificationsService = NotificationsService_1 = class NotificationsService {
         }
         return notification;
     }
-    async getUserNotifications(userId) {
-        return this.prisma.notification.findMany({
-            where: { userId },
-            orderBy: { createdAt: 'desc' },
-        });
-    }
-    async markAsRead(id) {
-        try {
-            return await this.prisma.notification.update({
-                where: { id },
-                data: { status: 'read' },
-            });
+    async getUserNotificationsPaginated(userId, query) {
+        const page = Math.max(1, query.page ?? 1);
+        const limit = Math.min(100, Math.max(1, query.limit ?? 10));
+        const skip = (page - 1) * limit;
+        const where = { userId };
+        if (query.status && query.status !== 'all') {
+            where.status = query.status;
         }
-        catch {
+        const [data, totalItems] = await Promise.all([
+            this.prisma.notification.findMany({
+                where,
+                orderBy: { createdAt: 'desc' },
+                skip,
+                take: limit,
+                include: {
+                    document: {
+                        select: { originalFileName: true },
+                    },
+                },
+            }),
+            this.prisma.notification.count({ where }),
+        ]);
+        return {
+            data,
+            meta: {
+                totalItems,
+                itemCount: data.length,
+                itemsPerPage: limit,
+                totalPages: Math.ceil(totalItems / limit),
+                currentPage: page,
+            },
+        };
+    }
+    async getUnreadCount(userId) {
+        const count = await this.prisma.notification.count({
+            where: { userId, status: 'unread' },
+        });
+        return { count };
+    }
+    async markAsRead(id, userId) {
+        const notification = await this.prisma.notification.findUnique({
+            where: { id },
+        });
+        if (!notification) {
             throw new common_1.NotFoundException(`Notification with ID ${id} not found`);
         }
+        if (notification.userId !== userId) {
+            throw new common_1.ForbiddenException('You do not have access to this notification');
+        }
+        return this.prisma.notification.update({
+            where: { id },
+            data: { status: 'read' },
+        });
     }
     async markAllAsRead(userId) {
-        return this.prisma.notification.updateMany({
+        await this.prisma.notification.updateMany({
             where: { userId, status: 'unread' },
             data: { status: 'read' },
         });
+        return { message: 'All notifications marked as read.' };
     }
 };
 exports.NotificationsService = NotificationsService;

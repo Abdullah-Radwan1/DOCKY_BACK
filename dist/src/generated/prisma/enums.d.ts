@@ -59,6 +59,11 @@ export declare const FindingSeverity: {
     readonly critical: "critical";
 };
 export type FindingSeverity = (typeof FindingSeverity)[keyof typeof FindingSeverity];
+export declare const FindingStatus: {
+    readonly open: "open";
+    readonly resolved: "resolved";
+};
+export type FindingStatus = (typeof FindingStatus)[keyof typeof FindingStatus];
 export declare const AnalysisVerdict: {
     readonly compliant: "compliant";
     readonly non_compliant: "non_compliant";

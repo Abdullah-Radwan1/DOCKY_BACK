@@ -8,7 +8,6 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Organization.js'
 export type * from './models/Profile.js'
 export type * from './models/Document.js'
 export type * from './models/DocumentChunk.js'
@@ -17,5 +16,6 @@ export type * from './models/Finding.js'
 export type * from './models/ActivityLog.js'
 export type * from './models/AnalysisRequest.js'
 export type * from './models/AIResponse.js'
+export type * from './models/PasswordResetToken.js'
 export type * from './models/Notification.js'
 export type * from './commonInputTypes.js'

@@ -21,7 +21,6 @@ export type DocumentSumAggregateOutputType = {
 };
 export type DocumentMinAggregateOutputType = {
     id: string | null;
-    organizationId: string | null;
     uploadedBy: string | null;
     originalFileName: string | null;
     mimeType: string | null;
@@ -37,7 +36,6 @@ export type DocumentMinAggregateOutputType = {
 };
 export type DocumentMaxAggregateOutputType = {
     id: string | null;
-    organizationId: string | null;
     uploadedBy: string | null;
     originalFileName: string | null;
     mimeType: string | null;
@@ -53,7 +51,6 @@ export type DocumentMaxAggregateOutputType = {
 };
 export type DocumentCountAggregateOutputType = {
     id: number;
-    organizationId: number;
     uploadedBy: number;
     originalFileName: number;
     mimeType: number;
@@ -80,7 +77,6 @@ export type DocumentSumAggregateInputType = {
 };
 export type DocumentMinAggregateInputType = {
     id?: true;
-    organizationId?: true;
     uploadedBy?: true;
     originalFileName?: true;
     mimeType?: true;
@@ -96,7 +92,6 @@ export type DocumentMinAggregateInputType = {
 };
 export type DocumentMaxAggregateInputType = {
     id?: true;
-    organizationId?: true;
     uploadedBy?: true;
     originalFileName?: true;
     mimeType?: true;
@@ -112,7 +107,6 @@ export type DocumentMaxAggregateInputType = {
 };
 export type DocumentCountAggregateInputType = {
     id?: true;
-    organizationId?: true;
     uploadedBy?: true;
     originalFileName?: true;
     mimeType?: true;
@@ -157,7 +151,6 @@ export type DocumentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 };
 export type DocumentGroupByOutputType = {
     id: string;
-    organizationId: string | null;
     uploadedBy: string | null;
     originalFileName: string;
     mimeType: string | null;
@@ -184,7 +177,6 @@ export type DocumentWhereInput = {
     OR?: Prisma.DocumentWhereInput[];
     NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[];
     id?: Prisma.UuidFilter<"Document"> | string;
-    organizationId?: Prisma.UuidNullableFilter<"Document"> | string | null;
     uploadedBy?: Prisma.UuidNullableFilter<"Document"> | string | null;
     originalFileName?: Prisma.StringFilter<"Document"> | string;
     mimeType?: Prisma.StringNullableFilter<"Document"> | string | null;
@@ -197,7 +189,6 @@ export type DocumentWhereInput = {
     expirationDate?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string;
-    organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null;
     uploader?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null;
     chunks?: Prisma.DocumentChunkListRelationFilter;
     analysisRequests?: Prisma.AnalysisRequestListRelationFilter;
@@ -205,7 +196,6 @@ export type DocumentWhereInput = {
 };
 export type DocumentOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
-    organizationId?: Prisma.SortOrderInput | Prisma.SortOrder;
     uploadedBy?: Prisma.SortOrderInput | Prisma.SortOrder;
     originalFileName?: Prisma.SortOrder;
     mimeType?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -218,7 +208,6 @@ export type DocumentOrderByWithRelationInput = {
     expirationDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    organization?: Prisma.OrganizationOrderByWithRelationInput;
     uploader?: Prisma.ProfileOrderByWithRelationInput;
     chunks?: Prisma.DocumentChunkOrderByRelationAggregateInput;
     analysisRequests?: Prisma.AnalysisRequestOrderByRelationAggregateInput;
@@ -229,7 +218,6 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
     AND?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[];
     OR?: Prisma.DocumentWhereInput[];
     NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[];
-    organizationId?: Prisma.UuidNullableFilter<"Document"> | string | null;
     uploadedBy?: Prisma.UuidNullableFilter<"Document"> | string | null;
     originalFileName?: Prisma.StringFilter<"Document"> | string;
     mimeType?: Prisma.StringNullableFilter<"Document"> | string | null;
@@ -242,7 +230,6 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
     expirationDate?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string;
-    organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null;
     uploader?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null;
     chunks?: Prisma.DocumentChunkListRelationFilter;
     analysisRequests?: Prisma.AnalysisRequestListRelationFilter;
@@ -250,7 +237,6 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
 }, "id">;
 export type DocumentOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
-    organizationId?: Prisma.SortOrderInput | Prisma.SortOrder;
     uploadedBy?: Prisma.SortOrderInput | Prisma.SortOrder;
     originalFileName?: Prisma.SortOrder;
     mimeType?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -274,7 +260,6 @@ export type DocumentScalarWhereWithAggregatesInput = {
     OR?: Prisma.DocumentScalarWhereWithAggregatesInput[];
     NOT?: Prisma.DocumentScalarWhereWithAggregatesInput | Prisma.DocumentScalarWhereWithAggregatesInput[];
     id?: Prisma.UuidWithAggregatesFilter<"Document"> | string;
-    organizationId?: Prisma.UuidNullableWithAggregatesFilter<"Document"> | string | null;
     uploadedBy?: Prisma.UuidNullableWithAggregatesFilter<"Document"> | string | null;
     originalFileName?: Prisma.StringWithAggregatesFilter<"Document"> | string;
     mimeType?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null;
@@ -301,7 +286,6 @@ export type DocumentCreateInput = {
     expirationDate?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    organization?: Prisma.OrganizationCreateNestedOneWithoutDocumentsInput;
     uploader?: Prisma.ProfileCreateNestedOneWithoutDocumentsInput;
     chunks?: Prisma.DocumentChunkCreateNestedManyWithoutDocumentInput;
     analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutDocumentInput;
@@ -309,7 +293,6 @@ export type DocumentCreateInput = {
 };
 export type DocumentUncheckedCreateInput = {
     id?: string;
-    organizationId?: string | null;
     uploadedBy?: string | null;
     originalFileName: string;
     mimeType?: string | null;
@@ -339,7 +322,6 @@ export type DocumentUpdateInput = {
     expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    organization?: Prisma.OrganizationUpdateOneWithoutDocumentsNestedInput;
     uploader?: Prisma.ProfileUpdateOneWithoutDocumentsNestedInput;
     chunks?: Prisma.DocumentChunkUpdateManyWithoutDocumentNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutDocumentNestedInput;
@@ -347,7 +329,6 @@ export type DocumentUpdateInput = {
 };
 export type DocumentUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     originalFileName?: Prisma.StringFieldUpdateOperationsInput | string;
     mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -366,7 +347,6 @@ export type DocumentUncheckedUpdateInput = {
 };
 export type DocumentCreateManyInput = {
     id?: string;
-    organizationId?: string | null;
     uploadedBy?: string | null;
     originalFileName: string;
     mimeType?: string | null;
@@ -396,7 +376,6 @@ export type DocumentUpdateManyMutationInput = {
 };
 export type DocumentUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     originalFileName?: Prisma.StringFieldUpdateOperationsInput | string;
     mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -420,7 +399,6 @@ export type DocumentOrderByRelationAggregateInput = {
 };
 export type DocumentCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
-    organizationId?: Prisma.SortOrder;
     uploadedBy?: Prisma.SortOrder;
     originalFileName?: Prisma.SortOrder;
     mimeType?: Prisma.SortOrder;
@@ -441,7 +419,6 @@ export type DocumentAvgOrderByAggregateInput = {
 };
 export type DocumentMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
-    organizationId?: Prisma.SortOrder;
     uploadedBy?: Prisma.SortOrder;
     originalFileName?: Prisma.SortOrder;
     mimeType?: Prisma.SortOrder;
@@ -457,7 +434,6 @@ export type DocumentMaxOrderByAggregateInput = {
 };
 export type DocumentMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
-    organizationId?: Prisma.SortOrder;
     uploadedBy?: Prisma.SortOrder;
     originalFileName?: Prisma.SortOrder;
     mimeType?: Prisma.SortOrder;
@@ -483,44 +459,6 @@ export type DocumentScalarRelationFilter = {
 export type DocumentNullableScalarRelationFilter = {
     is?: Prisma.DocumentWhereInput | null;
     isNot?: Prisma.DocumentWhereInput | null;
-};
-export type DocumentCreateNestedManyWithoutOrganizationInput = {
-    create?: Prisma.XOR<Prisma.DocumentCreateWithoutOrganizationInput, Prisma.DocumentUncheckedCreateWithoutOrganizationInput> | Prisma.DocumentCreateWithoutOrganizationInput[] | Prisma.DocumentUncheckedCreateWithoutOrganizationInput[];
-    connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutOrganizationInput | Prisma.DocumentCreateOrConnectWithoutOrganizationInput[];
-    createMany?: Prisma.DocumentCreateManyOrganizationInputEnvelope;
-    connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[];
-};
-export type DocumentUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: Prisma.XOR<Prisma.DocumentCreateWithoutOrganizationInput, Prisma.DocumentUncheckedCreateWithoutOrganizationInput> | Prisma.DocumentCreateWithoutOrganizationInput[] | Prisma.DocumentUncheckedCreateWithoutOrganizationInput[];
-    connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutOrganizationInput | Prisma.DocumentCreateOrConnectWithoutOrganizationInput[];
-    createMany?: Prisma.DocumentCreateManyOrganizationInputEnvelope;
-    connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[];
-};
-export type DocumentUpdateManyWithoutOrganizationNestedInput = {
-    create?: Prisma.XOR<Prisma.DocumentCreateWithoutOrganizationInput, Prisma.DocumentUncheckedCreateWithoutOrganizationInput> | Prisma.DocumentCreateWithoutOrganizationInput[] | Prisma.DocumentUncheckedCreateWithoutOrganizationInput[];
-    connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutOrganizationInput | Prisma.DocumentCreateOrConnectWithoutOrganizationInput[];
-    upsert?: Prisma.DocumentUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.DocumentUpsertWithWhereUniqueWithoutOrganizationInput[];
-    createMany?: Prisma.DocumentCreateManyOrganizationInputEnvelope;
-    set?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[];
-    disconnect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[];
-    delete?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[];
-    connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[];
-    update?: Prisma.DocumentUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.DocumentUpdateWithWhereUniqueWithoutOrganizationInput[];
-    updateMany?: Prisma.DocumentUpdateManyWithWhereWithoutOrganizationInput | Prisma.DocumentUpdateManyWithWhereWithoutOrganizationInput[];
-    deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[];
-};
-export type DocumentUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: Prisma.XOR<Prisma.DocumentCreateWithoutOrganizationInput, Prisma.DocumentUncheckedCreateWithoutOrganizationInput> | Prisma.DocumentCreateWithoutOrganizationInput[] | Prisma.DocumentUncheckedCreateWithoutOrganizationInput[];
-    connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutOrganizationInput | Prisma.DocumentCreateOrConnectWithoutOrganizationInput[];
-    upsert?: Prisma.DocumentUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.DocumentUpsertWithWhereUniqueWithoutOrganizationInput[];
-    createMany?: Prisma.DocumentCreateManyOrganizationInputEnvelope;
-    set?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[];
-    disconnect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[];
-    delete?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[];
-    connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[];
-    update?: Prisma.DocumentUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.DocumentUpdateWithWhereUniqueWithoutOrganizationInput[];
-    updateMany?: Prisma.DocumentUpdateManyWithWhereWithoutOrganizationInput | Prisma.DocumentUpdateManyWithWhereWithoutOrganizationInput[];
-    deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[];
 };
 export type DocumentCreateNestedManyWithoutUploaderInput = {
     create?: Prisma.XOR<Prisma.DocumentCreateWithoutUploaderInput, Prisma.DocumentUncheckedCreateWithoutUploaderInput> | Prisma.DocumentCreateWithoutUploaderInput[] | Prisma.DocumentUncheckedCreateWithoutUploaderInput[];
@@ -613,82 +551,6 @@ export type DocumentUpdateOneWithoutNotificationsNestedInput = {
     connect?: Prisma.DocumentWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutNotificationsInput, Prisma.DocumentUpdateWithoutNotificationsInput>, Prisma.DocumentUncheckedUpdateWithoutNotificationsInput>;
 };
-export type DocumentCreateWithoutOrganizationInput = {
-    id?: string;
-    originalFileName: string;
-    mimeType?: string | null;
-    checksum?: string | null;
-    fileSize?: number | null;
-    pageCount?: number | null;
-    totalChunks?: number | null;
-    language?: string | null;
-    status?: $Enums.DocumentStatus;
-    expirationDate?: Date | string | null;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    uploader?: Prisma.ProfileCreateNestedOneWithoutDocumentsInput;
-    chunks?: Prisma.DocumentChunkCreateNestedManyWithoutDocumentInput;
-    analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutDocumentInput;
-    notifications?: Prisma.NotificationCreateNestedManyWithoutDocumentInput;
-};
-export type DocumentUncheckedCreateWithoutOrganizationInput = {
-    id?: string;
-    uploadedBy?: string | null;
-    originalFileName: string;
-    mimeType?: string | null;
-    checksum?: string | null;
-    fileSize?: number | null;
-    pageCount?: number | null;
-    totalChunks?: number | null;
-    language?: string | null;
-    status?: $Enums.DocumentStatus;
-    expirationDate?: Date | string | null;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    chunks?: Prisma.DocumentChunkUncheckedCreateNestedManyWithoutDocumentInput;
-    analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutDocumentInput;
-    notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutDocumentInput;
-};
-export type DocumentCreateOrConnectWithoutOrganizationInput = {
-    where: Prisma.DocumentWhereUniqueInput;
-    create: Prisma.XOR<Prisma.DocumentCreateWithoutOrganizationInput, Prisma.DocumentUncheckedCreateWithoutOrganizationInput>;
-};
-export type DocumentCreateManyOrganizationInputEnvelope = {
-    data: Prisma.DocumentCreateManyOrganizationInput | Prisma.DocumentCreateManyOrganizationInput[];
-    skipDuplicates?: boolean;
-};
-export type DocumentUpsertWithWhereUniqueWithoutOrganizationInput = {
-    where: Prisma.DocumentWhereUniqueInput;
-    update: Prisma.XOR<Prisma.DocumentUpdateWithoutOrganizationInput, Prisma.DocumentUncheckedUpdateWithoutOrganizationInput>;
-    create: Prisma.XOR<Prisma.DocumentCreateWithoutOrganizationInput, Prisma.DocumentUncheckedCreateWithoutOrganizationInput>;
-};
-export type DocumentUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: Prisma.DocumentWhereUniqueInput;
-    data: Prisma.XOR<Prisma.DocumentUpdateWithoutOrganizationInput, Prisma.DocumentUncheckedUpdateWithoutOrganizationInput>;
-};
-export type DocumentUpdateManyWithWhereWithoutOrganizationInput = {
-    where: Prisma.DocumentScalarWhereInput;
-    data: Prisma.XOR<Prisma.DocumentUpdateManyMutationInput, Prisma.DocumentUncheckedUpdateManyWithoutOrganizationInput>;
-};
-export type DocumentScalarWhereInput = {
-    AND?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[];
-    OR?: Prisma.DocumentScalarWhereInput[];
-    NOT?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[];
-    id?: Prisma.UuidFilter<"Document"> | string;
-    organizationId?: Prisma.UuidNullableFilter<"Document"> | string | null;
-    uploadedBy?: Prisma.UuidNullableFilter<"Document"> | string | null;
-    originalFileName?: Prisma.StringFilter<"Document"> | string;
-    mimeType?: Prisma.StringNullableFilter<"Document"> | string | null;
-    checksum?: Prisma.StringNullableFilter<"Document"> | string | null;
-    fileSize?: Prisma.IntNullableFilter<"Document"> | number | null;
-    pageCount?: Prisma.IntNullableFilter<"Document"> | number | null;
-    totalChunks?: Prisma.IntNullableFilter<"Document"> | number | null;
-    language?: Prisma.StringNullableFilter<"Document"> | string | null;
-    status?: Prisma.EnumDocumentStatusFilter<"Document"> | $Enums.DocumentStatus;
-    expirationDate?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null;
-    createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string;
-    updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string;
-};
 export type DocumentCreateWithoutUploaderInput = {
     id?: string;
     originalFileName: string;
@@ -702,14 +564,12 @@ export type DocumentCreateWithoutUploaderInput = {
     expirationDate?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    organization?: Prisma.OrganizationCreateNestedOneWithoutDocumentsInput;
     chunks?: Prisma.DocumentChunkCreateNestedManyWithoutDocumentInput;
     analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutDocumentInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentUncheckedCreateWithoutUploaderInput = {
     id?: string;
-    organizationId?: string | null;
     originalFileName: string;
     mimeType?: string | null;
     checksum?: string | null;
@@ -746,6 +606,24 @@ export type DocumentUpdateManyWithWhereWithoutUploaderInput = {
     where: Prisma.DocumentScalarWhereInput;
     data: Prisma.XOR<Prisma.DocumentUpdateManyMutationInput, Prisma.DocumentUncheckedUpdateManyWithoutUploaderInput>;
 };
+export type DocumentScalarWhereInput = {
+    AND?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[];
+    OR?: Prisma.DocumentScalarWhereInput[];
+    NOT?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[];
+    id?: Prisma.UuidFilter<"Document"> | string;
+    uploadedBy?: Prisma.UuidNullableFilter<"Document"> | string | null;
+    originalFileName?: Prisma.StringFilter<"Document"> | string;
+    mimeType?: Prisma.StringNullableFilter<"Document"> | string | null;
+    checksum?: Prisma.StringNullableFilter<"Document"> | string | null;
+    fileSize?: Prisma.IntNullableFilter<"Document"> | number | null;
+    pageCount?: Prisma.IntNullableFilter<"Document"> | number | null;
+    totalChunks?: Prisma.IntNullableFilter<"Document"> | number | null;
+    language?: Prisma.StringNullableFilter<"Document"> | string | null;
+    status?: Prisma.EnumDocumentStatusFilter<"Document"> | $Enums.DocumentStatus;
+    expirationDate?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null;
+    createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string;
+};
 export type DocumentCreateWithoutChunksInput = {
     id?: string;
     originalFileName: string;
@@ -759,14 +637,12 @@ export type DocumentCreateWithoutChunksInput = {
     expirationDate?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    organization?: Prisma.OrganizationCreateNestedOneWithoutDocumentsInput;
     uploader?: Prisma.ProfileCreateNestedOneWithoutDocumentsInput;
     analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutDocumentInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentUncheckedCreateWithoutChunksInput = {
     id?: string;
-    organizationId?: string | null;
     uploadedBy?: string | null;
     originalFileName: string;
     mimeType?: string | null;
@@ -808,14 +684,12 @@ export type DocumentUpdateWithoutChunksInput = {
     expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    organization?: Prisma.OrganizationUpdateOneWithoutDocumentsNestedInput;
     uploader?: Prisma.ProfileUpdateOneWithoutDocumentsNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutDocumentNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUncheckedUpdateWithoutChunksInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     originalFileName?: Prisma.StringFieldUpdateOperationsInput | string;
     mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -844,14 +718,12 @@ export type DocumentCreateWithoutAnalysisRequestsInput = {
     expirationDate?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    organization?: Prisma.OrganizationCreateNestedOneWithoutDocumentsInput;
     uploader?: Prisma.ProfileCreateNestedOneWithoutDocumentsInput;
     chunks?: Prisma.DocumentChunkCreateNestedManyWithoutDocumentInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentUncheckedCreateWithoutAnalysisRequestsInput = {
     id?: string;
-    organizationId?: string | null;
     uploadedBy?: string | null;
     originalFileName: string;
     mimeType?: string | null;
@@ -893,14 +765,12 @@ export type DocumentUpdateWithoutAnalysisRequestsInput = {
     expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    organization?: Prisma.OrganizationUpdateOneWithoutDocumentsNestedInput;
     uploader?: Prisma.ProfileUpdateOneWithoutDocumentsNestedInput;
     chunks?: Prisma.DocumentChunkUpdateManyWithoutDocumentNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUncheckedUpdateWithoutAnalysisRequestsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     originalFileName?: Prisma.StringFieldUpdateOperationsInput | string;
     mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -929,14 +799,12 @@ export type DocumentCreateWithoutNotificationsInput = {
     expirationDate?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    organization?: Prisma.OrganizationCreateNestedOneWithoutDocumentsInput;
     uploader?: Prisma.ProfileCreateNestedOneWithoutDocumentsInput;
     chunks?: Prisma.DocumentChunkCreateNestedManyWithoutDocumentInput;
     analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentUncheckedCreateWithoutNotificationsInput = {
     id?: string;
-    organizationId?: string | null;
     uploadedBy?: string | null;
     originalFileName: string;
     mimeType?: string | null;
@@ -978,14 +846,12 @@ export type DocumentUpdateWithoutNotificationsInput = {
     expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    organization?: Prisma.OrganizationUpdateOneWithoutDocumentsNestedInput;
     uploader?: Prisma.ProfileUpdateOneWithoutDocumentsNestedInput;
     chunks?: Prisma.DocumentChunkUpdateManyWithoutDocumentNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUncheckedUpdateWithoutNotificationsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     originalFileName?: Prisma.StringFieldUpdateOperationsInput | string;
     mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1000,76 +866,9 @@ export type DocumentUncheckedUpdateWithoutNotificationsInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     chunks?: Prisma.DocumentChunkUncheckedUpdateManyWithoutDocumentNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutDocumentNestedInput;
-};
-export type DocumentCreateManyOrganizationInput = {
-    id?: string;
-    uploadedBy?: string | null;
-    originalFileName: string;
-    mimeType?: string | null;
-    checksum?: string | null;
-    fileSize?: number | null;
-    pageCount?: number | null;
-    totalChunks?: number | null;
-    language?: string | null;
-    status?: $Enums.DocumentStatus;
-    expirationDate?: Date | string | null;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-};
-export type DocumentUpdateWithoutOrganizationInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    originalFileName?: Prisma.StringFieldUpdateOperationsInput | string;
-    mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus;
-    expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    uploader?: Prisma.ProfileUpdateOneWithoutDocumentsNestedInput;
-    chunks?: Prisma.DocumentChunkUpdateManyWithoutDocumentNestedInput;
-    analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutDocumentNestedInput;
-    notifications?: Prisma.NotificationUpdateManyWithoutDocumentNestedInput;
-};
-export type DocumentUncheckedUpdateWithoutOrganizationInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    originalFileName?: Prisma.StringFieldUpdateOperationsInput | string;
-    mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus;
-    expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    chunks?: Prisma.DocumentChunkUncheckedUpdateManyWithoutDocumentNestedInput;
-    analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutDocumentNestedInput;
-    notifications?: Prisma.NotificationUncheckedUpdateManyWithoutDocumentNestedInput;
-};
-export type DocumentUncheckedUpdateManyWithoutOrganizationInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    originalFileName?: Prisma.StringFieldUpdateOperationsInput | string;
-    mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    totalChunks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus;
-    expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type DocumentCreateManyUploaderInput = {
     id?: string;
-    organizationId?: string | null;
     originalFileName: string;
     mimeType?: string | null;
     checksum?: string | null;
@@ -1095,14 +894,12 @@ export type DocumentUpdateWithoutUploaderInput = {
     expirationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    organization?: Prisma.OrganizationUpdateOneWithoutDocumentsNestedInput;
     chunks?: Prisma.DocumentChunkUpdateManyWithoutDocumentNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutDocumentNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUncheckedUpdateWithoutUploaderInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     originalFileName?: Prisma.StringFieldUpdateOperationsInput | string;
     mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1120,7 +917,6 @@ export type DocumentUncheckedUpdateWithoutUploaderInput = {
 };
 export type DocumentUncheckedUpdateManyWithoutUploaderInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     originalFileName?: Prisma.StringFieldUpdateOperationsInput | string;
     mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1157,7 +953,6 @@ export type DocumentCountOutputTypeCountNotificationsArgs<ExtArgs extends runtim
 };
 export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
-    organizationId?: boolean;
     uploadedBy?: boolean;
     originalFileName?: boolean;
     mimeType?: boolean;
@@ -1170,7 +965,6 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
     expirationDate?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    organization?: boolean | Prisma.Document$organizationArgs<ExtArgs>;
     uploader?: boolean | Prisma.Document$uploaderArgs<ExtArgs>;
     chunks?: boolean | Prisma.Document$chunksArgs<ExtArgs>;
     analysisRequests?: boolean | Prisma.Document$analysisRequestsArgs<ExtArgs>;
@@ -1179,7 +973,6 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 }, ExtArgs["result"]["document"]>;
 export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
-    organizationId?: boolean;
     uploadedBy?: boolean;
     originalFileName?: boolean;
     mimeType?: boolean;
@@ -1192,12 +985,10 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
     expirationDate?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    organization?: boolean | Prisma.Document$organizationArgs<ExtArgs>;
     uploader?: boolean | Prisma.Document$uploaderArgs<ExtArgs>;
 }, ExtArgs["result"]["document"]>;
 export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
-    organizationId?: boolean;
     uploadedBy?: boolean;
     originalFileName?: boolean;
     mimeType?: boolean;
@@ -1210,12 +1001,10 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
     expirationDate?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    organization?: boolean | Prisma.Document$organizationArgs<ExtArgs>;
     uploader?: boolean | Prisma.Document$uploaderArgs<ExtArgs>;
 }, ExtArgs["result"]["document"]>;
 export type DocumentSelectScalar = {
     id?: boolean;
-    organizationId?: boolean;
     uploadedBy?: boolean;
     originalFileName?: boolean;
     mimeType?: boolean;
@@ -1229,9 +1018,8 @@ export type DocumentSelectScalar = {
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "uploadedBy" | "originalFileName" | "mimeType" | "checksum" | "fileSize" | "pageCount" | "totalChunks" | "language" | "status" | "expirationDate" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>;
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uploadedBy" | "originalFileName" | "mimeType" | "checksum" | "fileSize" | "pageCount" | "totalChunks" | "language" | "status" | "expirationDate" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>;
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    organization?: boolean | Prisma.Document$organizationArgs<ExtArgs>;
     uploader?: boolean | Prisma.Document$uploaderArgs<ExtArgs>;
     chunks?: boolean | Prisma.Document$chunksArgs<ExtArgs>;
     analysisRequests?: boolean | Prisma.Document$analysisRequestsArgs<ExtArgs>;
@@ -1239,17 +1027,14 @@ export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
     _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type DocumentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    organization?: boolean | Prisma.Document$organizationArgs<ExtArgs>;
     uploader?: boolean | Prisma.Document$uploaderArgs<ExtArgs>;
 };
 export type DocumentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    organization?: boolean | Prisma.Document$organizationArgs<ExtArgs>;
     uploader?: boolean | Prisma.Document$uploaderArgs<ExtArgs>;
 };
 export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Document";
     objects: {
-        organization: Prisma.$OrganizationPayload<ExtArgs> | null;
         uploader: Prisma.$ProfilePayload<ExtArgs> | null;
         chunks: Prisma.$DocumentChunkPayload<ExtArgs>[];
         analysisRequests: Prisma.$AnalysisRequestPayload<ExtArgs>[];
@@ -1257,7 +1042,6 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
-        organizationId: string | null;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -1322,7 +1106,6 @@ export interface DocumentDelegate<ExtArgs extends runtime.Types.Extensions.Inter
 }
 export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    organization<T extends Prisma.Document$organizationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$organizationArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     uploader<T extends Prisma.Document$uploaderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$uploaderArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     chunks<T extends Prisma.Document$chunksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$chunksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     analysisRequests<T extends Prisma.Document$analysisRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$analysisRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnalysisRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
@@ -1333,7 +1116,6 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
 }
 export interface DocumentFieldRefs {
     readonly id: Prisma.FieldRef<"Document", 'String'>;
-    readonly organizationId: Prisma.FieldRef<"Document", 'String'>;
     readonly uploadedBy: Prisma.FieldRef<"Document", 'String'>;
     readonly originalFileName: Prisma.FieldRef<"Document", 'String'>;
     readonly mimeType: Prisma.FieldRef<"Document", 'String'>;
@@ -1446,12 +1228,6 @@ export type DocumentDeleteArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type DocumentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.DocumentWhereInput;
     limit?: number;
-};
-export type Document$organizationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    select?: Prisma.OrganizationSelect<ExtArgs> | null;
-    omit?: Prisma.OrganizationOmit<ExtArgs> | null;
-    include?: Prisma.OrganizationInclude<ExtArgs> | null;
-    where?: Prisma.OrganizationWhereInput;
 };
 export type Document$uploaderArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.ProfileSelect<ExtArgs> | null;

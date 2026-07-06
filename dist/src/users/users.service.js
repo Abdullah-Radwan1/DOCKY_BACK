@@ -57,6 +57,60 @@ let UsersService = class UsersService {
             throw new common_1.NotFoundException(`User profile with ID ${id} not found to delete`);
         }
     }
+    async getMe(userId) {
+        const profile = await this.prisma.profile.findUnique({
+            where: { id: userId },
+        });
+        if (!profile) {
+            throw new common_1.NotFoundException('User profile not found');
+        }
+        return {
+            id: profile.id,
+            email: profile.email,
+            full_name: profile.fullName,
+            avatar_url: profile.avatarUrl,
+            role: profile.role,
+            created_at: profile.createdAt,
+            updated_at: profile.updatedAt,
+            allow_email_notifications: profile.allowEmailNotifications,
+            allow_expiry_reminders: profile.allowExpiryReminders,
+            allow_risk_alerts: profile.allowRiskAlerts,
+            allow_analysis_alerts: profile.allowAnalysisAlerts,
+        };
+    }
+    async updateMe(userId, dto) {
+        const updated = await this.prisma.profile.update({
+            where: { id: userId },
+            data: {
+                ...(dto.fullName !== undefined && { fullName: dto.fullName }),
+                ...(dto.allowEmailNotifications !== undefined && {
+                    allowEmailNotifications: dto.allowEmailNotifications,
+                }),
+                ...(dto.allowExpiryReminders !== undefined && {
+                    allowExpiryReminders: dto.allowExpiryReminders,
+                }),
+                ...(dto.allowRiskAlerts !== undefined && {
+                    allowRiskAlerts: dto.allowRiskAlerts,
+                }),
+                ...(dto.allowAnalysisAlerts !== undefined && {
+                    allowAnalysisAlerts: dto.allowAnalysisAlerts,
+                }),
+            },
+        });
+        return {
+            id: updated.id,
+            email: updated.email,
+            full_name: updated.fullName,
+            avatar_url: updated.avatarUrl,
+            role: updated.role,
+            created_at: updated.createdAt,
+            updated_at: updated.updatedAt,
+            allow_email_notifications: updated.allowEmailNotifications,
+            allow_expiry_reminders: updated.allowExpiryReminders,
+            allow_risk_alerts: updated.allowRiskAlerts,
+            allow_analysis_alerts: updated.allowAnalysisAlerts,
+        };
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([

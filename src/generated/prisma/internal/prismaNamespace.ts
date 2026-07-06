@@ -384,7 +384,6 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  Organization: 'Organization',
   Profile: 'Profile',
   Document: 'Document',
   DocumentChunk: 'DocumentChunk',
@@ -393,6 +392,7 @@ export const ModelName = {
   ActivityLog: 'ActivityLog',
   AnalysisRequest: 'AnalysisRequest',
   AIResponse: 'AIResponse',
+  PasswordResetToken: 'PasswordResetToken',
   Notification: 'Notification'
 } as const
 
@@ -409,84 +409,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organization" | "profile" | "document" | "documentChunk" | "analysisResult" | "finding" | "activityLog" | "analysisRequest" | "aIResponse" | "notification"
+    modelProps: "profile" | "document" | "documentChunk" | "analysisResult" | "finding" | "activityLog" | "analysisRequest" | "aIResponse" | "passwordResetToken" | "notification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
-    Organization: {
-      payload: Prisma.$OrganizationPayload<ExtArgs>
-      fields: Prisma.OrganizationFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.OrganizationFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.OrganizationFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>
-        }
-        findFirst: {
-          args: Prisma.OrganizationFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.OrganizationFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>
-        }
-        findMany: {
-          args: Prisma.OrganizationFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
-        }
-        create: {
-          args: Prisma.OrganizationCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>
-        }
-        createMany: {
-          args: Prisma.OrganizationCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.OrganizationCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
-        }
-        delete: {
-          args: Prisma.OrganizationDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>
-        }
-        update: {
-          args: Prisma.OrganizationUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>
-        }
-        deleteMany: {
-          args: Prisma.OrganizationDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.OrganizationUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.OrganizationUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
-        }
-        upsert: {
-          args: Prisma.OrganizationUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>
-        }
-        aggregate: {
-          args: Prisma.OrganizationAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateOrganization>
-        }
-        groupBy: {
-          args: Prisma.OrganizationGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OrganizationGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.OrganizationCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OrganizationCountAggregateOutputType> | number
-        }
-      }
-    }
     Profile: {
       payload: Prisma.$ProfilePayload<ExtArgs>
       fields: Prisma.ProfileFieldRefs
@@ -1079,6 +1005,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PasswordResetToken: {
+      payload: Prisma.$PasswordResetTokenPayload<ExtArgs>
+      fields: Prisma.PasswordResetTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PasswordResetTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PasswordResetTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.PasswordResetTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PasswordResetTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>
+        }
+        findMany: {
+          args: Prisma.PasswordResetTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>[]
+        }
+        create: {
+          args: Prisma.PasswordResetTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>
+        }
+        createMany: {
+          args: Prisma.PasswordResetTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PasswordResetTokenCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>[]
+        }
+        delete: {
+          args: Prisma.PasswordResetTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>
+        }
+        update: {
+          args: Prisma.PasswordResetTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.PasswordResetTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PasswordResetTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PasswordResetTokenUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>[]
+        }
+        upsert: {
+          args: Prisma.PasswordResetTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.PasswordResetTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePasswordResetToken>
+        }
+        groupBy: {
+          args: Prisma.PasswordResetTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PasswordResetTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PasswordResetTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PasswordResetTokenCountAggregateOutputType> | number
+        }
+      }
+    }
     Notification: {
       payload: Prisma.$NotificationPayload<ExtArgs>
       fields: Prisma.NotificationFieldRefs
@@ -1192,19 +1192,6 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const OrganizationScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  slug: 'slug',
-  plan: 'plan',
-  documentsLimit: 'documentsLimit',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
-
-
 export const ProfileScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -1212,9 +1199,12 @@ export const ProfileScalarFieldEnum = {
   avatarUrl: 'avatarUrl',
   passwordHash: 'passwordHash',
   role: 'role',
-  organizationId: 'organizationId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  allowEmailNotifications: 'allowEmailNotifications',
+  allowExpiryReminders: 'allowExpiryReminders',
+  allowRiskAlerts: 'allowRiskAlerts',
+  allowAnalysisAlerts: 'allowAnalysisAlerts'
 } as const
 
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
@@ -1222,7 +1212,6 @@ export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeo
 
 export const DocumentScalarFieldEnum = {
   id: 'id',
-  organizationId: 'organizationId',
   uploadedBy: 'uploadedBy',
   originalFileName: 'originalFileName',
   mimeType: 'mimeType',
@@ -1272,11 +1261,13 @@ export const FindingScalarFieldEnum = {
   title: 'title',
   description: 'description',
   severity: 'severity',
+  status: 'status',
   clauseReference: 'clauseReference',
   pageNumber: 'pageNumber',
   excerpt: 'excerpt',
   recommendation: 'recommendation',
   metadata: 'metadata',
+  resolvedAt: 'resolvedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -1285,7 +1276,6 @@ export type FindingScalarFieldEnum = (typeof FindingScalarFieldEnum)[keyof typeo
 
 export const ActivityLogScalarFieldEnum = {
   id: 'id',
-  organizationId: 'organizationId',
   userId: 'userId',
   action: 'action',
   entityType: 'entityType',
@@ -1325,6 +1315,18 @@ export const AIResponseScalarFieldEnum = {
 } as const
 
 export type AIResponseScalarFieldEnum = (typeof AIResponseScalarFieldEnum)[keyof typeof AIResponseScalarFieldEnum]
+
+
+export const PasswordResetTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {
@@ -1414,30 +1416,16 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'PlanType'
+ * Reference to a field of type 'UserRole'
  */
-export type EnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType'>
+export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
     
 
 
 /**
- * Reference to a field of type 'PlanType[]'
+ * Reference to a field of type 'UserRole[]'
  */
-export type ListEnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType[]'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
     
 
 
@@ -1456,16 +1444,23 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'UserRole'
+ * Reference to a field of type 'Boolean'
  */
-export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
 /**
- * Reference to a field of type 'UserRole[]'
+ * Reference to a field of type 'Int'
  */
-export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -1536,6 +1531,20 @@ export type EnumFindingSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'FindingSeverity[]'
  */
 export type ListEnumFindingSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingSeverity[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FindingStatus'
+ */
+export type EnumFindingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'FindingStatus[]'
+ */
+export type ListEnumFindingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingStatus[]'>
     
 
 
@@ -1718,7 +1727,6 @@ export type PrismaClientOptions = ({
   queryPlanCacheMaxSize?: number
 }
 export type GlobalOmitConfig = {
-  organization?: Prisma.OrganizationOmit
   profile?: Prisma.ProfileOmit
   document?: Prisma.DocumentOmit
   documentChunk?: Prisma.DocumentChunkOmit
@@ -1727,6 +1735,7 @@ export type GlobalOmitConfig = {
   activityLog?: Prisma.ActivityLogOmit
   analysisRequest?: Prisma.AnalysisRequestOmit
   aIResponse?: Prisma.AIResponseOmit
+  passwordResetToken?: Prisma.PasswordResetTokenOmit
   notification?: Prisma.NotificationOmit
 }
 

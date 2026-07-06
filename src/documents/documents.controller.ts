@@ -12,8 +12,11 @@ import {
   HttpCode,
   HttpStatus,
   BadRequestException,
+  Query,
+  Request,
   UseGuards,
 } from '@nestjs/common';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { DocumentsService } from './documents.service';
@@ -107,8 +110,11 @@ export class DocumentsController {
   }
 
   @Get()
-  async getAll() {
-    return this.documentsService.getDocuments();
+  async getAll(
+    @Request() req: { user: { id: string } },
+    @Query() query: PaginationQueryDto,
+  ) {
+    return this.documentsService.getDocuments(req.user.id, query);
   }
 
   @Patch(':id')

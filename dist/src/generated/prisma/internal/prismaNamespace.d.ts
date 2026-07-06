@@ -157,7 +157,6 @@ export type ExcludeUnderscoreKeys<T extends string> = T extends `_${string}` ? n
 export type FieldRef<Model, FieldType> = runtime.FieldRef<Model, FieldType>;
 type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>;
 export declare const ModelName: {
-    readonly Organization: "Organization";
     readonly Profile: "Profile";
     readonly Document: "Document";
     readonly DocumentChunk: "DocumentChunk";
@@ -166,6 +165,7 @@ export declare const ModelName: {
     readonly ActivityLog: "ActivityLog";
     readonly AnalysisRequest: "AnalysisRequest";
     readonly AIResponse: "AIResponse";
+    readonly PasswordResetToken: "PasswordResetToken";
     readonly Notification: "Notification";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -179,84 +179,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "organization" | "profile" | "document" | "documentChunk" | "analysisResult" | "finding" | "activityLog" | "analysisRequest" | "aIResponse" | "notification";
+        modelProps: "profile" | "document" | "documentChunk" | "analysisResult" | "finding" | "activityLog" | "analysisRequest" | "aIResponse" | "passwordResetToken" | "notification";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
-        Organization: {
-            payload: Prisma.$OrganizationPayload<ExtArgs>;
-            fields: Prisma.OrganizationFieldRefs;
-            operations: {
-                findUnique: {
-                    args: Prisma.OrganizationFindUniqueArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload> | null;
-                };
-                findUniqueOrThrow: {
-                    args: Prisma.OrganizationFindUniqueOrThrowArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>;
-                };
-                findFirst: {
-                    args: Prisma.OrganizationFindFirstArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload> | null;
-                };
-                findFirstOrThrow: {
-                    args: Prisma.OrganizationFindFirstOrThrowArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>;
-                };
-                findMany: {
-                    args: Prisma.OrganizationFindManyArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>[];
-                };
-                create: {
-                    args: Prisma.OrganizationCreateArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>;
-                };
-                createMany: {
-                    args: Prisma.OrganizationCreateManyArgs<ExtArgs>;
-                    result: BatchPayload;
-                };
-                createManyAndReturn: {
-                    args: Prisma.OrganizationCreateManyAndReturnArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>[];
-                };
-                delete: {
-                    args: Prisma.OrganizationDeleteArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>;
-                };
-                update: {
-                    args: Prisma.OrganizationUpdateArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>;
-                };
-                deleteMany: {
-                    args: Prisma.OrganizationDeleteManyArgs<ExtArgs>;
-                    result: BatchPayload;
-                };
-                updateMany: {
-                    args: Prisma.OrganizationUpdateManyArgs<ExtArgs>;
-                    result: BatchPayload;
-                };
-                updateManyAndReturn: {
-                    args: Prisma.OrganizationUpdateManyAndReturnArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>[];
-                };
-                upsert: {
-                    args: Prisma.OrganizationUpsertArgs<ExtArgs>;
-                    result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>;
-                };
-                aggregate: {
-                    args: Prisma.OrganizationAggregateArgs<ExtArgs>;
-                    result: runtime.Types.Utils.Optional<Prisma.AggregateOrganization>;
-                };
-                groupBy: {
-                    args: Prisma.OrganizationGroupByArgs<ExtArgs>;
-                    result: runtime.Types.Utils.Optional<Prisma.OrganizationGroupByOutputType>[];
-                };
-                count: {
-                    args: Prisma.OrganizationCountArgs<ExtArgs>;
-                    result: runtime.Types.Utils.Optional<Prisma.OrganizationCountAggregateOutputType> | number;
-                };
-            };
-        };
         Profile: {
             payload: Prisma.$ProfilePayload<ExtArgs>;
             fields: Prisma.ProfileFieldRefs;
@@ -849,6 +775,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        PasswordResetToken: {
+            payload: Prisma.$PasswordResetTokenPayload<ExtArgs>;
+            fields: Prisma.PasswordResetTokenFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.PasswordResetTokenFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.PasswordResetTokenFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
+                };
+                findFirst: {
+                    args: Prisma.PasswordResetTokenFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.PasswordResetTokenFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
+                };
+                findMany: {
+                    args: Prisma.PasswordResetTokenFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>[];
+                };
+                create: {
+                    args: Prisma.PasswordResetTokenCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
+                };
+                createMany: {
+                    args: Prisma.PasswordResetTokenCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.PasswordResetTokenCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>[];
+                };
+                delete: {
+                    args: Prisma.PasswordResetTokenDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
+                };
+                update: {
+                    args: Prisma.PasswordResetTokenUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.PasswordResetTokenDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.PasswordResetTokenUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.PasswordResetTokenUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>[];
+                };
+                upsert: {
+                    args: Prisma.PasswordResetTokenUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetTokenPayload>;
+                };
+                aggregate: {
+                    args: Prisma.PasswordResetTokenAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregatePasswordResetToken>;
+                };
+                groupBy: {
+                    args: Prisma.PasswordResetTokenGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.PasswordResetTokenGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.PasswordResetTokenCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.PasswordResetTokenCountAggregateOutputType> | number;
+                };
+            };
+        };
         Notification: {
             payload: Prisma.$NotificationPayload<ExtArgs>;
             fields: Prisma.NotificationFieldRefs;
@@ -954,16 +954,6 @@ export declare const TransactionIsolationLevel: {
     readonly Serializable: "Serializable";
 };
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
-export declare const OrganizationScalarFieldEnum: {
-    readonly id: "id";
-    readonly name: "name";
-    readonly slug: "slug";
-    readonly plan: "plan";
-    readonly documentsLimit: "documentsLimit";
-    readonly createdAt: "createdAt";
-    readonly updatedAt: "updatedAt";
-};
-export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum];
 export declare const ProfileScalarFieldEnum: {
     readonly id: "id";
     readonly email: "email";
@@ -971,14 +961,16 @@ export declare const ProfileScalarFieldEnum: {
     readonly avatarUrl: "avatarUrl";
     readonly passwordHash: "passwordHash";
     readonly role: "role";
-    readonly organizationId: "organizationId";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
+    readonly allowEmailNotifications: "allowEmailNotifications";
+    readonly allowExpiryReminders: "allowExpiryReminders";
+    readonly allowRiskAlerts: "allowRiskAlerts";
+    readonly allowAnalysisAlerts: "allowAnalysisAlerts";
 };
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum];
 export declare const DocumentScalarFieldEnum: {
     readonly id: "id";
-    readonly organizationId: "organizationId";
     readonly uploadedBy: "uploadedBy";
     readonly originalFileName: "originalFileName";
     readonly mimeType: "mimeType";
@@ -1019,17 +1011,18 @@ export declare const FindingScalarFieldEnum: {
     readonly title: "title";
     readonly description: "description";
     readonly severity: "severity";
+    readonly status: "status";
     readonly clauseReference: "clauseReference";
     readonly pageNumber: "pageNumber";
     readonly excerpt: "excerpt";
     readonly recommendation: "recommendation";
     readonly metadata: "metadata";
+    readonly resolvedAt: "resolvedAt";
     readonly createdAt: "createdAt";
 };
 export type FindingScalarFieldEnum = (typeof FindingScalarFieldEnum)[keyof typeof FindingScalarFieldEnum];
 export declare const ActivityLogScalarFieldEnum: {
     readonly id: "id";
-    readonly organizationId: "organizationId";
     readonly userId: "userId";
     readonly action: "action";
     readonly entityType: "entityType";
@@ -1062,6 +1055,15 @@ export declare const AIResponseScalarFieldEnum: {
     readonly matchedChunks: "matchedChunks";
 };
 export type AIResponseScalarFieldEnum = (typeof AIResponseScalarFieldEnum)[keyof typeof AIResponseScalarFieldEnum];
+export declare const PasswordResetTokenScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly token: "token";
+    readonly expiresAt: "expiresAt";
+    readonly usedAt: "usedAt";
+    readonly createdAt: "createdAt";
+};
+export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum];
 export declare const NotificationScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
@@ -1109,14 +1111,13 @@ export declare const JsonNullValueFilter: {
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter];
 export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>;
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>;
-export type EnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType'>;
-export type ListEnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType[]'>;
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
 export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>;
 export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>;
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>;
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
 export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus'>;
 export type ListEnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus[]'>;
 export type EnumAnalysisVerdictFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnalysisVerdict'>;
@@ -1127,6 +1128,8 @@ export type EnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 export type ListEnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel[]'>;
 export type EnumFindingSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingSeverity'>;
 export type ListEnumFindingSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingSeverity[]'>;
+export type EnumFindingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingStatus'>;
+export type ListEnumFindingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingStatus[]'>;
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>;
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>;
 export type EnumAnalysisRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnalysisRequestStatus'>;
@@ -1162,7 +1165,6 @@ export type PrismaClientOptions = ({
     queryPlanCacheMaxSize?: number;
 };
 export type GlobalOmitConfig = {
-    organization?: Prisma.OrganizationOmit;
     profile?: Prisma.ProfileOmit;
     document?: Prisma.DocumentOmit;
     documentChunk?: Prisma.DocumentChunkOmit;
@@ -1171,6 +1173,7 @@ export type GlobalOmitConfig = {
     activityLog?: Prisma.ActivityLogOmit;
     analysisRequest?: Prisma.AnalysisRequestOmit;
     aIResponse?: Prisma.AIResponseOmit;
+    passwordResetToken?: Prisma.PasswordResetTokenOmit;
     notification?: Prisma.NotificationOmit;
 };
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';

@@ -18,11 +18,6 @@ export { Prisma }
 export * as $Enums from './enums.js'
 export * from './enums.js';
 /**
- * Model Organization
- * 
- */
-export type Organization = Prisma.OrganizationModel
-/**
  * Model Profile
  * 
  */
@@ -62,6 +57,11 @@ export type AnalysisRequest = Prisma.AnalysisRequestModel
  * 
  */
 export type AIResponse = Prisma.AIResponseModel
+/**
+ * Model PasswordResetToken
+ * 
+ */
+export type PasswordResetToken = Prisma.PasswordResetTokenModel
 /**
  * Model Notification
  * 

@@ -1,11 +1,12 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailDispatcher } from './dispatchers/email.dispatcher';
 import { SmsDispatcher } from './dispatchers/sms.dispatcher';
 import { PushDispatcher } from './dispatchers/push.dispatcher';
 import { NotificationDispatcher } from './interfaces/notification-dispatcher.interface';
-import { NotificationEntity } from './entities/notification.entity';
 import { CreateNotificationDto } from './dto/create-notification.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { NotificationStatus } from '../generated/prisma';
 
 @Injectable()
 export class NotificationsService {
@@ -18,7 +19,6 @@ export class NotificationsService {
     private readonly smsDispatcher: SmsDispatcher,
     private readonly pushDispatcher: PushDispatcher,
   ) {
-    // Register dispatchers
     this.registerDispatcher(this.emailDispatcher);
     this.registerDispatcher(this.smsDispatcher);
     this.registerDispatcher(this.pushDispatcher);
@@ -26,7 +26,6 @@ export class NotificationsService {
 
   /**
    * Registers a dispatcher for a specific notification channel.
-   * Enables the notification system to be easily extendable by adding more dispatchers.
    */
   private registerDispatcher(dispatcher: NotificationDispatcher) {
     this.dispatchers.set(dispatcher.channel, dispatcher);
@@ -38,7 +37,6 @@ export class NotificationsService {
   async createNotification(data: CreateNotificationDto) {
     const channel = data.deliveryChannel || 'in_app';
 
-    // 1. Create the database record
     const notification = await this.prisma.notification.create({
       data: {
         userId: data.userId ?? '',
@@ -51,7 +49,6 @@ export class NotificationsService {
       },
     });
 
-    // 2. Dispatch the notification if not purely in-app
     if (channel !== 'in_app') {
       const dispatcher = this.dispatchers.get(channel);
       if (dispatcher) {
@@ -63,7 +60,6 @@ export class NotificationsService {
             data.documentId,
           );
           if (success) {
-            // Update record to indicate it was sent successfully
             return await this.prisma.notification.update({
               where: { id: notification.id },
               data: { sentAt: new Date() },
@@ -84,36 +80,88 @@ export class NotificationsService {
   }
 
   /**
-   * Fetches all notifications for a specific user.
+   * Fetches all notifications for the authenticated user (paginated).
+   * Supports filtering by status via PaginationQueryDto.status field.
    */
-  async getUserNotifications(userId: string) {
-    return this.prisma.notification.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
-    });
+  async getUserNotificationsPaginated(userId: string, query: PaginationQueryDto) {
+    const page = Math.max(1, query.page ?? 1);
+    const limit = Math.min(100, Math.max(1, query.limit ?? 10));
+    const skip = (page - 1) * limit;
+
+    const where: any = { userId };
+
+    // Filter by status if provided and not 'all'
+    if (query.status && query.status !== 'all') {
+      where.status = query.status as NotificationStatus;
+    }
+
+    const [data, totalItems] = await Promise.all([
+      this.prisma.notification.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+        include: {
+          document: {
+            select: { originalFileName: true },
+          },
+        },
+      }),
+      this.prisma.notification.count({ where }),
+    ]);
+
+    return {
+      data,
+      meta: {
+        totalItems,
+        itemCount: data.length,
+        itemsPerPage: limit,
+        totalPages: Math.ceil(totalItems / limit),
+        currentPage: page,
+      },
+    };
   }
 
   /**
-   * Marks a single notification as read.
+   * Returns the count of unread notifications for a user.
    */
-  async markAsRead(id: string) {
-    try {
-      return await this.prisma.notification.update({
-        where: { id },
-        data: { status: 'read' },
-      });
-    } catch {
+  async getUnreadCount(userId: string): Promise<{ count: number }> {
+    const count = await this.prisma.notification.count({
+      where: { userId, status: 'unread' },
+    });
+    return { count };
+  }
+
+  /**
+   * Marks a single notification as read, ensuring it belongs to the requesting user.
+   */
+  async markAsRead(id: string, userId: string) {
+    const notification = await this.prisma.notification.findUnique({
+      where: { id },
+    });
+
+    if (!notification) {
       throw new NotFoundException(`Notification with ID ${id} not found`);
     }
+
+    if (notification.userId !== userId) {
+      throw new ForbiddenException('You do not have access to this notification');
+    }
+
+    return this.prisma.notification.update({
+      where: { id },
+      data: { status: 'read' },
+    });
   }
 
   /**
    * Marks all notifications for a user as read.
    */
   async markAllAsRead(userId: string) {
-    return this.prisma.notification.updateMany({
+    await this.prisma.notification.updateMany({
       where: { userId, status: 'unread' },
       data: { status: 'read' },
     });
+    return { message: 'All notifications marked as read.' };
   }
 }

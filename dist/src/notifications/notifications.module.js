@@ -13,11 +13,13 @@ const notifications_controller_1 = require("./notifications.controller");
 const email_dispatcher_1 = require("./dispatchers/email.dispatcher");
 const sms_dispatcher_1 = require("./dispatchers/sms.dispatcher");
 const push_dispatcher_1 = require("./dispatchers/push.dispatcher");
+const auth_module_1 = require("../auth/auth.module");
 let NotificationsModule = class NotificationsModule {
 };
 exports.NotificationsModule = NotificationsModule;
 exports.NotificationsModule = NotificationsModule = __decorate([
     (0, common_1.Module)({
+        imports: [(0, common_1.forwardRef)(() => auth_module_1.AuthModule)],
         providers: [
             notifications_service_1.NotificationsService,
             email_dispatcher_1.EmailDispatcher,

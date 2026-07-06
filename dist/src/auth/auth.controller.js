@@ -17,6 +17,9 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const login_dto_1 = require("./dto/login.dto");
 const register_dto_1 = require("./dto/register.dto");
+const change_password_dto_1 = require("./dto/change-password.dto");
+const forgot_password_dto_1 = require("./dto/forgot-password.dto");
+const reset_password_dto_1 = require("./dto/reset-password.dto");
 const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
 const COOKIE_NAME = 'jwt';
 const COOKIE_OPTIONS = {
@@ -44,6 +47,15 @@ let AuthController = class AuthController {
     async me(req) {
         const user = await this.authService.getMe(req.user.id);
         return { user };
+    }
+    async changePassword(req, dto) {
+        return this.authService.changePassword(req.user.id, dto);
+    }
+    async forgotPassword(dto) {
+        return this.authService.forgotPassword(dto);
+    }
+    async resetPassword(dto) {
+        return this.authService.resetPassword(dto);
     }
     logout(res) {
         res.clearCookie(COOKIE_NAME, { path: '/' });
@@ -77,6 +89,32 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "me", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Patch)('me/password'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, change_password_dto_1.ChangePasswordDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "changePassword", null);
+__decorate([
+    (0, common_1.Post)('forgot-password'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [forgot_password_dto_1.ForgotPasswordDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "forgotPassword", null);
+__decorate([
+    (0, common_1.Post)('reset-password'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [reset_password_dto_1.ResetPasswordDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "resetPassword", null);
 __decorate([
     (0, common_1.Post)('logout'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),

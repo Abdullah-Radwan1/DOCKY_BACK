@@ -20,7 +20,6 @@ let ActivityLogService = class ActivityLogService {
     async createLog(data) {
         return this.prisma.activityLog.create({
             data: {
-                organizationId: data.userId ?? '00000000-0000-0000-0000-000000000000',
                 userId: data.userId || null,
                 action: data.action,
                 entityType: data.entityType || null,
@@ -33,7 +32,6 @@ let ActivityLogService = class ActivityLogService {
         const log = await this.prisma.activityLog.findUnique({
             where: { id },
             include: {
-                organization: true,
                 user: true,
             },
         });

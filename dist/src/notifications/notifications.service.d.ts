@@ -3,6 +3,8 @@ import { EmailDispatcher } from './dispatchers/email.dispatcher';
 import { SmsDispatcher } from './dispatchers/sms.dispatcher';
 import { PushDispatcher } from './dispatchers/push.dispatcher';
 import { CreateNotificationDto } from './dto/create-notification.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { NotificationStatus } from '../generated/prisma';
 export declare class NotificationsService {
     private readonly prisma;
     private readonly emailDispatcher;
@@ -16,43 +18,61 @@ export declare class NotificationsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import("src/generated/prisma").NotificationStatus;
-        documentId: string | null;
         userId: string;
         title: string;
         message: string;
-        type: import("src/generated/prisma").NotificationType;
-        deliveryChannel: import("src/generated/prisma").DeliveryChannel;
+        type: import("src/generated/prisma/enums").NotificationType;
+        deliveryChannel: import("src/generated/prisma/enums").DeliveryChannel;
+        documentId: string | null;
         scheduledFor: Date | null;
+        status: NotificationStatus;
         sentAt: Date | null;
     }>;
-    getUserNotifications(userId: string): Promise<{
+    getUserNotificationsPaginated(userId: string, query: PaginationQueryDto): Promise<{
+        data: ({
+            document: {
+                originalFileName: string;
+            } | null;
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string;
+            title: string;
+            message: string;
+            type: import("src/generated/prisma/enums").NotificationType;
+            deliveryChannel: import("src/generated/prisma/enums").DeliveryChannel;
+            documentId: string | null;
+            scheduledFor: Date | null;
+            status: NotificationStatus;
+            sentAt: Date | null;
+        })[];
+        meta: {
+            totalItems: number;
+            itemCount: number;
+            itemsPerPage: number;
+            totalPages: number;
+            currentPage: number;
+        };
+    }>;
+    getUnreadCount(userId: string): Promise<{
+        count: number;
+    }>;
+    markAsRead(id: string, userId: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import("src/generated/prisma").NotificationStatus;
-        documentId: string | null;
         userId: string;
         title: string;
         message: string;
-        type: import("src/generated/prisma").NotificationType;
-        deliveryChannel: import("src/generated/prisma").DeliveryChannel;
-        scheduledFor: Date | null;
-        sentAt: Date | null;
-    }[]>;
-    markAsRead(id: string): Promise<{
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        status: import("src/generated/prisma").NotificationStatus;
+        type: import("src/generated/prisma/enums").NotificationType;
+        deliveryChannel: import("src/generated/prisma/enums").DeliveryChannel;
         documentId: string | null;
-        userId: string;
-        title: string;
-        message: string;
-        type: import("src/generated/prisma").NotificationType;
-        deliveryChannel: import("src/generated/prisma").DeliveryChannel;
         scheduledFor: Date | null;
+        status: NotificationStatus;
         sentAt: Date | null;
     }>;
-    markAllAsRead(userId: string): Promise<import("src/generated/prisma/internal/prismaNamespace").BatchPayload>;
+    markAllAsRead(userId: string): Promise<{
+        message: string;
+    }>;
 }

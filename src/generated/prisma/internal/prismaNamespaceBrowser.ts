@@ -51,7 +51,6 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Organization: 'Organization',
   Profile: 'Profile',
   Document: 'Document',
   DocumentChunk: 'DocumentChunk',
@@ -60,6 +59,7 @@ export const ModelName = {
   ActivityLog: 'ActivityLog',
   AnalysisRequest: 'AnalysisRequest',
   AIResponse: 'AIResponse',
+  PasswordResetToken: 'PasswordResetToken',
   Notification: 'Notification'
 } as const
 
@@ -79,19 +79,6 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const OrganizationScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  slug: 'slug',
-  plan: 'plan',
-  documentsLimit: 'documentsLimit',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
-
-
 export const ProfileScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -99,9 +86,12 @@ export const ProfileScalarFieldEnum = {
   avatarUrl: 'avatarUrl',
   passwordHash: 'passwordHash',
   role: 'role',
-  organizationId: 'organizationId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  allowEmailNotifications: 'allowEmailNotifications',
+  allowExpiryReminders: 'allowExpiryReminders',
+  allowRiskAlerts: 'allowRiskAlerts',
+  allowAnalysisAlerts: 'allowAnalysisAlerts'
 } as const
 
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
@@ -109,7 +99,6 @@ export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeo
 
 export const DocumentScalarFieldEnum = {
   id: 'id',
-  organizationId: 'organizationId',
   uploadedBy: 'uploadedBy',
   originalFileName: 'originalFileName',
   mimeType: 'mimeType',
@@ -159,11 +148,13 @@ export const FindingScalarFieldEnum = {
   title: 'title',
   description: 'description',
   severity: 'severity',
+  status: 'status',
   clauseReference: 'clauseReference',
   pageNumber: 'pageNumber',
   excerpt: 'excerpt',
   recommendation: 'recommendation',
   metadata: 'metadata',
+  resolvedAt: 'resolvedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -172,7 +163,6 @@ export type FindingScalarFieldEnum = (typeof FindingScalarFieldEnum)[keyof typeo
 
 export const ActivityLogScalarFieldEnum = {
   id: 'id',
-  organizationId: 'organizationId',
   userId: 'userId',
   action: 'action',
   entityType: 'entityType',
@@ -212,6 +202,18 @@ export const AIResponseScalarFieldEnum = {
 } as const
 
 export type AIResponseScalarFieldEnum = (typeof AIResponseScalarFieldEnum)[keyof typeof AIResponseScalarFieldEnum]
+
+
+export const PasswordResetTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {

@@ -21,10 +21,12 @@ export type FindingMinAggregateOutputType = {
     title: string | null;
     description: string | null;
     severity: $Enums.FindingSeverity | null;
+    status: $Enums.FindingStatus | null;
     clauseReference: string | null;
     pageNumber: number | null;
     excerpt: string | null;
     recommendation: string | null;
+    resolvedAt: Date | null;
     createdAt: Date | null;
 };
 export type FindingMaxAggregateOutputType = {
@@ -33,10 +35,12 @@ export type FindingMaxAggregateOutputType = {
     title: string | null;
     description: string | null;
     severity: $Enums.FindingSeverity | null;
+    status: $Enums.FindingStatus | null;
     clauseReference: string | null;
     pageNumber: number | null;
     excerpt: string | null;
     recommendation: string | null;
+    resolvedAt: Date | null;
     createdAt: Date | null;
 };
 export type FindingCountAggregateOutputType = {
@@ -45,11 +49,13 @@ export type FindingCountAggregateOutputType = {
     title: number;
     description: number;
     severity: number;
+    status: number;
     clauseReference: number;
     pageNumber: number;
     excerpt: number;
     recommendation: number;
     metadata: number;
+    resolvedAt: number;
     createdAt: number;
     _all: number;
 };
@@ -65,10 +71,12 @@ export type FindingMinAggregateInputType = {
     title?: true;
     description?: true;
     severity?: true;
+    status?: true;
     clauseReference?: true;
     pageNumber?: true;
     excerpt?: true;
     recommendation?: true;
+    resolvedAt?: true;
     createdAt?: true;
 };
 export type FindingMaxAggregateInputType = {
@@ -77,10 +85,12 @@ export type FindingMaxAggregateInputType = {
     title?: true;
     description?: true;
     severity?: true;
+    status?: true;
     clauseReference?: true;
     pageNumber?: true;
     excerpt?: true;
     recommendation?: true;
+    resolvedAt?: true;
     createdAt?: true;
 };
 export type FindingCountAggregateInputType = {
@@ -89,11 +99,13 @@ export type FindingCountAggregateInputType = {
     title?: true;
     description?: true;
     severity?: true;
+    status?: true;
     clauseReference?: true;
     pageNumber?: true;
     excerpt?: true;
     recommendation?: true;
     metadata?: true;
+    resolvedAt?: true;
     createdAt?: true;
     _all?: true;
 };
@@ -131,11 +143,13 @@ export type FindingGroupByOutputType = {
     title: string;
     description: string | null;
     severity: $Enums.FindingSeverity;
+    status: $Enums.FindingStatus;
     clauseReference: string | null;
     pageNumber: number | null;
     excerpt: string | null;
     recommendation: string | null;
     metadata: runtime.JsonValue | null;
+    resolvedAt: Date | null;
     createdAt: Date;
     _count: FindingCountAggregateOutputType | null;
     _avg: FindingAvgAggregateOutputType | null;
@@ -155,11 +169,13 @@ export type FindingWhereInput = {
     title?: Prisma.StringFilter<"Finding"> | string;
     description?: Prisma.StringNullableFilter<"Finding"> | string | null;
     severity?: Prisma.EnumFindingSeverityFilter<"Finding"> | $Enums.FindingSeverity;
+    status?: Prisma.EnumFindingStatusFilter<"Finding"> | $Enums.FindingStatus;
     clauseReference?: Prisma.StringNullableFilter<"Finding"> | string | null;
     pageNumber?: Prisma.IntNullableFilter<"Finding"> | number | null;
     excerpt?: Prisma.StringNullableFilter<"Finding"> | string | null;
     recommendation?: Prisma.StringNullableFilter<"Finding"> | string | null;
     metadata?: Prisma.JsonNullableFilter<"Finding">;
+    resolvedAt?: Prisma.DateTimeNullableFilter<"Finding"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Finding"> | Date | string;
     analysis?: Prisma.XOR<Prisma.AnalysisResultScalarRelationFilter, Prisma.AnalysisResultWhereInput>;
 };
@@ -169,11 +185,13 @@ export type FindingOrderByWithRelationInput = {
     title?: Prisma.SortOrder;
     description?: Prisma.SortOrderInput | Prisma.SortOrder;
     severity?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     clauseReference?: Prisma.SortOrderInput | Prisma.SortOrder;
     pageNumber?: Prisma.SortOrderInput | Prisma.SortOrder;
     excerpt?: Prisma.SortOrderInput | Prisma.SortOrder;
     recommendation?: Prisma.SortOrderInput | Prisma.SortOrder;
     metadata?: Prisma.SortOrderInput | Prisma.SortOrder;
+    resolvedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     analysis?: Prisma.AnalysisResultOrderByWithRelationInput;
 };
@@ -186,11 +204,13 @@ export type FindingWhereUniqueInput = Prisma.AtLeast<{
     title?: Prisma.StringFilter<"Finding"> | string;
     description?: Prisma.StringNullableFilter<"Finding"> | string | null;
     severity?: Prisma.EnumFindingSeverityFilter<"Finding"> | $Enums.FindingSeverity;
+    status?: Prisma.EnumFindingStatusFilter<"Finding"> | $Enums.FindingStatus;
     clauseReference?: Prisma.StringNullableFilter<"Finding"> | string | null;
     pageNumber?: Prisma.IntNullableFilter<"Finding"> | number | null;
     excerpt?: Prisma.StringNullableFilter<"Finding"> | string | null;
     recommendation?: Prisma.StringNullableFilter<"Finding"> | string | null;
     metadata?: Prisma.JsonNullableFilter<"Finding">;
+    resolvedAt?: Prisma.DateTimeNullableFilter<"Finding"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Finding"> | Date | string;
     analysis?: Prisma.XOR<Prisma.AnalysisResultScalarRelationFilter, Prisma.AnalysisResultWhereInput>;
 }, "id">;
@@ -200,11 +220,13 @@ export type FindingOrderByWithAggregationInput = {
     title?: Prisma.SortOrder;
     description?: Prisma.SortOrderInput | Prisma.SortOrder;
     severity?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     clauseReference?: Prisma.SortOrderInput | Prisma.SortOrder;
     pageNumber?: Prisma.SortOrderInput | Prisma.SortOrder;
     excerpt?: Prisma.SortOrderInput | Prisma.SortOrder;
     recommendation?: Prisma.SortOrderInput | Prisma.SortOrder;
     metadata?: Prisma.SortOrderInput | Prisma.SortOrder;
+    resolvedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     _count?: Prisma.FindingCountOrderByAggregateInput;
     _avg?: Prisma.FindingAvgOrderByAggregateInput;
@@ -221,11 +243,13 @@ export type FindingScalarWhereWithAggregatesInput = {
     title?: Prisma.StringWithAggregatesFilter<"Finding"> | string;
     description?: Prisma.StringNullableWithAggregatesFilter<"Finding"> | string | null;
     severity?: Prisma.EnumFindingSeverityWithAggregatesFilter<"Finding"> | $Enums.FindingSeverity;
+    status?: Prisma.EnumFindingStatusWithAggregatesFilter<"Finding"> | $Enums.FindingStatus;
     clauseReference?: Prisma.StringNullableWithAggregatesFilter<"Finding"> | string | null;
     pageNumber?: Prisma.IntNullableWithAggregatesFilter<"Finding"> | number | null;
     excerpt?: Prisma.StringNullableWithAggregatesFilter<"Finding"> | string | null;
     recommendation?: Prisma.StringNullableWithAggregatesFilter<"Finding"> | string | null;
     metadata?: Prisma.JsonNullableWithAggregatesFilter<"Finding">;
+    resolvedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Finding"> | Date | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Finding"> | Date | string;
 };
 export type FindingCreateInput = {
@@ -233,11 +257,13 @@ export type FindingCreateInput = {
     title: string;
     description?: string | null;
     severity?: $Enums.FindingSeverity;
+    status?: $Enums.FindingStatus;
     clauseReference?: string | null;
     pageNumber?: number | null;
     excerpt?: string | null;
     recommendation?: string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Date | string | null;
     createdAt?: Date | string;
     analysis: Prisma.AnalysisResultCreateNestedOneWithoutFindingsInput;
 };
@@ -247,11 +273,13 @@ export type FindingUncheckedCreateInput = {
     title: string;
     description?: string | null;
     severity?: $Enums.FindingSeverity;
+    status?: $Enums.FindingStatus;
     clauseReference?: string | null;
     pageNumber?: number | null;
     excerpt?: string | null;
     recommendation?: string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Date | string | null;
     createdAt?: Date | string;
 };
 export type FindingUpdateInput = {
@@ -259,11 +287,13 @@ export type FindingUpdateInput = {
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     severity?: Prisma.EnumFindingSeverityFieldUpdateOperationsInput | $Enums.FindingSeverity;
+    status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus;
     clauseReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     pageNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     recommendation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     analysis?: Prisma.AnalysisResultUpdateOneRequiredWithoutFindingsNestedInput;
 };
@@ -273,11 +303,13 @@ export type FindingUncheckedUpdateInput = {
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     severity?: Prisma.EnumFindingSeverityFieldUpdateOperationsInput | $Enums.FindingSeverity;
+    status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus;
     clauseReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     pageNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     recommendation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type FindingCreateManyInput = {
@@ -286,11 +318,13 @@ export type FindingCreateManyInput = {
     title: string;
     description?: string | null;
     severity?: $Enums.FindingSeverity;
+    status?: $Enums.FindingStatus;
     clauseReference?: string | null;
     pageNumber?: number | null;
     excerpt?: string | null;
     recommendation?: string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Date | string | null;
     createdAt?: Date | string;
 };
 export type FindingUpdateManyMutationInput = {
@@ -298,11 +332,13 @@ export type FindingUpdateManyMutationInput = {
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     severity?: Prisma.EnumFindingSeverityFieldUpdateOperationsInput | $Enums.FindingSeverity;
+    status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus;
     clauseReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     pageNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     recommendation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type FindingUncheckedUpdateManyInput = {
@@ -311,11 +347,13 @@ export type FindingUncheckedUpdateManyInput = {
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     severity?: Prisma.EnumFindingSeverityFieldUpdateOperationsInput | $Enums.FindingSeverity;
+    status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus;
     clauseReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     pageNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     recommendation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type FindingListRelationFilter = {
@@ -332,11 +370,13 @@ export type FindingCountOrderByAggregateInput = {
     title?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     severity?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     clauseReference?: Prisma.SortOrder;
     pageNumber?: Prisma.SortOrder;
     excerpt?: Prisma.SortOrder;
     recommendation?: Prisma.SortOrder;
     metadata?: Prisma.SortOrder;
+    resolvedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
 };
 export type FindingAvgOrderByAggregateInput = {
@@ -348,10 +388,12 @@ export type FindingMaxOrderByAggregateInput = {
     title?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     severity?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     clauseReference?: Prisma.SortOrder;
     pageNumber?: Prisma.SortOrder;
     excerpt?: Prisma.SortOrder;
     recommendation?: Prisma.SortOrder;
+    resolvedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
 };
 export type FindingMinOrderByAggregateInput = {
@@ -360,10 +402,12 @@ export type FindingMinOrderByAggregateInput = {
     title?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     severity?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     clauseReference?: Prisma.SortOrder;
     pageNumber?: Prisma.SortOrder;
     excerpt?: Prisma.SortOrder;
     recommendation?: Prisma.SortOrder;
+    resolvedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
 };
 export type FindingSumOrderByAggregateInput = {
@@ -410,16 +454,21 @@ export type FindingUncheckedUpdateManyWithoutAnalysisNestedInput = {
 export type EnumFindingSeverityFieldUpdateOperationsInput = {
     set?: $Enums.FindingSeverity;
 };
+export type EnumFindingStatusFieldUpdateOperationsInput = {
+    set?: $Enums.FindingStatus;
+};
 export type FindingCreateWithoutAnalysisInput = {
     id?: string;
     title: string;
     description?: string | null;
     severity?: $Enums.FindingSeverity;
+    status?: $Enums.FindingStatus;
     clauseReference?: string | null;
     pageNumber?: number | null;
     excerpt?: string | null;
     recommendation?: string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Date | string | null;
     createdAt?: Date | string;
 };
 export type FindingUncheckedCreateWithoutAnalysisInput = {
@@ -427,11 +476,13 @@ export type FindingUncheckedCreateWithoutAnalysisInput = {
     title: string;
     description?: string | null;
     severity?: $Enums.FindingSeverity;
+    status?: $Enums.FindingStatus;
     clauseReference?: string | null;
     pageNumber?: number | null;
     excerpt?: string | null;
     recommendation?: string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Date | string | null;
     createdAt?: Date | string;
 };
 export type FindingCreateOrConnectWithoutAnalysisInput = {
@@ -464,11 +515,13 @@ export type FindingScalarWhereInput = {
     title?: Prisma.StringFilter<"Finding"> | string;
     description?: Prisma.StringNullableFilter<"Finding"> | string | null;
     severity?: Prisma.EnumFindingSeverityFilter<"Finding"> | $Enums.FindingSeverity;
+    status?: Prisma.EnumFindingStatusFilter<"Finding"> | $Enums.FindingStatus;
     clauseReference?: Prisma.StringNullableFilter<"Finding"> | string | null;
     pageNumber?: Prisma.IntNullableFilter<"Finding"> | number | null;
     excerpt?: Prisma.StringNullableFilter<"Finding"> | string | null;
     recommendation?: Prisma.StringNullableFilter<"Finding"> | string | null;
     metadata?: Prisma.JsonNullableFilter<"Finding">;
+    resolvedAt?: Prisma.DateTimeNullableFilter<"Finding"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Finding"> | Date | string;
 };
 export type FindingCreateManyAnalysisInput = {
@@ -476,11 +529,13 @@ export type FindingCreateManyAnalysisInput = {
     title: string;
     description?: string | null;
     severity?: $Enums.FindingSeverity;
+    status?: $Enums.FindingStatus;
     clauseReference?: string | null;
     pageNumber?: number | null;
     excerpt?: string | null;
     recommendation?: string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Date | string | null;
     createdAt?: Date | string;
 };
 export type FindingUpdateWithoutAnalysisInput = {
@@ -488,11 +543,13 @@ export type FindingUpdateWithoutAnalysisInput = {
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     severity?: Prisma.EnumFindingSeverityFieldUpdateOperationsInput | $Enums.FindingSeverity;
+    status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus;
     clauseReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     pageNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     recommendation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type FindingUncheckedUpdateWithoutAnalysisInput = {
@@ -500,11 +557,13 @@ export type FindingUncheckedUpdateWithoutAnalysisInput = {
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     severity?: Prisma.EnumFindingSeverityFieldUpdateOperationsInput | $Enums.FindingSeverity;
+    status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus;
     clauseReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     pageNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     recommendation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type FindingUncheckedUpdateManyWithoutAnalysisInput = {
@@ -512,11 +571,13 @@ export type FindingUncheckedUpdateManyWithoutAnalysisInput = {
     title?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     severity?: Prisma.EnumFindingSeverityFieldUpdateOperationsInput | $Enums.FindingSeverity;
+    status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus;
     clauseReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     pageNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     recommendation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 export type FindingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -525,11 +586,13 @@ export type FindingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     title?: boolean;
     description?: boolean;
     severity?: boolean;
+    status?: boolean;
     clauseReference?: boolean;
     pageNumber?: boolean;
     excerpt?: boolean;
     recommendation?: boolean;
     metadata?: boolean;
+    resolvedAt?: boolean;
     createdAt?: boolean;
     analysis?: boolean | Prisma.AnalysisResultDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["finding"]>;
@@ -539,11 +602,13 @@ export type FindingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
     title?: boolean;
     description?: boolean;
     severity?: boolean;
+    status?: boolean;
     clauseReference?: boolean;
     pageNumber?: boolean;
     excerpt?: boolean;
     recommendation?: boolean;
     metadata?: boolean;
+    resolvedAt?: boolean;
     createdAt?: boolean;
     analysis?: boolean | Prisma.AnalysisResultDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["finding"]>;
@@ -553,11 +618,13 @@ export type FindingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
     title?: boolean;
     description?: boolean;
     severity?: boolean;
+    status?: boolean;
     clauseReference?: boolean;
     pageNumber?: boolean;
     excerpt?: boolean;
     recommendation?: boolean;
     metadata?: boolean;
+    resolvedAt?: boolean;
     createdAt?: boolean;
     analysis?: boolean | Prisma.AnalysisResultDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["finding"]>;
@@ -567,14 +634,16 @@ export type FindingSelectScalar = {
     title?: boolean;
     description?: boolean;
     severity?: boolean;
+    status?: boolean;
     clauseReference?: boolean;
     pageNumber?: boolean;
     excerpt?: boolean;
     recommendation?: boolean;
     metadata?: boolean;
+    resolvedAt?: boolean;
     createdAt?: boolean;
 };
-export type FindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "analysisId" | "title" | "description" | "severity" | "clauseReference" | "pageNumber" | "excerpt" | "recommendation" | "metadata" | "createdAt", ExtArgs["result"]["finding"]>;
+export type FindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "analysisId" | "title" | "description" | "severity" | "status" | "clauseReference" | "pageNumber" | "excerpt" | "recommendation" | "metadata" | "resolvedAt" | "createdAt", ExtArgs["result"]["finding"]>;
 export type FindingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     analysis?: boolean | Prisma.AnalysisResultDefaultArgs<ExtArgs>;
 };
@@ -595,11 +664,13 @@ export type $FindingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
         title: string;
         description: string | null;
         severity: $Enums.FindingSeverity;
+        status: $Enums.FindingStatus;
         clauseReference: string | null;
         pageNumber: number | null;
         excerpt: string | null;
         recommendation: string | null;
         metadata: runtime.JsonValue | null;
+        resolvedAt: Date | null;
         createdAt: Date;
     }, ExtArgs["result"]["finding"]>;
     composites: {};
@@ -664,11 +735,13 @@ export interface FindingFieldRefs {
     readonly title: Prisma.FieldRef<"Finding", 'String'>;
     readonly description: Prisma.FieldRef<"Finding", 'String'>;
     readonly severity: Prisma.FieldRef<"Finding", 'FindingSeverity'>;
+    readonly status: Prisma.FieldRef<"Finding", 'FindingStatus'>;
     readonly clauseReference: Prisma.FieldRef<"Finding", 'String'>;
     readonly pageNumber: Prisma.FieldRef<"Finding", 'Int'>;
     readonly excerpt: Prisma.FieldRef<"Finding", 'String'>;
     readonly recommendation: Prisma.FieldRef<"Finding", 'String'>;
     readonly metadata: Prisma.FieldRef<"Finding", 'Json'>;
+    readonly resolvedAt: Prisma.FieldRef<"Finding", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"Finding", 'DateTime'>;
 }
 export type FindingFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {

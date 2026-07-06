@@ -1,11 +1,16 @@
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 export declare class AuthService {
     private readonly prisma;
     private readonly jwtService;
-    constructor(prisma: PrismaService, jwtService: JwtService);
+    private readonly notificationsService;
+    constructor(prisma: PrismaService, jwtService: JwtService, notificationsService: NotificationsService);
     register(dto: RegisterDto): Promise<{
         token: string;
         user: {
@@ -13,6 +18,10 @@ export declare class AuthService {
             email: string;
             full_name: string | null;
             role: string;
+            allow_email_notifications: boolean;
+            allow_expiry_reminders: boolean;
+            allow_risk_alerts: boolean;
+            allow_analysis_alerts: boolean;
         };
     }>;
     login(dto: LoginDto): Promise<{
@@ -22,6 +31,10 @@ export declare class AuthService {
             email: string;
             full_name: string | null;
             role: string;
+            allow_email_notifications: boolean;
+            allow_expiry_reminders: boolean;
+            allow_risk_alerts: boolean;
+            allow_analysis_alerts: boolean;
         };
     }>;
     getMe(userId: string): Promise<{
@@ -29,6 +42,19 @@ export declare class AuthService {
         email: string;
         full_name: string | null;
         role: string;
+        allow_email_notifications: boolean;
+        allow_expiry_reminders: boolean;
+        allow_risk_alerts: boolean;
+        allow_analysis_alerts: boolean;
+    }>;
+    changePassword(userId: string, dto: ChangePasswordDto): Promise<{
+        message: string;
+    }>;
+    forgotPassword(dto: ForgotPasswordDto): Promise<{
+        message: string;
+    }>;
+    resetPassword(dto: ResetPasswordDto): Promise<{
+        message: string;
     }>;
     private buildResponse;
     private sanitize;

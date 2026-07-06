@@ -13,6 +13,7 @@ exports.DocumentsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const prisma_1 = require("../generated/prisma");
+const pagination_utils_1 = require("../common/utils/pagination.utils");
 let DocumentsService = class DocumentsService {
     prisma;
     constructor(prisma) {
@@ -55,9 +56,11 @@ let DocumentsService = class DocumentsService {
         }
         return document;
     }
-    async getDocuments() {
-        return this.prisma.document.findMany({
-            orderBy: { createdAt: 'desc' },
+    async getDocuments(userId, query) {
+        return (0, pagination_utils_1.paginatePrisma)(this.prisma.document, query, {
+            searchFields: ['originalFileName'],
+            defaultSortBy: 'createdAt',
+            where: { uploadedBy: userId },
         });
     }
     async updateDocument(id, data) {

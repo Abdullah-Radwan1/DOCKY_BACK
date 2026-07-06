@@ -30,9 +30,6 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     $extends: runtime.Types.Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<OmitOpts>, ExtArgs, runtime.Types.Utils.Call<Prisma.TypeMapCb<OmitOpts>, {
         extArgs: ExtArgs;
     }>>;
-    get organization(): Prisma.OrganizationDelegate<ExtArgs, {
-        omit: OmitOpts;
-    }>;
     get profile(): Prisma.ProfileDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
@@ -55,6 +52,9 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     get aIResponse(): Prisma.AIResponseDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get passwordResetToken(): Prisma.PasswordResetTokenDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
     get notification(): Prisma.NotificationDelegate<ExtArgs, {

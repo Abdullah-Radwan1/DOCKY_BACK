@@ -19,6 +19,7 @@ const notifications_module_1 = require("./notifications/notifications.module");
 const activity_log_module_1 = require("./activity-log/activity-log.module");
 const scheduler_module_1 = require("./scheduler/scheduler.module");
 const auth_module_1 = require("./auth/auth.module");
+const dashboard_module_1 = require("./dashboard/dashboard.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -34,6 +35,7 @@ exports.AppModule = AppModule = __decorate([
             notifications_module_1.NotificationsModule,
             activity_log_module_1.ActivityLogModule,
             scheduler_module_1.SchedulerModule,
+            dashboard_module_1.DashboardModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

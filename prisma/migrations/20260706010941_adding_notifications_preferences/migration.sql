@@ -1,0 +1,25 @@
+-- AlterTable
+ALTER TABLE "activity_log" ALTER COLUMN "created_at" SET DEFAULT NOW();
+
+-- AlterTable
+ALTER TABLE "ai_responses" ALTER COLUMN "created_at" SET DEFAULT NOW();
+
+-- AlterTable
+ALTER TABLE "compliance_queries" ALTER COLUMN "created_at" SET DEFAULT NOW(),
+ALTER COLUMN "updated_at" SET DEFAULT NOW();
+
+-- AlterTable
+ALTER TABLE "document_analyses" ALTER COLUMN "created_at" SET DEFAULT NOW();
+
+-- AlterTable
+ALTER TABLE "findings" ALTER COLUMN "created_at" SET DEFAULT NOW();
+
+-- AlterTable
+ALTER TABLE "notifications" ALTER COLUMN "created_at" SET DEFAULT NOW(),
+ALTER COLUMN "updated_at" SET DEFAULT NOW();
+
+-- AlterTable
+ALTER TABLE "profiles" ADD COLUMN     "allow_analysis_alerts" BOOLEAN NOT NULL DEFAULT true,
+ADD COLUMN     "allow_email_notifications" BOOLEAN NOT NULL DEFAULT true,
+ADD COLUMN     "allow_expiry_reminders" BOOLEAN NOT NULL DEFAULT true,
+ADD COLUMN     "allow_risk_alerts" BOOLEAN NOT NULL DEFAULT true;

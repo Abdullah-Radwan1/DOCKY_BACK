@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { DocumentStatus } from 'src/generated/prisma';
+import { DocumentStatus } from '../generated/prisma';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { paginatePrisma, PaginatedResult } from '../common/utils/pagination.utils';
 
 @Injectable()
 export class DocumentsService {
@@ -49,10 +51,16 @@ export class DocumentsService {
     return document;
   }
 
-  async getDocuments() {
-    return this.prisma.document.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
+  async getDocuments(userId: string, query: PaginationQueryDto): Promise<PaginatedResult<any>> {
+    return paginatePrisma(
+      this.prisma.document,
+      query,
+      {
+        searchFields: ['originalFileName'],
+        defaultSortBy: 'createdAt',
+        where: { uploadedBy: userId },
+      }
+    );
   }
 
   async updateDocument(id: string, data: UpdateDocumentDto) {

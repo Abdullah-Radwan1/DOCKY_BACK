@@ -11,7 +11,6 @@ export declare const DbNull: import("@prisma/client-runtime-utils").DbNullClass;
 export declare const JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
 export declare const AnyNull: import("@prisma/client-runtime-utils").AnyNullClass;
 export declare const ModelName: {
-    readonly Organization: "Organization";
     readonly Profile: "Profile";
     readonly Document: "Document";
     readonly DocumentChunk: "DocumentChunk";
@@ -20,6 +19,7 @@ export declare const ModelName: {
     readonly ActivityLog: "ActivityLog";
     readonly AnalysisRequest: "AnalysisRequest";
     readonly AIResponse: "AIResponse";
+    readonly PasswordResetToken: "PasswordResetToken";
     readonly Notification: "Notification";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -30,16 +30,6 @@ export declare const TransactionIsolationLevel: {
     readonly Serializable: "Serializable";
 };
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
-export declare const OrganizationScalarFieldEnum: {
-    readonly id: "id";
-    readonly name: "name";
-    readonly slug: "slug";
-    readonly plan: "plan";
-    readonly documentsLimit: "documentsLimit";
-    readonly createdAt: "createdAt";
-    readonly updatedAt: "updatedAt";
-};
-export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum];
 export declare const ProfileScalarFieldEnum: {
     readonly id: "id";
     readonly email: "email";
@@ -47,14 +37,16 @@ export declare const ProfileScalarFieldEnum: {
     readonly avatarUrl: "avatarUrl";
     readonly passwordHash: "passwordHash";
     readonly role: "role";
-    readonly organizationId: "organizationId";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
+    readonly allowEmailNotifications: "allowEmailNotifications";
+    readonly allowExpiryReminders: "allowExpiryReminders";
+    readonly allowRiskAlerts: "allowRiskAlerts";
+    readonly allowAnalysisAlerts: "allowAnalysisAlerts";
 };
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum];
 export declare const DocumentScalarFieldEnum: {
     readonly id: "id";
-    readonly organizationId: "organizationId";
     readonly uploadedBy: "uploadedBy";
     readonly originalFileName: "originalFileName";
     readonly mimeType: "mimeType";
@@ -95,17 +87,18 @@ export declare const FindingScalarFieldEnum: {
     readonly title: "title";
     readonly description: "description";
     readonly severity: "severity";
+    readonly status: "status";
     readonly clauseReference: "clauseReference";
     readonly pageNumber: "pageNumber";
     readonly excerpt: "excerpt";
     readonly recommendation: "recommendation";
     readonly metadata: "metadata";
+    readonly resolvedAt: "resolvedAt";
     readonly createdAt: "createdAt";
 };
 export type FindingScalarFieldEnum = (typeof FindingScalarFieldEnum)[keyof typeof FindingScalarFieldEnum];
 export declare const ActivityLogScalarFieldEnum: {
     readonly id: "id";
-    readonly organizationId: "organizationId";
     readonly userId: "userId";
     readonly action: "action";
     readonly entityType: "entityType";
@@ -138,6 +131,15 @@ export declare const AIResponseScalarFieldEnum: {
     readonly matchedChunks: "matchedChunks";
 };
 export type AIResponseScalarFieldEnum = (typeof AIResponseScalarFieldEnum)[keyof typeof AIResponseScalarFieldEnum];
+export declare const PasswordResetTokenScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly token: "token";
+    readonly expiresAt: "expiresAt";
+    readonly usedAt: "usedAt";
+    readonly createdAt: "createdAt";
+};
+export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum];
 export declare const NotificationScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";

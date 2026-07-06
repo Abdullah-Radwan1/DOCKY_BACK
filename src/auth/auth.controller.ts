@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Patch,
   Get,
   Body,
   Res,
@@ -13,6 +14,9 @@ import type { Response, Request } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 const COOKIE_NAME = 'jwt';
@@ -53,6 +57,31 @@ export class AuthController {
   async me(@Req() req: Request & { user: { id: string } }) {
     const user = await this.authService.getMe(req.user.id);
     return { user };
+  }
+
+  /** PATCH /auth/me/password — change password (requires current password) */
+  @UseGuards(JwtAuthGuard)
+  @Patch('me/password')
+  @HttpCode(HttpStatus.OK)
+  async changePassword(
+    @Req() req: Request & { user: { id: string } },
+    @Body() dto: ChangePasswordDto,
+  ) {
+    return this.authService.changePassword(req.user.id, dto);
+  }
+
+  /** POST /auth/forgot-password — send reset link (public) */
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.OK)
+  async forgotPassword(@Body() dto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(dto);
+  }
+
+  /** POST /auth/reset-password — consume token and set new password (public) */
+  @Post('reset-password')
+  @HttpCode(HttpStatus.OK)
+  async resetPassword(@Body() dto: ResetPasswordDto) {
+    return this.authService.resetPassword(dto);
   }
 
   /** POST /auth/logout — clears the JWT cookie */

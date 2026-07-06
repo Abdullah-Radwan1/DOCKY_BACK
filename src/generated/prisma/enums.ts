@@ -97,6 +97,14 @@ export const FindingSeverity = {
 export type FindingSeverity = (typeof FindingSeverity)[keyof typeof FindingSeverity]
 
 
+export const FindingStatus = {
+  open: 'open',
+  resolved: 'resolved'
+} as const
+
+export type FindingStatus = (typeof FindingStatus)[keyof typeof FindingStatus]
+
+
 export const AnalysisVerdict = {
   compliant: 'compliant',
   non_compliant: 'non_compliant',

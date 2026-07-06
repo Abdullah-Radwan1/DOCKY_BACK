@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defineExtension = exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.NotificationScalarFieldEnum = exports.AIResponseScalarFieldEnum = exports.AnalysisRequestScalarFieldEnum = exports.ActivityLogScalarFieldEnum = exports.FindingScalarFieldEnum = exports.AnalysisResultScalarFieldEnum = exports.DocumentChunkScalarFieldEnum = exports.DocumentScalarFieldEnum = exports.ProfileScalarFieldEnum = exports.OrganizationScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
+exports.defineExtension = exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.NotificationScalarFieldEnum = exports.PasswordResetTokenScalarFieldEnum = exports.AIResponseScalarFieldEnum = exports.AnalysisRequestScalarFieldEnum = exports.ActivityLogScalarFieldEnum = exports.FindingScalarFieldEnum = exports.AnalysisResultScalarFieldEnum = exports.DocumentChunkScalarFieldEnum = exports.DocumentScalarFieldEnum = exports.ProfileScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/client"));
 exports.PrismaClientKnownRequestError = runtime.PrismaClientKnownRequestError;
 exports.PrismaClientUnknownRequestError = runtime.PrismaClientUnknownRequestError;
@@ -60,7 +60,6 @@ exports.DbNull = runtime.DbNull;
 exports.JsonNull = runtime.JsonNull;
 exports.AnyNull = runtime.AnyNull;
 exports.ModelName = {
-    Organization: 'Organization',
     Profile: 'Profile',
     Document: 'Document',
     DocumentChunk: 'DocumentChunk',
@@ -69,6 +68,7 @@ exports.ModelName = {
     ActivityLog: 'ActivityLog',
     AnalysisRequest: 'AnalysisRequest',
     AIResponse: 'AIResponse',
+    PasswordResetToken: 'PasswordResetToken',
     Notification: 'Notification'
 };
 exports.TransactionIsolationLevel = runtime.makeStrictEnum({
@@ -77,15 +77,6 @@ exports.TransactionIsolationLevel = runtime.makeStrictEnum({
     RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
 });
-exports.OrganizationScalarFieldEnum = {
-    id: 'id',
-    name: 'name',
-    slug: 'slug',
-    plan: 'plan',
-    documentsLimit: 'documentsLimit',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-};
 exports.ProfileScalarFieldEnum = {
     id: 'id',
     email: 'email',
@@ -93,13 +84,15 @@ exports.ProfileScalarFieldEnum = {
     avatarUrl: 'avatarUrl',
     passwordHash: 'passwordHash',
     role: 'role',
-    organizationId: 'organizationId',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    allowEmailNotifications: 'allowEmailNotifications',
+    allowExpiryReminders: 'allowExpiryReminders',
+    allowRiskAlerts: 'allowRiskAlerts',
+    allowAnalysisAlerts: 'allowAnalysisAlerts'
 };
 exports.DocumentScalarFieldEnum = {
     id: 'id',
-    organizationId: 'organizationId',
     uploadedBy: 'uploadedBy',
     originalFileName: 'originalFileName',
     mimeType: 'mimeType',
@@ -137,16 +130,17 @@ exports.FindingScalarFieldEnum = {
     title: 'title',
     description: 'description',
     severity: 'severity',
+    status: 'status',
     clauseReference: 'clauseReference',
     pageNumber: 'pageNumber',
     excerpt: 'excerpt',
     recommendation: 'recommendation',
     metadata: 'metadata',
+    resolvedAt: 'resolvedAt',
     createdAt: 'createdAt'
 };
 exports.ActivityLogScalarFieldEnum = {
     id: 'id',
-    organizationId: 'organizationId',
     userId: 'userId',
     action: 'action',
     entityType: 'entityType',
@@ -175,6 +169,14 @@ exports.AIResponseScalarFieldEnum = {
     metadata: 'metadata',
     createdAt: 'createdAt',
     matchedChunks: 'matchedChunks'
+};
+exports.PasswordResetTokenScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    token: 'token',
+    expiresAt: 'expiresAt',
+    usedAt: 'usedAt',
+    createdAt: 'createdAt'
 };
 exports.NotificationScalarFieldEnum = {
     id: 'id',

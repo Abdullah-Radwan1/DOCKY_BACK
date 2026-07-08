@@ -1,153 +1,214 @@
-# DOC_BACK Project Overview
+# DOC_BACK Backend Architecture Guide
 
-This file explains the main file responsibilities and the document upload process in the `DOC_BACK` project.
+This file explains how the backend is organized, how requests flow through the server, and what each major file and service is responsible for.
 
-## Purpose
+## 1. What the backend does
 
-The primary document flow in this repository is a PDF ingestion pipeline exposed by `src/documents`. It validates uploaded PDFs, deduplicates by checksum, extracts text, chunks that text, and stores the resulting document and chunk metadata in the database.
+The backend is a NestJS application that powers the DOCKY product. It handles:
 
-## Main document module files
+- authentication and protected access
+- document upload and document metadata management
+- PDF validation, text extraction, and chunking
+- compliance analysis for documents
+- dashboard summaries, notifications, and activity logs
 
-### `src/documents/documents.controller.ts`
+## 2. High-level request flow
 
-- Exposes REST endpoints for the `documents` feature.
-- Handles `POST /documents/upload` for uploading a PDF file.
-- Uses `FileInterceptor` with `memoryStorage()` and a PDF MIME gate.
-- Accepts file metadata via `UploadDocumentDto` and passes it to `DocumentUploadService`.
-- Also exposes CRUD endpoints for documents:
-  - `POST /documents` to create a document record manually,
-  - `GET /documents/:id` to get a document by ID,
-  - `GET /documents/organization/:organizationId` to get documents for an organization,
-  - `PATCH /documents/:id` to update document metadata,
-  - `DELETE /documents/:id` to remove a document.
+### Authentication flow
 
-### `src/documents/documents.service.ts`
+1. Requests enter through the NestJS entry point in [src/main.ts](src/main.ts).
+2. [src/app.module.ts](src/app.module.ts) wires together the feature modules.
+3. Auth requests are handled in [src/auth/auth.controller.ts](src/auth/auth.controller.ts) and [src/auth/auth.service.ts](src/auth/auth.service.ts).
+4. JWT protection is enforced by [src/auth/guards/jwt-auth.guard.ts](src/auth/guards/jwt-auth.guard.ts) and [src/auth/strategies/jwt.strategy.ts](src/auth/strategies/jwt.strategy.ts).
 
-- Contains general CRUD operations for document records.
-- Uses `PrismaService` to read and write the `Document` model.
-- Retrieves documents with related chunks and uploader data.
-- Updates only allowed scalar properties and throws `NotFoundException` when appropriate.
+### Document upload flow
 
-### `src/documents/documents.module.ts`
+1. A client sends a multipart upload request to the documents controller.
+2. [src/documents/documents.controller.ts](src/documents/documents.controller.ts) receives the file and metadata.
+3. [src/documents/services/document-upload.service.ts](src/documents/services/document-upload.service.ts) runs the pipeline.
+4. The file is validated, deduplicated, stored as a document, processed, chunked, and marked ready.
+5. The final document metadata is returned to the client.
 
-- Registers the Nest module for `documents`.
-- Imports `MulterModule` with `memoryStorage()`.
-- Provides and exports:
-  - `DocumentsService`
-  - `DocumentUploadService`
-  - `PdfValidatorService`
-  - `PdfExtractorService`
-  - `ChunkingService`
+### Compliance analysis flow
 
-### `src/documents/services/document-upload.service.ts`
+1. The client submits a compliance analysis request.
+2. [src/compliance/compliance.controller.ts](src/compliance/compliance.controller.ts) receives it.
+3. [src/compliance/compliance.service.ts](src/compliance/compliance.service.ts) creates an analysis request and delegates to the AI layer.
+4. [src/ai/services/analysis-orchestrator.service.ts](src/ai/services/analysis-orchestrator.service.ts) runs the analysis pipeline.
+5. The AI provider returns a structured result that is persisted through Prisma.
+6. The frontend can later read the analysis trail from the compliance endpoints.
 
-- Implements the full upload pipeline.
-- Steps:
-  1. Validate the file with `PdfValidatorService`.
-  2. Compute a SHA-256 checksum and detect duplicates.
-  3. Create a new `Document` record with `status = uploaded`.
-  4. Update document status to `extracting` and extract PDF text.
-  5. Update status to `chunking` and split text into chunks.
-  6. Insert chunks inside a Prisma transaction and update document status to `ready`.
-- If an error occurs after record creation, it updates the document status to `failed`.
+### Dashboard and notifications flow
 
-### `src/documents/services/pdf-validator.service.ts`
+1. [src/dashboard/dashboard.service.ts](src/dashboard/dashboard.service.ts) gathers aggregates from documents, analyses, findings, notifications, and activity logs.
+2. Notifications are created and sent through [src/notifications/notifications.service.ts](src/notifications/notifications.service.ts) and the dispatchers under [src/notifications/dispatchers](src/notifications/dispatchers).
 
-- Validates that the uploaded file is a real PDF.
-- Checks:
-  - file exists,
-  - MIME type is `application/pdf`,
-  - size does not exceed 20 MB,
-  - file signature matches PDF magic bytes or is detected as PDF by `file-type`.
-- Throws Nest exceptions mapped to HTTP 415 or 413 when validation fails.
+## 3. Core backend modules and responsibilities
 
-### `src/documents/services/pdf-extractor.service.ts`
+### App and bootstrapping
 
-- Extracts text and page count from a PDF buffer.
-- Uses `pdf-parse` to parse the in-memory PDF data.
-- Returns a `PdfData` object containing the extracted text and page count.
+- [src/app.module.ts](src/app.module.ts)
+  - Wires the root modules together.
+  - Registers Prisma, auth, documents, compliance, notifications, dashboard, scheduler, and AI modules.
 
-### `src/documents/services/chunking.service.ts`
+### Auth module
 
-- Splits extracted PDF text into chunks.
-- Preserves page numbering by using `` page separators emitted by `pdf-parse`.
-- Produces chunk contents with approximate token counts.
-- Ensures each chunk is in a reasonable size range and merges small trailing fragments when needed.
+- [src/auth/auth.module.ts](src/auth/auth.module.ts)
+  - Registers JWT, Passport, auth service, and guards.
 
-### `src/documents/interfaces/pdf-data.interface.ts`
+- [src/auth/auth.service.ts](src/auth/auth.service.ts)
+  - Handles login, password verification, and auth-related business rules.
 
-- Defines the extracted PDF data shape:
-  - `text: string`
-  - `pageCount: number`
+- [src/auth/guards/jwt-auth.guard.ts](src/auth/guards/jwt-auth.guard.ts)
+  - Protects private endpoints.
 
-## DTOs and payloads
+- [src/auth/strategies/jwt.strategy.ts](src/auth/strategies/jwt.strategy.ts)
+  - Validates JWTs and attaches the authenticated user to the request.
 
-### `src/documents/dto/upload-document.dto.ts`
+### Documents module
 
-- Defines optional metadata fields that accompany the file upload:
-  - `organizationId`
-  - `uploadedBy`
+- [src/documents/documents.controller.ts](src/documents/documents.controller.ts)
+  - Exposes REST endpoints for upload, retrieval, update, and deletion of documents.
 
-### `src/documents/dto/upload-document-response.dto.ts`
+- [src/documents/documents.service.ts](src/documents/documents.service.ts)
+  - Implements CRUD logic for document records and related metadata.
 
-- Defines the response returned after a successful upload.
-- Includes document ID, filename, MIME type, checksum, file size, page count, chunk count, status, and timestamps.
+- [src/documents/services/document-upload.service.ts](src/documents/services/document-upload.service.ts)
+  - Orchestrates the full upload pipeline.
+  - Validates the file, creates a document record, extracts text, chunks it, and marks the document ready.
 
-### Other DTOs
+- [src/documents/services/pdf-validator.service.ts](src/documents/services/pdf-validator.service.ts)
+  - Validates that the uploaded file is a real PDF and within the allowed size range.
 
-- `create-document.dto.ts` / `update-document.dto.ts`: payloads for manual document create/update endpoints.
-- `document-response.dto.ts`: output shape for document retrieval.
-- `document-analysis-response.dto.ts`, `finding-response.dto.ts`, and related DTOs support analysis and finding data tied to documents.
+- [src/documents/services/pdf-extractor.service.ts](src/documents/services/pdf-extractor.service.ts)
+  - Extracts text and page count from the PDF buffer.
 
-## Prisma schema and database models
+- [src/documents/services/chunking.service.ts](src/documents/services/chunking.service.ts)
+  - Splits the extracted text into chunks for later retrieval and analysis.
 
-### `prisma/schema.prisma`
+### Compliance module
 
-- Defines the database models used by the document flow.
-- Important models for this module:
-  - `Document`
-  - `DocumentChunk`
-  - `DocumentStatus`
-- `DocumentStatus` states:
-  - `uploaded`
-  - `extracting`
-  - `chunking`
-  - `ready`
-  - `failed`
-- Documents are related to organizations, uploader profiles, chunks, and analysis requests.
-- `DocumentChunk` stores text fragments and page references for each document.
+- [src/compliance/compliance.controller.ts](src/compliance/compliance.controller.ts)
+  - Exposes endpoints for starting and retrieving compliance analysis results.
 
-## Upload process flow
+- [src/compliance/compliance.service.ts](src/compliance/compliance.service.ts)
+  - Creates analysis requests and retrieves their results.
+  - Coordinates the compliance analysis workflow.
 
-1. Client sends `POST /documents/upload` with multipart/form-data:
-   - `file` field containing the PDF,
-   - optional `organizationId`,
-   - optional `uploadedBy`.
-2. `DocumentsController` receives the file and metadata.
-3. `DocumentUploadService.upload()` begins the pipeline.
-4. `PdfValidatorService.validate()` verifies file metadata, size, and PDF signature.
-5. `document-upload.service` computes SHA-256 checksum and checks for duplicates in the same organization.
-6. A `Document` record is created with `status = uploaded`.
-7. Status is updated to `extracting` and `PdfExtractorService.extract()` reads text and page count.
-8. Status is updated to `chunking` and `ChunkingService.chunk()` breaks text into chunks.
-9. All chunks are inserted in a transaction, and the document status becomes `ready`.
-10. The service returns `UploadDocumentResponseDto` including the final metadata.
+### AI module
 
-## Notes
+- [src/ai/ai.module.ts](src/ai/ai.module.ts)
+  - Registers the AI services and binds the provider implementation.
 
-- The upload route uses memory-based file handling, so large files are limited to 20 MB by design.
-- Duplicate detection is based on checksum and organization scope.
-- Chunking preserves page context to make later retrieval or analysis easier.
-- Document records can also be managed separately through CRUD endpoints.
+- [src/ai/services/openrouter.service.ts](src/ai/services/openrouter.service.ts)
+  - Talks to the external AI provider.
 
-## Useful files outside `src/documents`
+- [src/ai/services/prompt-builder.service.ts](src/ai/services/prompt-builder.service.ts)
+  - Builds the prompt that is sent to the AI model.
 
-- `src/prisma/prisma.service.ts`: provides the Prisma client used by services.
-- `src/app.module.ts`: imports the root application modules and ensures the `DocumentsModule` is registered.
-- `package.json`: contains dependencies and available npm scripts.
-- `tsconfig.json` / `tsconfig.build.json`: TypeScript compilation settings.
-- `generated/prisma/`: generated Prisma client and model types used across the app.
+- [src/ai/services/chunk-retrieval.service.ts](src/ai/services/chunk-retrieval.service.ts)
+  - Retrieves relevant document chunks for the analysis request.
 
----
+- [src/ai/services/analysis-orchestrator.service.ts](src/ai/services/analysis-orchestrator.service.ts)
+  - Coordinates the end-to-end AI workflow.
+  - Pulls relevant chunks, builds a prompt, sends it to the model, parses the result, and persists it.
 
-This document is intended to help developers understand the document upload path, the responsibilities of each module file, and how uploaded PDFs are transformed into stored chunks and metadata.
+### Dashboard module
+
+- [src/dashboard/dashboard.service.ts](src/dashboard/dashboard.service.ts)
+  - Builds the dashboard summary for the current user.
+  - Aggregates document status, analysis results, findings, notifications, and activity logs.
+
+- [src/dashboard/document-status.service.ts](src/dashboard/document-status.service.ts)
+  - Calculates document attention and risk status based on findings.
+
+### Notifications module
+
+- [src/notifications/notifications.service.ts](src/notifications/notifications.service.ts)
+  - Creates and stores notification records.
+
+- [src/notifications/dispatchers/email.dispatcher.ts](src/notifications/dispatchers/email.dispatcher.ts)
+  - Sends email notifications.
+
+- [src/notifications/dispatchers/sms.dispatcher.ts](src/notifications/dispatchers/sms.dispatcher.ts)
+  - Sends SMS notifications.
+
+- [src/notifications/dispatchers/push.dispatcher.ts](src/notifications/dispatchers/push.dispatcher.ts)
+  - Sends push notifications.
+
+### Prisma layer
+
+- [src/prisma/prisma.module.ts](src/prisma/prisma.module.ts)
+  - Registers Prisma for dependency injection.
+
+- [src/prisma/prisma.service.ts](src/prisma/prisma.service.ts)
+  - Provides the Prisma client used by services.
+
+- [prisma/schema.prisma](prisma/schema.prisma)
+  - Defines the database schema for documents, analyses, findings, notifications, profiles, and activity logs.
+
+## 4. Shared utilities and DTOs
+
+- [src/common/utils/pagination.utils.ts](src/common/utils/pagination.utils.ts)
+  - Contains shared pagination logic for list endpoints.
+
+- [src/common/dto](src/common/dto)
+  - Holds DTOs reused by controllers and services.
+
+- [src/generated/prisma](src/generated/prisma)
+  - Contains generated Prisma typings used by the app.
+
+## 5. Persistence model
+
+The core persisted entities include:
+
+- Document
+  - stores upload metadata and processing state
+
+- DocumentChunk
+  - stores text chunks extracted from the PDF
+
+- AnalysisRequest
+  - represents a compliance analysis request
+
+- AIResponse
+  - stores the raw AI response
+
+- AnalysisResult
+  - stores normalized analysis results and severity information
+
+- Finding
+  - stores individual compliance findings
+
+- Notification
+  - stores notification records and their status
+
+- Profile
+  - stores account and user info used by auth and permissions
+
+## 6. Typical backend request journeys
+
+### Uploading a document
+
+1. The client posts a PDF to the upload endpoint.
+2. The controller passes the file to the upload service.
+3. The service validates and processes the PDF.
+4. The document becomes `ready` after extraction and chunking.
+
+### Running compliance analysis
+
+1. The client requests analysis for a document.
+2. The compliance service creates an analysis request.
+3. The AI orchestrator retrieves relevant chunks.
+4. The AI provider returns a structured analysis.
+5. Results are stored and made available to the frontend.
+
+## 7. Useful commands
+
+```bash
+npm install
+npm run start
+npm run start:dev
+npm run build
+npm run test
+```

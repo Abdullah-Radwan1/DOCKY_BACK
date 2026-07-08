@@ -1,23 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import type { AiChatMessage } from '../interfaces/ai-provider.interface';
 
-/**
- * Constructs the system + user prompts for compliance analysis.
- *
- * The system prompt instructs the model to return structured JSON that maps
- * directly to our Prisma schema (AnalysisResult + Finding).
- */
 @Injectable()
 export class PromptBuilderService {
-  /**
-   * Builds the full message array for a compliance analysis request.
-   *
-   * @param queryText  The user's compliance question / analysis instruction.
-   * @param chunks     Document chunks with content and page numbers.
-   */
   buildAnalysisPrompt(
     queryText: string,
-    chunks: Array<{ content: string; pageNumber: number | null; chunkIndex: number }>,
+    chunks: Array<{
+      content: string;
+      pageNumber: number | null;
+      chunkIndex: number;
+    }>,
   ): AiChatMessage[] {
     return [
       { role: 'system', content: this.systemPrompt() },
@@ -25,51 +17,155 @@ export class PromptBuilderService {
     ];
   }
 
-  // ── Private ─────────────────────────────────────────────────────────────────
-
   private systemPrompt(): string {
-    return `You are a senior compliance analyst AI. Your job is to analyze documents for regulatory compliance, contractual risks, and policy violations.
+    return `You are an expert legal contract analyst and regulatory compliance specialist.
 
-You MUST respond with valid JSON matching exactly the following schema — no markdown, no commentary, no wrapping:
+Your job is to analyze contracts and legal documents, extract structured contractual information, identify legal risks, evaluate compliance, and provide actionable recommendations.
+
+You MUST return ONLY valid JSON.
+Do NOT wrap the response in markdown.
+Do NOT include explanations outside the JSON.
+
+The JSON MUST exactly match this schema:
 
 {
-  "summary": "<string — 2-4 sentence executive summary of compliance posture>",
-  "overallVerdict": "<one of: compliant, non_compliant, partial, unknown>",
-  "confidence": <number 0.0 to 1.0 — your confidence in the verdict>,
-  "riskLevel": "<one of: low, medium, high>",
+  "summary": "<2-5 sentence executive summary>",
+
+  "overallVerdict": "compliant | partial | non_compliant | unknown",
+
+  "confidence": <number between 0 and 1>,
+
+  "riskLevel": "low | medium | high",
+
+  "parties": [
+    {
+      "name": "<legal entity>",
+      "role": "<buyer | seller | supplier | customer | employee | employer | landlord | tenant | contractor | client | other>",
+      "type": "<corporation | llc | individual | government | nonprofit | unknown>",
+      "address": "<address or null>",
+      "signatory": "<person signing or null>",
+      "title": "<job title or null>"
+    }
+  ],
+
+  "obligations": [
+    {
+      "party": "<party name>",
+      "obligation": "<required action>",
+      "deadline": "<date or null>",
+      "frequency": "<one-time | monthly | annually | recurring | null>",
+      "clauseReference": "<section or null>",
+      "pageNumber": <number or null>
+    }
+  ],
+
+  "paymentTerms": [
+    {
+      "description": "<payment obligation description>",
+      "amount": "<amount or null>",
+      "currency": "<currency or null>",
+      "frequency": "<monthly | quarterly | yearly | one-time | recurring | null>",
+      "dueDate": "<date or null>",
+      "latePenalty": "<description or null>",
+      "clauseReference": "<section or null>",
+      "pageNumber": <number or null>
+    }
+  ],
+
+  "penalties": [
+    {
+      "type": "<late payment | breach | termination | service level | indemnity | other>",
+      "penalty": "<description of the penalty>",
+      "trigger": "<what causes the penalty>",
+      "clauseReference": "<section or null>",
+      "pageNumber": <number or null>
+    }
+  ],
+
+  "renewalTerms": [
+    {
+      "type": "<automatic | optional | evergreen | fixed-term renewal | other>",
+      "period": "<renewal period or null>",
+      "noticePeriod": "<notice period or null>",
+      "clauseReference": "<section or null>",
+      "pageNumber": <number or null>
+    }
+  ],
+
+  "terminationTerms": {
+    "terminationNotice": "<text or null>",
+    "terminationConditions": [
+      "<condition>"
+    ]
+  },
+
+  "governingLaw": "<state/country or null>",
+
+  "importantDates": [
+    {
+      "label": "<Effective Date | Expiration | Renewal | Payment | Delivery | Notice | Termination>",
+      "date": "<ISO date or original text>",
+      "pageNumber": <number or null>
+    }
+  ],
+
+  "missingClauses": [
+    {
+      "name": "<missing clause>",
+      "importance": "low | medium | high",
+      "reason": "<why it matters>"
+    }
+  ],
+
+  "complianceRequirements": [
+    {
+      "requirement": "<requirement>",
+      "status": "met | unmet | unknown",
+      "details": "<reason>"
+    }
+  ],
+
   "findings": [
     {
-      "title": "<string — short title of the finding>",
-      "description": "<string or null — detailed explanation>",
-      "severity": "<one of: info, low, medium, high, critical>",
-      "clauseReference": "<string or null — the specific clause, section, or article reference>",
-      "pageNumber": <number or null — page where this issue appears>,
-      "excerpt": "<string or null — exact quoted text from the document>",
-      "recommendation": "<string or null — what should be done to remediate>",
-      "metadata": <object or null — any extra structured data>
+      "title": "<short title>",
+      "description": "<detailed explanation>",
+      "severity": "info | low | medium | high | critical",
+      "category": "legal | compliance | financial | security | operational",
+      "clauseReference": "<section or null>",
+      "pageNumber": <number or null>,
+      "excerpt": "<exact quotation or null>",
+      "recommendation": "<recommended action or null>",
+      "metadata": {}
     }
   ]
 }
 
 Rules:
-- Return ONLY the JSON object. No markdown code fences.
-- The "findings" array must contain at least one item, even if it's an informational "no issues found" entry.
-- "overallVerdict" must be exactly one of: compliant, non_compliant, partial, unknown.
-- "severity" must be exactly one of: info, low, medium, high, critical.
-- "riskLevel" must be exactly one of: low, medium, high.
-- "confidence" must be a float between 0.0 and 1.0.
-- Page numbers should reference the original document page numbers provided in the context.
-- Quote exact text in "excerpt" when referencing specific document passages.
-- Be thorough but precise. Prioritize actionable findings.`;
+1. Return ONLY valid JSON.
+2. Always return every top-level field in the schema, even if some values are empty arrays or null.
+3. The user's query is a focus area, NOT a restriction. You must still extract the full structured contract analysis whenever the information exists in the document.
+4. Extract all identifiable parties, obligations, payment terms, penalties, renewal terms, governing law, important dates, missing clauses, and compliance requirements when present.
+5. If the document does not contain a section, return an empty array or null as appropriate.
+6. Never invent facts. Only use information supported by the provided document text.
+7. Quote exact contract language in findings.excerpt whenever possible.
+8. Include clauseReference and pageNumber whenever available.
+9. findings must contain at least one item. If no material risk exists, include an informational finding.
+10. confidence must be between 0 and 1.`;
   }
 
   private userPrompt(
     queryText: string,
-    chunks: Array<{ content: string; pageNumber: number | null; chunkIndex: number }>,
+    chunks: Array<{
+      content: string;
+      pageNumber: number | null;
+      chunkIndex: number;
+    }>,
   ): string {
     const documentContext = chunks
       .map((c) => {
-        const pageLabel = c.pageNumber ? `Page ${c.pageNumber}` : `Chunk ${c.chunkIndex}`;
+        const pageLabel = c.pageNumber
+          ? `Page ${c.pageNumber}`
+          : `Chunk ${c.chunkIndex}`;
         return `--- ${pageLabel} ---\n${c.content}`;
       })
       .join('\n\n');
@@ -77,12 +173,17 @@ Rules:
     return `COMPLIANCE ANALYSIS REQUEST
 ========================
 
-QUERY:
-${queryText}
+USER QUESTION / FOCUS AREA:
+${queryText || 'General compliance and contract analysis'}
+
+IMPORTANT:
+- Use the user question above as a focus area for emphasis.
+- Do NOT limit the analysis to only that question.
+- You must still return the COMPLETE structured analysis schema for the whole document whenever the information is available.
 
 DOCUMENT CONTENT:
 ${documentContext}
 
-Analyze the document content above in the context of the query. Return your analysis as the specified JSON structure.`;
+Now analyze the document and return the JSON object exactly matching the required schema.`;
   }
 }

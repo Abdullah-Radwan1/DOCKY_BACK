@@ -47,6 +47,8 @@ export declare const ProfileScalarFieldEnum: {
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum];
 export declare const DocumentScalarFieldEnum: {
     readonly id: "id";
+    readonly guestToken: "guestToken";
+    readonly isGuest: "isGuest";
     readonly uploadedBy: "uploadedBy";
     readonly originalFileName: "originalFileName";
     readonly mimeType: "mimeType";

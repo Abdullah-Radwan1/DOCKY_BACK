@@ -40,6 +40,8 @@ export type DocumentSumAggregateOutputType = {
 
 export type DocumentMinAggregateOutputType = {
   id: string | null
+  guestToken: string | null
+  isGuest: boolean | null
   uploadedBy: string | null
   originalFileName: string | null
   mimeType: string | null
@@ -56,6 +58,8 @@ export type DocumentMinAggregateOutputType = {
 
 export type DocumentMaxAggregateOutputType = {
   id: string | null
+  guestToken: string | null
+  isGuest: boolean | null
   uploadedBy: string | null
   originalFileName: string | null
   mimeType: string | null
@@ -72,6 +76,8 @@ export type DocumentMaxAggregateOutputType = {
 
 export type DocumentCountAggregateOutputType = {
   id: number
+  guestToken: number
+  isGuest: number
   uploadedBy: number
   originalFileName: number
   mimeType: number
@@ -102,6 +108,8 @@ export type DocumentSumAggregateInputType = {
 
 export type DocumentMinAggregateInputType = {
   id?: true
+  guestToken?: true
+  isGuest?: true
   uploadedBy?: true
   originalFileName?: true
   mimeType?: true
@@ -118,6 +126,8 @@ export type DocumentMinAggregateInputType = {
 
 export type DocumentMaxAggregateInputType = {
   id?: true
+  guestToken?: true
+  isGuest?: true
   uploadedBy?: true
   originalFileName?: true
   mimeType?: true
@@ -134,6 +144,8 @@ export type DocumentMaxAggregateInputType = {
 
 export type DocumentCountAggregateInputType = {
   id?: true
+  guestToken?: true
+  isGuest?: true
   uploadedBy?: true
   originalFileName?: true
   mimeType?: true
@@ -237,6 +249,8 @@ export type DocumentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type DocumentGroupByOutputType = {
   id: string
+  guestToken: string | null
+  isGuest: boolean
   uploadedBy: string | null
   originalFileName: string
   mimeType: string | null
@@ -276,6 +290,8 @@ export type DocumentWhereInput = {
   OR?: Prisma.DocumentWhereInput[]
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   id?: Prisma.UuidFilter<"Document"> | string
+  guestToken?: Prisma.StringNullableFilter<"Document"> | string | null
+  isGuest?: Prisma.BoolFilter<"Document"> | boolean
   uploadedBy?: Prisma.UuidNullableFilter<"Document"> | string | null
   originalFileName?: Prisma.StringFilter<"Document"> | string
   mimeType?: Prisma.StringNullableFilter<"Document"> | string | null
@@ -296,6 +312,8 @@ export type DocumentWhereInput = {
 
 export type DocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  guestToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  isGuest?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   originalFileName?: Prisma.SortOrder
   mimeType?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -316,9 +334,11 @@ export type DocumentOrderByWithRelationInput = {
 
 export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  guestToken?: string
   AND?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   OR?: Prisma.DocumentWhereInput[]
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
+  isGuest?: Prisma.BoolFilter<"Document"> | boolean
   uploadedBy?: Prisma.UuidNullableFilter<"Document"> | string | null
   originalFileName?: Prisma.StringFilter<"Document"> | string
   mimeType?: Prisma.StringNullableFilter<"Document"> | string | null
@@ -335,10 +355,12 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   chunks?: Prisma.DocumentChunkListRelationFilter
   analysisRequests?: Prisma.AnalysisRequestListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
-}, "id">
+}, "id" | "guestToken">
 
 export type DocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  guestToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  isGuest?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   originalFileName?: Prisma.SortOrder
   mimeType?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -363,6 +385,8 @@ export type DocumentScalarWhereWithAggregatesInput = {
   OR?: Prisma.DocumentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DocumentScalarWhereWithAggregatesInput | Prisma.DocumentScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Document"> | string
+  guestToken?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
+  isGuest?: Prisma.BoolWithAggregatesFilter<"Document"> | boolean
   uploadedBy?: Prisma.UuidNullableWithAggregatesFilter<"Document"> | string | null
   originalFileName?: Prisma.StringWithAggregatesFilter<"Document"> | string
   mimeType?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
@@ -379,6 +403,8 @@ export type DocumentScalarWhereWithAggregatesInput = {
 
 export type DocumentCreateInput = {
   id?: string
+  guestToken?: string | null
+  isGuest?: boolean
   originalFileName: string
   mimeType?: string | null
   checksum?: string | null
@@ -398,6 +424,8 @@ export type DocumentCreateInput = {
 
 export type DocumentUncheckedCreateInput = {
   id?: string
+  guestToken?: string | null
+  isGuest?: boolean
   uploadedBy?: string | null
   originalFileName: string
   mimeType?: string | null
@@ -417,6 +445,8 @@ export type DocumentUncheckedCreateInput = {
 
 export type DocumentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -436,6 +466,8 @@ export type DocumentUpdateInput = {
 
 export type DocumentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -455,6 +487,8 @@ export type DocumentUncheckedUpdateInput = {
 
 export type DocumentCreateManyInput = {
   id?: string
+  guestToken?: string | null
+  isGuest?: boolean
   uploadedBy?: string | null
   originalFileName: string
   mimeType?: string | null
@@ -471,6 +505,8 @@ export type DocumentCreateManyInput = {
 
 export type DocumentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -486,6 +522,8 @@ export type DocumentUpdateManyMutationInput = {
 
 export type DocumentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -512,6 +550,8 @@ export type DocumentOrderByRelationAggregateInput = {
 
 export type DocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  guestToken?: Prisma.SortOrder
+  isGuest?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
   originalFileName?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
@@ -534,6 +574,8 @@ export type DocumentAvgOrderByAggregateInput = {
 
 export type DocumentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  guestToken?: Prisma.SortOrder
+  isGuest?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
   originalFileName?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
@@ -550,6 +592,8 @@ export type DocumentMaxOrderByAggregateInput = {
 
 export type DocumentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  guestToken?: Prisma.SortOrder
+  isGuest?: Prisma.SortOrder
   uploadedBy?: Prisma.SortOrder
   originalFileName?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
@@ -686,6 +730,8 @@ export type DocumentUpdateOneWithoutNotificationsNestedInput = {
 
 export type DocumentCreateWithoutUploaderInput = {
   id?: string
+  guestToken?: string | null
+  isGuest?: boolean
   originalFileName: string
   mimeType?: string | null
   checksum?: string | null
@@ -704,6 +750,8 @@ export type DocumentCreateWithoutUploaderInput = {
 
 export type DocumentUncheckedCreateWithoutUploaderInput = {
   id?: string
+  guestToken?: string | null
+  isGuest?: boolean
   originalFileName: string
   mimeType?: string | null
   checksum?: string | null
@@ -751,6 +799,8 @@ export type DocumentScalarWhereInput = {
   OR?: Prisma.DocumentScalarWhereInput[]
   NOT?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
   id?: Prisma.UuidFilter<"Document"> | string
+  guestToken?: Prisma.StringNullableFilter<"Document"> | string | null
+  isGuest?: Prisma.BoolFilter<"Document"> | boolean
   uploadedBy?: Prisma.UuidNullableFilter<"Document"> | string | null
   originalFileName?: Prisma.StringFilter<"Document"> | string
   mimeType?: Prisma.StringNullableFilter<"Document"> | string | null
@@ -767,6 +817,8 @@ export type DocumentScalarWhereInput = {
 
 export type DocumentCreateWithoutChunksInput = {
   id?: string
+  guestToken?: string | null
+  isGuest?: boolean
   originalFileName: string
   mimeType?: string | null
   checksum?: string | null
@@ -785,6 +837,8 @@ export type DocumentCreateWithoutChunksInput = {
 
 export type DocumentUncheckedCreateWithoutChunksInput = {
   id?: string
+  guestToken?: string | null
+  isGuest?: boolean
   uploadedBy?: string | null
   originalFileName: string
   mimeType?: string | null
@@ -819,6 +873,8 @@ export type DocumentUpdateToOneWithWhereWithoutChunksInput = {
 
 export type DocumentUpdateWithoutChunksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -837,6 +893,8 @@ export type DocumentUpdateWithoutChunksInput = {
 
 export type DocumentUncheckedUpdateWithoutChunksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -855,6 +913,8 @@ export type DocumentUncheckedUpdateWithoutChunksInput = {
 
 export type DocumentCreateWithoutAnalysisRequestsInput = {
   id?: string
+  guestToken?: string | null
+  isGuest?: boolean
   originalFileName: string
   mimeType?: string | null
   checksum?: string | null
@@ -873,6 +933,8 @@ export type DocumentCreateWithoutAnalysisRequestsInput = {
 
 export type DocumentUncheckedCreateWithoutAnalysisRequestsInput = {
   id?: string
+  guestToken?: string | null
+  isGuest?: boolean
   uploadedBy?: string | null
   originalFileName: string
   mimeType?: string | null
@@ -907,6 +969,8 @@ export type DocumentUpdateToOneWithWhereWithoutAnalysisRequestsInput = {
 
 export type DocumentUpdateWithoutAnalysisRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -925,6 +989,8 @@ export type DocumentUpdateWithoutAnalysisRequestsInput = {
 
 export type DocumentUncheckedUpdateWithoutAnalysisRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -943,6 +1009,8 @@ export type DocumentUncheckedUpdateWithoutAnalysisRequestsInput = {
 
 export type DocumentCreateWithoutNotificationsInput = {
   id?: string
+  guestToken?: string | null
+  isGuest?: boolean
   originalFileName: string
   mimeType?: string | null
   checksum?: string | null
@@ -961,6 +1029,8 @@ export type DocumentCreateWithoutNotificationsInput = {
 
 export type DocumentUncheckedCreateWithoutNotificationsInput = {
   id?: string
+  guestToken?: string | null
+  isGuest?: boolean
   uploadedBy?: string | null
   originalFileName: string
   mimeType?: string | null
@@ -995,6 +1065,8 @@ export type DocumentUpdateToOneWithWhereWithoutNotificationsInput = {
 
 export type DocumentUpdateWithoutNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1013,6 +1085,8 @@ export type DocumentUpdateWithoutNotificationsInput = {
 
 export type DocumentUncheckedUpdateWithoutNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1031,6 +1105,8 @@ export type DocumentUncheckedUpdateWithoutNotificationsInput = {
 
 export type DocumentCreateManyUploaderInput = {
   id?: string
+  guestToken?: string | null
+  isGuest?: boolean
   originalFileName: string
   mimeType?: string | null
   checksum?: string | null
@@ -1046,6 +1122,8 @@ export type DocumentCreateManyUploaderInput = {
 
 export type DocumentUpdateWithoutUploaderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1064,6 +1142,8 @@ export type DocumentUpdateWithoutUploaderInput = {
 
 export type DocumentUncheckedUpdateWithoutUploaderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1082,6 +1162,8 @@ export type DocumentUncheckedUpdateWithoutUploaderInput = {
 
 export type DocumentUncheckedUpdateManyWithoutUploaderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  guestToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isGuest?: Prisma.BoolFieldUpdateOperationsInput | boolean
   originalFileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   checksum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1146,6 +1228,8 @@ export type DocumentCountOutputTypeCountNotificationsArgs<ExtArgs extends runtim
 
 export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  guestToken?: boolean
+  isGuest?: boolean
   uploadedBy?: boolean
   originalFileName?: boolean
   mimeType?: boolean
@@ -1167,6 +1251,8 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 
 export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  guestToken?: boolean
+  isGuest?: boolean
   uploadedBy?: boolean
   originalFileName?: boolean
   mimeType?: boolean
@@ -1184,6 +1270,8 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
 
 export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  guestToken?: boolean
+  isGuest?: boolean
   uploadedBy?: boolean
   originalFileName?: boolean
   mimeType?: boolean
@@ -1201,6 +1289,8 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 
 export type DocumentSelectScalar = {
   id?: boolean
+  guestToken?: boolean
+  isGuest?: boolean
   uploadedBy?: boolean
   originalFileName?: boolean
   mimeType?: boolean
@@ -1215,7 +1305,7 @@ export type DocumentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uploadedBy" | "originalFileName" | "mimeType" | "checksum" | "fileSize" | "pageCount" | "totalChunks" | "language" | "status" | "expirationDate" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "guestToken" | "isGuest" | "uploadedBy" | "originalFileName" | "mimeType" | "checksum" | "fileSize" | "pageCount" | "totalChunks" | "language" | "status" | "expirationDate" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   uploader?: boolean | Prisma.Document$uploaderArgs<ExtArgs>
   chunks?: boolean | Prisma.Document$chunksArgs<ExtArgs>
@@ -1240,6 +1330,8 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    guestToken: string | null
+    isGuest: boolean
     uploadedBy: string | null
     originalFileName: string
     mimeType: string | null
@@ -1680,6 +1772,8 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
  */
 export interface DocumentFieldRefs {
   readonly id: Prisma.FieldRef<"Document", 'String'>
+  readonly guestToken: Prisma.FieldRef<"Document", 'String'>
+  readonly isGuest: Prisma.FieldRef<"Document", 'Boolean'>
   readonly uploadedBy: Prisma.FieldRef<"Document", 'String'>
   readonly originalFileName: Prisma.FieldRef<"Document", 'String'>
   readonly mimeType: Prisma.FieldRef<"Document", 'String'>

@@ -30,7 +30,26 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
         this.extractor = extractor;
         this.chunker = chunker;
     }
-    async upload(file, uploadedBy) {
+    async uploadForUser(file, userId) {
+        return this.runUploadPipeline(file, {
+            type: 'user',
+            userId,
+        });
+    }
+    async uploadForGuest(file) {
+        const guestToken = this.generateGuestToken();
+        const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        const document = await this.runUploadPipeline(file, {
+            type: 'guest',
+            guestToken,
+            expirationDate,
+        });
+        return {
+            document,
+            guestToken,
+        };
+    }
+    async runUploadPipeline(file, owner) {
         await this.validator.validate(file);
         const checksum = this.computeChecksum(file.buffer);
         this.logger.log(`SHA-256 checksum for "${file.originalname}": ${checksum}`);
@@ -45,17 +64,10 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
                 existingDocumentId: existing.id,
             });
         }
-        const document = await this.prisma.document.create({
-            data: {
-                uploadedBy: uploadedBy ?? null,
-                originalFileName: file.originalname,
-                mimeType: file.mimetype,
-                fileSize: file.size,
-                checksum,
-                status: prisma_1.DocumentStatus.uploaded,
-            },
+        const createdDocument = await this.prisma.document.create({
+            data: this.buildCreateDocumentData(file, checksum, owner),
         });
-        const documentId = document.id;
+        const documentId = createdDocument.id;
         this.logger.log(`Document record created: ${documentId}`);
         try {
             await this.prisma.document.update({
@@ -105,8 +117,37 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
             throw new common_1.InternalServerErrorException('An unexpected error occurred while processing the PDF.');
         }
     }
+    buildCreateDocumentData(file, checksum, owner) {
+        if (owner.type === 'user') {
+            return {
+                uploadedBy: owner.userId,
+                guestToken: null,
+                isGuest: false,
+                expirationDate: null,
+                originalFileName: file.originalname,
+                mimeType: file.mimetype,
+                fileSize: file.size,
+                checksum,
+                status: prisma_1.DocumentStatus.uploaded,
+            };
+        }
+        return {
+            uploadedBy: null,
+            guestToken: owner.guestToken,
+            isGuest: true,
+            expirationDate: owner.expirationDate ?? null,
+            originalFileName: file.originalname,
+            mimeType: file.mimetype,
+            fileSize: file.size,
+            checksum,
+            status: prisma_1.DocumentStatus.uploaded,
+        };
+    }
     computeChecksum(buffer) {
         return (0, crypto_1.createHash)('sha256').update(buffer).digest('hex');
+    }
+    generateGuestToken() {
+        return (0, crypto_1.randomBytes)(32).toString('hex');
     }
     toResponseDto(doc) {
         return {

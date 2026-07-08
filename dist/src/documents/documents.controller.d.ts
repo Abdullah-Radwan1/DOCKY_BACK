@@ -3,17 +3,26 @@ import { DocumentsService } from './documents.service';
 import { DocumentUploadService } from './services/document-upload.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
-import { UploadDocumentDto } from './dto/upload-document.dto';
+type AuthenticatedRequest = Request & {
+    user: {
+        id: string;
+        [key: string]: any;
+    };
+};
 export declare class DocumentsController {
     private readonly documentsService;
     private readonly documentUploadService;
     constructor(documentsService: DocumentsService, documentUploadService: DocumentUploadService);
-    upload(file: Express.Multer.File, body: UploadDocumentDto): Promise<import("./dto/upload-document-response.dto").UploadDocumentResponseDto>;
-    create(createDto: CreateDocumentDto): Promise<{
+    private static readonly uploadInterceptor;
+    uploadForUser(file: Express.Multer.File, req: AuthenticatedRequest): Promise<import("./dto/upload-document-response.dto").UploadDocumentResponseDto>;
+    uploadForGuest(file: Express.Multer.File): Promise<import("./services/document-upload.service").GuestUploadResponseDto>;
+    create(createDto: CreateDocumentDto, req: AuthenticatedRequest): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         status: import("src/generated/prisma").DocumentStatus;
+        guestToken: string | null;
+        isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -24,7 +33,8 @@ export declare class DocumentsController {
         language: string | null;
         expirationDate: Date | null;
     }>;
-    get(id: string): Promise<{
+    getAll(req: AuthenticatedRequest, query: PaginationQueryDto): Promise<import("../common/utils/pagination.utils").PaginatedResult<any>>;
+    get(id: string, req: AuthenticatedRequest): Promise<{
         uploader: {
             email: string;
             fullName: string | null;
@@ -51,6 +61,8 @@ export declare class DocumentsController {
         createdAt: Date;
         updatedAt: Date;
         status: import("src/generated/prisma").DocumentStatus;
+        guestToken: string | null;
+        isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -61,16 +73,16 @@ export declare class DocumentsController {
         language: string | null;
         expirationDate: Date | null;
     }>;
-    getAll(req: {
-        user: {
-            id: string;
-        };
-    }, query: PaginationQueryDto): Promise<import("../common/utils/pagination.utils").PaginatedResult<any>>;
-    update(id: string, updateDto: UpdateDocumentDto): Promise<{
+    getStatus(id: string): Promise<{
+        status: import("src/generated/prisma").DocumentStatus;
+    }>;
+    update(id: string, updateDto: UpdateDocumentDto, req: AuthenticatedRequest): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         status: import("src/generated/prisma").DocumentStatus;
+        guestToken: string | null;
+        isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -81,11 +93,13 @@ export declare class DocumentsController {
         language: string | null;
         expirationDate: Date | null;
     }>;
-    delete(id: string): Promise<{
+    delete(id: string, req: AuthenticatedRequest): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         status: import("src/generated/prisma").DocumentStatus;
+        guestToken: string | null;
+        isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -97,3 +111,4 @@ export declare class DocumentsController {
         expirationDate: Date | null;
     }>;
 }
+export {};

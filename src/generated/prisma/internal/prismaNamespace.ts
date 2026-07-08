@@ -1212,6 +1212,8 @@ export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeo
 
 export const DocumentScalarFieldEnum = {
   id: 'id',
+  guestToken: 'guestToken',
+  isGuest: 'isGuest',
   uploadedBy: 'uploadedBy',
   originalFileName: 'originalFileName',
   mimeType: 'mimeType',

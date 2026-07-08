@@ -7,11 +7,13 @@ import { PaginatedResult } from '../common/utils/pagination.utils';
 export declare class DocumentsService {
     private readonly prisma;
     constructor(prisma: PrismaService);
-    createDocument(data: CreateDocumentDto): Promise<{
+    createDocumentForUser(data: CreateDocumentDto, userId: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         status: DocumentStatus;
+        guestToken: string | null;
+        isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -22,7 +24,7 @@ export declare class DocumentsService {
         language: string | null;
         expirationDate: Date | null;
     }>;
-    getDocumentById(id: string): Promise<{
+    getDocumentByIdForUser(id: string, userId: string): Promise<{
         uploader: {
             email: string;
             fullName: string | null;
@@ -49,6 +51,34 @@ export declare class DocumentsService {
         createdAt: Date;
         updatedAt: Date;
         status: DocumentStatus;
+        guestToken: string | null;
+        isGuest: boolean;
+        uploadedBy: string | null;
+        originalFileName: string;
+        mimeType: string | null;
+        checksum: string | null;
+        fileSize: number | null;
+        pageCount: number | null;
+        totalChunks: number | null;
+        language: string | null;
+        expirationDate: Date | null;
+    }>;
+    getDocumentStatusOnly(id: string): Promise<DocumentStatus>;
+    getGuestDocumentById(id: string, guestToken: string): Promise<{
+        chunks: {
+            id: string;
+            chunkIndex: number;
+            content: string;
+            pageNumber: number | null;
+            tokenCount: number | null;
+        }[];
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        status: DocumentStatus;
+        guestToken: string | null;
+        isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -60,11 +90,13 @@ export declare class DocumentsService {
         expirationDate: Date | null;
     }>;
     getDocuments(userId: string, query: PaginationQueryDto): Promise<PaginatedResult<any>>;
-    updateDocument(id: string, data: UpdateDocumentDto): Promise<{
+    updateDocumentForUser(id: string, userId: string, data: UpdateDocumentDto): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         status: DocumentStatus;
+        guestToken: string | null;
+        isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;
@@ -75,11 +107,30 @@ export declare class DocumentsService {
         language: string | null;
         expirationDate: Date | null;
     }>;
-    deleteDocument(id: string): Promise<{
+    deleteDocumentForUser(id: string, userId: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
         status: DocumentStatus;
+        guestToken: string | null;
+        isGuest: boolean;
+        uploadedBy: string | null;
+        originalFileName: string;
+        mimeType: string | null;
+        checksum: string | null;
+        fileSize: number | null;
+        pageCount: number | null;
+        totalChunks: number | null;
+        language: string | null;
+        expirationDate: Date | null;
+    }>;
+    claimGuestDocument(id: string, guestToken: string, userId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        status: DocumentStatus;
+        guestToken: string | null;
+        isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
         mimeType: string | null;

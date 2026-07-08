@@ -4,13 +4,29 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { createHash } from 'crypto';
+import { createHash, randomBytes } from 'crypto';
 import { PrismaService } from '../../prisma/prisma.service';
-import { DocumentStatus } from 'src/generated/prisma';
+import { Document, DocumentStatus } from 'src/generated/prisma';
 import { PdfValidatorService } from './pdf-validator.service';
 import { PdfExtractorService } from './pdf-extractor.service';
 import { ChunkingService } from './chunking.service';
 import { UploadDocumentResponseDto } from '../dto/upload-document-response.dto';
+
+type UploadOwnerContext =
+  | {
+      type: 'user';
+      userId: string;
+    }
+  | {
+      type: 'guest';
+      guestToken: string;
+      expirationDate?: Date;
+    };
+
+export interface GuestUploadResponseDto {
+  document: UploadDocumentResponseDto;
+  guestToken: string;
+}
 
 @Injectable()
 export class DocumentUploadService {
@@ -24,21 +40,59 @@ export class DocumentUploadService {
   ) {}
 
   /**
-   * Full PDF ingestion pipeline:
+   * Upload a document for an authenticated user.
+   */
+  async uploadForUser(
+    file: Express.Multer.File,
+    userId: string,
+  ): Promise<UploadDocumentResponseDto> {
+    return this.runUploadPipeline(file, {
+      type: 'user',
+      userId,
+    });
+  }
+
+  /**
+   * Upload a document for a guest (unauthenticated trial).
+   *
+   * Returns the uploaded document plus a guest token that must be used
+   * later to access/claim the guest document.
+   */
+  async uploadForGuest(
+    file: Express.Multer.File,
+  ): Promise<GuestUploadResponseDto> {
+    const guestToken = this.generateGuestToken();
+
+    // Example expiry: 24 hours. Adjust as you like.
+    const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    const document = await this.runUploadPipeline(file, {
+      type: 'guest',
+      guestToken,
+      expirationDate,
+    });
+
+    return {
+      document,
+      guestToken,
+    };
+  }
+
+  /**
+   * Shared PDF ingestion pipeline:
    *
    * 1. Validate (MIME, size, file signature)
-   * 2. Compute SHA-256 checksum → detect duplicates (409 if exists)
-   * 3. Create Document record with status = `uploaded`
-   * 4. Extract text (status → `extracting`)
-   * 5. Chunk text   (status → `chunking`)
-   * 6. Bulk-insert chunks + update Document metadata (status → `ready`)
-   *    — steps 5-6 run inside a Prisma transaction
+   * 2. Compute SHA-256 checksum → detect duplicates
+   * 3. Create Document record with status = uploaded
+   * 4. Extract text (status → extracting)
+   * 5. Chunk text   (status → chunking)
+   * 6. Bulk-insert chunks + update Document metadata (status → ready)
    *
-   * On any error after record creation: set status → `failed` then rethrow.
+   * On any error after record creation: set status → failed then rethrow.
    */
-  async upload(
+  private async runUploadPipeline(
     file: Express.Multer.File,
-    uploadedBy?: string,
+    owner: UploadOwnerContext,
   ): Promise<UploadDocumentResponseDto> {
     // ── 1. Validate ────────────────────────────────────────────────────────
     await this.validator.validate(file);
@@ -47,6 +101,13 @@ export class DocumentUploadService {
     const checksum = this.computeChecksum(file.buffer);
     this.logger.log(`SHA-256 checksum for "${file.originalname}": ${checksum}`);
 
+    /**
+     * Duplicate policy:
+     * - For authenticated users: block duplicates globally (same as your current behavior)
+     * - For guests: also block duplicates globally for now
+     *
+     * If you later want a different policy, you can scope this by uploadedBy / guest ownership.
+     */
     const existing = await this.prisma.document.findFirst({
       where: { checksum },
       select: { id: true, originalFileName: true },
@@ -56,6 +117,7 @@ export class DocumentUploadService {
       this.logger.warn(
         `Duplicate detected: checksum ${checksum} matches document ${existing.id} ("${existing.originalFileName}")`,
       );
+
       throw new ConflictException({
         message: 'A document with identical content already exists.',
         existingDocumentId: existing.id,
@@ -63,18 +125,11 @@ export class DocumentUploadService {
     }
 
     // ── 3. Create Document record (status = uploaded) ──────────────────────
-    const document = await this.prisma.document.create({
-      data: {
-        uploadedBy: uploadedBy ?? null,
-        originalFileName: file.originalname,
-        mimeType: file.mimetype,
-        fileSize: file.size,
-        checksum,
-        status: DocumentStatus.uploaded,
-      },
+    const createdDocument = await this.prisma.document.create({
+      data: this.buildCreateDocumentData(file, checksum, owner),
     });
 
-    const documentId = document.id;
+    const documentId = createdDocument.id;
     this.logger.log(`Document record created: ${documentId}`);
 
     try {
@@ -99,7 +154,6 @@ export class DocumentUploadService {
 
       // ── 6. Persist chunks + finalize document in one transaction ─────────
       const finalDocument = await this.prisma.$transaction(async (tx) => {
-        // Bulk-insert all chunks
         await tx.documentChunk.createMany({
           data: chunks.map((c) => ({
             documentId,
@@ -110,7 +164,6 @@ export class DocumentUploadService {
           })),
         });
 
-        // Update document to ready with final metadata
         return tx.document.update({
           where: { id: documentId },
           data: {
@@ -160,22 +213,47 @@ export class DocumentUploadService {
 
   // ── Helpers ──────────────────────────────────────────────────────────────
 
+  private buildCreateDocumentData(
+    file: Express.Multer.File,
+    checksum: string,
+    owner: UploadOwnerContext,
+  ) {
+    if (owner.type === 'user') {
+      return {
+        uploadedBy: owner.userId,
+        guestToken: null,
+        isGuest: false,
+        expirationDate: null,
+        originalFileName: file.originalname,
+        mimeType: file.mimetype,
+        fileSize: file.size,
+        checksum,
+        status: DocumentStatus.uploaded,
+      };
+    }
+
+    return {
+      uploadedBy: null,
+      guestToken: owner.guestToken,
+      isGuest: true,
+      expirationDate: owner.expirationDate ?? null,
+      originalFileName: file.originalname,
+      mimeType: file.mimetype,
+      fileSize: file.size,
+      checksum,
+      status: DocumentStatus.uploaded,
+    };
+  }
+
   private computeChecksum(buffer: Buffer): string {
     return createHash('sha256').update(buffer).digest('hex');
   }
 
-  private toResponseDto(doc: {
-    id: string;
-    originalFileName: string;
-    mimeType: string | null;
-    checksum: string | null;
-    fileSize: number | null;
-    pageCount: number | null;
-    totalChunks: number | null;
-    status: string;
-    createdAt: Date;
-    updatedAt: Date;
-  }): UploadDocumentResponseDto {
+  private generateGuestToken(): string {
+    return randomBytes(32).toString('hex');
+  }
+
+  private toResponseDto(doc: Document): UploadDocumentResponseDto {
     return {
       id: doc.id,
       originalFileName: doc.originalFileName,
@@ -184,7 +262,7 @@ export class DocumentUploadService {
       fileSize: doc.fileSize ?? undefined,
       pageCount: doc.pageCount ?? undefined,
       totalChunks: doc.totalChunks ?? undefined,
-      status: doc.status as DocumentStatus,
+      status: doc.status,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
     };

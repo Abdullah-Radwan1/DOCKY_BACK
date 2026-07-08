@@ -19,11 +19,13 @@ let DocumentsService = class DocumentsService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async createDocument(data) {
+    async createDocumentForUser(data, userId) {
         return this.prisma.document.create({
             data: {
                 originalFileName: data.originalFileName,
-                uploadedBy: data.uploadedBy ?? null,
+                uploadedBy: userId,
+                guestToken: null,
+                isGuest: false,
                 mimeType: data.mimeType ?? null,
                 checksum: data.checksum ?? null,
                 fileSize: data.fileSize ?? null,
@@ -34,9 +36,13 @@ let DocumentsService = class DocumentsService {
             },
         });
     }
-    async getDocumentById(id) {
-        const document = await this.prisma.document.findUnique({
-            where: { id },
+    async getDocumentByIdForUser(id, userId) {
+        const document = await this.prisma.document.findFirst({
+            where: {
+                id,
+                uploadedBy: userId,
+                isGuest: false,
+            },
             include: {
                 uploader: true,
                 chunks: {
@@ -52,7 +58,42 @@ let DocumentsService = class DocumentsService {
             },
         });
         if (!document) {
-            throw new common_1.NotFoundException(`Document with ID ${id} not found`);
+            throw new common_1.NotFoundException('Document not found');
+        }
+        return document;
+    }
+    async getDocumentStatusOnly(id) {
+        const document = await this.prisma.document.findUnique({
+            where: { id },
+            select: { status: true },
+        });
+        if (!document) {
+            throw new common_1.NotFoundException('Document not found');
+        }
+        return document.status;
+    }
+    async getGuestDocumentById(id, guestToken) {
+        const document = await this.prisma.document.findFirst({
+            where: {
+                id,
+                isGuest: true,
+                guestToken,
+            },
+            include: {
+                chunks: {
+                    orderBy: { chunkIndex: 'asc' },
+                    select: {
+                        id: true,
+                        chunkIndex: true,
+                        pageNumber: true,
+                        tokenCount: true,
+                        content: true,
+                    },
+                },
+            },
+        });
+        if (!document) {
+            throw new common_1.NotFoundException('Guest document not found');
         }
         return document;
     }
@@ -60,30 +101,66 @@ let DocumentsService = class DocumentsService {
         return (0, pagination_utils_1.paginatePrisma)(this.prisma.document, query, {
             searchFields: ['originalFileName'],
             defaultSortBy: 'createdAt',
-            where: { uploadedBy: userId },
+            where: {
+                uploadedBy: userId,
+                isGuest: false,
+            },
         });
     }
-    async updateDocument(id, data) {
-        const { uploadedBy: _uploader, ...scalars } = data;
-        try {
-            return await this.prisma.document.update({
-                where: { id },
-                data: scalars,
-            });
+    async updateDocumentForUser(id, userId, data) {
+        const { uploadedBy: _uploadedBy, guestToken: _guestToken, isGuest: _isGuest, ...scalars } = data;
+        const existing = await this.prisma.document.findFirst({
+            where: {
+                id,
+                uploadedBy: userId,
+                isGuest: false,
+            },
+            select: { id: true },
+        });
+        if (!existing) {
+            throw new common_1.NotFoundException('Document not found');
         }
-        catch {
-            throw new common_1.NotFoundException(`Document with ID ${id} not found to update`);
-        }
+        return this.prisma.document.update({
+            where: { id: existing.id },
+            data: scalars,
+        });
     }
-    async deleteDocument(id) {
-        try {
-            return await this.prisma.document.delete({
-                where: { id },
-            });
+    async deleteDocumentForUser(id, userId) {
+        const existing = await this.prisma.document.findFirst({
+            where: {
+                id,
+                uploadedBy: userId,
+                isGuest: false,
+            },
+            select: { id: true },
+        });
+        if (!existing) {
+            throw new common_1.NotFoundException('Document not found');
         }
-        catch {
-            throw new common_1.NotFoundException(`Document with ID ${id} not found to delete`);
+        return this.prisma.document.delete({
+            where: { id: existing.id },
+        });
+    }
+    async claimGuestDocument(id, guestToken, userId) {
+        const existing = await this.prisma.document.findFirst({
+            where: {
+                id,
+                isGuest: true,
+                guestToken,
+            },
+            select: { id: true },
+        });
+        if (!existing) {
+            throw new common_1.NotFoundException('Guest document not found');
         }
+        return this.prisma.document.update({
+            where: { id: existing.id },
+            data: {
+                uploadedBy: userId,
+                isGuest: false,
+                guestToken: null,
+            },
+        });
     }
 };
 exports.DocumentsService = DocumentsService;

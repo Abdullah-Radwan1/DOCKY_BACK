@@ -12,38 +12,45 @@ var DocumentUploadService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentUploadService = void 0;
 const common_1 = require("@nestjs/common");
-const crypto_1 = require("crypto");
 const prisma_service_1 = require("../../prisma/prisma.service");
-const prisma_1 = require("../../generated/prisma");
 const pdf_validator_service_1 = require("./pdf-validator.service");
 const pdf_extractor_service_1 = require("./pdf-extractor.service");
 const chunking_service_1 = require("./chunking.service");
+const crypto_1 = require("crypto");
+const usage_policy_service_1 = require("../../policy/usage-policy.service");
 let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadService {
     prisma;
     validator;
     extractor;
     chunker;
+    policyService;
     logger = new common_1.Logger(DocumentUploadService_1.name);
-    constructor(prisma, validator, extractor, chunker) {
+    constructor(prisma, validator, extractor, chunker, policyService) {
         this.prisma = prisma;
         this.validator = validator;
         this.extractor = extractor;
         this.chunker = chunker;
+        this.policyService = policyService;
     }
     async uploadForUser(file, userId) {
-        return this.runUploadPipeline(file, {
+        await this.policyService.enforceUploadLimit(userId, undefined);
+        const doc = await this.runUploadPipeline(file, {
             type: 'user',
             userId,
         });
+        await this.policyService.incrementUpload(userId, undefined);
+        return doc;
     }
-    async uploadForGuest(file) {
-        const guestToken = this.generateGuestToken();
+    async uploadForGuest(file, ip) {
+        await this.policyService.enforceUploadLimit(undefined, ip);
+        const guestToken = ip;
         const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
         const document = await this.runUploadPipeline(file, {
             type: 'guest',
             guestToken,
             expirationDate,
         });
+        await this.policyService.incrementUpload(undefined, ip);
         return {
             document,
             guestToken,
@@ -72,12 +79,12 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
         try {
             await this.prisma.document.update({
                 where: { id: documentId },
-                data: { status: prisma_1.DocumentStatus.extracting },
+                data: { status: 'extracting' },
             });
             const { text, pageCount } = await this.extractor.extract(file.buffer, file.originalname);
             await this.prisma.document.update({
                 where: { id: documentId },
-                data: { status: prisma_1.DocumentStatus.chunking },
+                data: { status: 'chunking' },
             });
             const chunks = this.chunker.chunk(text, file.originalname);
             const finalDocument = await this.prisma.$transaction(async (tx) => {
@@ -93,7 +100,7 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
                 return tx.document.update({
                     where: { id: documentId },
                     data: {
-                        status: prisma_1.DocumentStatus.ready,
+                        status: 'ready',
                         pageCount,
                         totalChunks: chunks.length,
                     },
@@ -107,7 +114,7 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
             await this.prisma.document
                 .update({
                 where: { id: documentId },
-                data: { status: prisma_1.DocumentStatus.failed },
+                data: { status: 'failed' },
             })
                 .catch((updateErr) => this.logger.error(`Failed to mark document ${documentId} as failed`, updateErr));
             if (err instanceof common_1.ConflictException ||
@@ -128,7 +135,7 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
                 mimeType: file.mimetype,
                 fileSize: file.size,
                 checksum,
-                status: prisma_1.DocumentStatus.uploaded,
+                status: 'uploaded',
             };
         }
         return {
@@ -140,14 +147,11 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
             mimeType: file.mimetype,
             fileSize: file.size,
             checksum,
-            status: prisma_1.DocumentStatus.uploaded,
+            status: 'uploaded',
         };
     }
     computeChecksum(buffer) {
         return (0, crypto_1.createHash)('sha256').update(buffer).digest('hex');
-    }
-    generateGuestToken() {
-        return (0, crypto_1.randomBytes)(32).toString('hex');
     }
     toResponseDto(doc) {
         return {
@@ -170,6 +174,7 @@ exports.DocumentUploadService = DocumentUploadService = DocumentUploadService_1 
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         pdf_validator_service_1.PdfValidatorService,
         pdf_extractor_service_1.PdfExtractorService,
-        chunking_service_1.ChunkingService])
+        chunking_service_1.ChunkingService,
+        usage_policy_service_1.UsagePolicyService])
 ], DocumentUploadService);
 //# sourceMappingURL=document-upload.service.js.map

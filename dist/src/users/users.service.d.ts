@@ -18,6 +18,7 @@ export declare class UsersService {
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
+        plan: import("src/generated/prisma").PlanType;
     }>;
     getUserById(id: string): Promise<{
         email: string;
@@ -32,6 +33,7 @@ export declare class UsersService {
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
+        plan: import("src/generated/prisma").PlanType;
     }>;
     updateUser(id: string, data: UpdateProfileDto): Promise<{
         email: string;
@@ -46,6 +48,7 @@ export declare class UsersService {
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
+        plan: import("src/generated/prisma").PlanType;
     }>;
     deleteUser(id: string): Promise<{
         email: string;
@@ -60,6 +63,7 @@ export declare class UsersService {
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
+        plan: import("src/generated/prisma").PlanType;
     }>;
     getMe(userId: string): Promise<{
         id: string;

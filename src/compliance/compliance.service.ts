@@ -8,39 +8,46 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AnalysisOrchestratorService } from '../ai/services/analysis-orchestrator.service';
 import { CreateComplianceQueryDto } from './dto/create-compliance-query.dto';
 import { CreateAnalysisRequestDto } from './dto/create-analysis-request.dto';
-
-/** Free-plan analysis limits. */
-const FREE_PLAN_ANALYSIS_LIMIT = 3;
-const UNAUTHENTICATED_ANALYSIS_LIMIT = 1;
+import { UsagePolicyService } from '../policy/usage-policy.service';
 
 @Injectable()
 export class ComplianceService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly orchestrator: AnalysisOrchestratorService,
+    private readonly policyService: UsagePolicyService,
   ) {}
 
   // ── Analysis pipeline ──────────────────────────────────────────────────────
 
   /**
    * Creates an AnalysisRequest and immediately runs the AI pipeline.
-   *
-   * Enforces free-plan limits:
-   *  - Unauthenticated users: 1 analysis total
-   *  - Signed-in free-plan users: 3 analyses total
    */
-  async submitAnalysis(dto: CreateAnalysisRequestDto) {
+  async submitAnalysis(dto: CreateAnalysisRequestDto & { ip?: string }) {
     // ── Enforce analysis limits ──────────────────────────────────────────
-    await this.enforceAnalysisLimits(dto.userId, dto.guestId);
+    // The guest IP is passed down from the controller.
+    const guestIp = dto.userId ? undefined : dto.ip;
+    await this.policyService.enforceAnalysisLimit(dto.userId, guestIp);
 
     // ── Validate document exists and is ready ────────────────────────────
     const document = await this.prisma.document.findUnique({
       where: { id: dto.documentId },
-      select: { id: true, status: true },
+      select: { id: true, status: true, uploadedBy: true, guestToken: true },
     });
 
     if (!document) {
-      throw new NotFoundException(`Document ${dto.documentId} not found`);
+      throw new NotFoundException(`Document not found`);
+    }
+
+    // Ownership check
+    if (dto.userId) {
+      if (document.uploadedBy !== dto.userId) {
+        throw new NotFoundException('Document not found');
+      }
+    } else {
+      if (document.guestToken !== guestIp) {
+        throw new NotFoundException('Document not found');
+      }
     }
 
     if (document.status !== 'ready') {
@@ -60,6 +67,9 @@ export class ComplianceService {
         status: 'pending',
       },
     });
+
+    // Increment analysis count
+    await this.policyService.incrementAnalysis(dto.userId, guestIp);
 
     // ── Run the AI pipeline (synchronous in V1) ──────────────────────────
     await this.orchestrator.analyzeDocument(request.id);
@@ -153,44 +163,5 @@ export class ComplianceService {
       },
       orderBy: { createdAt: 'desc' },
     });
-  }
-
-  // ── Private helpers ────────────────────────────────────────────────────────
-
-  private async enforceAnalysisLimits(userId?: string, guestId?: string): Promise<void> {
-    if (userId) {
-      const user = await this.prisma.profile.findUnique({
-        where: { id: userId },
-        select: { id: true, role: true },
-      });
-
-      const existingCount = await this.prisma.analysisRequest.count({
-        where: {
-          userId,
-          status: { in: ['completed', 'processing', 'pending'] },
-        },
-      });
-
-      if (existingCount >= FREE_PLAN_ANALYSIS_LIMIT) {
-        throw new ForbiddenException(
-          `Free plan allows ${FREE_PLAN_ANALYSIS_LIMIT} analyses. You have used ${existingCount}. Upgrade to continue.`
-        );
-      }
-    } else if (guestId) {
-      const existingCount = await this.prisma.analysisRequest.count({
-        where: {
-          guestId,
-          status: { in: ['completed', 'processing', 'pending'] },
-        },
-      });
-
-      if (existingCount >= UNAUTHENTICATED_ANALYSIS_LIMIT) {
-        throw new ForbiddenException(
-          `Unauthenticated users can perform ${UNAUTHENTICATED_ANALYSIS_LIMIT} analysis. Please sign in for more.`
-        );
-      }
-    } else {
-      throw new BadRequestException("Must provide userId or guestId for analysis");
-    }
   }
 }

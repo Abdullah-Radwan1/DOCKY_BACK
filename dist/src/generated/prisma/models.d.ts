@@ -1,3 +1,4 @@
+export type * from './models/UsageQuota.js';
 export type * from './models/Profile.js';
 export type * from './models/Document.js';
 export type * from './models/DocumentChunk.js';

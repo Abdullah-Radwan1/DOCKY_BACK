@@ -13,6 +13,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AiModule } from './ai/ai.module';
+import { PolicyModule } from './policy/policy.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AiModule } from './ai/ai.module';
     SchedulerModule,
     DashboardModule,
     AiModule,
+    PolicyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

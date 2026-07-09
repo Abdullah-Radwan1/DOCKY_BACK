@@ -2,11 +2,15 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AnalysisOrchestratorService } from '../ai/services/analysis-orchestrator.service';
 import { CreateComplianceQueryDto } from './dto/create-compliance-query.dto';
 import { CreateAnalysisRequestDto } from './dto/create-analysis-request.dto';
+import { UsagePolicyService } from '../policy/usage-policy.service';
 export declare class ComplianceService {
     private readonly prisma;
     private readonly orchestrator;
-    constructor(prisma: PrismaService, orchestrator: AnalysisOrchestratorService);
-    submitAnalysis(dto: CreateAnalysisRequestDto): Promise<{
+    private readonly policyService;
+    constructor(prisma: PrismaService, orchestrator: AnalysisOrchestratorService, policyService: UsagePolicyService);
+    submitAnalysis(dto: CreateAnalysisRequestDto & {
+        ip?: string;
+    }): Promise<{
         document: {
             id: string;
             status: import("src/generated/prisma").DocumentStatus;
@@ -30,13 +34,13 @@ export declare class ComplianceService {
                     id: string;
                     status: import("src/generated/prisma").FindingStatus;
                     createdAt: Date;
-                    pageNumber: number | null;
                     metadata: import("@prisma/client/runtime/client").JsonValue | null;
                     analysisId: string;
                     title: string;
                     description: string | null;
                     severity: import("src/generated/prisma").FindingSeverity;
                     clauseReference: string | null;
+                    pageNumber: number | null;
                     excerpt: string | null;
                     recommendation: string | null;
                     resolvedAt: Date | null;
@@ -54,17 +58,15 @@ export declare class ComplianceService {
             id: string;
             createdAt: Date;
             response: import("@prisma/client/runtime/client").JsonValue;
+            requestId: string;
             confidenceScore: number | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
             matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
-            requestId: string;
         }) | null;
     } & {
         id: string;
         queryText: string;
         status: import("src/generated/prisma").AnalysisRequestStatus;
-        documentId: string | null;
-        userId: string | null;
         guestId: string | null;
         attemptCount: number;
         errorMessage: string | null;
@@ -72,6 +74,8 @@ export declare class ComplianceService {
         processingFinishedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
+        documentId: string | null;
+        userId: string | null;
     }>;
     getAnalysisResult(requestId: string): Promise<{
         document: {
@@ -97,13 +101,13 @@ export declare class ComplianceService {
                     id: string;
                     status: import("src/generated/prisma").FindingStatus;
                     createdAt: Date;
-                    pageNumber: number | null;
                     metadata: import("@prisma/client/runtime/client").JsonValue | null;
                     analysisId: string;
                     title: string;
                     description: string | null;
                     severity: import("src/generated/prisma").FindingSeverity;
                     clauseReference: string | null;
+                    pageNumber: number | null;
                     excerpt: string | null;
                     recommendation: string | null;
                     resolvedAt: Date | null;
@@ -121,17 +125,15 @@ export declare class ComplianceService {
             id: string;
             createdAt: Date;
             response: import("@prisma/client/runtime/client").JsonValue;
+            requestId: string;
             confidenceScore: number | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
             matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
-            requestId: string;
         }) | null;
     } & {
         id: string;
         queryText: string;
         status: import("src/generated/prisma").AnalysisRequestStatus;
-        documentId: string | null;
-        userId: string | null;
         guestId: string | null;
         attemptCount: number;
         errorMessage: string | null;
@@ -139,13 +141,13 @@ export declare class ComplianceService {
         processingFinishedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
+        documentId: string | null;
+        userId: string | null;
     }>;
     createQuery(data: CreateComplianceQueryDto): Promise<{
         id: string;
         queryText: string;
         status: import("src/generated/prisma").AnalysisRequestStatus;
-        documentId: string | null;
-        userId: string | null;
         guestId: string | null;
         attemptCount: number;
         errorMessage: string | null;
@@ -153,22 +155,10 @@ export declare class ComplianceService {
         processingFinishedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
+        documentId: string | null;
+        userId: string | null;
     }>;
     getQueryById(id: string): Promise<{
-        user: {
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            email: string;
-            fullName: string | null;
-            avatarUrl: string | null;
-            passwordHash: string | null;
-            role: import("src/generated/prisma").UserRole;
-            allowEmailNotifications: boolean;
-            allowExpiryReminders: boolean;
-            allowRiskAlerts: boolean;
-            allowAnalysisAlerts: boolean;
-        } | null;
         document: {
             id: string;
             status: import("src/generated/prisma").DocumentStatus;
@@ -186,21 +176,34 @@ export declare class ComplianceService {
             language: string | null;
             expirationDate: Date | null;
         } | null;
+        user: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            email: string;
+            fullName: string | null;
+            avatarUrl: string | null;
+            passwordHash: string | null;
+            role: import("src/generated/prisma").UserRole;
+            plan: import("src/generated/prisma").PlanType;
+            allowEmailNotifications: boolean;
+            allowExpiryReminders: boolean;
+            allowRiskAlerts: boolean;
+            allowAnalysisAlerts: boolean;
+        } | null;
         response: {
             id: string;
             createdAt: Date;
             response: import("@prisma/client/runtime/client").JsonValue;
+            requestId: string;
             confidenceScore: number | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
             matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
-            requestId: string;
         } | null;
     } & {
         id: string;
         queryText: string;
         status: import("src/generated/prisma").AnalysisRequestStatus;
-        documentId: string | null;
-        userId: string | null;
         guestId: string | null;
         attemptCount: number;
         errorMessage: string | null;
@@ -208,6 +211,8 @@ export declare class ComplianceService {
         processingFinishedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
+        documentId: string | null;
+        userId: string | null;
     }>;
     getQueriesByDocument(documentId: string): Promise<({
         response: ({
@@ -216,13 +221,13 @@ export declare class ComplianceService {
                     id: string;
                     status: import("src/generated/prisma").FindingStatus;
                     createdAt: Date;
-                    pageNumber: number | null;
                     metadata: import("@prisma/client/runtime/client").JsonValue | null;
                     analysisId: string;
                     title: string;
                     description: string | null;
                     severity: import("src/generated/prisma").FindingSeverity;
                     clauseReference: string | null;
+                    pageNumber: number | null;
                     excerpt: string | null;
                     recommendation: string | null;
                     resolvedAt: Date | null;
@@ -240,17 +245,15 @@ export declare class ComplianceService {
             id: string;
             createdAt: Date;
             response: import("@prisma/client/runtime/client").JsonValue;
+            requestId: string;
             confidenceScore: number | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
             matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
-            requestId: string;
         }) | null;
     } & {
         id: string;
         queryText: string;
         status: import("src/generated/prisma").AnalysisRequestStatus;
-        documentId: string | null;
-        userId: string | null;
         guestId: string | null;
         attemptCount: number;
         errorMessage: string | null;
@@ -258,6 +261,7 @@ export declare class ComplianceService {
         processingFinishedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
+        documentId: string | null;
+        userId: string | null;
     })[]>;
-    private enforceAnalysisLimits;
 }

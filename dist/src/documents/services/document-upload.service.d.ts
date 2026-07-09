@@ -2,7 +2,20 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { PdfValidatorService } from './pdf-validator.service';
 import { PdfExtractorService } from './pdf-extractor.service';
 import { ChunkingService } from './chunking.service';
-import { UploadDocumentResponseDto } from '../dto/upload-document-response.dto';
+import { DocumentStatus } from '../../generated/prisma';
+import { UsagePolicyService } from '../../policy/usage-policy.service';
+export interface UploadDocumentResponseDto {
+    id: string;
+    originalFileName: string;
+    mimeType?: string;
+    checksum?: string;
+    fileSize?: number;
+    pageCount?: number;
+    totalChunks?: number;
+    status: DocumentStatus;
+    createdAt: Date;
+    updatedAt: Date;
+}
 export interface GuestUploadResponseDto {
     document: UploadDocumentResponseDto;
     guestToken: string;
@@ -12,13 +25,13 @@ export declare class DocumentUploadService {
     private readonly validator;
     private readonly extractor;
     private readonly chunker;
+    private readonly policyService;
     private readonly logger;
-    constructor(prisma: PrismaService, validator: PdfValidatorService, extractor: PdfExtractorService, chunker: ChunkingService);
+    constructor(prisma: PrismaService, validator: PdfValidatorService, extractor: PdfExtractorService, chunker: ChunkingService, policyService: UsagePolicyService);
     uploadForUser(file: Express.Multer.File, userId: string): Promise<UploadDocumentResponseDto>;
-    uploadForGuest(file: Express.Multer.File): Promise<GuestUploadResponseDto>;
+    uploadForGuest(file: Express.Multer.File, ip: string): Promise<GuestUploadResponseDto>;
     private runUploadPipeline;
     private buildCreateDocumentData;
     private computeChecksum;
-    private generateGuestToken;
     private toResponseDto;
 }

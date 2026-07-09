@@ -38,12 +38,13 @@ export declare class DocumentsService {
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
+            plan: import("src/generated/prisma/enums").PlanType;
         } | null;
         chunks: {
             id: string;
-            chunkIndex: number;
-            content: string;
             pageNumber: number | null;
+            content: string;
+            chunkIndex: number;
             tokenCount: number | null;
         }[];
     } & {
@@ -67,9 +68,9 @@ export declare class DocumentsService {
     getGuestDocumentById(id: string, guestToken: string): Promise<{
         chunks: {
             id: string;
-            chunkIndex: number;
-            content: string;
             pageNumber: number | null;
+            content: string;
+            chunkIndex: number;
             tokenCount: number | null;
         }[];
     } & {

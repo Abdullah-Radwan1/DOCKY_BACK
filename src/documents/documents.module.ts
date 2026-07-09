@@ -7,12 +7,14 @@ import { DocumentUploadService } from './services/document-upload.service';
 import { PdfValidatorService } from './services/pdf-validator.service';
 import { PdfExtractorService } from './services/pdf-extractor.service';
 import { ChunkingService } from './services/chunking.service';
+import { PolicyModule } from '../policy/policy.module';
 
 @Module({
   imports: [
     // MulterModule registered for this module with memory storage as a default.
     // The FileInterceptor in the controller overrides storage inline per route.
     MulterModule.register({ storage: memoryStorage() }),
+    PolicyModule,
   ],
   controllers: [DocumentsController],
   providers: [

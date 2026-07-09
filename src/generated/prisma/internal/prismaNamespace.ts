@@ -384,6 +384,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  UsageQuota: 'UsageQuota',
   Profile: 'Profile',
   Document: 'Document',
   DocumentChunk: 'DocumentChunk',
@@ -409,10 +410,84 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "profile" | "document" | "documentChunk" | "analysisResult" | "finding" | "activityLog" | "analysisRequest" | "aIResponse" | "passwordResetToken" | "notification"
+    modelProps: "usageQuota" | "profile" | "document" | "documentChunk" | "analysisResult" | "finding" | "activityLog" | "analysisRequest" | "aIResponse" | "passwordResetToken" | "notification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    UsageQuota: {
+      payload: Prisma.$UsageQuotaPayload<ExtArgs>
+      fields: Prisma.UsageQuotaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UsageQuotaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UsageQuotaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>
+        }
+        findFirst: {
+          args: Prisma.UsageQuotaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UsageQuotaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>
+        }
+        findMany: {
+          args: Prisma.UsageQuotaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>[]
+        }
+        create: {
+          args: Prisma.UsageQuotaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>
+        }
+        createMany: {
+          args: Prisma.UsageQuotaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UsageQuotaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>[]
+        }
+        delete: {
+          args: Prisma.UsageQuotaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>
+        }
+        update: {
+          args: Prisma.UsageQuotaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>
+        }
+        deleteMany: {
+          args: Prisma.UsageQuotaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UsageQuotaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UsageQuotaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>[]
+        }
+        upsert: {
+          args: Prisma.UsageQuotaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>
+        }
+        aggregate: {
+          args: Prisma.UsageQuotaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUsageQuota>
+        }
+        groupBy: {
+          args: Prisma.UsageQuotaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UsageQuotaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UsageQuotaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UsageQuotaCountAggregateOutputType> | number
+        }
+      }
+    }
     Profile: {
       payload: Prisma.$ProfilePayload<ExtArgs>
       fields: Prisma.ProfileFieldRefs
@@ -1192,6 +1267,19 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const UsageQuotaScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  guestId: 'guestId',
+  uploadsUsed: 'uploadsUsed',
+  analysesUsed: 'analysesUsed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UsageQuotaScalarFieldEnum = (typeof UsageQuotaScalarFieldEnum)[keyof typeof UsageQuotaScalarFieldEnum]
+
+
 export const ProfileScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -1201,6 +1289,7 @@ export const ProfileScalarFieldEnum = {
   role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  plan: 'plan',
   allowEmailNotifications: 'allowEmailNotifications',
   allowExpiryReminders: 'allowExpiryReminders',
   allowRiskAlerts: 'allowRiskAlerts',
@@ -1419,16 +1508,16 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'UserRole'
+ * Reference to a field of type 'Int'
  */
-export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
 /**
- * Reference to a field of type 'UserRole[]'
+ * Reference to a field of type 'Int[]'
  */
-export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -1447,23 +1536,37 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'UserRole'
+ */
+export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
+    
+
+
+/**
+ * Reference to a field of type 'UserRole[]'
+ */
+export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanType'
+ */
+export type EnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanType[]'
+ */
+export type ListEnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType[]'>
+    
+
+
+/**
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -1730,6 +1833,7 @@ export type PrismaClientOptions = ({
   queryPlanCacheMaxSize?: number
 }
 export type GlobalOmitConfig = {
+  usageQuota?: Prisma.UsageQuotaOmit
   profile?: Prisma.ProfileOmit
   document?: Prisma.DocumentOmit
   documentChunk?: Prisma.DocumentChunkOmit

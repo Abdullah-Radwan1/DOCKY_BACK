@@ -7,18 +7,18 @@ export declare class ChunkRetrievalService {
         id: string;
         createdAt: Date;
         documentId: string;
-        chunkIndex: number;
-        content: string;
         pageNumber: number | null;
+        content: string;
+        chunkIndex: number;
         tokenCount: number | null;
     }[]>;
     getRelevantChunks(documentId: string, _query: string, tokenBudget?: number): Promise<{
         id: string;
         createdAt: Date;
         documentId: string;
-        chunkIndex: number;
-        content: string;
         pageNumber: number | null;
+        content: string;
+        chunkIndex: number;
         tokenCount: number | null;
     }[]>;
 }

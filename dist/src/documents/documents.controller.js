@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentsController = void 0;
 const common_1 = require("@nestjs/common");
@@ -48,11 +49,11 @@ let DocumentsController = class DocumentsController {
         }
         return this.documentUploadService.uploadForUser(file, req.user.id);
     }
-    async uploadForGuest(file) {
+    async uploadForGuest(file, ip) {
         if (!file) {
             throw new common_1.BadRequestException('No file uploaded. Include a PDF under the "file" field.');
         }
-        return this.documentUploadService.uploadForGuest(file);
+        return this.documentUploadService.uploadForGuest(file, ip);
     }
     async create(createDto, req) {
         return this.documentsService.createDocumentForUser({
@@ -102,8 +103,9 @@ __decorate([
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     (0, common_1.UseInterceptors)(DocumentsController.uploadInterceptor),
     __param(0, (0, common_1.UploadedFile)()),
+    __param(1, (0, common_1.Ip)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], DocumentsController.prototype, "uploadForGuest", null);
 __decorate([
@@ -162,7 +164,6 @@ __decorate([
 ], DocumentsController.prototype, "delete", null);
 exports.DocumentsController = DocumentsController = __decorate([
     (0, common_1.Controller)('documents'),
-    __metadata("design:paramtypes", [documents_service_1.DocumentsService,
-        document_upload_service_1.DocumentUploadService])
+    __metadata("design:paramtypes", [documents_service_1.DocumentsService, typeof (_a = typeof document_upload_service_1.DocumentUploadService !== "undefined" && document_upload_service_1.DocumentUploadService) === "function" ? _a : Object])
 ], DocumentsController);
 //# sourceMappingURL=documents.controller.js.map

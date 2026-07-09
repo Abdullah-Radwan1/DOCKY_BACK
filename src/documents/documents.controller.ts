@@ -15,6 +15,7 @@ import {
   Query,
   Request,
   UseGuards,
+  Ip,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
@@ -103,14 +104,17 @@ export class DocumentsController {
   @Post('guest-upload')
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(DocumentsController.uploadInterceptor)
-  async uploadForGuest(@UploadedFile() file: Express.Multer.File) {
+  async uploadForGuest(
+    @UploadedFile() file: Express.Multer.File,
+    @Ip() ip: string,
+  ) {
     if (!file) {
       throw new BadRequestException(
         'No file uploaded. Include a PDF under the "file" field.',
       );
     }
 
-    return this.documentUploadService.uploadForGuest(file);
+    return this.documentUploadService.uploadForGuest(file, ip);
   }
 
   // ── CRUD endpoints for authenticated users ───────────────────────────────

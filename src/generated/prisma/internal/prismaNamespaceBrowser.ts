@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  UsageQuota: 'UsageQuota',
   Profile: 'Profile',
   Document: 'Document',
   DocumentChunk: 'DocumentChunk',
@@ -79,6 +80,19 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const UsageQuotaScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  guestId: 'guestId',
+  uploadsUsed: 'uploadsUsed',
+  analysesUsed: 'analysesUsed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UsageQuotaScalarFieldEnum = (typeof UsageQuotaScalarFieldEnum)[keyof typeof UsageQuotaScalarFieldEnum]
+
+
 export const ProfileScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -88,6 +102,7 @@ export const ProfileScalarFieldEnum = {
   role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  plan: 'plan',
   allowEmailNotifications: 'allowEmailNotifications',
   allowExpiryReminders: 'allowExpiryReminders',
   allowRiskAlerts: 'allowRiskAlerts',

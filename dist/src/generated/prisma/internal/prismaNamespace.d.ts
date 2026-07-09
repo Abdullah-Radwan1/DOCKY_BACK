@@ -157,6 +157,7 @@ export type ExcludeUnderscoreKeys<T extends string> = T extends `_${string}` ? n
 export type FieldRef<Model, FieldType> = runtime.FieldRef<Model, FieldType>;
 type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>;
 export declare const ModelName: {
+    readonly UsageQuota: "UsageQuota";
     readonly Profile: "Profile";
     readonly Document: "Document";
     readonly DocumentChunk: "DocumentChunk";
@@ -179,10 +180,84 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "profile" | "document" | "documentChunk" | "analysisResult" | "finding" | "activityLog" | "analysisRequest" | "aIResponse" | "passwordResetToken" | "notification";
+        modelProps: "usageQuota" | "profile" | "document" | "documentChunk" | "analysisResult" | "finding" | "activityLog" | "analysisRequest" | "aIResponse" | "passwordResetToken" | "notification";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
+        UsageQuota: {
+            payload: Prisma.$UsageQuotaPayload<ExtArgs>;
+            fields: Prisma.UsageQuotaFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.UsageQuotaFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.UsageQuotaFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>;
+                };
+                findFirst: {
+                    args: Prisma.UsageQuotaFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.UsageQuotaFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>;
+                };
+                findMany: {
+                    args: Prisma.UsageQuotaFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>[];
+                };
+                create: {
+                    args: Prisma.UsageQuotaCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>;
+                };
+                createMany: {
+                    args: Prisma.UsageQuotaCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.UsageQuotaCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>[];
+                };
+                delete: {
+                    args: Prisma.UsageQuotaDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>;
+                };
+                update: {
+                    args: Prisma.UsageQuotaUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.UsageQuotaDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.UsageQuotaUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.UsageQuotaUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>[];
+                };
+                upsert: {
+                    args: Prisma.UsageQuotaUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UsageQuotaPayload>;
+                };
+                aggregate: {
+                    args: Prisma.UsageQuotaAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateUsageQuota>;
+                };
+                groupBy: {
+                    args: Prisma.UsageQuotaGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.UsageQuotaGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.UsageQuotaCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.UsageQuotaCountAggregateOutputType> | number;
+                };
+            };
+        };
         Profile: {
             payload: Prisma.$ProfilePayload<ExtArgs>;
             fields: Prisma.ProfileFieldRefs;
@@ -954,6 +1029,16 @@ export declare const TransactionIsolationLevel: {
     readonly Serializable: "Serializable";
 };
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
+export declare const UsageQuotaScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly guestId: "guestId";
+    readonly uploadsUsed: "uploadsUsed";
+    readonly analysesUsed: "analysesUsed";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type UsageQuotaScalarFieldEnum = (typeof UsageQuotaScalarFieldEnum)[keyof typeof UsageQuotaScalarFieldEnum];
 export declare const ProfileScalarFieldEnum: {
     readonly id: "id";
     readonly email: "email";
@@ -963,6 +1048,7 @@ export declare const ProfileScalarFieldEnum: {
     readonly role: "role";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
+    readonly plan: "plan";
     readonly allowEmailNotifications: "allowEmailNotifications";
     readonly allowExpiryReminders: "allowExpiryReminders";
     readonly allowRiskAlerts: "allowRiskAlerts";
@@ -1114,13 +1200,15 @@ export declare const JsonNullValueFilter: {
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter];
 export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>;
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>;
-export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>;
-export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>;
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>;
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
+export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>;
+export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>;
+export type EnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType'>;
+export type ListEnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType[]'>;
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>;
 export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus'>;
 export type ListEnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus[]'>;
 export type EnumAnalysisVerdictFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnalysisVerdict'>;
@@ -1168,6 +1256,7 @@ export type PrismaClientOptions = ({
     queryPlanCacheMaxSize?: number;
 };
 export type GlobalOmitConfig = {
+    usageQuota?: Prisma.UsageQuotaOmit;
     profile?: Prisma.ProfileOmit;
     document?: Prisma.DocumentOmit;
     documentChunk?: Prisma.DocumentChunkOmit;

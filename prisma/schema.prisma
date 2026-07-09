@@ -81,6 +81,25 @@ enum AnalysisVerdict {
   unknown
 }
 
+model UsageQuota {
+  id String @id @default(uuid()) @db.Uuid
+
+  userId  String? @unique @map("user_id") @db.Uuid
+  guestId String? @unique @map("guest_id")
+
+  uploadsUsed  Int @default(0) @map("uploads_used")
+  analysesUsed Int @default(0) @map("analyses_used")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  user Profile? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([guestId])
+  @@map("usage_quotas")
+}
+
 model Profile {
   id String @id @default(uuid()) @db.Uuid
 
@@ -99,6 +118,10 @@ model Profile {
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
   documents Document[] @relation("UploadedBy")
+
+  plan PlanType @default(free)
+
+  usageQuota UsageQuota?
 
   // Notification Preference Toggles
   allowEmailNotifications Boolean           @default(true) @map("allow_email_notifications")

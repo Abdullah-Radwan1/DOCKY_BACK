@@ -14,14 +14,12 @@ export declare class DocumentsController {
     private readonly documentUploadService;
     constructor(documentsService: DocumentsService, documentUploadService: DocumentUploadService);
     private static readonly uploadInterceptor;
-    uploadForUser(file: Express.Multer.File, req: AuthenticatedRequest): Promise<import("./dto/upload-document-response.dto").UploadDocumentResponseDto>;
-    uploadForGuest(file: Express.Multer.File): Promise<import("./services/document-upload.service").GuestUploadResponseDto>;
+    uploadForUser(file: Express.Multer.File, req: AuthenticatedRequest): Promise<import("./services/document-upload.service").UploadDocumentResponseDto>;
+    uploadForGuest(file: Express.Multer.File, ip: string): Promise<import("./services/document-upload.service").GuestUploadResponseDto>;
     create(createDto: CreateDocumentDto, req: AuthenticatedRequest): Promise<{
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        status: import("src/generated/prisma").DocumentStatus;
         guestToken: string | null;
+        expirationDate: Date | null;
+        id: string;
         isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
@@ -31,23 +29,26 @@ export declare class DocumentsController {
         pageCount: number | null;
         totalChunks: number | null;
         language: string | null;
-        expirationDate: Date | null;
+        status: import("src/generated/prisma").DocumentStatus;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     getAll(req: AuthenticatedRequest, query: PaginationQueryDto): Promise<import("../common/utils/pagination.utils").PaginatedResult<any>>;
     get(id: string, req: AuthenticatedRequest): Promise<{
         uploader: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
             email: string;
             fullName: string | null;
             avatarUrl: string | null;
+            passwordHash: string | null;
             role: import("src/generated/prisma").UserRole;
+            plan: import("src/generated/prisma").PlanType;
             allowEmailNotifications: boolean;
             allowExpiryReminders: boolean;
             allowRiskAlerts: boolean;
             allowAnalysisAlerts: boolean;
-            id: string;
-            passwordHash: string | null;
-            createdAt: Date;
-            updatedAt: Date;
         } | null;
         chunks: {
             id: string;
@@ -57,11 +58,9 @@ export declare class DocumentsController {
             tokenCount: number | null;
         }[];
     } & {
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        status: import("src/generated/prisma").DocumentStatus;
         guestToken: string | null;
+        expirationDate: Date | null;
+        id: string;
         isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
@@ -71,17 +70,17 @@ export declare class DocumentsController {
         pageCount: number | null;
         totalChunks: number | null;
         language: string | null;
-        expirationDate: Date | null;
+        status: import("src/generated/prisma").DocumentStatus;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     getStatus(id: string): Promise<{
         status: import("src/generated/prisma").DocumentStatus;
     }>;
     update(id: string, updateDto: UpdateDocumentDto, req: AuthenticatedRequest): Promise<{
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        status: import("src/generated/prisma").DocumentStatus;
         guestToken: string | null;
+        expirationDate: Date | null;
+        id: string;
         isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
@@ -91,14 +90,14 @@ export declare class DocumentsController {
         pageCount: number | null;
         totalChunks: number | null;
         language: string | null;
-        expirationDate: Date | null;
+        status: import("src/generated/prisma").DocumentStatus;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     delete(id: string, req: AuthenticatedRequest): Promise<{
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        status: import("src/generated/prisma").DocumentStatus;
         guestToken: string | null;
+        expirationDate: Date | null;
+        id: string;
         isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
@@ -108,7 +107,9 @@ export declare class DocumentsController {
         pageCount: number | null;
         totalChunks: number | null;
         language: string | null;
-        expirationDate: Date | null;
+        status: import("src/generated/prisma").DocumentStatus;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
 }
 export {};

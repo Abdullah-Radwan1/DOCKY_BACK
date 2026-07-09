@@ -13,23 +13,35 @@ exports.ComplianceService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const analysis_orchestrator_service_1 = require("../ai/services/analysis-orchestrator.service");
-const FREE_PLAN_ANALYSIS_LIMIT = 3;
-const UNAUTHENTICATED_ANALYSIS_LIMIT = 1;
+const usage_policy_service_1 = require("../policy/usage-policy.service");
 let ComplianceService = class ComplianceService {
     prisma;
     orchestrator;
-    constructor(prisma, orchestrator) {
+    policyService;
+    constructor(prisma, orchestrator, policyService) {
         this.prisma = prisma;
         this.orchestrator = orchestrator;
+        this.policyService = policyService;
     }
     async submitAnalysis(dto) {
-        await this.enforceAnalysisLimits(dto.userId, dto.guestId);
+        const guestIp = dto.userId ? undefined : dto.ip;
+        await this.policyService.enforceAnalysisLimit(dto.userId, guestIp);
         const document = await this.prisma.document.findUnique({
             where: { id: dto.documentId },
-            select: { id: true, status: true },
+            select: { id: true, status: true, uploadedBy: true, guestToken: true },
         });
         if (!document) {
-            throw new common_1.NotFoundException(`Document ${dto.documentId} not found`);
+            throw new common_1.NotFoundException(`Document not found`);
+        }
+        if (dto.userId) {
+            if (document.uploadedBy !== dto.userId) {
+                throw new common_1.NotFoundException('Document not found');
+            }
+        }
+        else {
+            if (document.guestToken !== guestIp) {
+                throw new common_1.NotFoundException('Document not found');
+            }
         }
         if (document.status !== 'ready') {
             throw new common_1.BadRequestException(`Document is not ready for analysis (status: ${document.status}). ` +
@@ -44,6 +56,7 @@ let ComplianceService = class ComplianceService {
                 status: 'pending',
             },
         });
+        await this.policyService.incrementAnalysis(dto.userId, guestIp);
         await this.orchestrator.analyzeDocument(request.id);
         return this.getAnalysisResult(request.id);
     }
@@ -111,42 +124,12 @@ let ComplianceService = class ComplianceService {
             orderBy: { createdAt: 'desc' },
         });
     }
-    async enforceAnalysisLimits(userId, guestId) {
-        if (userId) {
-            const user = await this.prisma.profile.findUnique({
-                where: { id: userId },
-                select: { id: true, role: true },
-            });
-            const existingCount = await this.prisma.analysisRequest.count({
-                where: {
-                    userId,
-                    status: { in: ['completed', 'processing', 'pending'] },
-                },
-            });
-            if (existingCount >= FREE_PLAN_ANALYSIS_LIMIT) {
-                throw new common_1.ForbiddenException(`Free plan allows ${FREE_PLAN_ANALYSIS_LIMIT} analyses. You have used ${existingCount}. Upgrade to continue.`);
-            }
-        }
-        else if (guestId) {
-            const existingCount = await this.prisma.analysisRequest.count({
-                where: {
-                    guestId,
-                    status: { in: ['completed', 'processing', 'pending'] },
-                },
-            });
-            if (existingCount >= UNAUTHENTICATED_ANALYSIS_LIMIT) {
-                throw new common_1.ForbiddenException(`Unauthenticated users can perform ${UNAUTHENTICATED_ANALYSIS_LIMIT} analysis. Please sign in for more.`);
-            }
-        }
-        else {
-            throw new common_1.BadRequestException("Must provide userId or guestId for analysis");
-        }
-    }
 };
 exports.ComplianceService = ComplianceService;
 exports.ComplianceService = ComplianceService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        analysis_orchestrator_service_1.AnalysisOrchestratorService])
+        analysis_orchestrator_service_1.AnalysisOrchestratorService,
+        usage_policy_service_1.UsagePolicyService])
 ], ComplianceService);
 //# sourceMappingURL=compliance.service.js.map

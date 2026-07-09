@@ -11,6 +11,7 @@ export declare const DbNull: import("@prisma/client-runtime-utils").DbNullClass;
 export declare const JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
 export declare const AnyNull: import("@prisma/client-runtime-utils").AnyNullClass;
 export declare const ModelName: {
+    readonly UsageQuota: "UsageQuota";
     readonly Profile: "Profile";
     readonly Document: "Document";
     readonly DocumentChunk: "DocumentChunk";
@@ -30,6 +31,16 @@ export declare const TransactionIsolationLevel: {
     readonly Serializable: "Serializable";
 };
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
+export declare const UsageQuotaScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly guestId: "guestId";
+    readonly uploadsUsed: "uploadsUsed";
+    readonly analysesUsed: "analysesUsed";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type UsageQuotaScalarFieldEnum = (typeof UsageQuotaScalarFieldEnum)[keyof typeof UsageQuotaScalarFieldEnum];
 export declare const ProfileScalarFieldEnum: {
     readonly id: "id";
     readonly email: "email";
@@ -39,6 +50,7 @@ export declare const ProfileScalarFieldEnum: {
     readonly role: "role";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
+    readonly plan: "plan";
     readonly allowEmailNotifications: "allowEmailNotifications";
     readonly allowExpiryReminders: "allowExpiryReminders";
     readonly allowRiskAlerts: "allowRiskAlerts";

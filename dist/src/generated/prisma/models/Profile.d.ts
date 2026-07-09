@@ -16,6 +16,7 @@ export type ProfileMinAggregateOutputType = {
     role: $Enums.UserRole | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    plan: $Enums.PlanType | null;
     allowEmailNotifications: boolean | null;
     allowExpiryReminders: boolean | null;
     allowRiskAlerts: boolean | null;
@@ -30,6 +31,7 @@ export type ProfileMaxAggregateOutputType = {
     role: $Enums.UserRole | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    plan: $Enums.PlanType | null;
     allowEmailNotifications: boolean | null;
     allowExpiryReminders: boolean | null;
     allowRiskAlerts: boolean | null;
@@ -44,6 +46,7 @@ export type ProfileCountAggregateOutputType = {
     role: number;
     createdAt: number;
     updatedAt: number;
+    plan: number;
     allowEmailNotifications: number;
     allowExpiryReminders: number;
     allowRiskAlerts: number;
@@ -59,6 +62,7 @@ export type ProfileMinAggregateInputType = {
     role?: true;
     createdAt?: true;
     updatedAt?: true;
+    plan?: true;
     allowEmailNotifications?: true;
     allowExpiryReminders?: true;
     allowRiskAlerts?: true;
@@ -73,6 +77,7 @@ export type ProfileMaxAggregateInputType = {
     role?: true;
     createdAt?: true;
     updatedAt?: true;
+    plan?: true;
     allowEmailNotifications?: true;
     allowExpiryReminders?: true;
     allowRiskAlerts?: true;
@@ -87,6 +92,7 @@ export type ProfileCountAggregateInputType = {
     role?: true;
     createdAt?: true;
     updatedAt?: true;
+    plan?: true;
     allowEmailNotifications?: true;
     allowExpiryReminders?: true;
     allowRiskAlerts?: true;
@@ -126,6 +132,7 @@ export type ProfileGroupByOutputType = {
     role: $Enums.UserRole;
     createdAt: Date;
     updatedAt: Date;
+    plan: $Enums.PlanType;
     allowEmailNotifications: boolean;
     allowExpiryReminders: boolean;
     allowRiskAlerts: boolean;
@@ -149,11 +156,13 @@ export type ProfileWhereInput = {
     role?: Prisma.EnumUserRoleFilter<"Profile"> | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string;
+    plan?: Prisma.EnumPlanTypeFilter<"Profile"> | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFilter<"Profile"> | boolean;
     allowExpiryReminders?: Prisma.BoolFilter<"Profile"> | boolean;
     allowRiskAlerts?: Prisma.BoolFilter<"Profile"> | boolean;
     allowAnalysisAlerts?: Prisma.BoolFilter<"Profile"> | boolean;
     documents?: Prisma.DocumentListRelationFilter;
+    usageQuota?: Prisma.XOR<Prisma.UsageQuotaNullableScalarRelationFilter, Prisma.UsageQuotaWhereInput> | null;
     analysisRequests?: Prisma.AnalysisRequestListRelationFilter;
     notifications?: Prisma.NotificationListRelationFilter;
     activityLogs?: Prisma.ActivityLogListRelationFilter;
@@ -168,11 +177,13 @@ export type ProfileOrderByWithRelationInput = {
     role?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    plan?: Prisma.SortOrder;
     allowEmailNotifications?: Prisma.SortOrder;
     allowExpiryReminders?: Prisma.SortOrder;
     allowRiskAlerts?: Prisma.SortOrder;
     allowAnalysisAlerts?: Prisma.SortOrder;
     documents?: Prisma.DocumentOrderByRelationAggregateInput;
+    usageQuota?: Prisma.UsageQuotaOrderByWithRelationInput;
     analysisRequests?: Prisma.AnalysisRequestOrderByRelationAggregateInput;
     notifications?: Prisma.NotificationOrderByRelationAggregateInput;
     activityLogs?: Prisma.ActivityLogOrderByRelationAggregateInput;
@@ -190,11 +201,13 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
     role?: Prisma.EnumUserRoleFilter<"Profile"> | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string;
+    plan?: Prisma.EnumPlanTypeFilter<"Profile"> | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFilter<"Profile"> | boolean;
     allowExpiryReminders?: Prisma.BoolFilter<"Profile"> | boolean;
     allowRiskAlerts?: Prisma.BoolFilter<"Profile"> | boolean;
     allowAnalysisAlerts?: Prisma.BoolFilter<"Profile"> | boolean;
     documents?: Prisma.DocumentListRelationFilter;
+    usageQuota?: Prisma.XOR<Prisma.UsageQuotaNullableScalarRelationFilter, Prisma.UsageQuotaWhereInput> | null;
     analysisRequests?: Prisma.AnalysisRequestListRelationFilter;
     notifications?: Prisma.NotificationListRelationFilter;
     activityLogs?: Prisma.ActivityLogListRelationFilter;
@@ -209,6 +222,7 @@ export type ProfileOrderByWithAggregationInput = {
     role?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    plan?: Prisma.SortOrder;
     allowEmailNotifications?: Prisma.SortOrder;
     allowExpiryReminders?: Prisma.SortOrder;
     allowRiskAlerts?: Prisma.SortOrder;
@@ -229,6 +243,7 @@ export type ProfileScalarWhereWithAggregatesInput = {
     role?: Prisma.EnumUserRoleWithAggregatesFilter<"Profile"> | $Enums.UserRole;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Profile"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Profile"> | Date | string;
+    plan?: Prisma.EnumPlanTypeWithAggregatesFilter<"Profile"> | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolWithAggregatesFilter<"Profile"> | boolean;
     allowExpiryReminders?: Prisma.BoolWithAggregatesFilter<"Profile"> | boolean;
     allowRiskAlerts?: Prisma.BoolWithAggregatesFilter<"Profile"> | boolean;
@@ -243,11 +258,13 @@ export type ProfileCreateInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
     documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput;
+    usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput;
     analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
@@ -262,11 +279,13 @@ export type ProfileUncheckedCreateInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
     documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput;
+    usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput;
     analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
@@ -281,11 +300,13 @@ export type ProfileUpdateInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput;
+    usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
@@ -300,11 +321,13 @@ export type ProfileUncheckedUpdateInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput;
+    usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
@@ -319,6 +342,7 @@ export type ProfileCreateManyInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
@@ -333,6 +357,7 @@ export type ProfileUpdateManyMutationInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -347,10 +372,15 @@ export type ProfileUncheckedUpdateManyInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+};
+export type ProfileNullableScalarRelationFilter = {
+    is?: Prisma.ProfileWhereInput | null;
+    isNot?: Prisma.ProfileWhereInput | null;
 };
 export type ProfileCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -361,6 +391,7 @@ export type ProfileCountOrderByAggregateInput = {
     role?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    plan?: Prisma.SortOrder;
     allowEmailNotifications?: Prisma.SortOrder;
     allowExpiryReminders?: Prisma.SortOrder;
     allowRiskAlerts?: Prisma.SortOrder;
@@ -375,6 +406,7 @@ export type ProfileMaxOrderByAggregateInput = {
     role?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    plan?: Prisma.SortOrder;
     allowEmailNotifications?: Prisma.SortOrder;
     allowExpiryReminders?: Prisma.SortOrder;
     allowRiskAlerts?: Prisma.SortOrder;
@@ -389,30 +421,35 @@ export type ProfileMinOrderByAggregateInput = {
     role?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    plan?: Prisma.SortOrder;
     allowEmailNotifications?: Prisma.SortOrder;
     allowExpiryReminders?: Prisma.SortOrder;
     allowRiskAlerts?: Prisma.SortOrder;
     allowAnalysisAlerts?: Prisma.SortOrder;
 };
-export type ProfileNullableScalarRelationFilter = {
-    is?: Prisma.ProfileWhereInput | null;
-    isNot?: Prisma.ProfileWhereInput | null;
-};
 export type ProfileScalarRelationFilter = {
     is?: Prisma.ProfileWhereInput;
     isNot?: Prisma.ProfileWhereInput;
 };
-export type StringFieldUpdateOperationsInput = {
-    set?: string;
+export type ProfileCreateNestedOneWithoutUsageQuotaInput = {
+    create?: Prisma.XOR<Prisma.ProfileCreateWithoutUsageQuotaInput, Prisma.ProfileUncheckedCreateWithoutUsageQuotaInput>;
+    connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutUsageQuotaInput;
+    connect?: Prisma.ProfileWhereUniqueInput;
 };
-export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null;
+export type ProfileUpdateOneWithoutUsageQuotaNestedInput = {
+    create?: Prisma.XOR<Prisma.ProfileCreateWithoutUsageQuotaInput, Prisma.ProfileUncheckedCreateWithoutUsageQuotaInput>;
+    connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutUsageQuotaInput;
+    upsert?: Prisma.ProfileUpsertWithoutUsageQuotaInput;
+    disconnect?: Prisma.ProfileWhereInput | boolean;
+    delete?: Prisma.ProfileWhereInput | boolean;
+    connect?: Prisma.ProfileWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutUsageQuotaInput, Prisma.ProfileUpdateWithoutUsageQuotaInput>, Prisma.ProfileUncheckedUpdateWithoutUsageQuotaInput>;
 };
 export type EnumUserRoleFieldUpdateOperationsInput = {
     set?: $Enums.UserRole;
 };
-export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string;
+export type EnumPlanTypeFieldUpdateOperationsInput = {
+    set?: $Enums.PlanType;
 };
 export type BoolFieldUpdateOperationsInput = {
     set?: boolean;
@@ -483,6 +520,99 @@ export type ProfileUpdateOneRequiredWithoutNotificationsNestedInput = {
     connect?: Prisma.ProfileWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutNotificationsInput, Prisma.ProfileUpdateWithoutNotificationsInput>, Prisma.ProfileUncheckedUpdateWithoutNotificationsInput>;
 };
+export type ProfileCreateWithoutUsageQuotaInput = {
+    id?: string;
+    email: string;
+    fullName?: string | null;
+    avatarUrl?: string | null;
+    passwordHash?: string | null;
+    role?: $Enums.UserRole;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
+    allowEmailNotifications?: boolean;
+    allowExpiryReminders?: boolean;
+    allowRiskAlerts?: boolean;
+    allowAnalysisAlerts?: boolean;
+    documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput;
+    analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput;
+    notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+    activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
+};
+export type ProfileUncheckedCreateWithoutUsageQuotaInput = {
+    id?: string;
+    email: string;
+    fullName?: string | null;
+    avatarUrl?: string | null;
+    passwordHash?: string | null;
+    role?: $Enums.UserRole;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
+    allowEmailNotifications?: boolean;
+    allowExpiryReminders?: boolean;
+    allowRiskAlerts?: boolean;
+    allowAnalysisAlerts?: boolean;
+    documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput;
+    analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput;
+    notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
+    activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput;
+};
+export type ProfileCreateOrConnectWithoutUsageQuotaInput = {
+    where: Prisma.ProfileWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ProfileCreateWithoutUsageQuotaInput, Prisma.ProfileUncheckedCreateWithoutUsageQuotaInput>;
+};
+export type ProfileUpsertWithoutUsageQuotaInput = {
+    update: Prisma.XOR<Prisma.ProfileUpdateWithoutUsageQuotaInput, Prisma.ProfileUncheckedUpdateWithoutUsageQuotaInput>;
+    create: Prisma.XOR<Prisma.ProfileCreateWithoutUsageQuotaInput, Prisma.ProfileUncheckedCreateWithoutUsageQuotaInput>;
+    where?: Prisma.ProfileWhereInput;
+};
+export type ProfileUpdateToOneWithWhereWithoutUsageQuotaInput = {
+    where?: Prisma.ProfileWhereInput;
+    data: Prisma.XOR<Prisma.ProfileUpdateWithoutUsageQuotaInput, Prisma.ProfileUncheckedUpdateWithoutUsageQuotaInput>;
+};
+export type ProfileUpdateWithoutUsageQuotaInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
+    allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput;
+    analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput;
+    notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
+    activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput;
+};
+export type ProfileUncheckedUpdateWithoutUsageQuotaInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
+    allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput;
+    analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput;
+    notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+    activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
+    passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput;
+};
 export type ProfileCreateWithoutDocumentsInput = {
     id?: string;
     email: string;
@@ -492,10 +622,12 @@ export type ProfileCreateWithoutDocumentsInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
+    usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput;
     analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
@@ -510,10 +642,12 @@ export type ProfileUncheckedCreateWithoutDocumentsInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
+    usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput;
     analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
@@ -541,10 +675,12 @@ export type ProfileUpdateWithoutDocumentsInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
@@ -559,10 +695,12 @@ export type ProfileUncheckedUpdateWithoutDocumentsInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
@@ -577,11 +715,13 @@ export type ProfileCreateWithoutActivityLogsInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
     documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput;
+    usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput;
     analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
@@ -595,11 +735,13 @@ export type ProfileUncheckedCreateWithoutActivityLogsInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
     documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput;
+    usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput;
     analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput;
@@ -626,11 +768,13 @@ export type ProfileUpdateWithoutActivityLogsInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput;
+    usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput;
@@ -644,11 +788,13 @@ export type ProfileUncheckedUpdateWithoutActivityLogsInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput;
+    usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput;
@@ -662,11 +808,13 @@ export type ProfileCreateWithoutAnalysisRequestsInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
     documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput;
+    usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
     passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
@@ -680,11 +828,13 @@ export type ProfileUncheckedCreateWithoutAnalysisRequestsInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
     documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput;
+    usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
     passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput;
@@ -711,11 +861,13 @@ export type ProfileUpdateWithoutAnalysisRequestsInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput;
+    usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
     passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput;
@@ -729,11 +881,13 @@ export type ProfileUncheckedUpdateWithoutAnalysisRequestsInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput;
+    usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
     passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput;
@@ -747,11 +901,13 @@ export type ProfileCreateWithoutPasswordResetTokensInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
     documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput;
+    usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput;
     analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
@@ -765,11 +921,13 @@ export type ProfileUncheckedCreateWithoutPasswordResetTokensInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
     documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput;
+    usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput;
     analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
@@ -796,11 +954,13 @@ export type ProfileUpdateWithoutPasswordResetTokensInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput;
+    usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
@@ -814,11 +974,13 @@ export type ProfileUncheckedUpdateWithoutPasswordResetTokensInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput;
+    usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
@@ -832,11 +994,13 @@ export type ProfileCreateWithoutNotificationsInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
     documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput;
+    usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput;
     analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput;
     activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput;
     passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput;
@@ -850,11 +1014,13 @@ export type ProfileUncheckedCreateWithoutNotificationsInput = {
     role?: $Enums.UserRole;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    plan?: $Enums.PlanType;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
     documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput;
+    usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput;
     analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput;
     activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput;
     passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput;
@@ -881,11 +1047,13 @@ export type ProfileUpdateWithoutNotificationsInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput;
+    usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput;
     activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput;
     passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput;
@@ -899,11 +1067,13 @@ export type ProfileUncheckedUpdateWithoutNotificationsInput = {
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType;
     allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput;
+    usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput;
     analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput;
     activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput;
     passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput;
@@ -949,11 +1119,13 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     role?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    plan?: boolean;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
     documents?: boolean | Prisma.Profile$documentsArgs<ExtArgs>;
+    usageQuota?: boolean | Prisma.Profile$usageQuotaArgs<ExtArgs>;
     analysisRequests?: boolean | Prisma.Profile$analysisRequestsArgs<ExtArgs>;
     notifications?: boolean | Prisma.Profile$notificationsArgs<ExtArgs>;
     activityLogs?: boolean | Prisma.Profile$activityLogsArgs<ExtArgs>;
@@ -969,6 +1141,7 @@ export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
     role?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    plan?: boolean;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
@@ -983,6 +1156,7 @@ export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
     role?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    plan?: boolean;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
@@ -997,14 +1171,16 @@ export type ProfileSelectScalar = {
     role?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    plan?: boolean;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
 };
-export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "fullName" | "avatarUrl" | "passwordHash" | "role" | "createdAt" | "updatedAt" | "allowEmailNotifications" | "allowExpiryReminders" | "allowRiskAlerts" | "allowAnalysisAlerts", ExtArgs["result"]["profile"]>;
+export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "fullName" | "avatarUrl" | "passwordHash" | "role" | "createdAt" | "updatedAt" | "plan" | "allowEmailNotifications" | "allowExpiryReminders" | "allowRiskAlerts" | "allowAnalysisAlerts", ExtArgs["result"]["profile"]>;
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     documents?: boolean | Prisma.Profile$documentsArgs<ExtArgs>;
+    usageQuota?: boolean | Prisma.Profile$usageQuotaArgs<ExtArgs>;
     analysisRequests?: boolean | Prisma.Profile$analysisRequestsArgs<ExtArgs>;
     notifications?: boolean | Prisma.Profile$notificationsArgs<ExtArgs>;
     activityLogs?: boolean | Prisma.Profile$activityLogsArgs<ExtArgs>;
@@ -1017,6 +1193,7 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     name: "Profile";
     objects: {
         documents: Prisma.$DocumentPayload<ExtArgs>[];
+        usageQuota: Prisma.$UsageQuotaPayload<ExtArgs> | null;
         analysisRequests: Prisma.$AnalysisRequestPayload<ExtArgs>[];
         notifications: Prisma.$NotificationPayload<ExtArgs>[];
         activityLogs: Prisma.$ActivityLogPayload<ExtArgs>[];
@@ -1031,6 +1208,7 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
         role: $Enums.UserRole;
         createdAt: Date;
         updatedAt: Date;
+        plan: $Enums.PlanType;
         allowEmailNotifications: boolean;
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
@@ -1088,6 +1266,7 @@ export interface ProfileDelegate<ExtArgs extends runtime.Types.Extensions.Intern
 export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
     documents<T extends Prisma.Profile$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    usageQuota<T extends Prisma.Profile$usageQuotaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$usageQuotaArgs<ExtArgs>>): Prisma.Prisma__UsageQuotaClient<runtime.Types.Result.GetResult<Prisma.$UsageQuotaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     analysisRequests<T extends Prisma.Profile$analysisRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$analysisRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnalysisRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     notifications<T extends Prisma.Profile$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     activityLogs<T extends Prisma.Profile$activityLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$activityLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
@@ -1105,6 +1284,7 @@ export interface ProfileFieldRefs {
     readonly role: Prisma.FieldRef<"Profile", 'UserRole'>;
     readonly createdAt: Prisma.FieldRef<"Profile", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"Profile", 'DateTime'>;
+    readonly plan: Prisma.FieldRef<"Profile", 'PlanType'>;
     readonly allowEmailNotifications: Prisma.FieldRef<"Profile", 'Boolean'>;
     readonly allowExpiryReminders: Prisma.FieldRef<"Profile", 'Boolean'>;
     readonly allowRiskAlerts: Prisma.FieldRef<"Profile", 'Boolean'>;
@@ -1218,6 +1398,12 @@ export type Profile$documentsArgs<ExtArgs extends runtime.Types.Extensions.Inter
     take?: number;
     skip?: number;
     distinct?: Prisma.DocumentScalarFieldEnum | Prisma.DocumentScalarFieldEnum[];
+};
+export type Profile$usageQuotaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UsageQuotaSelect<ExtArgs> | null;
+    omit?: Prisma.UsageQuotaOmit<ExtArgs> | null;
+    include?: Prisma.UsageQuotaInclude<ExtArgs> | null;
+    where?: Prisma.UsageQuotaWhereInput;
 };
 export type Profile$analysisRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.AnalysisRequestSelect<ExtArgs> | null;

@@ -6,40 +6,37 @@ import {
   Body,
   ParseUUIDPipe,
   UseGuards,
+  Req,
+  Ip,
 } from '@nestjs/common';
 import { ComplianceService } from './compliance.service';
 import { CreateComplianceQueryDto } from './dto/create-compliance-query.dto';
 import { CreateAnalysisRequestDto } from './dto/create-analysis-request.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { Public } from '../auth/decorators/public.decorator';
+import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
+import { Request } from 'express';
 
-@UseGuards(JwtAuthGuard)
 @Controller('compliance')
 export class ComplianceController {
   constructor(private readonly complianceService: ComplianceService) {}
 
   // ── AI Analysis Pipeline ───────────────────────────────────────────────────
 
-  /**
-   * POST /compliance/analyze
-   *
-   * Submits a document for AI compliance analysis.
-   * Creates an AnalysisRequest, runs the full AI pipeline, and returns
-   * the complete result tree (AnalysisRequest → AIResponse → AnalysisResult → Findings).
-   */
-  @Public()
+  @UseGuards(OptionalJwtAuthGuard)
   @Post('analyze')
-  async analyzeDocument(@Body() dto: CreateAnalysisRequestDto) {
-    return this.complianceService.submitAnalysis(dto);
+  async analyzeDocument(
+    @Body() dto: CreateAnalysisRequestDto,
+    @Req() req: Request & { user?: { id: string } },
+    @Ip() ip: string,
+  ) {
+    return this.complianceService.submitAnalysis({
+      ...dto,
+      userId: req.user?.id,
+      ip,
+    });
   }
 
-  /**
-   * GET /compliance/analysis/:id
-   *
-   * Fetches the full analysis result for a given AnalysisRequest,
-   * including the AIResponse, AnalysisResult, and all Findings.
-   */
-  @Public()
+  @UseGuards(OptionalJwtAuthGuard)
   @Get('analysis/:id')
   async getAnalysis(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.complianceService.getAnalysisResult(id);
@@ -47,16 +44,19 @@ export class ComplianceController {
 
   // ── Existing Query Endpoints ───────────────────────────────────────────────
 
+  @UseGuards(JwtAuthGuard)
   @Post('query')
   async createQuery(@Body() queryDto: CreateComplianceQueryDto) {
     return this.complianceService.createQuery(queryDto);
   }
 
+  @UseGuards(OptionalJwtAuthGuard)
   @Get('query/:id')
   async getQuery(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.complianceService.getQueryById(id);
   }
 
+  @UseGuards(OptionalJwtAuthGuard)
   @Get('document/:documentId')
   async getByDocument(
     @Param('documentId', new ParseUUIDPipe()) documentId: string,

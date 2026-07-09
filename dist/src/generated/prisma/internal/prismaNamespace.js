@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defineExtension = exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.NotificationScalarFieldEnum = exports.PasswordResetTokenScalarFieldEnum = exports.AIResponseScalarFieldEnum = exports.AnalysisRequestScalarFieldEnum = exports.ActivityLogScalarFieldEnum = exports.FindingScalarFieldEnum = exports.AnalysisResultScalarFieldEnum = exports.DocumentChunkScalarFieldEnum = exports.DocumentScalarFieldEnum = exports.ProfileScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
+exports.defineExtension = exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.NotificationScalarFieldEnum = exports.PasswordResetTokenScalarFieldEnum = exports.AIResponseScalarFieldEnum = exports.AnalysisRequestScalarFieldEnum = exports.ActivityLogScalarFieldEnum = exports.FindingScalarFieldEnum = exports.AnalysisResultScalarFieldEnum = exports.DocumentChunkScalarFieldEnum = exports.DocumentScalarFieldEnum = exports.ProfileScalarFieldEnum = exports.UsageQuotaScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/client"));
 exports.PrismaClientKnownRequestError = runtime.PrismaClientKnownRequestError;
 exports.PrismaClientUnknownRequestError = runtime.PrismaClientUnknownRequestError;
@@ -60,6 +60,7 @@ exports.DbNull = runtime.DbNull;
 exports.JsonNull = runtime.JsonNull;
 exports.AnyNull = runtime.AnyNull;
 exports.ModelName = {
+    UsageQuota: 'UsageQuota',
     Profile: 'Profile',
     Document: 'Document',
     DocumentChunk: 'DocumentChunk',
@@ -77,6 +78,15 @@ exports.TransactionIsolationLevel = runtime.makeStrictEnum({
     RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
 });
+exports.UsageQuotaScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    guestId: 'guestId',
+    uploadsUsed: 'uploadsUsed',
+    analysesUsed: 'analysesUsed',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
 exports.ProfileScalarFieldEnum = {
     id: 'id',
     email: 'email',
@@ -86,6 +96,7 @@ exports.ProfileScalarFieldEnum = {
     role: 'role',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    plan: 'plan',
     allowEmailNotifications: 'allowEmailNotifications',
     allowExpiryReminders: 'allowExpiryReminders',
     allowRiskAlerts: 'allowRiskAlerts',

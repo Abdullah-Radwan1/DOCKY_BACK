@@ -7,10 +7,10 @@ export declare class ActivityLogController {
         id: string;
         createdAt: Date;
         userId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
         entityType: string | null;
         entityId: string | null;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
     }>;
     get(id: string): Promise<{
         user: {
@@ -32,19 +32,19 @@ export declare class ActivityLogController {
         id: string;
         createdAt: Date;
         userId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
         entityType: string | null;
         entityId: string | null;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
     }>;
     getByUser(userId: string): Promise<{
         id: string;
         createdAt: Date;
         userId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
         entityType: string | null;
         entityId: string | null;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
     }[]>;
     getByEntity(entityType: string, entityId: string): Promise<({
         user: {
@@ -66,9 +66,9 @@ export declare class ActivityLogController {
         id: string;
         createdAt: Date;
         userId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         action: string;
         entityType: string | null;
         entityId: string | null;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
     })[]>;
 }

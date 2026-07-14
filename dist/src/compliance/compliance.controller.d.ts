@@ -66,6 +66,8 @@ export declare class ComplianceController {
         id: string;
         queryText: string;
         status: import("src/generated/prisma").AnalysisRequestStatus;
+        documentId: string | null;
+        userId: string | null;
         guestId: string | null;
         attemptCount: number;
         errorMessage: string | null;
@@ -73,8 +75,6 @@ export declare class ComplianceController {
         processingFinishedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
-        documentId: string | null;
-        userId: string | null;
     }>;
     getAnalysis(id: string): Promise<{
         document: {
@@ -133,6 +133,8 @@ export declare class ComplianceController {
         id: string;
         queryText: string;
         status: import("src/generated/prisma").AnalysisRequestStatus;
+        documentId: string | null;
+        userId: string | null;
         guestId: string | null;
         attemptCount: number;
         errorMessage: string | null;
@@ -140,13 +142,13 @@ export declare class ComplianceController {
         processingFinishedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
-        documentId: string | null;
-        userId: string | null;
     }>;
     createQuery(queryDto: CreateComplianceQueryDto): Promise<{
         id: string;
         queryText: string;
         status: import("src/generated/prisma").AnalysisRequestStatus;
+        documentId: string | null;
+        userId: string | null;
         guestId: string | null;
         attemptCount: number;
         errorMessage: string | null;
@@ -154,8 +156,6 @@ export declare class ComplianceController {
         processingFinishedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
-        documentId: string | null;
-        userId: string | null;
     }>;
     getQuery(id: string): Promise<{
         document: {
@@ -203,6 +203,8 @@ export declare class ComplianceController {
         id: string;
         queryText: string;
         status: import("src/generated/prisma").AnalysisRequestStatus;
+        documentId: string | null;
+        userId: string | null;
         guestId: string | null;
         attemptCount: number;
         errorMessage: string | null;
@@ -210,8 +212,6 @@ export declare class ComplianceController {
         processingFinishedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
-        documentId: string | null;
-        userId: string | null;
     }>;
     getByDocument(documentId: string): Promise<({
         response: ({
@@ -253,6 +253,8 @@ export declare class ComplianceController {
         id: string;
         queryText: string;
         status: import("src/generated/prisma").AnalysisRequestStatus;
+        documentId: string | null;
+        userId: string | null;
         guestId: string | null;
         attemptCount: number;
         errorMessage: string | null;
@@ -260,7 +262,5 @@ export declare class ComplianceController {
         processingFinishedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
-        documentId: string | null;
-        userId: string | null;
     })[]>;
 }

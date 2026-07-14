@@ -18,19 +18,22 @@ const pdf_extractor_service_1 = require("./pdf-extractor.service");
 const chunking_service_1 = require("./chunking.service");
 const crypto_1 = require("crypto");
 const usage_policy_service_1 = require("../../policy/usage-policy.service");
+const notifications_service_1 = require("../../notifications/notifications.service");
 let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadService {
     prisma;
     validator;
     extractor;
     chunker;
     policyService;
+    notificationsService;
     logger = new common_1.Logger(DocumentUploadService_1.name);
-    constructor(prisma, validator, extractor, chunker, policyService) {
+    constructor(prisma, validator, extractor, chunker, policyService, notificationsService) {
         this.prisma = prisma;
         this.validator = validator;
         this.extractor = extractor;
         this.chunker = chunker;
         this.policyService = policyService;
+        this.notificationsService = notificationsService;
     }
     async uploadForUser(file, userId) {
         await this.policyService.enforceUploadLimit(userId, undefined);
@@ -39,6 +42,16 @@ let DocumentUploadService = DocumentUploadService_1 = class DocumentUploadServic
             userId,
         });
         await this.policyService.incrementUpload(userId, undefined);
+        void this.notificationsService
+            .createNotification({
+            userId,
+            title: 'Document Uploaded Successfully',
+            message: `Your document "${doc.originalFileName}" has been uploaded and is ready for analysis.`,
+            type: 'system_alert',
+            deliveryChannel: 'in_app',
+            documentId: doc.id,
+        })
+            .catch(() => { });
         return doc;
     }
     async uploadForGuest(file, ip) {
@@ -175,6 +188,7 @@ exports.DocumentUploadService = DocumentUploadService = DocumentUploadService_1 
         pdf_validator_service_1.PdfValidatorService,
         pdf_extractor_service_1.PdfExtractorService,
         chunking_service_1.ChunkingService,
-        usage_policy_service_1.UsagePolicyService])
+        usage_policy_service_1.UsagePolicyService,
+        notifications_service_1.NotificationsService])
 ], DocumentUploadService);
 //# sourceMappingURL=document-upload.service.js.map

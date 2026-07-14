@@ -22,6 +22,8 @@ export declare class AuthService {
             allow_expiry_reminders: boolean;
             allow_risk_alerts: boolean;
             allow_analysis_alerts: boolean;
+            plan: string | undefined;
+            usage_quota: any;
         };
     }>;
     login(dto: LoginDto): Promise<{
@@ -35,6 +37,8 @@ export declare class AuthService {
             allow_expiry_reminders: boolean;
             allow_risk_alerts: boolean;
             allow_analysis_alerts: boolean;
+            plan: string | undefined;
+            usage_quota: any;
         };
     }>;
     getMe(userId: string): Promise<{
@@ -46,6 +50,8 @@ export declare class AuthService {
         allow_expiry_reminders: boolean;
         allow_risk_alerts: boolean;
         allow_analysis_alerts: boolean;
+        plan: string | undefined;
+        usage_quota: any;
     }>;
     changePassword(userId: string, dto: ChangePasswordDto): Promise<{
         message: string;

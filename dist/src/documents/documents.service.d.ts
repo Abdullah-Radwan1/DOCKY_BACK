@@ -42,9 +42,9 @@ export declare class DocumentsService {
         } | null;
         chunks: {
             id: string;
-            pageNumber: number | null;
-            content: string;
             chunkIndex: number;
+            content: string;
+            pageNumber: number | null;
             tokenCount: number | null;
         }[];
     } & {
@@ -68,9 +68,9 @@ export declare class DocumentsService {
     getGuestDocumentById(id: string, guestToken: string): Promise<{
         chunks: {
             id: string;
-            pageNumber: number | null;
-            content: string;
             chunkIndex: number;
+            content: string;
+            pageNumber: number | null;
             tokenCount: number | null;
         }[];
     } & {

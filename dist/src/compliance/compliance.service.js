@@ -14,14 +14,17 @@ const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const analysis_orchestrator_service_1 = require("../ai/services/analysis-orchestrator.service");
 const usage_policy_service_1 = require("../policy/usage-policy.service");
+const notifications_service_1 = require("../notifications/notifications.service");
 let ComplianceService = class ComplianceService {
     prisma;
     orchestrator;
     policyService;
-    constructor(prisma, orchestrator, policyService) {
+    notificationsService;
+    constructor(prisma, orchestrator, policyService, notificationsService) {
         this.prisma = prisma;
         this.orchestrator = orchestrator;
         this.policyService = policyService;
+        this.notificationsService = notificationsService;
     }
     async submitAnalysis(dto) {
         const guestIp = dto.userId ? undefined : dto.ip;
@@ -58,7 +61,27 @@ let ComplianceService = class ComplianceService {
         });
         await this.policyService.incrementAnalysis(dto.userId, guestIp);
         await this.orchestrator.analyzeDocument(request.id);
-        return this.getAnalysisResult(request.id);
+        const result = await this.getAnalysisResult(request.id);
+        if (dto.userId && result.response?.AnalysisResult) {
+            const analysis = result.response.AnalysisResult;
+            const verdict = analysis.overallVerdict ?? 'unknown';
+            const risk = analysis.riskLevel ?? 'unknown';
+            const docName = result.document?.originalFileName ?? 'your document';
+            const isHighRisk = risk === 'high' || verdict === 'non_compliant';
+            void this.notificationsService
+                .createNotification({
+                userId: dto.userId,
+                title: isHighRisk ? '⚠️ Risk Alert Detected' : 'Analysis Complete',
+                message: isHighRisk
+                    ? `High-risk issues found in "${docName}". Verdict: ${verdict.replace('_', ' ')}, Risk: ${risk}. Review the findings immediately.`
+                    : `Analysis of "${docName}" is complete. Verdict: ${verdict.replace('_', ' ')}, Risk level: ${risk}.`,
+                type: 'compliance_alert',
+                deliveryChannel: 'in_app',
+                documentId: dto.documentId,
+            })
+                .catch(() => { });
+        }
+        return result;
     }
     async getAnalysisResult(requestId) {
         const result = await this.prisma.analysisRequest.findUnique({
@@ -130,6 +153,7 @@ exports.ComplianceService = ComplianceService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         analysis_orchestrator_service_1.AnalysisOrchestratorService,
-        usage_policy_service_1.UsagePolicyService])
+        usage_policy_service_1.UsagePolicyService,
+        notifications_service_1.NotificationsService])
 ], ComplianceService);
 //# sourceMappingURL=compliance.service.js.map

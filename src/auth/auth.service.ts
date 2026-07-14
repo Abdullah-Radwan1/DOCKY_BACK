@@ -44,6 +44,9 @@ export class AuthService {
         fullName: dto.fullName ?? null,
         passwordHash: hash,
       },
+      include: {
+        usageQuota: true,
+      },
     });
 
     // Fire welcome notification (non-blocking — do not await to keep response fast)
@@ -68,6 +71,7 @@ export class AuthService {
   async login(dto: LoginDto) {
     const profile = await this.prisma.profile.findUnique({
       where: { email: dto.email },
+      include: { usageQuota: true },
     });
 
     if (!profile || !profile.passwordHash) {
@@ -88,6 +92,7 @@ export class AuthService {
   async getMe(userId: string) {
     const profile = await this.prisma.profile.findUnique({
       where: { id: userId },
+      include: { usageQuota: true },
     });
 
     if (!profile) {
@@ -234,6 +239,8 @@ export class AuthService {
     email: string;
     fullName: string | null;
     role: string;
+    plan?: string;
+    usageQuota?: any;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
@@ -256,6 +263,8 @@ export class AuthService {
     email: string;
     fullName: string | null;
     role: string;
+    plan?: string;
+    usageQuota?: any;
     allowEmailNotifications?: boolean;
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
@@ -270,6 +279,8 @@ export class AuthService {
       allow_expiry_reminders: profile.allowExpiryReminders ?? true,
       allow_risk_alerts: profile.allowRiskAlerts ?? true,
       allow_analysis_alerts: profile.allowAnalysisAlerts ?? true,
+      plan: profile.plan,
+      usage_quota: profile.usageQuota,
     };
   }
 }

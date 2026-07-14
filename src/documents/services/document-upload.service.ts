@@ -12,6 +12,7 @@ import { ChunkingService } from './chunking.service';
 import { createHash } from 'crypto';
 import { DocumentStatus, Document } from '../../generated/prisma';
 import { UsagePolicyService } from '../../policy/usage-policy.service';
+import { NotificationsService } from '../../notifications/notifications.service';
 
 export interface UploadDocumentResponseDto {
   id: string;
@@ -52,6 +53,7 @@ export class DocumentUploadService {
     private readonly extractor: PdfExtractorService,
     private readonly chunker: ChunkingService,
     private readonly policyService: UsagePolicyService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async uploadForUser(
@@ -64,6 +66,19 @@ export class DocumentUploadService {
       userId,
     });
     await this.policyService.incrementUpload(userId, undefined);
+
+    // Fire upload notification (non-blocking)
+    void this.notificationsService
+      .createNotification({
+        userId,
+        title: 'Document Uploaded Successfully',
+        message: `Your document "${doc.originalFileName}" has been uploaded and is ready for analysis.`,
+        type: 'system_alert',
+        deliveryChannel: 'in_app',
+        documentId: doc.id,
+      })
+      .catch(() => {});
+
     return doc;
   }
 

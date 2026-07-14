@@ -17,6 +17,7 @@ const pdf_validator_service_1 = require("./services/pdf-validator.service");
 const pdf_extractor_service_1 = require("./services/pdf-extractor.service");
 const chunking_service_1 = require("./services/chunking.service");
 const policy_module_1 = require("../policy/policy.module");
+const notifications_module_1 = require("../notifications/notifications.module");
 let DocumentsModule = class DocumentsModule {
 };
 exports.DocumentsModule = DocumentsModule;
@@ -25,6 +26,7 @@ exports.DocumentsModule = DocumentsModule = __decorate([
         imports: [
             platform_express_1.MulterModule.register({ storage: (0, multer_1.memoryStorage)() }),
             policy_module_1.PolicyModule,
+            notifications_module_1.NotificationsModule,
         ],
         controllers: [documents_controller_1.DocumentsController],
         providers: [

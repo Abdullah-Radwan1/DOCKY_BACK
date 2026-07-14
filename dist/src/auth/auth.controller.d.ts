@@ -18,6 +18,8 @@ export declare class AuthController {
             allow_expiry_reminders: boolean;
             allow_risk_alerts: boolean;
             allow_analysis_alerts: boolean;
+            plan: string | undefined;
+            usage_quota: any;
         };
     }>;
     login(dto: LoginDto, res: Response): Promise<{
@@ -30,6 +32,8 @@ export declare class AuthController {
             allow_expiry_reminders: boolean;
             allow_risk_alerts: boolean;
             allow_analysis_alerts: boolean;
+            plan: string | undefined;
+            usage_quota: any;
         };
     }>;
     me(req: Request & {
@@ -46,6 +50,8 @@ export declare class AuthController {
             allow_expiry_reminders: boolean;
             allow_risk_alerts: boolean;
             allow_analysis_alerts: boolean;
+            plan: string | undefined;
+            usage_quota: any;
         };
     }>;
     changePassword(req: Request & {

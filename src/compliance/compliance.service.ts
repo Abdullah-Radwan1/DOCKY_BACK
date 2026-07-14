@@ -9,6 +9,7 @@ import { AnalysisOrchestratorService } from '../ai/services/analysis-orchestrato
 import { CreateComplianceQueryDto } from './dto/create-compliance-query.dto';
 import { CreateAnalysisRequestDto } from './dto/create-analysis-request.dto';
 import { UsagePolicyService } from '../policy/usage-policy.service';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class ComplianceService {
@@ -16,6 +17,7 @@ export class ComplianceService {
     private readonly prisma: PrismaService,
     private readonly orchestrator: AnalysisOrchestratorService,
     private readonly policyService: UsagePolicyService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   // ── Analysis pipeline ──────────────────────────────────────────────────────
@@ -75,7 +77,31 @@ export class ComplianceService {
     await this.orchestrator.analyzeDocument(request.id);
 
     // ── Return the full result ───────────────────────────────────────────
-    return this.getAnalysisResult(request.id);
+    const result = await this.getAnalysisResult(request.id);
+
+    // ── Fire compliance alert notification (non-blocking) ────────────────
+    if (dto.userId && result.response?.AnalysisResult) {
+      const analysis = result.response.AnalysisResult;
+      const verdict = analysis.overallVerdict ?? 'unknown';
+      const risk = analysis.riskLevel ?? 'unknown';
+      const docName = result.document?.originalFileName ?? 'your document';
+      const isHighRisk = risk === 'high' || verdict === 'non_compliant';
+
+      void this.notificationsService
+        .createNotification({
+          userId: dto.userId,
+          title: isHighRisk ? '⚠️ Risk Alert Detected' : 'Analysis Complete',
+          message: isHighRisk
+            ? `High-risk issues found in "${docName}". Verdict: ${verdict.replace('_', ' ')}, Risk: ${risk}. Review the findings immediately.`
+            : `Analysis of "${docName}" is complete. Verdict: ${verdict.replace('_', ' ')}, Risk level: ${risk}.`,
+          type: 'compliance_alert',
+          deliveryChannel: 'in_app',
+          documentId: dto.documentId,
+        })
+        .catch(() => {});
+    }
+
+    return result;
   }
 
   /**

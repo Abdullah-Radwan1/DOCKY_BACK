@@ -8,6 +8,7 @@ import { PdfValidatorService } from './services/pdf-validator.service';
 import { PdfExtractorService } from './services/pdf-extractor.service';
 import { ChunkingService } from './services/chunking.service';
 import { PolicyModule } from '../policy/policy.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { PolicyModule } from '../policy/policy.module';
     // The FileInterceptor in the controller overrides storage inline per route.
     MulterModule.register({ storage: memoryStorage() }),
     PolicyModule,
+    NotificationsModule,
   ],
   controllers: [DocumentsController],
   providers: [

@@ -12,12 +12,13 @@ const compliance_service_1 = require("./compliance.service");
 const compliance_controller_1 = require("./compliance.controller");
 const ai_module_1 = require("../ai/ai.module");
 const policy_module_1 = require("../policy/policy.module");
+const notifications_module_1 = require("../notifications/notifications.module");
 let ComplianceModule = class ComplianceModule {
 };
 exports.ComplianceModule = ComplianceModule;
 exports.ComplianceModule = ComplianceModule = __decorate([
     (0, common_1.Module)({
-        imports: [ai_module_1.AiModule, policy_module_1.PolicyModule],
+        imports: [ai_module_1.AiModule, policy_module_1.PolicyModule, notifications_module_1.NotificationsModule],
         providers: [compliance_service_1.ComplianceService],
         controllers: [compliance_controller_1.ComplianceController],
         exports: [compliance_service_1.ComplianceService],

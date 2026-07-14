@@ -10,6 +10,8 @@ export interface AiAnalysisResponse {
   overallVerdict: 'compliant' | 'non_compliant' | 'partial' | 'unknown';
   confidence: number; // 0.0 – 1.0
   riskLevel: 'low' | 'medium' | 'high';
+  /** ISO 8601 date string (e.g. "2026-12-31") extracted from the document, or null if not found. */
+  expirationDate: string | null;
   findings: AiFinding[];
 }
 

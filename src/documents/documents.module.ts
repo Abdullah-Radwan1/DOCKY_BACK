@@ -7,13 +7,12 @@ import { DocumentUploadService } from './services/document-upload.service';
 import { PdfValidatorService } from './services/pdf-validator.service';
 import { PdfExtractorService } from './services/pdf-extractor.service';
 import { ChunkingService } from './services/chunking.service';
+import { DocumentExpirySchedulerService } from './services/document-expiry-scheduler.service';
 import { PolicyModule } from '../policy/policy.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
   imports: [
-    // MulterModule registered for this module with memory storage as a default.
-    // The FileInterceptor in the controller overrides storage inline per route.
     MulterModule.register({ storage: memoryStorage() }),
     PolicyModule,
     NotificationsModule,
@@ -25,7 +24,9 @@ import { NotificationsModule } from '../notifications/notifications.module';
     PdfValidatorService,
     PdfExtractorService,
     ChunkingService,
+    DocumentExpirySchedulerService,
   ],
   exports: [DocumentsService, DocumentUploadService],
 })
 export class DocumentsModule {}
+

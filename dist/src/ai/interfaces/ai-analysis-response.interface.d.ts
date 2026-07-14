@@ -3,6 +3,7 @@ export interface AiAnalysisResponse {
     overallVerdict: 'compliant' | 'non_compliant' | 'partial' | 'unknown';
     confidence: number;
     riskLevel: 'low' | 'medium' | 'high';
+    expirationDate: string | null;
     findings: AiFinding[];
 }
 export interface AiFinding {

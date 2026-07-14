@@ -16,6 +16,7 @@ const document_upload_service_1 = require("./services/document-upload.service");
 const pdf_validator_service_1 = require("./services/pdf-validator.service");
 const pdf_extractor_service_1 = require("./services/pdf-extractor.service");
 const chunking_service_1 = require("./services/chunking.service");
+const document_expiry_scheduler_service_1 = require("./services/document-expiry-scheduler.service");
 const policy_module_1 = require("../policy/policy.module");
 const notifications_module_1 = require("../notifications/notifications.module");
 let DocumentsModule = class DocumentsModule {
@@ -35,6 +36,7 @@ exports.DocumentsModule = DocumentsModule = __decorate([
             pdf_validator_service_1.PdfValidatorService,
             pdf_extractor_service_1.PdfExtractorService,
             chunking_service_1.ChunkingService,
+            document_expiry_scheduler_service_1.DocumentExpirySchedulerService,
         ],
         exports: [documents_service_1.DocumentsService, document_upload_service_1.DocumentUploadService],
     })

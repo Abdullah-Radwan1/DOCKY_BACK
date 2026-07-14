@@ -33,13 +33,13 @@ export declare class ComplianceController {
                     id: string;
                     status: import("src/generated/prisma").FindingStatus;
                     createdAt: Date;
+                    pageNumber: number | null;
                     metadata: import("@prisma/client/runtime/client").JsonValue | null;
-                    analysisId: string;
                     title: string;
+                    analysisId: string;
                     description: string | null;
                     severity: import("src/generated/prisma").FindingSeverity;
                     clauseReference: string | null;
-                    pageNumber: number | null;
                     excerpt: string | null;
                     recommendation: string | null;
                     resolvedAt: Date | null;
@@ -57,10 +57,10 @@ export declare class ComplianceController {
             id: string;
             createdAt: Date;
             response: import("@prisma/client/runtime/client").JsonValue;
-            requestId: string;
             confidenceScore: number | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
             matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
+            requestId: string;
         }) | null;
     } & {
         id: string;
@@ -100,13 +100,13 @@ export declare class ComplianceController {
                     id: string;
                     status: import("src/generated/prisma").FindingStatus;
                     createdAt: Date;
+                    pageNumber: number | null;
                     metadata: import("@prisma/client/runtime/client").JsonValue | null;
-                    analysisId: string;
                     title: string;
+                    analysisId: string;
                     description: string | null;
                     severity: import("src/generated/prisma").FindingSeverity;
                     clauseReference: string | null;
-                    pageNumber: number | null;
                     excerpt: string | null;
                     recommendation: string | null;
                     resolvedAt: Date | null;
@@ -124,10 +124,10 @@ export declare class ComplianceController {
             id: string;
             createdAt: Date;
             response: import("@prisma/client/runtime/client").JsonValue;
-            requestId: string;
             confidenceScore: number | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
             matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
+            requestId: string;
         }) | null;
     } & {
         id: string;
@@ -194,10 +194,10 @@ export declare class ComplianceController {
             id: string;
             createdAt: Date;
             response: import("@prisma/client/runtime/client").JsonValue;
-            requestId: string;
             confidenceScore: number | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
             matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
+            requestId: string;
         } | null;
     } & {
         id: string;
@@ -220,13 +220,13 @@ export declare class ComplianceController {
                     id: string;
                     status: import("src/generated/prisma").FindingStatus;
                     createdAt: Date;
+                    pageNumber: number | null;
                     metadata: import("@prisma/client/runtime/client").JsonValue | null;
-                    analysisId: string;
                     title: string;
+                    analysisId: string;
                     description: string | null;
                     severity: import("src/generated/prisma").FindingSeverity;
                     clauseReference: string | null;
-                    pageNumber: number | null;
                     excerpt: string | null;
                     recommendation: string | null;
                     resolvedAt: Date | null;
@@ -244,10 +244,10 @@ export declare class ComplianceController {
             id: string;
             createdAt: Date;
             response: import("@prisma/client/runtime/client").JsonValue;
-            requestId: string;
             confidenceScore: number | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
             matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
+            requestId: string;
         }) | null;
     } & {
         id: string;

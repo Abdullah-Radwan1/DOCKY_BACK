@@ -35,6 +35,8 @@ The JSON MUST exactly match this schema:
 
   "riskLevel": "low | medium | high",
 
+  "expirationDate": "<ISO date string e.g. '2027-01-31', or null if no expiration date is found in the document>",
+
   "parties": [
     {
       "name": "<legal entity>",
@@ -148,7 +150,8 @@ Rules:
 7. Quote exact contract language in findings.excerpt whenever possible.
 8. Include clauseReference and pageNumber whenever available.
 9. findings must contain at least one item. If no material risk exists, include an informational finding.
-10. confidence must be between 0 and 1.`;
+10. confidence must be between 0 and 1.
+11. expirationDate must be an ISO 8601 date string (YYYY-MM-DD) extracted from the document (look for "expires", "expiration", "term ends", "valid through", "end date", etc.). Return null if not found.`;
     }
     userPrompt(queryText, chunks) {
         const documentContext = chunks

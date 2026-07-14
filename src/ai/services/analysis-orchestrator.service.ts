@@ -213,6 +213,24 @@ export class AnalysisOrchestratorService {
             errorMessage: null,
           },
         });
+
+        // 9e. Update the document's expiration date if the AI extracted one
+        if (parsed.expirationDate) {
+          const parsedDate = new Date(parsed.expirationDate);
+          if (!isNaN(parsedDate.getTime())) {
+            await tx.document.update({
+              where: { id: request.document!.id },
+              data: { expirationDate: parsedDate },
+            });
+            this.logger.log(
+              `Document ${request.document!.id} expiration date set to ${parsed.expirationDate}`,
+            );
+          } else {
+            this.logger.warn(
+              `AI returned an invalid expirationDate: "${parsed.expirationDate}" — skipping update`,
+            );
+          }
+        }
       });
 
       this.logger.log(

@@ -17,9 +17,11 @@ export declare class DocumentsController {
     uploadForUser(file: Express.Multer.File, req: AuthenticatedRequest): Promise<import("./services/document-upload.service").UploadDocumentResponseDto>;
     uploadForGuest(file: Express.Multer.File, ip: string): Promise<import("./services/document-upload.service").GuestUploadResponseDto>;
     create(createDto: CreateDocumentDto, req: AuthenticatedRequest): Promise<{
-        guestToken: string | null;
-        expirationDate: Date | null;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        status: import("src/generated/prisma").DocumentStatus;
+        guestToken: string | null;
         isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
@@ -29,26 +31,24 @@ export declare class DocumentsController {
         pageCount: number | null;
         totalChunks: number | null;
         language: string | null;
-        status: import("src/generated/prisma").DocumentStatus;
-        createdAt: Date;
-        updatedAt: Date;
+        expirationDate: Date | null;
     }>;
     getAll(req: AuthenticatedRequest, query: PaginationQueryDto): Promise<import("../common/utils/pagination.utils").PaginatedResult<any>>;
     get(id: string, req: AuthenticatedRequest): Promise<{
         uploader: {
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
             email: string;
             fullName: string | null;
             avatarUrl: string | null;
-            passwordHash: string | null;
             role: import("src/generated/prisma").UserRole;
-            plan: import("src/generated/prisma").PlanType;
             allowEmailNotifications: boolean;
             allowExpiryReminders: boolean;
             allowRiskAlerts: boolean;
             allowAnalysisAlerts: boolean;
+            id: string;
+            passwordHash: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            plan: import("src/generated/prisma").PlanType;
         } | null;
         chunks: {
             id: string;
@@ -58,9 +58,11 @@ export declare class DocumentsController {
             tokenCount: number | null;
         }[];
     } & {
-        guestToken: string | null;
-        expirationDate: Date | null;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        status: import("src/generated/prisma").DocumentStatus;
+        guestToken: string | null;
         isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
@@ -70,17 +72,17 @@ export declare class DocumentsController {
         pageCount: number | null;
         totalChunks: number | null;
         language: string | null;
-        status: import("src/generated/prisma").DocumentStatus;
-        createdAt: Date;
-        updatedAt: Date;
+        expirationDate: Date | null;
     }>;
     getStatus(id: string): Promise<{
         status: import("src/generated/prisma").DocumentStatus;
     }>;
     update(id: string, updateDto: UpdateDocumentDto, req: AuthenticatedRequest): Promise<{
-        guestToken: string | null;
-        expirationDate: Date | null;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        status: import("src/generated/prisma").DocumentStatus;
+        guestToken: string | null;
         isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
@@ -90,14 +92,14 @@ export declare class DocumentsController {
         pageCount: number | null;
         totalChunks: number | null;
         language: string | null;
-        status: import("src/generated/prisma").DocumentStatus;
-        createdAt: Date;
-        updatedAt: Date;
+        expirationDate: Date | null;
     }>;
     delete(id: string, req: AuthenticatedRequest): Promise<{
-        guestToken: string | null;
-        expirationDate: Date | null;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        status: import("src/generated/prisma").DocumentStatus;
+        guestToken: string | null;
         isGuest: boolean;
         uploadedBy: string | null;
         originalFileName: string;
@@ -107,9 +109,7 @@ export declare class DocumentsController {
         pageCount: number | null;
         totalChunks: number | null;
         language: string | null;
-        status: import("src/generated/prisma").DocumentStatus;
-        createdAt: Date;
-        updatedAt: Date;
+        expirationDate: Date | null;
     }>;
 }
 export {};

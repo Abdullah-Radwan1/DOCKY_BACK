@@ -17,8 +17,8 @@ enum UserRole {
 
 enum PlanType {
   free
-  growth
-  enterprise
+  Professional
+  Elite
 }
 
 enum DocumentStatus {

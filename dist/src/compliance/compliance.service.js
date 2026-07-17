@@ -60,7 +60,7 @@ let ComplianceService = class ComplianceService {
             },
         });
         await this.policyService.incrementAnalysis(dto.userId, guestIp);
-        await this.orchestrator.analyzeDocument(request.id);
+        await this.orchestrator.analyzeDocument(request.id, dto.options);
         const result = await this.getAnalysisResult(request.id);
         if (dto.userId && result.response?.AnalysisResult) {
             const analysis = result.response.AnalysisResult;

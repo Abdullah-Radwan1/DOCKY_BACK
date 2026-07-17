@@ -10,6 +10,8 @@ import { PrismaService } from '../../prisma/prisma.service';
 import {
   AI_PROVIDER,
   type AiProvider,
+  type AiChatMessage,
+  type AiCompletionResult,
 } from '../interfaces/ai-provider.interface';
 import type {
   AiAnalysisResponse,
@@ -25,29 +27,63 @@ import {
   FindingSeverity,
   RiskLevel,
 } from '../../generated/prisma';
+import {
+  AnalysisOptions,
+  DEFAULT_ANALYSIS_OPTIONS,
+} from '../interfaces/analysis-options.interface';
+
+// ── Stage abstraction ────────────────────────────────────────────────────────
 
 /**
- * Orchestrates the full compliance-analysis pipeline:
+ * Context object passed into every analysis stage.
  *
- *   validate document → retrieve chunks → build prompt → call AI →
- *   parse response → persist (AIResponse + AnalysisResult + Findings)
+ * Stages receive the full request context and can attach their output to the
+ * `result` field, which is then merged into the final `AiAnalysisResponse`.
  *
- * This service owns the business logic and error/retry semantics.
- * It delegates AI calls to the injected `AiProvider`, making the
- * pipeline vendor-agnostic.
+ * This design allows future pipelines to run multiple AI calls sequentially
+ * (e.g. a dedicated contract-extraction stage followed by a compliance-
+ * evaluation stage) without touching the core orchestration logic.
+ */
+export interface AnalysisStageContext {
+  requestId: string;
+  documentId: string;
+  queryText: string;
+  chunks: Awaited<ReturnType<ChunkRetrievalService['getRelevantChunks']>>;
+  /** Accumulated result — stages may read from prior stages' output. */
+  result: Partial<AiAnalysisResponse>;
+  options: AnalysisOptions;
+}
+
+/**
+ * A single, self-contained unit of AI work.
+ *
+ * Implement this interface to add a new stage (e.g. `ContractExtractionStage`,
+ * `ComplianceEvaluationStage`).  The orchestrator calls each stage in order
+ * and merges the returned partial response into the accumulated result.
+ */
+export interface AnalysisStage {
+  readonly name: string;
+  run(ctx: AnalysisStageContext): Promise<Partial<AiAnalysisResponse>>;
+}
+
+// ── Built-in combined stage ───────────────────────────────────────────────────
+
+/**
+ * The default single-stage implementation that performs both contract
+ * extraction and compliance evaluation in one AI call.
+ *
+ * When the system is ready for multi-stage analysis, this stage can be
+ * split into two (or more) separate stages — each injected independently.
  */
 @Injectable()
-export class AnalysisOrchestratorService {
-  private readonly logger = new Logger(AnalysisOrchestratorService.name);
+export class CombinedAnalysisStage implements AnalysisStage {
+  readonly name = 'CombinedAnalysis';
 
   private readonly model: string;
   private readonly maxTokens: number;
-  private readonly maxRetries: number;
 
   constructor(
-    private readonly prisma: PrismaService,
     @Inject(AI_PROVIDER) private readonly aiProvider: AiProvider,
-    private readonly chunkRetrieval: ChunkRetrievalService,
     private readonly promptBuilder: PromptBuilderService,
     private readonly config: ConfigService,
   ) {
@@ -56,25 +92,168 @@ export class AnalysisOrchestratorService {
       'qwen/qwen3-235b-a22b',
     );
     this.maxTokens = this.config.get<number>('OPENROUTER_MAX_TOKENS', 4096);
+  }
+
+  async run(ctx: AnalysisStageContext): Promise<Partial<AiAnalysisResponse>> {
+    const messages = this.promptBuilder.buildAnalysisPrompt(
+      ctx.queryText,
+      ctx.chunks,
+      ctx.options,
+    );
+
+    const aiResult = await this.callAi(messages);
+    return this.parseAiResponse(aiResult.content, ctx.options);
+  }
+
+  private async callAi(messages: AiChatMessage[]): Promise<AiCompletionResult> {
+    return this.aiProvider.complete({
+      model: this.model,
+      messages,
+      maxTokens: this.maxTokens,
+      temperature: 0.1,
+      responseFormat: { type: 'json_object' },
+    });
+  }
+
+  /**
+   * Parses and validates the raw AI content into our typed schema.
+   * Strips markdown fences if the model wraps the JSON despite instructions.
+   */
+  private parseAiResponse(raw: string, options: AnalysisOptions): AiAnalysisResponse {
+    const cleaned = this.stripMarkdownFences(raw);
+
+    let parsed: AiAnalysisResponse;
+    try {
+      parsed = JSON.parse(cleaned) as AiAnalysisResponse;
+    } catch {
+      throw new AiResponseParseError('Invalid JSON from AI model', raw);
+    }
+
+    this.validateResponse(parsed, raw, options);
+    return parsed;
+  }
+
+  private stripMarkdownFences(raw: string): string {
+    const trimmed = raw.trim();
+    if (!trimmed.startsWith('```')) return trimmed;
+    return trimmed
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```\s*$/, '');
+  }
+
+  private validateResponse(parsed: AiAnalysisResponse, raw: string, options: AnalysisOptions): void {
+    if (!parsed.summary || typeof parsed.summary !== 'string') {
+      throw new AiResponseParseError('Missing or invalid "summary"', raw);
+    }
+
+    if (!parsed.contract) {
+      throw new AiResponseParseError('Missing "contract" domain', raw);
+    }
+
+    if (options.compliance) {
+      if (!parsed.compliance) {
+        throw new AiResponseParseError('Missing "compliance" domain when requested', raw);
+      }
+
+      const { compliance } = parsed;
+
+      if (!compliance.overallVerdict) {
+        throw new AiResponseParseError(
+          'Missing "compliance.overallVerdict"',
+          raw,
+        );
+      }
+
+      if (typeof compliance.confidence !== 'number') {
+        throw new AiResponseParseError(
+          'Missing or invalid "compliance.confidence"',
+          raw,
+        );
+      }
+
+      if (!compliance.riskLevel) {
+        throw new AiResponseParseError('Missing "compliance.riskLevel"', raw);
+      }
+
+      if (!Array.isArray(compliance.findings)) {
+        throw new AiResponseParseError(
+          '"compliance.findings" must be an array',
+          raw,
+        );
+      }
+
+      if (!Array.isArray(compliance.requirements)) {
+        throw new AiResponseParseError(
+          '"compliance.requirements" must be an array',
+          raw,
+        );
+      }
+    }
+  }
+}
+
+// ── Orchestrator ──────────────────────────────────────────────────────────────
+
+/**
+ * Orchestrates the full compliance-analysis pipeline:
+ *
+ *   validate document → retrieve chunks → run analysis stages →
+ *   merge stage results → persist (AIResponse + AnalysisResult + Findings)
+ *
+ * ## Extensibility
+ *
+ * The pipeline is composed of `AnalysisStage` implementations provided at
+ * construction time via `stages`. To introduce multi-stage analysis:
+ *
+ * ```ts
+ * new AnalysisOrchestratorService(
+ *   prisma, chunkRetrieval, config,
+ *   [contractStage, complianceStage],   // two stages, two AI calls
+ * )
+ * ```
+ *
+ * Each stage returns a `Partial<AiAnalysisResponse>` which is deep-merged
+ * into the accumulated result.  The orchestrator never needs to change.
+ *
+ * For the current single-stage implementation, `CombinedAnalysisStage` is
+ * injected automatically via NestJS DI.
+ */
+@Injectable()
+export class AnalysisOrchestratorService {
+  private readonly logger = new Logger(AnalysisOrchestratorService.name);
+  private readonly maxRetries: number;
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly chunkRetrieval: ChunkRetrievalService,
+    private readonly config: ConfigService,
+    /**
+     * Ordered list of analysis stages to execute.
+     * Inject `[CombinedAnalysisStage]` for the current single-call pipeline.
+     * Add more stages here when splitting into multi-stage workflows.
+     */
+    private readonly stages: AnalysisStage[],
+  ) {
     this.maxRetries = this.config.get<number>('ANALYSIS_MAX_RETRIES', 3);
   }
 
   /**
    * Run the full analysis pipeline for a given AnalysisRequest.
    *
-   * @param requestId  UUID of an existing AnalysisRequest (status: pending).
+   * @param requestId UUID of an existing AnalysisRequest (status: pending).
    */
-  async analyzeDocument(requestId: string): Promise<void> {
-    // ── 1. Load request + document ────────────────────────────────────────
+  async analyzeDocument(
+    requestId: string,
+    options: AnalysisOptions = DEFAULT_ANALYSIS_OPTIONS,
+  ): Promise<void> {
+    // ── 1. Load request + document ─────────────────────────────────────────
     const request = await this.prisma.analysisRequest.findUnique({
       where: { id: requestId },
       include: { document: true },
     });
 
     if (!request) {
-      throw new NotFoundException(
-        `AnalysisRequest ${requestId} not found`,
-      );
+      throw new NotFoundException(`AnalysisRequest ${requestId} not found`);
     }
 
     if (!request.document) {
@@ -83,7 +262,7 @@ export class AnalysisOrchestratorService {
       );
     }
 
-    // ── 2. Validate document readiness ────────────────────────────────────
+    // ── 2. Validate document readiness ─────────────────────────────────────
     if (request.document.status !== 'ready') {
       await this.markFailed(
         requestId,
@@ -95,7 +274,7 @@ export class AnalysisOrchestratorService {
       );
     }
 
-    // ── 3. Guard retries ──────────────────────────────────────────────────
+    // ── 3. Guard retries ───────────────────────────────────────────────────
     if (request.attemptCount >= this.maxRetries) {
       await this.markFailed(
         requestId,
@@ -106,7 +285,7 @@ export class AnalysisOrchestratorService {
       );
     }
 
-    // ── 4. Mark processing ────────────────────────────────────────────────
+    // ── 4. Mark processing ─────────────────────────────────────────────────
     await this.prisma.analysisRequest.update({
       where: { id: requestId },
       data: {
@@ -118,7 +297,7 @@ export class AnalysisOrchestratorService {
     });
 
     try {
-      // ── 5. Retrieve chunks ──────────────────────────────────────────────
+      // ── 5. Retrieve chunks ─────────────────────────────────────────────
       const chunks = await this.chunkRetrieval.getRelevantChunks(
         request.document.id,
         request.queryText,
@@ -131,171 +310,192 @@ export class AnalysisOrchestratorService {
         );
       }
 
-      // ── 6. Build prompt ─────────────────────────────────────────────────
-      const messages = this.promptBuilder.buildAnalysisPrompt(
-        request.queryText,
+      // ── 6. Run analysis stages ─────────────────────────────────────────
+      this.logger.log(
+        `Running ${this.stages.length} analysis stage(s) for request ${requestId} ` +
+          `(model stages: ${this.stages.map((s) => s.name).join(' → ')}, chunks=${chunks.length})`,
+      );
+
+      const parsed = await this.runStages({
+        requestId,
+        documentId: request.document.id,
+        queryText: request.queryText,
         chunks,
-      );
-
-      // ── 7. Call AI provider ─────────────────────────────────────────────
-      this.logger.log(
-        `Sending analysis request ${requestId} to AI (model=${this.model}, chunks=${chunks.length})`,
-      );
-
-      const aiResult = await this.aiProvider.complete({
-        model: this.model,
-        messages,
-        maxTokens: this.maxTokens,
-        temperature: 0.1,
-        responseFormat: { type: 'json_object' },
+        result: {},
+        options,
       });
 
-      // ── 8. Parse & validate response ────────────────────────────────────
-      const parsed = this.parseAiResponse(aiResult.content);
-
-      // ── 9. Persist everything in a single transaction ───────────────────
-      await this.prisma.$transaction(async (tx) => {
-        // 9a. Create AIResponse (raw)
-        const aiResponse = await tx.aIResponse.create({
-          data: {
-            requestId,
-            response: parsed as unknown as Prisma.InputJsonValue,
-            confidenceScore: parsed.confidence,
-            metadata: {
-              model: aiResult.model,
-              promptTokens: aiResult.promptTokens,
-              completionTokens: aiResult.completionTokens,
-              totalTokens: aiResult.totalTokens,
-              chunksUsed: chunks.length,
-            },
-            matchedChunks: chunks.map((c) => ({
-              chunkId: c.id,
-              chunkIndex: c.chunkIndex,
-              pageNumber: c.pageNumber,
-            })),
-          },
-        });
-
-        // 9b. Create AnalysisResult (normalized)
-        const analysisResult = await tx.analysisResult.create({
-          data: {
-            responseId: aiResponse.id,
-            summary: parsed.summary,
-            overallVerdict: this.mapVerdict(parsed.overallVerdict),
-            confidence: parsed.confidence,
-            riskLevel: this.mapRiskLevel(parsed.riskLevel),
-          },
-        });
-
-        // 9c. Create Finding records
-        if (parsed.findings.length > 0) {
-          await tx.finding.createMany({
-            data: parsed.findings.map((f: AiFinding) => ({
-              analysisId: analysisResult.id,
-              title: f.title,
-              description: f.description ?? null,
-              severity: this.mapSeverity(f.severity),
-              clauseReference: f.clauseReference ?? null,
-              pageNumber: f.pageNumber ?? null,
-              excerpt: f.excerpt ?? null,
-              recommendation: f.recommendation ?? null,
-              metadata: (f.metadata as Prisma.InputJsonValue) ?? undefined,
-            })),
-          });
-        }
-
-        // 9d. Mark request as completed
-        await tx.analysisRequest.update({
-          where: { id: requestId },
-          data: {
-            status: AnalysisRequestStatus.completed,
-            processingFinishedAt: new Date(),
-            errorMessage: null,
-          },
-        });
-
-        // 9e. Update the document's expiration date if the AI extracted one
-        if (parsed.expirationDate) {
-          const parsedDate = new Date(parsed.expirationDate);
-          if (!isNaN(parsedDate.getTime())) {
-            await tx.document.update({
-              where: { id: request.document!.id },
-              data: { expirationDate: parsedDate },
-            });
-            this.logger.log(
-              `Document ${request.document!.id} expiration date set to ${parsed.expirationDate}`,
-            );
-          } else {
-            this.logger.warn(
-              `AI returned an invalid expirationDate: "${parsed.expirationDate}" — skipping update`,
-            );
-          }
-        }
-      });
+      // ── 7. Persist everything in a single transaction ──────────────────
+      await this.persist(requestId, request.document.id, parsed, chunks, options);
 
       this.logger.log(
-        `Analysis ${requestId} completed: verdict=${parsed.overallVerdict}, ` +
-          `findings=${parsed.findings.length}, tokens=${aiResult.totalTokens}`,
+        `Analysis ${requestId} completed: ` +
+          `verdict=${parsed.compliance?.overallVerdict ?? 'skipped'}, ` +
+          `risk=${parsed.compliance?.riskLevel ?? 'skipped'}, ` +
+          `findings=${parsed.compliance?.findings?.length ?? 0}, ` +
+          `requirements=${parsed.compliance?.requirements?.length ?? 0}`,
       );
     } catch (err) {
-      // ── Error handling ──────────────────────────────────────────────────
       const message = (err as Error).message ?? 'Unknown error';
-
       this.logger.error(
         `Analysis ${requestId} failed: ${message}`,
         (err as Error).stack,
       );
-
       await this.markFailed(requestId, message);
-
       throw err;
     }
   }
 
-  // ── Helpers ────────────────────────────────────────────────────────────────
+  // ── Stage runner ───────────────────────────────────────────────────────────
 
   /**
-   * Parse the raw AI content string into our typed schema.
-   * Strips markdown fences if the model wraps the JSON despite instructions.
+   * Executes every registered stage in order, merging each stage's partial
+   * result into the accumulated context.
+   *
+   * A stage may read `ctx.result` to access output from earlier stages.
    */
-  private parseAiResponse(raw: string): AiAnalysisResponse {
-    let cleaned = raw.trim();
-
-    // Strip markdown JSON fences if present
-    if (cleaned.startsWith('```')) {
-      cleaned = cleaned
-        .replace(/^```(?:json)?\s*/i, '')
-        .replace(/\s*```\s*$/, '');
+  private async runStages(
+    ctx: AnalysisStageContext,
+  ): Promise<AiAnalysisResponse> {
+    for (const stage of this.stages) {
+      this.logger.log(`Executing stage: ${stage.name}`);
+      const partial = await stage.run(ctx);
+      ctx.result = this.mergePartial(ctx.result, partial);
     }
 
-    let parsed: AiAnalysisResponse;
-    try {
-      parsed = JSON.parse(cleaned);
-    } catch {
-      throw new AiResponseParseError('Invalid JSON from AI model', raw);
-    }
-
-    // Validate required fields
-    if (!parsed.summary || typeof parsed.summary !== 'string') {
-      throw new AiResponseParseError('Missing or invalid "summary"', raw);
-    }
-    if (!parsed.overallVerdict) {
-      throw new AiResponseParseError('Missing "overallVerdict"', raw);
-    }
-    if (typeof parsed.confidence !== 'number') {
-      throw new AiResponseParseError('Missing or invalid "confidence"', raw);
-    }
-    if (!parsed.riskLevel) {
-      throw new AiResponseParseError('Missing "riskLevel"', raw);
-    }
-    if (!Array.isArray(parsed.findings)) {
-      throw new AiResponseParseError('"findings" must be an array', raw);
-    }
-
-    return parsed;
+    // After all stages, the accumulated result must satisfy AiAnalysisResponse.
+    // The CombinedAnalysisStage always returns a full response, so this cast
+    // is safe. Multi-stage pipelines must ensure all fields are covered.
+    return ctx.result as AiAnalysisResponse;
   }
 
-  private async markFailed(requestId: string, errorMessage: string) {
+  /**
+   * Shallow-merges a partial result onto the accumulator.
+   * Top-level keys from `incoming` overwrite keys in `acc`.
+   */
+  private mergePartial(
+    acc: Partial<AiAnalysisResponse>,
+    incoming: Partial<AiAnalysisResponse>,
+  ): Partial<AiAnalysisResponse> {
+    return { ...acc, ...incoming };
+  }
+
+  // ── Persistence ────────────────────────────────────────────────────────────
+
+  private async persist(
+    requestId: string,
+    documentId: string,
+    parsed: AiAnalysisResponse,
+    chunks: Awaited<ReturnType<ChunkRetrievalService['getRelevantChunks']>>,
+    options: AnalysisOptions,
+  ): Promise<void> {
+    await this.prisma.$transaction(async (tx) => {
+      // 1. Store the raw AI response (both domains preserved as JSON)
+      const aiResponse = await tx.aIResponse.create({
+        data: {
+          requestId,
+          response: parsed as unknown as Prisma.InputJsonValue,
+          confidenceScore: parsed.compliance?.confidence ?? null,
+          metadata: {
+            stages: this.stages.map((s) => s.name),
+            chunksUsed: chunks.length,
+            options,
+          } as any,
+          matchedChunks: chunks.map((c) => ({
+            chunkId: c.id,
+            chunkIndex: c.chunkIndex,
+            pageNumber: c.pageNumber,
+          })),
+        },
+      });
+
+      // 2. Create the normalised AnalysisResult row
+      const analysisResult = await tx.analysisResult.create({
+        data: {
+          responseId: aiResponse.id,
+          summary: parsed.summary,
+          overallVerdict: parsed.compliance
+            ? this.mapVerdict(parsed.compliance.overallVerdict)
+            : AnalysisVerdict.unknown,
+          confidence: parsed.compliance?.confidence ?? null,
+          riskLevel: parsed.compliance
+            ? this.mapRiskLevel(parsed.compliance.riskLevel)
+            : RiskLevel.medium,
+        },
+      });
+
+      // 3. Persist finding rows
+      if (parsed.compliance && Array.isArray(parsed.compliance.findings) && parsed.compliance.findings.length > 0) {
+        await tx.finding.createMany({
+          data: parsed.compliance.findings.map((f: AiFinding) => ({
+            analysisId: analysisResult.id,
+            title: f.title,
+            description: f.description ?? null,
+            severity: this.mapSeverity(f.severity),
+            clauseReference: f.clauseReference ?? null,
+            pageNumber: f.pageNumber ?? null,
+            excerpt: f.excerpt ?? null,
+            recommendation: f.recommendation ?? null,
+            // affectedRequirement and category are not DB columns (per spec);
+            // they are stored in the parent AIResponse.response JSON blob.
+            metadata: {
+              ...(f.metadata ?? {}),
+              category: f.category ?? null,
+              affectedRequirement: f.affectedRequirement ?? null,
+            } as Prisma.InputJsonValue,
+          })),
+        });
+      }
+
+      // 4. Mark request as completed
+      await tx.analysisRequest.update({
+        where: { id: requestId },
+        data: {
+          status: AnalysisRequestStatus.completed,
+          processingFinishedAt: new Date(),
+          errorMessage: null,
+        },
+      });
+
+      // 5. Propagate expiration date to the Document record
+      await this.updateExpirationDate(
+        tx,
+        documentId,
+        parsed.contract.expirationDate,
+      );
+    });
+  }
+
+  private async updateExpirationDate(
+    tx: Parameters<Parameters<PrismaService['$transaction']>[0]>[0],
+    documentId: string,
+    expirationDate: string | null,
+  ): Promise<void> {
+    if (!expirationDate) return;
+
+    const parsedDate = new Date(expirationDate);
+    if (isNaN(parsedDate.getTime())) {
+      this.logger.warn(
+        `AI returned an invalid expirationDate: "${expirationDate}" — skipping update`,
+      );
+      return;
+    }
+
+    await tx.document.update({
+      where: { id: documentId },
+      data: { expirationDate: parsedDate },
+    });
+    this.logger.log(
+      `Document ${documentId} expiration date set to ${expirationDate}`,
+    );
+  }
+
+  // ── Status helpers ─────────────────────────────────────────────────────────
+
+  private async markFailed(
+    requestId: string,
+    errorMessage: string,
+  ): Promise<void> {
     await this.prisma.analysisRequest
       .update({
         where: { id: requestId },
@@ -305,15 +505,15 @@ export class AnalysisOrchestratorService {
           errorMessage: errorMessage.slice(0, 2000),
         },
       })
-      .catch((updateErr) =>
+      .catch((err) =>
         this.logger.error(
           `Failed to mark request ${requestId} as failed`,
-          updateErr,
+          err,
         ),
       );
   }
 
-  // ── Enum mappers (string → Prisma enum, with safe defaults) ────────────
+  // ── Enum mappers ───────────────────────────────────────────────────────────
 
   private mapVerdict(v: string): AnalysisVerdict {
     const map: Record<string, AnalysisVerdict> = {

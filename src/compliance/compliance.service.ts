@@ -10,6 +10,7 @@ import { CreateComplianceQueryDto } from './dto/create-compliance-query.dto';
 import { CreateAnalysisRequestDto } from './dto/create-analysis-request.dto';
 import { UsagePolicyService } from '../policy/usage-policy.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { AnalysisOptions } from '../ai/interfaces/analysis-options.interface';
 
 @Injectable()
 export class ComplianceService {
@@ -74,7 +75,7 @@ export class ComplianceService {
     await this.policyService.incrementAnalysis(dto.userId, guestIp);
 
     // ── Run the AI pipeline (synchronous in V1) ──────────────────────────
-    await this.orchestrator.analyzeDocument(request.id);
+    await this.orchestrator.analyzeDocument(request.id, dto.options);
 
     // ── Return the full result ───────────────────────────────────────────
     const result = await this.getAnalysisResult(request.id);

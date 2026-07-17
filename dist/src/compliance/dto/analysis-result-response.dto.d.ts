@@ -5,6 +5,8 @@ export declare class FindingResponseDto {
     description: string | null;
     severity: FindingSeverity;
     status: FindingStatus;
+    affectedRequirement: string | null;
+    category: string | null;
     clauseReference: string | null;
     pageNumber: number | null;
     excerpt: string | null;

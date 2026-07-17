@@ -7,6 +7,8 @@ class FindingResponseDto {
     description;
     severity;
     status;
+    affectedRequirement;
+    category;
     clauseReference;
     pageNumber;
     excerpt;

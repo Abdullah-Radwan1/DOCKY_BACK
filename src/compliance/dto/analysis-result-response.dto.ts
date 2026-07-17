@@ -14,6 +14,10 @@ export class FindingResponseDto {
   description: string | null;
   severity: FindingSeverity;
   status: FindingStatus;
+  /** Which compliance requirement this finding relates to (from metadata JSON). */
+  affectedRequirement: string | null;
+  /** Functional category of the finding (from metadata JSON). */
+  category: string | null;
   clauseReference: string | null;
   pageNumber: number | null;
   excerpt: string | null;

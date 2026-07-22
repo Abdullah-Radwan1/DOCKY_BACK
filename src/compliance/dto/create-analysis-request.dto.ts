@@ -21,8 +21,8 @@ export class CreateAnalysisRequestDto {
   guestId?: string;
 
   @IsString()
-  @IsNotEmpty()
-  queryText: string;
+  @IsOptional()
+  queryText?: string;
 
   /**
    * Which analysis sections to include.

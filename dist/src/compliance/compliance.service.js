@@ -52,7 +52,7 @@ let ComplianceService = class ComplianceService {
         }
         const request = await this.prisma.analysisRequest.create({
             data: {
-                queryText: dto.queryText,
+                queryText: dto.queryText ?? '',
                 userId: dto.userId || null,
                 guestId: dto.guestId || null,
                 documentId: dto.documentId,

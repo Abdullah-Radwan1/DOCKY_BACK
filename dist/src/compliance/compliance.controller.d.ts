@@ -10,257 +10,257 @@ export declare class ComplianceController {
             id: string;
         };
     }, ip: string): Promise<{
+        response: ({
+            AnalysisResult: ({
+                findings: {
+                    id: string;
+                    createdAt: Date;
+                    status: import("src/generated/prisma").FindingStatus;
+                    analysisId: string;
+                    title: string;
+                    description: string | null;
+                    severity: import("src/generated/prisma").FindingSeverity;
+                    clauseReference: string | null;
+                    pageNumber: number | null;
+                    excerpt: string | null;
+                    recommendation: string | null;
+                    metadata: import("@prisma/client/runtime/client").JsonValue | null;
+                    resolvedAt: Date | null;
+                }[];
+            } & {
+                id: string;
+                createdAt: Date;
+                riskLevel: import("src/generated/prisma").RiskLevel | null;
+                overallVerdict: import("src/generated/prisma").AnalysisVerdict | null;
+                summary: string | null;
+                confidence: number | null;
+                responseId: string;
+            }) | null;
+        } & {
+            id: string;
+            createdAt: Date;
+            confidenceScore: number | null;
+            metadata: import("@prisma/client/runtime/client").JsonValue | null;
+            requestId: string;
+            response: import("@prisma/client/runtime/client").JsonValue;
+            matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
+        }) | null;
         document: {
             id: string;
             createdAt: Date;
-            status: import("src/generated/prisma").DocumentStatus;
             updatedAt: Date;
-            guestToken: string | null;
-            isGuest: boolean;
             uploadedBy: string | null;
             originalFileName: string;
             mimeType: string | null;
             checksum: string | null;
             fileSize: number | null;
             pageCount: number | null;
-            totalChunks: number | null;
             language: string | null;
+            status: import("src/generated/prisma").DocumentStatus;
             expirationDate: Date | null;
+            guestToken: string | null;
+            isGuest: boolean;
+            totalChunks: number | null;
         } | null;
-        response: ({
-            AnalysisResult: ({
-                findings: {
-                    id: string;
-                    pageNumber: number | null;
-                    createdAt: Date;
-                    status: import("src/generated/prisma").FindingStatus;
-                    metadata: import("@prisma/client/runtime/client").JsonValue | null;
-                    title: string;
-                    analysisId: string;
-                    description: string | null;
-                    severity: import("src/generated/prisma").FindingSeverity;
-                    clauseReference: string | null;
-                    excerpt: string | null;
-                    recommendation: string | null;
-                    resolvedAt: Date | null;
-                }[];
-            } & {
-                id: string;
-                createdAt: Date;
-                summary: string | null;
-                overallVerdict: import("src/generated/prisma").AnalysisVerdict | null;
-                confidence: number | null;
-                riskLevel: import("src/generated/prisma").RiskLevel | null;
-                responseId: string;
-            }) | null;
-        } & {
-            id: string;
-            createdAt: Date;
-            response: import("@prisma/client/runtime/client").JsonValue;
-            confidenceScore: number | null;
-            metadata: import("@prisma/client/runtime/client").JsonValue | null;
-            matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
-            requestId: string;
-        }) | null;
     } & {
         id: string;
-        documentId: string | null;
         createdAt: Date;
-        queryText: string;
+        updatedAt: Date;
         status: import("src/generated/prisma").AnalysisRequestStatus;
+        documentId: string | null;
         userId: string | null;
-        guestId: string | null;
+        queryText: string;
         attemptCount: number;
         errorMessage: string | null;
         processingStartedAt: Date | null;
         processingFinishedAt: Date | null;
-        updatedAt: Date;
+        guestId: string | null;
     }>;
     getAnalysis(id: string): Promise<{
+        response: ({
+            AnalysisResult: ({
+                findings: {
+                    id: string;
+                    createdAt: Date;
+                    status: import("src/generated/prisma").FindingStatus;
+                    analysisId: string;
+                    title: string;
+                    description: string | null;
+                    severity: import("src/generated/prisma").FindingSeverity;
+                    clauseReference: string | null;
+                    pageNumber: number | null;
+                    excerpt: string | null;
+                    recommendation: string | null;
+                    metadata: import("@prisma/client/runtime/client").JsonValue | null;
+                    resolvedAt: Date | null;
+                }[];
+            } & {
+                id: string;
+                createdAt: Date;
+                riskLevel: import("src/generated/prisma").RiskLevel | null;
+                overallVerdict: import("src/generated/prisma").AnalysisVerdict | null;
+                summary: string | null;
+                confidence: number | null;
+                responseId: string;
+            }) | null;
+        } & {
+            id: string;
+            createdAt: Date;
+            confidenceScore: number | null;
+            metadata: import("@prisma/client/runtime/client").JsonValue | null;
+            requestId: string;
+            response: import("@prisma/client/runtime/client").JsonValue;
+            matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
+        }) | null;
         document: {
             id: string;
             createdAt: Date;
-            status: import("src/generated/prisma").DocumentStatus;
             updatedAt: Date;
-            guestToken: string | null;
-            isGuest: boolean;
             uploadedBy: string | null;
             originalFileName: string;
             mimeType: string | null;
             checksum: string | null;
             fileSize: number | null;
             pageCount: number | null;
-            totalChunks: number | null;
             language: string | null;
+            status: import("src/generated/prisma").DocumentStatus;
             expirationDate: Date | null;
+            guestToken: string | null;
+            isGuest: boolean;
+            totalChunks: number | null;
         } | null;
-        response: ({
-            AnalysisResult: ({
-                findings: {
-                    id: string;
-                    pageNumber: number | null;
-                    createdAt: Date;
-                    status: import("src/generated/prisma").FindingStatus;
-                    metadata: import("@prisma/client/runtime/client").JsonValue | null;
-                    title: string;
-                    analysisId: string;
-                    description: string | null;
-                    severity: import("src/generated/prisma").FindingSeverity;
-                    clauseReference: string | null;
-                    excerpt: string | null;
-                    recommendation: string | null;
-                    resolvedAt: Date | null;
-                }[];
-            } & {
-                id: string;
-                createdAt: Date;
-                summary: string | null;
-                overallVerdict: import("src/generated/prisma").AnalysisVerdict | null;
-                confidence: number | null;
-                riskLevel: import("src/generated/prisma").RiskLevel | null;
-                responseId: string;
-            }) | null;
-        } & {
-            id: string;
-            createdAt: Date;
-            response: import("@prisma/client/runtime/client").JsonValue;
-            confidenceScore: number | null;
-            metadata: import("@prisma/client/runtime/client").JsonValue | null;
-            matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
-            requestId: string;
-        }) | null;
     } & {
         id: string;
-        documentId: string | null;
         createdAt: Date;
-        queryText: string;
+        updatedAt: Date;
         status: import("src/generated/prisma").AnalysisRequestStatus;
+        documentId: string | null;
         userId: string | null;
-        guestId: string | null;
+        queryText: string;
         attemptCount: number;
         errorMessage: string | null;
         processingStartedAt: Date | null;
         processingFinishedAt: Date | null;
-        updatedAt: Date;
+        guestId: string | null;
     }>;
     createQuery(queryDto: CreateComplianceQueryDto): Promise<{
         id: string;
-        documentId: string | null;
         createdAt: Date;
-        queryText: string;
+        updatedAt: Date;
         status: import("src/generated/prisma").AnalysisRequestStatus;
+        documentId: string | null;
         userId: string | null;
-        guestId: string | null;
+        queryText: string;
         attemptCount: number;
         errorMessage: string | null;
         processingStartedAt: Date | null;
         processingFinishedAt: Date | null;
-        updatedAt: Date;
+        guestId: string | null;
     }>;
     getQuery(id: string): Promise<{
-        user: {
+        response: {
+            id: string;
+            createdAt: Date;
+            confidenceScore: number | null;
+            metadata: import("@prisma/client/runtime/client").JsonValue | null;
+            requestId: string;
+            response: import("@prisma/client/runtime/client").JsonValue;
+            matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
+        } | null;
+        document: {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            uploadedBy: string | null;
+            originalFileName: string;
+            mimeType: string | null;
+            checksum: string | null;
+            fileSize: number | null;
+            pageCount: number | null;
+            language: string | null;
+            status: import("src/generated/prisma").DocumentStatus;
+            expirationDate: Date | null;
+            guestToken: string | null;
+            isGuest: boolean;
+            totalChunks: number | null;
+        } | null;
+        user: {
             email: string;
+            id: string;
+            plan: import("src/generated/prisma").PlanType;
+            createdAt: Date;
+            updatedAt: Date;
             fullName: string | null;
             avatarUrl: string | null;
-            passwordHash: string | null;
             role: import("src/generated/prisma").UserRole;
-            plan: import("src/generated/prisma").PlanType;
+            passwordHash: string | null;
             allowEmailNotifications: boolean;
             allowExpiryReminders: boolean;
             allowRiskAlerts: boolean;
             allowAnalysisAlerts: boolean;
         } | null;
-        document: {
-            id: string;
-            createdAt: Date;
-            status: import("src/generated/prisma").DocumentStatus;
-            updatedAt: Date;
-            guestToken: string | null;
-            isGuest: boolean;
-            uploadedBy: string | null;
-            originalFileName: string;
-            mimeType: string | null;
-            checksum: string | null;
-            fileSize: number | null;
-            pageCount: number | null;
-            totalChunks: number | null;
-            language: string | null;
-            expirationDate: Date | null;
-        } | null;
-        response: {
-            id: string;
-            createdAt: Date;
-            response: import("@prisma/client/runtime/client").JsonValue;
-            confidenceScore: number | null;
-            metadata: import("@prisma/client/runtime/client").JsonValue | null;
-            matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
-            requestId: string;
-        } | null;
     } & {
         id: string;
-        documentId: string | null;
         createdAt: Date;
-        queryText: string;
+        updatedAt: Date;
         status: import("src/generated/prisma").AnalysisRequestStatus;
+        documentId: string | null;
         userId: string | null;
-        guestId: string | null;
+        queryText: string;
         attemptCount: number;
         errorMessage: string | null;
         processingStartedAt: Date | null;
         processingFinishedAt: Date | null;
-        updatedAt: Date;
+        guestId: string | null;
     }>;
     getByDocument(documentId: string): Promise<({
         response: ({
             AnalysisResult: ({
                 findings: {
                     id: string;
-                    pageNumber: number | null;
                     createdAt: Date;
                     status: import("src/generated/prisma").FindingStatus;
-                    metadata: import("@prisma/client/runtime/client").JsonValue | null;
-                    title: string;
                     analysisId: string;
+                    title: string;
                     description: string | null;
                     severity: import("src/generated/prisma").FindingSeverity;
                     clauseReference: string | null;
+                    pageNumber: number | null;
                     excerpt: string | null;
                     recommendation: string | null;
+                    metadata: import("@prisma/client/runtime/client").JsonValue | null;
                     resolvedAt: Date | null;
                 }[];
             } & {
                 id: string;
                 createdAt: Date;
-                summary: string | null;
-                overallVerdict: import("src/generated/prisma").AnalysisVerdict | null;
-                confidence: number | null;
                 riskLevel: import("src/generated/prisma").RiskLevel | null;
+                overallVerdict: import("src/generated/prisma").AnalysisVerdict | null;
+                summary: string | null;
+                confidence: number | null;
                 responseId: string;
             }) | null;
         } & {
             id: string;
             createdAt: Date;
-            response: import("@prisma/client/runtime/client").JsonValue;
             confidenceScore: number | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
-            matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
             requestId: string;
+            response: import("@prisma/client/runtime/client").JsonValue;
+            matchedChunks: import("@prisma/client/runtime/client").JsonValue | null;
         }) | null;
     } & {
         id: string;
-        documentId: string | null;
         createdAt: Date;
-        queryText: string;
+        updatedAt: Date;
         status: import("src/generated/prisma").AnalysisRequestStatus;
+        documentId: string | null;
         userId: string | null;
-        guestId: string | null;
+        queryText: string;
         attemptCount: number;
         errorMessage: string | null;
         processingStartedAt: Date | null;
         processingFinishedAt: Date | null;
-        updatedAt: Date;
+        guestId: string | null;
     })[]>;
 }

@@ -18,15 +18,15 @@ export declare class BillingController {
         };
     }): Promise<{
         subscription: {
-            plan: import("src/generated/prisma").PlanType;
             id: string;
+            plan: import("src/generated/prisma").PlanType;
             createdAt: Date;
             updatedAt: Date;
-            userId: string;
             status: string;
-            billingCycle: import("src/generated/prisma").BillingCycle;
-            paddleSubscriptionId: string;
+            userId: string;
             paddleCustomerId: string;
+            paddleSubscriptionId: string;
+            billingCycle: import("src/generated/prisma").BillingCycle;
             currentPeriodEnd: Date | null;
         } | null;
     }>;

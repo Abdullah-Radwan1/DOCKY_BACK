@@ -6,8 +6,8 @@ export declare class ActivityLogController {
     create(createDto: CreateActivityLogDto): Promise<{
         id: string;
         createdAt: Date;
-        userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
+        userId: string | null;
         action: string;
         entityType: string | null;
         entityId: string | null;
@@ -15,24 +15,24 @@ export declare class ActivityLogController {
     get(id: string): Promise<{
         user: {
             email: string;
+            id: string;
+            plan: import("src/generated/prisma").PlanType;
+            createdAt: Date;
+            updatedAt: Date;
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
+            passwordHash: string | null;
             allowEmailNotifications: boolean;
             allowExpiryReminders: boolean;
             allowRiskAlerts: boolean;
             allowAnalysisAlerts: boolean;
-            plan: import("src/generated/prisma").PlanType;
-            id: string;
-            passwordHash: string | null;
-            createdAt: Date;
-            updatedAt: Date;
         } | null;
     } & {
         id: string;
         createdAt: Date;
-        userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
+        userId: string | null;
         action: string;
         entityType: string | null;
         entityId: string | null;
@@ -40,8 +40,8 @@ export declare class ActivityLogController {
     getByUser(userId: string): Promise<{
         id: string;
         createdAt: Date;
-        userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
+        userId: string | null;
         action: string;
         entityType: string | null;
         entityId: string | null;
@@ -49,24 +49,24 @@ export declare class ActivityLogController {
     getByEntity(entityType: string, entityId: string): Promise<({
         user: {
             email: string;
+            id: string;
+            plan: import("src/generated/prisma").PlanType;
+            createdAt: Date;
+            updatedAt: Date;
             fullName: string | null;
             avatarUrl: string | null;
             role: import("src/generated/prisma").UserRole;
+            passwordHash: string | null;
             allowEmailNotifications: boolean;
             allowExpiryReminders: boolean;
             allowRiskAlerts: boolean;
             allowAnalysisAlerts: boolean;
-            plan: import("src/generated/prisma").PlanType;
-            id: string;
-            passwordHash: string | null;
-            createdAt: Date;
-            updatedAt: Date;
         } | null;
     } & {
         id: string;
         createdAt: Date;
-        userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
+        userId: string | null;
         action: string;
         entityType: string | null;
         entityId: string | null;

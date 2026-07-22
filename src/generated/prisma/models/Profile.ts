@@ -248,6 +248,7 @@ export type ProfileWhereInput = {
   allowAnalysisAlerts?: Prisma.BoolFilter<"Profile"> | boolean
   documents?: Prisma.DocumentListRelationFilter
   usageQuota?: Prisma.XOR<Prisma.UsageQuotaNullableScalarRelationFilter, Prisma.UsageQuotaWhereInput> | null
+  paddleSubscription?: Prisma.XOR<Prisma.PaddleSubscriptionNullableScalarRelationFilter, Prisma.PaddleSubscriptionWhereInput> | null
   analysisRequests?: Prisma.AnalysisRequestListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   activityLogs?: Prisma.ActivityLogListRelationFilter
@@ -270,6 +271,7 @@ export type ProfileOrderByWithRelationInput = {
   allowAnalysisAlerts?: Prisma.SortOrder
   documents?: Prisma.DocumentOrderByRelationAggregateInput
   usageQuota?: Prisma.UsageQuotaOrderByWithRelationInput
+  paddleSubscription?: Prisma.PaddleSubscriptionOrderByWithRelationInput
   analysisRequests?: Prisma.AnalysisRequestOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
   activityLogs?: Prisma.ActivityLogOrderByRelationAggregateInput
@@ -295,6 +297,7 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   allowAnalysisAlerts?: Prisma.BoolFilter<"Profile"> | boolean
   documents?: Prisma.DocumentListRelationFilter
   usageQuota?: Prisma.XOR<Prisma.UsageQuotaNullableScalarRelationFilter, Prisma.UsageQuotaWhereInput> | null
+  paddleSubscription?: Prisma.XOR<Prisma.PaddleSubscriptionNullableScalarRelationFilter, Prisma.PaddleSubscriptionWhereInput> | null
   analysisRequests?: Prisma.AnalysisRequestListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   activityLogs?: Prisma.ActivityLogListRelationFilter
@@ -355,6 +358,7 @@ export type ProfileCreateInput = {
   allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput
+  paddleSubscription?: Prisma.PaddleSubscriptionCreateNestedOneWithoutUserInput
   analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
@@ -377,6 +381,7 @@ export type ProfileUncheckedCreateInput = {
   allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedCreateNestedOneWithoutUserInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
@@ -399,6 +404,7 @@ export type ProfileUpdateInput = {
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUpdateOneWithoutUserNestedInput
   analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
@@ -421,6 +427,7 @@ export type ProfileUncheckedUpdateInput = {
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedUpdateOneWithoutUserNestedInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
@@ -637,6 +644,20 @@ export type ProfileUpdateOneRequiredWithoutNotificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutNotificationsInput, Prisma.ProfileUpdateWithoutNotificationsInput>, Prisma.ProfileUncheckedUpdateWithoutNotificationsInput>
 }
 
+export type ProfileCreateNestedOneWithoutPaddleSubscriptionInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutPaddleSubscriptionInput, Prisma.ProfileUncheckedCreateWithoutPaddleSubscriptionInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutPaddleSubscriptionInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutPaddleSubscriptionNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutPaddleSubscriptionInput, Prisma.ProfileUncheckedCreateWithoutPaddleSubscriptionInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutPaddleSubscriptionInput
+  upsert?: Prisma.ProfileUpsertWithoutPaddleSubscriptionInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutPaddleSubscriptionInput, Prisma.ProfileUpdateWithoutPaddleSubscriptionInput>, Prisma.ProfileUncheckedUpdateWithoutPaddleSubscriptionInput>
+}
+
 export type ProfileCreateWithoutUsageQuotaInput = {
   id?: string
   email: string
@@ -652,6 +673,7 @@ export type ProfileCreateWithoutUsageQuotaInput = {
   allowRiskAlerts?: boolean
   allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
+  paddleSubscription?: Prisma.PaddleSubscriptionCreateNestedOneWithoutUserInput
   analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
@@ -673,6 +695,7 @@ export type ProfileUncheckedCreateWithoutUsageQuotaInput = {
   allowRiskAlerts?: boolean
   allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedCreateNestedOneWithoutUserInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
@@ -710,6 +733,7 @@ export type ProfileUpdateWithoutUsageQuotaInput = {
   allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUpdateOneWithoutUserNestedInput
   analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
@@ -731,6 +755,7 @@ export type ProfileUncheckedUpdateWithoutUsageQuotaInput = {
   allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedUpdateOneWithoutUserNestedInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
@@ -752,6 +777,7 @@ export type ProfileCreateWithoutDocumentsInput = {
   allowRiskAlerts?: boolean
   allowAnalysisAlerts?: boolean
   usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput
+  paddleSubscription?: Prisma.PaddleSubscriptionCreateNestedOneWithoutUserInput
   analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
@@ -773,6 +799,7 @@ export type ProfileUncheckedCreateWithoutDocumentsInput = {
   allowRiskAlerts?: boolean
   allowAnalysisAlerts?: boolean
   usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedCreateNestedOneWithoutUserInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
@@ -810,6 +837,7 @@ export type ProfileUpdateWithoutDocumentsInput = {
   allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUpdateOneWithoutUserNestedInput
   analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
@@ -831,6 +859,7 @@ export type ProfileUncheckedUpdateWithoutDocumentsInput = {
   allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedUpdateOneWithoutUserNestedInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
@@ -853,6 +882,7 @@ export type ProfileCreateWithoutActivityLogsInput = {
   allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput
+  paddleSubscription?: Prisma.PaddleSubscriptionCreateNestedOneWithoutUserInput
   analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -874,6 +904,7 @@ export type ProfileUncheckedCreateWithoutActivityLogsInput = {
   allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedCreateNestedOneWithoutUserInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -911,6 +942,7 @@ export type ProfileUpdateWithoutActivityLogsInput = {
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUpdateOneWithoutUserNestedInput
   analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -932,6 +964,7 @@ export type ProfileUncheckedUpdateWithoutActivityLogsInput = {
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedUpdateOneWithoutUserNestedInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -953,6 +986,7 @@ export type ProfileCreateWithoutAnalysisRequestsInput = {
   allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput
+  paddleSubscription?: Prisma.PaddleSubscriptionCreateNestedOneWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -974,6 +1008,7 @@ export type ProfileUncheckedCreateWithoutAnalysisRequestsInput = {
   allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedCreateNestedOneWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -1011,6 +1046,7 @@ export type ProfileUpdateWithoutAnalysisRequestsInput = {
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUpdateOneWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -1032,6 +1068,7 @@ export type ProfileUncheckedUpdateWithoutAnalysisRequestsInput = {
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedUpdateOneWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -1053,6 +1090,7 @@ export type ProfileCreateWithoutPasswordResetTokensInput = {
   allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput
+  paddleSubscription?: Prisma.PaddleSubscriptionCreateNestedOneWithoutUserInput
   analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
@@ -1074,6 +1112,7 @@ export type ProfileUncheckedCreateWithoutPasswordResetTokensInput = {
   allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedCreateNestedOneWithoutUserInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
@@ -1111,6 +1150,7 @@ export type ProfileUpdateWithoutPasswordResetTokensInput = {
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUpdateOneWithoutUserNestedInput
   analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
@@ -1132,6 +1172,7 @@ export type ProfileUncheckedUpdateWithoutPasswordResetTokensInput = {
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedUpdateOneWithoutUserNestedInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
@@ -1153,6 +1194,7 @@ export type ProfileCreateWithoutNotificationsInput = {
   allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput
+  paddleSubscription?: Prisma.PaddleSubscriptionCreateNestedOneWithoutUserInput
   analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -1174,6 +1216,7 @@ export type ProfileUncheckedCreateWithoutNotificationsInput = {
   allowAnalysisAlerts?: boolean
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedCreateNestedOneWithoutUserInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -1211,6 +1254,7 @@ export type ProfileUpdateWithoutNotificationsInput = {
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUpdateOneWithoutUserNestedInput
   analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -1232,7 +1276,112 @@ export type ProfileUncheckedUpdateWithoutNotificationsInput = {
   allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput
+  paddleSubscription?: Prisma.PaddleSubscriptionUncheckedUpdateOneWithoutUserNestedInput
   analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type ProfileCreateWithoutPaddleSubscriptionInput = {
+  id?: string
+  email: string
+  fullName?: string | null
+  avatarUrl?: string | null
+  passwordHash?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  plan?: $Enums.PlanType
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
+  documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
+  usageQuota?: Prisma.UsageQuotaCreateNestedOneWithoutUserInput
+  analysisRequests?: Prisma.AnalysisRequestCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+}
+
+export type ProfileUncheckedCreateWithoutPaddleSubscriptionInput = {
+  id?: string
+  email: string
+  fullName?: string | null
+  avatarUrl?: string | null
+  passwordHash?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  plan?: $Enums.PlanType
+  allowEmailNotifications?: boolean
+  allowExpiryReminders?: boolean
+  allowRiskAlerts?: boolean
+  allowAnalysisAlerts?: boolean
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
+  usageQuota?: Prisma.UsageQuotaUncheckedCreateNestedOneWithoutUserInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type ProfileCreateOrConnectWithoutPaddleSubscriptionInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutPaddleSubscriptionInput, Prisma.ProfileUncheckedCreateWithoutPaddleSubscriptionInput>
+}
+
+export type ProfileUpsertWithoutPaddleSubscriptionInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutPaddleSubscriptionInput, Prisma.ProfileUncheckedUpdateWithoutPaddleSubscriptionInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutPaddleSubscriptionInput, Prisma.ProfileUncheckedCreateWithoutPaddleSubscriptionInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutPaddleSubscriptionInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutPaddleSubscriptionInput, Prisma.ProfileUncheckedUpdateWithoutPaddleSubscriptionInput>
+}
+
+export type ProfileUpdateWithoutPaddleSubscriptionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
+  usageQuota?: Prisma.UsageQuotaUpdateOneWithoutUserNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutPaddleSubscriptionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  plan?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
+  allowEmailNotifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowExpiryReminders?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowRiskAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowAnalysisAlerts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
+  usageQuota?: Prisma.UsageQuotaUncheckedUpdateOneWithoutUserNestedInput
+  analysisRequests?: Prisma.AnalysisRequestUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1320,6 +1469,7 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   allowAnalysisAlerts?: boolean
   documents?: boolean | Prisma.Profile$documentsArgs<ExtArgs>
   usageQuota?: boolean | Prisma.Profile$usageQuotaArgs<ExtArgs>
+  paddleSubscription?: boolean | Prisma.Profile$paddleSubscriptionArgs<ExtArgs>
   analysisRequests?: boolean | Prisma.Profile$analysisRequestsArgs<ExtArgs>
   notifications?: boolean | Prisma.Profile$notificationsArgs<ExtArgs>
   activityLogs?: boolean | Prisma.Profile$activityLogsArgs<ExtArgs>
@@ -1379,6 +1529,7 @@ export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   documents?: boolean | Prisma.Profile$documentsArgs<ExtArgs>
   usageQuota?: boolean | Prisma.Profile$usageQuotaArgs<ExtArgs>
+  paddleSubscription?: boolean | Prisma.Profile$paddleSubscriptionArgs<ExtArgs>
   analysisRequests?: boolean | Prisma.Profile$analysisRequestsArgs<ExtArgs>
   notifications?: boolean | Prisma.Profile$notificationsArgs<ExtArgs>
   activityLogs?: boolean | Prisma.Profile$activityLogsArgs<ExtArgs>
@@ -1393,6 +1544,7 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     documents: Prisma.$DocumentPayload<ExtArgs>[]
     usageQuota: Prisma.$UsageQuotaPayload<ExtArgs> | null
+    paddleSubscription: Prisma.$PaddleSubscriptionPayload<ExtArgs> | null
     analysisRequests: Prisma.$AnalysisRequestPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
     activityLogs: Prisma.$ActivityLogPayload<ExtArgs>[]
@@ -1808,6 +1960,7 @@ export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   documents<T extends Prisma.Profile$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   usageQuota<T extends Prisma.Profile$usageQuotaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$usageQuotaArgs<ExtArgs>>): Prisma.Prisma__UsageQuotaClient<runtime.Types.Result.GetResult<Prisma.$UsageQuotaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  paddleSubscription<T extends Prisma.Profile$paddleSubscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$paddleSubscriptionArgs<ExtArgs>>): Prisma.Prisma__PaddleSubscriptionClient<runtime.Types.Result.GetResult<Prisma.$PaddleSubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   analysisRequests<T extends Prisma.Profile$analysisRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$analysisRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnalysisRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.Profile$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   activityLogs<T extends Prisma.Profile$activityLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$activityLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2287,6 +2440,25 @@ export type Profile$usageQuotaArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   include?: Prisma.UsageQuotaInclude<ExtArgs> | null
   where?: Prisma.UsageQuotaWhereInput
+}
+
+/**
+ * Profile.paddleSubscription
+ */
+export type Profile$paddleSubscriptionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaddleSubscription
+   */
+  select?: Prisma.PaddleSubscriptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaddleSubscription
+   */
+  omit?: Prisma.PaddleSubscriptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaddleSubscriptionInclude<ExtArgs> | null
+  where?: Prisma.PaddleSubscriptionWhereInput
 }
 
 /**

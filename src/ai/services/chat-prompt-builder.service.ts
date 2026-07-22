@@ -23,37 +23,26 @@ import type { AiAnalysisResponse } from '../interfaces/ai-analysis-response.inte
  *   3. Prior chat history, threaded in natural order.
  *   4. The current user message.
  *
- * The resulting `AiChatMessage[]` array is ready to be passed directly to
- * any `AiProvider.complete()` call with `responseFormat` left unset
- * (plain-text response, not JSON).
+ * This is a lighter-weight version: the identity/behavior prose is condensed
+ * to reduce token load. The data-formatting helpers (contract/compliance
+ * context) are left as-is — they're already compact, structured text rather
+ * than verbose instructions, so shrinking them further would just drop
+ * information the model needs to answer questions accurately.
  */
 @Injectable()
 export class ChatPromptBuilderService {
-  /**
-   * Constructs the full messages array for a chat completion call.
-   *
-   * Message order:
-   *   [system]  → DUCKY AI role + behavior rules + document + analysis
-   *   [user]    → first history turn (if any)
-   *   [assistant] → first history reply (if any)
-   *   ...
-   *   [user]    → current question
-   */
   buildChatPrompt(ctx: ChatPromptContext): AiChatMessage[] {
     const messages: AiChatMessage[] = [];
 
-    // 1. System prompt — role, rules, and all context in one block
     messages.push({
       role: 'system',
       content: this.buildSystemPrompt(ctx),
     });
 
-    // 2. Inject prior conversation turns
     for (const turn of ctx.history) {
       messages.push(this.mapHistoryTurn(turn));
     }
 
-    // 3. Current user question — plain text only
     messages.push({
       role: 'user',
       content: ctx.userMessage,
@@ -64,16 +53,9 @@ export class ChatPromptBuilderService {
 
   // ── System prompt ─────────────────────────────────────────────────────────
 
-  /**
-   * Assembles the system prompt from four sections:
-   *   identity → behavior rules → document context → analysis context
-   *
-   * Keeping sections separate makes each one independently editable.
-   */
   private buildSystemPrompt(ctx: ChatPromptContext): string {
     const sections: string[] = [
       this.sectionIdentity(),
-      this.sectionBehavior(),
       this.sectionDocumentContext(ctx.documentChunks),
     ];
 
@@ -87,22 +69,9 @@ export class ChatPromptBuilderService {
   // ── System prompt sections ────────────────────────────────────────────────
 
   private sectionIdentity(): string {
-    return `You are DUCKY AI — an expert legal and compliance assistant.
+    return `You are DUCKY AI, a legal/compliance assistant. The document below was already analyzed — you're answering questions using the document text, the analysis results, and the conversation so far, not re-analyzing it.
 
-The document provided has already been analyzed. You are not performing a new compliance analysis. Your job is to answer the user's questions using the original document text, the structured analysis results, and the conversation history.`;
-  }
-
-  private sectionBehavior(): string {
-    return `BEHAVIOR RULES
-==============
-1.  Respond in natural language. Never return JSON. Never use markdown code blocks.
-2.  Answer exactly what the user asked. Do not volunteer unrequested information.
-3.  Be concise. If the user asks for a list, return a list. If they ask for a summary, summarize. If they ask about one clause, explain only that clause.
-4.  Never regenerate the entire compliance analysis unless the user explicitly asks for it.
-5.  Always cite supporting evidence when available — quote the relevant clause or paraphrase it and include the page number when known.
-6.  If the answer cannot be found in the document or the analysis, say so clearly. Never invent information.
-7.  If multiple clauses are relevant to the question, mention each one.
-8.  If appropriate, end your reply with a short, natural follow-up suggestion such as "Would you like me to explain this clause in more detail?" — but only when it genuinely adds value. Do not append a suggestion to every message.`;
+RULES: Plain text only, no JSON/markdown. Answer exactly what's asked, nothing extra — match the requested format (list/summary/single clause). Cite evidence when available (quote or paraphrase + page number). If multiple clauses apply, cover each. If the answer isn't in the document/analysis, say so — never invent. Only re-run the full analysis if explicitly asked. A brief relevant follow-up question is fine occasionally, not every message.`;
   }
 
   private sectionDocumentContext(
@@ -135,7 +104,7 @@ The document provided has already been analyzed. You are not performing a new co
     return parts.join('\n\n');
   }
 
-  // ── Analysis formatting helpers ───────────────────────────────────────────
+  // ── Analysis formatting helpers (unchanged — already compact data, not prose) ──
 
   private formatComplianceContext(analysis: AiAnalysisResponse): string {
     const c = analysis.compliance;
@@ -153,9 +122,11 @@ The document provided has already been analyzed. You are not performing a new co
         const statusLabel = this.requirementStatusLabel(req.status);
         lines.push(`  ${statusLabel} ${req.requirement}`);
         if (req.evidence) lines.push(`    Evidence: ${req.evidence}`);
-        if (req.clauseReference) lines.push(`    Clause: ${req.clauseReference}`);
+        if (req.clauseReference)
+          lines.push(`    Clause: ${req.clauseReference}`);
         if (req.pageNumber != null) lines.push(`    Page: ${req.pageNumber}`);
-        if (req.recommendation) lines.push(`    Recommendation: ${req.recommendation}`);
+        if (req.recommendation)
+          lines.push(`    Recommendation: ${req.recommendation}`);
       }
     }
 
@@ -167,7 +138,8 @@ The document provided has already been analyzed. You are not performing a new co
         if (f.excerpt) lines.push(`    Excerpt: "${f.excerpt}"`);
         if (f.clauseReference) lines.push(`    Clause: ${f.clauseReference}`);
         if (f.pageNumber != null) lines.push(`    Page: ${f.pageNumber}`);
-        if (f.recommendation) lines.push(`    Recommendation: ${f.recommendation}`);
+        if (f.recommendation)
+          lines.push(`    Recommendation: ${f.recommendation}`);
       }
     }
 
@@ -278,7 +250,6 @@ The document provided has already been analyzed. You are not performing a new co
   // ── Utilities ─────────────────────────────────────────────────────────────
 
   private mapHistoryTurn(turn: ChatHistoryMessage): AiChatMessage {
-    // ChatRole and AiChatMessage role are compatible subsets
     return { role: turn.role, content: turn.content };
   }
 

@@ -21,11 +21,19 @@ export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 export const PlanType = {
   free: 'free',
-  growth: 'growth',
-  enterprise: 'enterprise'
+  Professional: 'Professional',
+  Elite: 'Elite'
 } as const
 
 export type PlanType = (typeof PlanType)[keyof typeof PlanType]
+
+
+export const BillingCycle = {
+  monthly: 'monthly',
+  yearly: 'yearly'
+} as const
+
+export type BillingCycle = (typeof BillingCycle)[keyof typeof BillingCycle]
 
 
 export const DocumentStatus = {

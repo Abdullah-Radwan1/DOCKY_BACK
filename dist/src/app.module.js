@@ -23,6 +23,7 @@ const auth_module_1 = require("./auth/auth.module");
 const dashboard_module_1 = require("./dashboard/dashboard.module");
 const ai_module_1 = require("./ai/ai.module");
 const policy_module_1 = require("./policy/policy.module");
+const billing_module_1 = require("./billing/billing.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -42,6 +43,7 @@ exports.AppModule = AppModule = __decorate([
             dashboard_module_1.DashboardModule,
             ai_module_1.AiModule,
             policy_module_1.PolicyModule,
+            billing_module_1.BillingModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

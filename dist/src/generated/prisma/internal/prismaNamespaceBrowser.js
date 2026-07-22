@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.NotificationScalarFieldEnum = exports.PasswordResetTokenScalarFieldEnum = exports.AIResponseScalarFieldEnum = exports.AnalysisRequestScalarFieldEnum = exports.ActivityLogScalarFieldEnum = exports.FindingScalarFieldEnum = exports.AnalysisResultScalarFieldEnum = exports.DocumentChunkScalarFieldEnum = exports.DocumentScalarFieldEnum = exports.ProfileScalarFieldEnum = exports.UsageQuotaScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.PaddleSubscriptionScalarFieldEnum = exports.NotificationScalarFieldEnum = exports.PasswordResetTokenScalarFieldEnum = exports.AIResponseScalarFieldEnum = exports.AnalysisRequestScalarFieldEnum = exports.ActivityLogScalarFieldEnum = exports.FindingScalarFieldEnum = exports.AnalysisResultScalarFieldEnum = exports.DocumentChunkScalarFieldEnum = exports.DocumentScalarFieldEnum = exports.ProfileScalarFieldEnum = exports.UsageQuotaScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -55,7 +55,8 @@ exports.ModelName = {
     AnalysisRequest: 'AnalysisRequest',
     AIResponse: 'AIResponse',
     PasswordResetToken: 'PasswordResetToken',
-    Notification: 'Notification'
+    Notification: 'Notification',
+    PaddleSubscription: 'PaddleSubscription'
 };
 exports.TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -188,6 +189,18 @@ exports.NotificationScalarFieldEnum = {
     documentId: 'documentId',
     scheduledFor: 'scheduledFor',
     sentAt: 'sentAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.PaddleSubscriptionScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    paddleCustomerId: 'paddleCustomerId',
+    paddleSubscriptionId: 'paddleSubscriptionId',
+    plan: 'plan',
+    billingCycle: 'billingCycle',
+    status: 'status',
+    currentPeriodEnd: 'currentPeriodEnd',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };

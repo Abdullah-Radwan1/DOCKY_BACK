@@ -9,4 +9,5 @@ export type * from './models/AnalysisRequest.js';
 export type * from './models/AIResponse.js';
 export type * from './models/PasswordResetToken.js';
 export type * from './models/Notification.js';
+export type * from './models/PaddleSubscription.js';
 export type * from './commonInputTypes.js';

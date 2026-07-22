@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AiModule } from './ai/ai.module';
 import { PolicyModule } from './policy/policy.module';
+import { BillingModule } from './billing/billing.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { PolicyModule } from './policy/policy.module';
     DashboardModule,
     AiModule,
     PolicyModule,
+    BillingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AnalysisVerdict = exports.FindingStatus = exports.FindingSeverity = exports.DeliveryChannel = exports.NotificationType = exports.NotificationStatus = exports.AnalysisRequestStatus = exports.RiskLevel = exports.DocumentStatus = exports.PlanType = exports.UserRole = void 0;
+exports.AnalysisVerdict = exports.FindingStatus = exports.FindingSeverity = exports.DeliveryChannel = exports.NotificationType = exports.NotificationStatus = exports.AnalysisRequestStatus = exports.RiskLevel = exports.DocumentStatus = exports.BillingCycle = exports.PlanType = exports.UserRole = void 0;
 exports.UserRole = {
     admin: 'admin',
     compliance_manager: 'compliance_manager',
@@ -9,8 +9,12 @@ exports.UserRole = {
 };
 exports.PlanType = {
     free: 'free',
-    growth: 'growth',
-    enterprise: 'enterprise'
+    Professional: 'Professional',
+    Elite: 'Elite'
+};
+exports.BillingCycle = {
+    monthly: 'monthly',
+    yearly: 'yearly'
 };
 exports.DocumentStatus = {
     uploaded: 'uploaded',

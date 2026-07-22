@@ -394,7 +394,8 @@ export const ModelName = {
   AnalysisRequest: 'AnalysisRequest',
   AIResponse: 'AIResponse',
   PasswordResetToken: 'PasswordResetToken',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  PaddleSubscription: 'PaddleSubscription'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "usageQuota" | "profile" | "document" | "documentChunk" | "analysisResult" | "finding" | "activityLog" | "analysisRequest" | "aIResponse" | "passwordResetToken" | "notification"
+    modelProps: "usageQuota" | "profile" | "document" | "documentChunk" | "analysisResult" | "finding" | "activityLog" | "analysisRequest" | "aIResponse" | "passwordResetToken" | "notification" | "paddleSubscription"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1228,6 +1229,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PaddleSubscription: {
+      payload: Prisma.$PaddleSubscriptionPayload<ExtArgs>
+      fields: Prisma.PaddleSubscriptionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaddleSubscriptionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaddleSubscriptionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaddleSubscriptionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaddleSubscriptionPayload>
+        }
+        findFirst: {
+          args: Prisma.PaddleSubscriptionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaddleSubscriptionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaddleSubscriptionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaddleSubscriptionPayload>
+        }
+        findMany: {
+          args: Prisma.PaddleSubscriptionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaddleSubscriptionPayload>[]
+        }
+        create: {
+          args: Prisma.PaddleSubscriptionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaddleSubscriptionPayload>
+        }
+        createMany: {
+          args: Prisma.PaddleSubscriptionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PaddleSubscriptionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaddleSubscriptionPayload>[]
+        }
+        delete: {
+          args: Prisma.PaddleSubscriptionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaddleSubscriptionPayload>
+        }
+        update: {
+          args: Prisma.PaddleSubscriptionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaddleSubscriptionPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaddleSubscriptionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaddleSubscriptionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PaddleSubscriptionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaddleSubscriptionPayload>[]
+        }
+        upsert: {
+          args: Prisma.PaddleSubscriptionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaddleSubscriptionPayload>
+        }
+        aggregate: {
+          args: Prisma.PaddleSubscriptionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaddleSubscription>
+        }
+        groupBy: {
+          args: Prisma.PaddleSubscriptionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaddleSubscriptionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaddleSubscriptionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaddleSubscriptionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1437,6 +1512,22 @@ export const NotificationScalarFieldEnum = {
 } as const
 
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const PaddleSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  paddleCustomerId: 'paddleCustomerId',
+  paddleSubscriptionId: 'paddleSubscriptionId',
+  plan: 'plan',
+  billingCycle: 'billingCycle',
+  status: 'status',
+  currentPeriodEnd: 'currentPeriodEnd',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaddleSubscriptionScalarFieldEnum = (typeof PaddleSubscriptionScalarFieldEnum)[keyof typeof PaddleSubscriptionScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1723,6 +1814,20 @@ export type EnumDeliveryChannelFieldRefInput<$PrismaModel> = FieldRefInputType<$
 export type ListEnumDeliveryChannelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryChannel[]'>
     
 
+
+/**
+ * Reference to a field of type 'BillingCycle'
+ */
+export type EnumBillingCycleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingCycle'>
+    
+
+
+/**
+ * Reference to a field of type 'BillingCycle[]'
+ */
+export type ListEnumBillingCycleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingCycle[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -1844,6 +1949,7 @@ export type GlobalOmitConfig = {
   aIResponse?: Prisma.AIResponseOmit
   passwordResetToken?: Prisma.PasswordResetTokenOmit
   notification?: Prisma.NotificationOmit
+  paddleSubscription?: Prisma.PaddleSubscriptionOmit
 }
 
 /* Types for Logging */

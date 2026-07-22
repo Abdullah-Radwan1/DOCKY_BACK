@@ -4,7 +4,6 @@ export declare class ChatPromptBuilderService {
     buildChatPrompt(ctx: ChatPromptContext): AiChatMessage[];
     private buildSystemPrompt;
     private sectionIdentity;
-    private sectionBehavior;
     private sectionDocumentContext;
     private sectionAnalysisContext;
     private formatComplianceContext;

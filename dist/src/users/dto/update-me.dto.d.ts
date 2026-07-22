@@ -4,4 +4,6 @@ export declare class UpdateMeDto {
     allowExpiryReminders?: boolean;
     allowRiskAlerts?: boolean;
     allowAnalysisAlerts?: boolean;
+    usageQuota?: number;
+    plan?: string;
 }

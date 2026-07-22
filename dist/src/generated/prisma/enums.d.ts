@@ -7,10 +7,15 @@ export declare const UserRole: {
 export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 export declare const PlanType: {
     readonly free: "free";
-    readonly growth: "growth";
-    readonly enterprise: "enterprise";
+    readonly Professional: "Professional";
+    readonly Elite: "Elite";
 };
 export type PlanType = (typeof PlanType)[keyof typeof PlanType];
+export declare const BillingCycle: {
+    readonly monthly: "monthly";
+    readonly yearly: "yearly";
+};
+export type BillingCycle = (typeof BillingCycle)[keyof typeof BillingCycle];
 export declare const DocumentStatus: {
     readonly uploaded: "uploaded";
     readonly extracting: "extracting";

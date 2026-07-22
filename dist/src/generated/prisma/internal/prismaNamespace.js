@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defineExtension = exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.NotificationScalarFieldEnum = exports.PasswordResetTokenScalarFieldEnum = exports.AIResponseScalarFieldEnum = exports.AnalysisRequestScalarFieldEnum = exports.ActivityLogScalarFieldEnum = exports.FindingScalarFieldEnum = exports.AnalysisResultScalarFieldEnum = exports.DocumentChunkScalarFieldEnum = exports.DocumentScalarFieldEnum = exports.ProfileScalarFieldEnum = exports.UsageQuotaScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
+exports.defineExtension = exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.PaddleSubscriptionScalarFieldEnum = exports.NotificationScalarFieldEnum = exports.PasswordResetTokenScalarFieldEnum = exports.AIResponseScalarFieldEnum = exports.AnalysisRequestScalarFieldEnum = exports.ActivityLogScalarFieldEnum = exports.FindingScalarFieldEnum = exports.AnalysisResultScalarFieldEnum = exports.DocumentChunkScalarFieldEnum = exports.DocumentScalarFieldEnum = exports.ProfileScalarFieldEnum = exports.UsageQuotaScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/client"));
 exports.PrismaClientKnownRequestError = runtime.PrismaClientKnownRequestError;
 exports.PrismaClientUnknownRequestError = runtime.PrismaClientUnknownRequestError;
@@ -70,7 +70,8 @@ exports.ModelName = {
     AnalysisRequest: 'AnalysisRequest',
     AIResponse: 'AIResponse',
     PasswordResetToken: 'PasswordResetToken',
-    Notification: 'Notification'
+    Notification: 'Notification',
+    PaddleSubscription: 'PaddleSubscription'
 };
 exports.TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -203,6 +204,18 @@ exports.NotificationScalarFieldEnum = {
     documentId: 'documentId',
     scheduledFor: 'scheduledFor',
     sentAt: 'sentAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.PaddleSubscriptionScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    paddleCustomerId: 'paddleCustomerId',
+    paddleSubscriptionId: 'paddleSubscriptionId',
+    plan: 'plan',
+    billingCycle: 'billingCycle',
+    status: 'status',
+    currentPeriodEnd: 'currentPeriodEnd',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };

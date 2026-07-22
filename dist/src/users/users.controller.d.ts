@@ -18,10 +18,22 @@ export declare class UsersController {
         role: import("src/generated/prisma").UserRole;
         created_at: Date;
         updated_at: Date;
-        allow_email_notifications: boolean;
-        allow_expiry_reminders: boolean;
-        allow_risk_alerts: boolean;
-        allow_analysis_alerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
+        usage_quota: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string | null;
+            guestId: string | null;
+            uploadsUsed: number;
+            analysesUsed: number;
+        } | null;
+        notification_preferences: {
+            allow_email_notifications: boolean;
+            allow_expiry_reminders: boolean;
+            allow_risk_alerts: boolean;
+            allow_analysis_alerts: boolean;
+        };
     }>;
     updateMe(req: Request & {
         user: {
@@ -35,10 +47,22 @@ export declare class UsersController {
         role: import("src/generated/prisma").UserRole;
         created_at: Date;
         updated_at: Date;
-        allow_email_notifications: boolean;
-        allow_expiry_reminders: boolean;
-        allow_risk_alerts: boolean;
-        allow_analysis_alerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
+        usage_quota: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string | null;
+            guestId: string | null;
+            uploadsUsed: number;
+            analysesUsed: number;
+        } | null;
+        notification_preferences: {
+            allow_email_notifications: boolean;
+            allow_expiry_reminders: boolean;
+            allow_risk_alerts: boolean;
+            allow_analysis_alerts: boolean;
+        };
     }>;
     create(createDto: CreateProfileDto): Promise<{
         email: string;
@@ -49,13 +73,23 @@ export declare class UsersController {
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
         allowAnalysisAlerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
-        plan: import("src/generated/prisma").PlanType;
     }>;
     get(id: string): Promise<{
+        usageQuota: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string | null;
+            guestId: string | null;
+            uploadsUsed: number;
+            analysesUsed: number;
+        } | null;
+    } & {
         email: string;
         fullName: string | null;
         avatarUrl: string | null;
@@ -64,11 +98,11 @@ export declare class UsersController {
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
         allowAnalysisAlerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
-        plan: import("src/generated/prisma").PlanType;
     }>;
     update(id: string, updateDto: UpdateProfileDto): Promise<{
         email: string;
@@ -79,11 +113,11 @@ export declare class UsersController {
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
         allowAnalysisAlerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
-        plan: import("src/generated/prisma").PlanType;
     }>;
     delete(id: string): Promise<{
         email: string;
@@ -94,10 +128,10 @@ export declare class UsersController {
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
         allowAnalysisAlerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
-        plan: import("src/generated/prisma").PlanType;
     }>;
 }

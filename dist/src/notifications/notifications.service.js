@@ -49,6 +49,13 @@ let NotificationsService = NotificationsService_1 = class NotificationsService {
             },
         });
         if (channel !== 'in_app') {
+            if (channel === 'email' && data.userId) {
+                const allowed = await this.isEmailAllowedForUser(data.userId, data.type);
+                if (!allowed) {
+                    this.logger.log(`Skipping email dispatch to User [${data.userId}] — user has disabled this notification type (${data.type}).`);
+                    return notification;
+                }
+            }
             const dispatcher = this.dispatchers.get(channel);
             if (dispatcher) {
                 try {
@@ -69,6 +76,31 @@ let NotificationsService = NotificationsService_1 = class NotificationsService {
             }
         }
         return notification;
+    }
+    async isEmailAllowedForUser(userId, type) {
+        const profile = await this.prisma.profile.findUnique({
+            where: { id: userId },
+            select: {
+                allowEmailNotifications: true,
+                allowExpiryReminders: true,
+                allowRiskAlerts: true,
+                allowAnalysisAlerts: true,
+            },
+        });
+        if (!profile) {
+            this.logger.warn(`User [${userId}] not found — skipping email for safety.`);
+            return false;
+        }
+        if (!profile.allowEmailNotifications) {
+            return false;
+        }
+        if (type === 'expiration_warning') {
+            return profile.allowExpiryReminders ?? true;
+        }
+        if (type === 'compliance_alert') {
+            return (profile.allowRiskAlerts ?? true) || (profile.allowAnalysisAlerts ?? true);
+        }
+        return true;
     }
     async getUserNotificationsPaginated(userId, query) {
         const page = Math.max(1, query.page ?? 1);

@@ -94,3 +94,8 @@ export type PasswordResetToken = Prisma.PasswordResetTokenModel
  * 
  */
 export type Notification = Prisma.NotificationModel
+/**
+ * Model PaddleSubscription
+ * 
+ */
+export type PaddleSubscription = Prisma.PaddleSubscriptionModel

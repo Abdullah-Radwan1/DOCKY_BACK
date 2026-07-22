@@ -9,6 +9,7 @@ export interface ContractSectionOptions {
 export interface AnalysisOptions {
     contract: ContractSectionOptions;
     missingClauses: boolean;
+    specificMissingClauses?: string[];
     recommendations: boolean;
     compliance: boolean;
 }

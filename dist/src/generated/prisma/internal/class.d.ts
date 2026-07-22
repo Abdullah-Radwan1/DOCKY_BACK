@@ -63,5 +63,8 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get notification(): Prisma.NotificationDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get paddleSubscription(): Prisma.PaddleSubscriptionDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;

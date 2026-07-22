@@ -15,13 +15,13 @@ export const LIMITS = {
     UPLOADS: 3,
     ANALYSES: 3,
   },
-  GROWTH: {
-    UPLOADS: -1, // Unlimited
-    ANALYSES: -1,
+  PROFESSIONAL: {
+    UPLOADS: 10, // Unlimited
+    ANALYSES: 10,
   },
-  ENTERPRISE: {
-    UPLOADS: -1,
-    ANALYSES: -1,
+  ELITE: {
+    UPLOADS: 50,
+    ANALYSES: 50,
   },
 };
 
@@ -55,7 +55,9 @@ export class UsagePolicyService {
     });
     if (!profile) throw new NotFoundException('User not found');
 
-    const limit = LIMITS[profile.plan.toUpperCase() as keyof typeof LIMITS]?.UPLOADS ?? LIMITS.FREE.UPLOADS;
+    const limit =
+      LIMITS[profile.plan.toUpperCase() as keyof typeof LIMITS]?.UPLOADS ??
+      LIMITS.FREE.UPLOADS;
     if (limit === -1) return; // Unlimited plan
 
     const used = profile.usageQuota?.uploadsUsed ?? 0;
@@ -96,14 +98,18 @@ export class UsagePolicyService {
     }
   }
 
-  private async enforceAuthenticatedAnalysisLimit(userId: string): Promise<void> {
+  private async enforceAuthenticatedAnalysisLimit(
+    userId: string,
+  ): Promise<void> {
     const profile = await this.prisma.profile.findUnique({
       where: { id: userId },
       include: { usageQuota: true },
     });
     if (!profile) throw new NotFoundException('User not found');
 
-    const limit = LIMITS[profile.plan.toUpperCase() as keyof typeof LIMITS]?.ANALYSES ?? LIMITS.FREE.ANALYSES;
+    const limit =
+      LIMITS[profile.plan.toUpperCase() as keyof typeof LIMITS]?.ANALYSES ??
+      LIMITS.FREE.ANALYSES;
     if (limit === -1) return; // Unlimited plan
 
     const used = profile.usageQuota?.analysesUsed ?? 0;
@@ -121,9 +127,7 @@ export class UsagePolicyService {
     const used = quota?.analysesUsed ?? 0;
     if (used >= LIMITS.GUEST.ANALYSES) {
       // Return 404 so guests don't know they've hit a limit (per user preference)
-      throw new NotFoundException(
-        'Resource not found.',
-      );
+      throw new NotFoundException('Resource not found.');
     }
   }
 

@@ -22,6 +22,7 @@ export declare const ModelName: {
     readonly AIResponse: "AIResponse";
     readonly PasswordResetToken: "PasswordResetToken";
     readonly Notification: "Notification";
+    readonly PaddleSubscription: "PaddleSubscription";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -170,6 +171,19 @@ export declare const NotificationScalarFieldEnum: {
     readonly updatedAt: "updatedAt";
 };
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum];
+export declare const PaddleSubscriptionScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly paddleCustomerId: "paddleCustomerId";
+    readonly paddleSubscriptionId: "paddleSubscriptionId";
+    readonly plan: "plan";
+    readonly billingCycle: "billingCycle";
+    readonly status: "status";
+    readonly currentPeriodEnd: "currentPeriodEnd";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type PaddleSubscriptionScalarFieldEnum = (typeof PaddleSubscriptionScalarFieldEnum)[keyof typeof PaddleSubscriptionScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";

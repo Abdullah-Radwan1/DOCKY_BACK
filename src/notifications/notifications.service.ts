@@ -33,6 +33,7 @@ export class NotificationsService {
 
   /**
    * Creates a notification record and dispatches it via the selected delivery channel.
+   * For email notifications, checks user preferences before dispatching.
    */
   async createNotification(data: CreateNotificationDto) {
     const channel = data.deliveryChannel || 'in_app';
@@ -50,6 +51,17 @@ export class NotificationsService {
     });
 
     if (channel !== 'in_app') {
+      // For email channel, check user notification preferences before dispatching
+      if (channel === 'email' && data.userId) {
+        const allowed = await this.isEmailAllowedForUser(data.userId, data.type);
+        if (!allowed) {
+          this.logger.log(
+            `Skipping email dispatch to User [${data.userId}] — user has disabled this notification type (${data.type}).`,
+          );
+          return notification;
+        }
+      }
+
       const dispatcher = this.dispatchers.get(channel);
       if (dispatcher) {
         try {
@@ -78,6 +90,54 @@ export class NotificationsService {
 
     return notification;
   }
+
+  /**
+   * Checks whether email delivery is permitted for a user based on their
+   * notification preferences.
+   *
+   * Rules:
+   *  - `allowEmailNotifications` must be true (global email gate).
+   *  - Additionally, the notification-type-specific toggle must be true:
+   *      • `expiration_warning`  → `allowExpiryReminders`
+   *      • `compliance_alert`    → `allowRiskAlerts` OR `allowAnalysisAlerts`
+   *        (risk alerts for high-risk, analysis alerts for completed analysis)
+   *      • all other types       → allowed if the global gate is open.
+   */
+  private async isEmailAllowedForUser(userId: string, type?: string): Promise<boolean> {
+    const profile = await this.prisma.profile.findUnique({
+      where: { id: userId },
+      select: {
+        allowEmailNotifications: true,
+        allowExpiryReminders: true,
+        allowRiskAlerts: true,
+        allowAnalysisAlerts: true,
+      },
+    });
+
+    if (!profile) {
+      this.logger.warn(`User [${userId}] not found — skipping email for safety.`);
+      return false;
+    }
+
+    // Global email gate
+    if (!profile.allowEmailNotifications) {
+      return false;
+    }
+
+    // Type-specific gates
+    if (type === 'expiration_warning') {
+      return profile.allowExpiryReminders ?? true;
+    }
+
+    if (type === 'compliance_alert') {
+      // Allow if either risk-alerts or analysis-alerts is enabled
+      return (profile.allowRiskAlerts ?? true) || (profile.allowAnalysisAlerts ?? true);
+    }
+
+    // For any other notification type, the global gate is sufficient
+    return true;
+  }
+
 
   /**
    * Fetches all notifications for the authenticated user (paginated).

@@ -488,6 +488,21 @@ export type EnumDeliveryChannelWithAggregatesFilter<$PrismaModel = never> = {
     _min?: Prisma.NestedEnumDeliveryChannelFilter<$PrismaModel>;
     _max?: Prisma.NestedEnumDeliveryChannelFilter<$PrismaModel>;
 };
+export type EnumBillingCycleFilter<$PrismaModel = never> = {
+    equals?: $Enums.BillingCycle | Prisma.EnumBillingCycleFieldRefInput<$PrismaModel>;
+    in?: $Enums.BillingCycle[] | Prisma.ListEnumBillingCycleFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.BillingCycle[] | Prisma.ListEnumBillingCycleFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumBillingCycleFilter<$PrismaModel> | $Enums.BillingCycle;
+};
+export type EnumBillingCycleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BillingCycle | Prisma.EnumBillingCycleFieldRefInput<$PrismaModel>;
+    in?: $Enums.BillingCycle[] | Prisma.ListEnumBillingCycleFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.BillingCycle[] | Prisma.ListEnumBillingCycleFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumBillingCycleWithAggregatesFilter<$PrismaModel> | $Enums.BillingCycle;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumBillingCycleFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumBillingCycleFilter<$PrismaModel>;
+};
 export type NestedUuidFilter<$PrismaModel = never> = {
     equals?: string | Prisma.StringFieldRefInput<$PrismaModel>;
     in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>;
@@ -932,4 +947,19 @@ export type NestedEnumDeliveryChannelWithAggregatesFilter<$PrismaModel = never> 
     _count?: Prisma.NestedIntFilter<$PrismaModel>;
     _min?: Prisma.NestedEnumDeliveryChannelFilter<$PrismaModel>;
     _max?: Prisma.NestedEnumDeliveryChannelFilter<$PrismaModel>;
+};
+export type NestedEnumBillingCycleFilter<$PrismaModel = never> = {
+    equals?: $Enums.BillingCycle | Prisma.EnumBillingCycleFieldRefInput<$PrismaModel>;
+    in?: $Enums.BillingCycle[] | Prisma.ListEnumBillingCycleFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.BillingCycle[] | Prisma.ListEnumBillingCycleFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumBillingCycleFilter<$PrismaModel> | $Enums.BillingCycle;
+};
+export type NestedEnumBillingCycleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BillingCycle | Prisma.EnumBillingCycleFieldRefInput<$PrismaModel>;
+    in?: $Enums.BillingCycle[] | Prisma.ListEnumBillingCycleFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.BillingCycle[] | Prisma.ListEnumBillingCycleFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumBillingCycleWithAggregatesFilter<$PrismaModel> | $Enums.BillingCycle;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumBillingCycleFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumBillingCycleFilter<$PrismaModel>;
 };

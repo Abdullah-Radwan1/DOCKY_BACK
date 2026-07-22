@@ -28,6 +28,7 @@ export declare class NotificationsService {
         status: NotificationStatus;
         sentAt: Date | null;
     }>;
+    private isEmailAllowedForUser;
     getUserNotificationsPaginated(userId: string, query: PaginationQueryDto): Promise<{
         data: ({
             document: {

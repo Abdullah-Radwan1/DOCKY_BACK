@@ -35,6 +35,12 @@ export interface AnalysisOptions {
   /** Whether to identify missing or absent clauses. */
   missingClauses: boolean;
   /**
+   * Optional list of specific clause names the user wants to check.
+   * When provided, the AI focuses on these exact clauses instead of doing a
+   * generic missing-clauses scan.
+   */
+  specificMissingClauses?: string[];
+  /**
    * Whether to include remediation recommendations inside
    * `compliance.requirements[].recommendation` and
    * `compliance.findings[].recommendation`.

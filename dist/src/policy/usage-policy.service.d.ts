@@ -8,11 +8,11 @@ export declare const LIMITS: {
         UPLOADS: number;
         ANALYSES: number;
     };
-    GROWTH: {
+    PROFESSIONAL: {
         UPLOADS: number;
         ANALYSES: number;
     };
-    ENTERPRISE: {
+    ELITE: {
         UPLOADS: number;
         ANALYSES: number;
     };

@@ -13,3 +13,4 @@ export type AnalysisRequest = Prisma.AnalysisRequestModel;
 export type AIResponse = Prisma.AIResponseModel;
 export type PasswordResetToken = Prisma.PasswordResetTokenModel;
 export type Notification = Prisma.NotificationModel;
+export type PaddleSubscription = Prisma.PaddleSubscriptionModel;

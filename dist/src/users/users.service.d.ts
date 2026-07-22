@@ -5,6 +5,7 @@ import { UpdateMeDto } from './dto/update-me.dto';
 export declare class UsersService {
     private readonly prisma;
     constructor(prisma: PrismaService);
+    private getProfileResponse;
     createUser(data: CreateProfileDto): Promise<{
         email: string;
         fullName: string | null;
@@ -14,13 +15,23 @@ export declare class UsersService {
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
         allowAnalysisAlerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
-        plan: import("src/generated/prisma").PlanType;
     }>;
     getUserById(id: string): Promise<{
+        usageQuota: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string | null;
+            guestId: string | null;
+            uploadsUsed: number;
+            analysesUsed: number;
+        } | null;
+    } & {
         email: string;
         fullName: string | null;
         avatarUrl: string | null;
@@ -29,11 +40,11 @@ export declare class UsersService {
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
         allowAnalysisAlerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
-        plan: import("src/generated/prisma").PlanType;
     }>;
     updateUser(id: string, data: UpdateProfileDto): Promise<{
         email: string;
@@ -44,11 +55,11 @@ export declare class UsersService {
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
         allowAnalysisAlerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
-        plan: import("src/generated/prisma").PlanType;
     }>;
     deleteUser(id: string): Promise<{
         email: string;
@@ -59,11 +70,11 @@ export declare class UsersService {
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
         allowAnalysisAlerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
         id: string;
         passwordHash: string | null;
         createdAt: Date;
         updatedAt: Date;
-        plan: import("src/generated/prisma").PlanType;
     }>;
     getMe(userId: string): Promise<{
         id: string;
@@ -73,10 +84,22 @@ export declare class UsersService {
         role: import("src/generated/prisma").UserRole;
         created_at: Date;
         updated_at: Date;
-        allow_email_notifications: boolean;
-        allow_expiry_reminders: boolean;
-        allow_risk_alerts: boolean;
-        allow_analysis_alerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
+        usage_quota: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string | null;
+            guestId: string | null;
+            uploadsUsed: number;
+            analysesUsed: number;
+        } | null;
+        notification_preferences: {
+            allow_email_notifications: boolean;
+            allow_expiry_reminders: boolean;
+            allow_risk_alerts: boolean;
+            allow_analysis_alerts: boolean;
+        };
     }>;
     updateMe(userId: string, dto: UpdateMeDto): Promise<{
         id: string;
@@ -86,9 +109,21 @@ export declare class UsersService {
         role: import("src/generated/prisma").UserRole;
         created_at: Date;
         updated_at: Date;
-        allow_email_notifications: boolean;
-        allow_expiry_reminders: boolean;
-        allow_risk_alerts: boolean;
-        allow_analysis_alerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
+        usage_quota: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string | null;
+            guestId: string | null;
+            uploadsUsed: number;
+            analysesUsed: number;
+        } | null;
+        notification_preferences: {
+            allow_email_notifications: boolean;
+            allow_expiry_reminders: boolean;
+            allow_risk_alerts: boolean;
+            allow_analysis_alerts: boolean;
+        };
     }>;
 }

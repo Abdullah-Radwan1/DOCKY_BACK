@@ -22,11 +22,11 @@ export declare class ActivityLogService {
             allowExpiryReminders: boolean;
             allowRiskAlerts: boolean;
             allowAnalysisAlerts: boolean;
+            plan: import("src/generated/prisma").PlanType;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
-            plan: import("src/generated/prisma").PlanType;
         } | null;
     } & {
         id: string;
@@ -56,11 +56,11 @@ export declare class ActivityLogService {
             allowExpiryReminders: boolean;
             allowRiskAlerts: boolean;
             allowAnalysisAlerts: boolean;
+            plan: import("src/generated/prisma").PlanType;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
-            plan: import("src/generated/prisma").PlanType;
         } | null;
     } & {
         id: string;

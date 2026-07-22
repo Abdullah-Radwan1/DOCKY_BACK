@@ -7,15 +7,12 @@ export declare class PromptBuilderService {
         chunkIndex: number;
     }>, options?: AnalysisOptions): AiChatMessage[];
     private buildSystemPrompt;
-    private systemRole;
     private systemObjective;
     private systemRules;
-    private systemSchema;
     private buildContractSchema;
     private buildComplianceSchema;
     private buildUserPrompt;
     private userRequestSection;
     private userAnalysisSection;
     private userDocumentContext;
-    private userClosingInstruction;
 }

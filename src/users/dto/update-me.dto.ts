@@ -4,6 +4,8 @@ import {
   MaxLength,
   IsOptional,
   IsBoolean,
+  IsNumber,
+  IsIn,
 } from 'class-validator';
 
 export class UpdateMeDto {
@@ -28,4 +30,13 @@ export class UpdateMeDto {
   @IsBoolean()
   @IsOptional()
   allowAnalysisAlerts?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  usageQuota?: number;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['Free', 'Professional', 'Elite'])
+  plan?: string;
 }

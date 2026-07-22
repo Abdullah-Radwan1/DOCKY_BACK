@@ -8,6 +8,41 @@ import { UpdateMeDto } from './dto/update-me.dto';
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
+  private async getProfileResponse(userId: string) {
+    const profile = await this.prisma.profile.findUnique({
+      where: { id: userId },
+      include: {
+        usageQuota: true,
+      },
+    });
+
+    if (!profile) {
+      throw new NotFoundException('User profile not found');
+    }
+
+    return {
+      id: profile.id,
+      email: profile.email,
+      full_name: profile.fullName,
+      avatar_url: profile.avatarUrl,
+      role: profile.role,
+
+      created_at: profile.createdAt,
+      updated_at: profile.updatedAt,
+
+      plan: profile.plan,
+
+      usage_quota: profile.usageQuota,
+
+      notification_preferences: {
+        allow_email_notifications: profile.allowEmailNotifications,
+        allow_expiry_reminders: profile.allowExpiryReminders,
+        allow_risk_alerts: profile.allowRiskAlerts,
+        allow_analysis_alerts: profile.allowAnalysisAlerts,
+      },
+    };
+  }
+
   async createUser(data: CreateProfileDto) {
     return this.prisma.profile.create({
       data: {
@@ -22,10 +57,15 @@ export class UsersService {
   async getUserById(id: string) {
     const profile = await this.prisma.profile.findUnique({
       where: { id },
+      include: {
+        usageQuota: true,
+      },
     });
+
     if (!profile) {
       throw new NotFoundException(`User profile with ID ${id} not found`);
     }
+
     return profile;
   }
 
@@ -54,39 +94,17 @@ export class UsersService {
     }
   }
 
-  /**
-   * Returns the sanitized profile for the logged-in user.
-   */
   async getMe(userId: string) {
-    const profile = await this.prisma.profile.findUnique({
-      where: { id: userId },
-    });
-    if (!profile) {
-      throw new NotFoundException('User profile not found');
-    }
-    return {
-      id: profile.id,
-      email: profile.email,
-      full_name: profile.fullName,
-      avatar_url: profile.avatarUrl,
-      role: profile.role,
-      created_at: profile.createdAt,
-      updated_at: profile.updatedAt,
-      allow_email_notifications: profile.allowEmailNotifications,
-      allow_expiry_reminders: profile.allowExpiryReminders,
-      allow_risk_alerts: profile.allowRiskAlerts,
-      allow_analysis_alerts: profile.allowAnalysisAlerts,
-    };
+    return this.getProfileResponse(userId);
   }
 
-  /**
-   * Updates only the allowed self-service fields (currently: fullName).
-   */
   async updateMe(userId: string, dto: UpdateMeDto) {
-    const updated = await this.prisma.profile.update({
+    await this.prisma.profile.update({
       where: { id: userId },
       data: {
-        ...(dto.fullName !== undefined && { fullName: dto.fullName }),
+        ...(dto.fullName !== undefined && {
+          fullName: dto.fullName,
+        }),
         ...(dto.allowEmailNotifications !== undefined && {
           allowEmailNotifications: dto.allowEmailNotifications,
         }),
@@ -99,20 +117,12 @@ export class UsersService {
         ...(dto.allowAnalysisAlerts !== undefined && {
           allowAnalysisAlerts: dto.allowAnalysisAlerts,
         }),
+        ...(dto.plan !== undefined && {
+          plan: dto.plan as any,
+        }),
       },
     });
-    return {
-      id: updated.id,
-      email: updated.email,
-      full_name: updated.fullName,
-      avatar_url: updated.avatarUrl,
-      role: updated.role,
-      created_at: updated.createdAt,
-      updated_at: updated.updatedAt,
-      allow_email_notifications: updated.allowEmailNotifications,
-      allow_expiry_reminders: updated.allowExpiryReminders,
-      allow_risk_alerts: updated.allowRiskAlerts,
-      allow_analysis_alerts: updated.allowAnalysisAlerts,
-    };
+
+    return this.getProfileResponse(userId);
   }
 }

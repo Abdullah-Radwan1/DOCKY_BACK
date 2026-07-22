@@ -13,352 +13,164 @@ let PromptBuilderService = class PromptBuilderService {
     buildAnalysisPrompt(userQuery, chunks, options = analysis_options_interface_1.DEFAULT_ANALYSIS_OPTIONS) {
         return [
             { role: 'system', content: this.buildSystemPrompt(options) },
-            { role: 'user', content: this.buildUserPrompt(userQuery, chunks, options) },
+            {
+                role: 'user',
+                content: this.buildUserPrompt(userQuery, chunks, options),
+            },
         ];
     }
     buildSystemPrompt(options) {
         return [
-            this.systemRole(),
+            `You are a legal/compliance analyst reviewing a contract.`,
             this.systemObjective(options),
             this.systemRules(options),
-            this.systemSchema(options),
+            `SCHEMA — return EXACTLY these 4 top-level keys, no markdown, no extra text:\n{\n  "answer": "<see above>",\n  "summary": "<2-5 sentence executive summary, independent of user request>",\n  "contract": ${this.buildContractSchema(options)},\n  "compliance": ${this.buildComplianceSchema(options)}\n}`,
         ].join('\n\n');
-    }
-    systemRole() {
-        return `You are an expert legal compliance analyst specialising in contract review and regulatory compliance assessment.`;
     }
     systemObjective(options) {
         const complianceGoal = options.compliance
-            ? `evaluate general legal/compliance risk using standard contract-review criteria (missing clauses, unfavorable terms, ambiguous obligations, regulatory red flags, etc).`
-            : `[Skipped: Compliance evaluation has been disabled for this run]`;
-        return `YOUR TWO OBJECTIVES (they are independent — do not let one influence the other)
-==============================================================================
-
-OBJECTIVE 1 — Answer the user directly (populates the "answer" field only)
-If the user has asked a specific question or request, that request is the
-single most important thing you produce. Answer it directly and completely,
-and treat any formatting constraint they gave (a word limit, "in one
-sentence", "yes or no", "as a bullet list", a number of items, etc.) as a
-hard requirement, not a suggestion. Do not pad the answer with unrelated
-analysis, disclaimers, or a restatement of the whole contract. If no
-question was asked, the "answer" field instead holds a brief 1–2 sentence
-orientation to the document (what it is, between whom).
-
-OBJECTIVE 2 — Produce the complete standalone analysis (populates "summary",
-"contract", and "compliance")
-Regardless of what the user asked, or whether they asked anything at all,
-you always perform the requested contract extraction and compliance review
-of the document based on the active options. This analysis must be identical
-in depth and coverage whether or not a question was asked — it feeds a
-dedicated analysis page and must never be trimmed, filtered, or reframed
-around the user's question. Extract the requested fields (parties, dates,
-obligations, payment terms, penalties, etc.), and ${complianceGoal}`;
+            ? ` and evaluate compliance risk (missing clauses, unfavorable terms, ambiguous obligations, red flags).`
+            : `.`;
+        return `TWO OBJECTIVES (independent — don't let one affect the other):
+1) "answer": if the user asked something, answer it directly, honoring any format constraint (word limit, one sentence, list, yes/no). No padding. If no question, put a 1-2 sentence document orientation here instead.
+2) "summary"/"contract"/"compliance": always do the full requested extraction${complianceGoal} Never filtered or shaped by the user's question.`;
     }
     systemRules(options) {
         const rules = [
-            `1.  Return ONLY valid JSON. Never wrap the response in markdown. Never include any text outside the JSON.`,
-            `2.  Always return every top-level field defined in the schema, even if its value is an empty array, empty string, or null.`,
-            `3.  The "answer" field must satisfy the user's request exactly as asked, including any explicit formatting constraint (word/character limit, sentence count, list vs prose, yes/no, etc). Violating a stated constraint is a failure.`,
-            `4.  The "answer" field must never be padded with content the user didn't ask for. If they asked for penalties only, answer with penalties only.`,
-            `5.  The contents of "summary", "contract", and "compliance" must NEVER be filtered, narrowed, or biased by the user's request — they are always the full, general analysis, computed independently of "answer".`,
+            `Return ONLY valid JSON, no markdown wrapping.`,
+            `Always include every schema field, using null/empty as appropriate.`,
+            `"answer" must satisfy the user's request and format constraint exactly; never pad it.`,
+            `"summary"/"contract"/"compliance" are always the full general analysis, never narrowed by the user's request.`,
         ];
-        let ruleNum = 6;
         if (options.compliance) {
-            rules.push(`${ruleNum++}.  Every compliance decision MUST be backed by evidence from the document text. Quote or paraphrase the relevant clause.`, `${ruleNum++}.  Never invent facts anywhere in the response. If you cannot find evidence for something, use "unknown" / null and explain why where a reason field exists.`, `${ruleNum++}.  confidence values must be between 0 and 1 (inclusive). Lower confidence when evidence is ambiguous or conflicting.`, `${ruleNum++}.  If conflicting clauses are detected (e.g. two sections that contradict each other), report the conflict in a finding and reduce the confidence score for the affected requirement.`, `${ruleNum++}.  findings MUST contain at least one item. If no material risk exists, include an informational finding summarising the document.`);
+            rules.push(`Back every compliance decision with evidence (quote/paraphrase). Never invent facts — use "unknown"/null with a reason if evidence is missing.`, `confidence: 0-1. Lower it when evidence is ambiguous/conflicting; note contradictions as findings.`, `findings must have ≥1 item (use an informational one if nothing else applies).`);
         }
-        rules.push(`${ruleNum++}.  expirationDate must be an ISO 8601 date string (YYYY-MM-DD). Look for "expires", "expiration", "term ends", "valid through", "end date". Return null if not found.`, `${ruleNum++}.  Include clauseReference and pageNumber wherever available.`);
+        rules.push(`expirationDate: ISO 8601 (YYYY-MM-DD) or null. Look for "expires/expiration/term ends/valid through/end date".`, `Include clauseReference/pageNumber where available.`);
         if (options.compliance) {
-            rules.push(`${ruleNum++}.  The compliance.summary counts (passed / failed / partial / unknown) must match the actual status values in compliance.requirements.`);
+            rules.push(`compliance.summary counts must match the actual requirement statuses.`);
         }
-        const disabledContractSections = [];
+        const disabled = [];
         if (!options.contract.parties)
-            disabledContractSections.push('parties');
+            disabled.push('parties');
         if (!options.contract.obligations)
-            disabledContractSections.push('obligations');
+            disabled.push('obligations');
         if (!options.contract.paymentTerms)
-            disabledContractSections.push('paymentTerms');
+            disabled.push('paymentTerms');
         if (!options.contract.penalties)
-            disabledContractSections.push('penalties');
-        if (!options.contract.renewalTerms) {
-            disabledContractSections.push('renewalTerms');
-            disabledContractSections.push('terminationTerms');
-        }
+            disabled.push('penalties');
+        if (!options.contract.renewalTerms)
+            disabled.push('renewalTerms', 'terminationTerms');
         if (!options.contract.importantDates)
-            disabledContractSections.push('importantDates');
+            disabled.push('importantDates');
         if (!options.missingClauses)
-            disabledContractSections.push('missingClauses');
-        if (disabledContractSections.length > 0) {
-            rules.push(`${ruleNum++}.  For the following contract keys that were NOT requested, you MUST return null (do NOT return empty arrays or objects): ${disabledContractSections.join(', ')}.`);
+            disabled.push('missingClauses');
+        if (disabled.length > 0) {
+            rules.push(`These contract keys were NOT requested — return null (not empty array/object): ${disabled.join(', ')}.`);
         }
         if (!options.compliance) {
-            rules.push(`${ruleNum++}.  Since compliance was NOT requested, the "compliance" field MUST be set to null.`);
+            rules.push(`compliance was NOT requested — set "compliance" to null.`);
         }
         if (!options.recommendations && options.compliance) {
-            rules.push(`${ruleNum++}.  Since recommendations were NOT requested, all "recommendation" sub-fields inside requirements and findings MUST be set to null.`);
+            rules.push(`recommendations were NOT requested — set all "recommendation" fields to null.`);
         }
-        return `RULES (follow all of them without exception)
-=============================================
-${rules.join('\n')}`;
-    }
-    systemSchema(options) {
-        return `REQUIRED JSON SCHEMA
-====================
-Return an object with EXACTLY these four top-level keys:
-
-{
-  "answer": "<direct response to the user's request, respecting any formatting constraint they gave; or a brief 1-2 sentence document orientation if no request was made>",
-  "summary": "<2–5 sentence executive summary of the full document analysis, independent of the user's request>",
-  "contract": ${this.buildContractSchema(options)},
-  "compliance": ${this.buildComplianceSchema(options)}
-}`;
+        if (options.missingClauses &&
+            Array.isArray(options.specificMissingClauses) &&
+            options.specificMissingClauses.length > 0) {
+            rules.push(`Targeted missing-clause scan — ONLY check for: ${options.specificMissingClauses.map((c) => `"${c}"`).join(', ')}. Report no others.`);
+        }
+        return `RULES:\n${rules.map((r, i) => `${i + 1}. ${r}`).join('\n')}`;
     }
     buildContractSchema(options) {
         const parties = options.contract.parties
-            ? `[
-    {
-      "name": "<legal entity name>",
-      "role": "<buyer | seller | supplier | customer | employee | employer | landlord | tenant | contractor | client | other>",
-      "type": "<corporation | llc | individual | government | nonprofit | unknown>",
-      "address": "<address or null>",
-      "signatory": "<signing person or null>",
-      "title": "<job title or null>"
-    }
-  ]`
+            ? `[{"name":"","role":"<buyer|seller|supplier|customer|employee|employer|landlord|tenant|contractor|client|other>","type":"<corporation|llc|individual|government|nonprofit|unknown>","address":null,"signatory":null,"title":null}]`
             : `null`;
         const obligations = options.contract.obligations
-            ? `[
-    {
-      "party": "<party name>",
-      "obligation": "<required action>",
-      "deadline": "<date or null>",
-      "frequency": "<one-time | monthly | annually | recurring | null>",
-      "clauseReference": "<section or null>",
-      "pageNumber": <number or null>
-    }
-  ]`
+            ? `[{"party":"","obligation":"","deadline":null,"frequency":"<one-time|monthly|annually|recurring|null>","clauseReference":null,"pageNumber":null}]`
             : `null`;
         const paymentTerms = options.contract.paymentTerms
-            ? `[
-    {
-      "description": "<payment obligation description>",
-      "amount": "<amount or null>",
-      "currency": "<currency or null>",
-      "frequency": "<monthly | quarterly | yearly | one-time | recurring | null>",
-      "dueDate": "<date or null>",
-      "latePenalty": "<description or null>",
-      "clauseReference": "<section or null>",
-      "pageNumber": <number or null>
-    }
-  ]`
+            ? `[{"description":"","amount":null,"currency":null,"frequency":"<monthly|quarterly|yearly|one-time|recurring|null>","dueDate":null,"latePenalty":null,"clauseReference":null,"pageNumber":null}]`
             : `null`;
         const penalties = options.contract.penalties
-            ? `[
-    {
-      "type": "<late payment | breach | termination | service level | indemnity | other>",
-      "penalty": "<penalty description>",
-      "trigger": "<what causes this penalty>",
-      "clauseReference": "<section or null>",
-      "pageNumber": <number or null>
-    }
-  ]`
+            ? `[{"type":"<late payment|breach|termination|service level|indemnity|other>","penalty":"","trigger":"","clauseReference":null,"pageNumber":null}]`
             : `null`;
         const renewalTerms = options.contract.renewalTerms
-            ? `[
-    {
-      "type": "<automatic | optional | evergreen | fixed-term renewal | other>",
-      "period": "<renewal period or null>",
-      "noticePeriod": "<notice period or null>",
-      "clauseReference": "<section or null>",
-      "pageNumber": <number or null>
-    }
-  ]`
+            ? `[{"type":"<automatic|optional|evergreen|fixed-term renewal|other>","period":null,"noticePeriod":null,"clauseReference":null,"pageNumber":null}]`
             : `null`;
         const terminationTerms = options.contract.renewalTerms
-            ? `{
-    "terminationNotice": "<text or null>",
-    "terminationConditions": ["<condition>"]
-  }`
+            ? `{"terminationNotice":null,"terminationConditions":[""]}`
             : `null`;
         const importantDates = options.contract.importantDates
-            ? `[
-    {
-      "label": "<Effective Date | Expiration | Renewal | Payment | Delivery | Notice | Termination>",
-      "date": "<ISO date or original text>",
-      "pageNumber": <number or null>
-    }
-  ]`
+            ? `[{"label":"<Effective Date|Expiration|Renewal|Payment|Delivery|Notice|Termination>","date":"","pageNumber":null}]`
             : `null`;
         const missingClauses = options.missingClauses
-            ? `[
-    {
-      "name": "<missing clause name>",
-      "importance": "<low | medium | high>",
-      "reason": "<why this clause matters>"
-    }
-  ]`
+            ? `[{"name":"","importance":"<low|medium|high>","reason":""}]`
             : `null`;
-        return `{
-  "expirationDate": "<ISO date e.g. '2027-01-31', or null>",
-  "parties": ${parties},
-  "obligations": ${obligations},
-  "paymentTerms": ${paymentTerms},
-  "penalties": ${penalties},
-  "renewalTerms": ${renewalTerms},
-  "terminationTerms": ${terminationTerms},
-  "governingLaw": "<state/country or null>",
-  "importantDates": ${importantDates},
-  "missingClauses": ${missingClauses}
-}`;
+        return `{"expirationDate":null,"parties":${parties},"obligations":${obligations},"paymentTerms":${paymentTerms},"penalties":${penalties},"renewalTerms":${renewalTerms},"terminationTerms":${terminationTerms},"governingLaw":null,"importantDates":${importantDates},"missingClauses":${missingClauses}}`;
     }
     buildComplianceSchema(options) {
-        if (!options.compliance) {
+        if (!options.compliance)
             return `null`;
-        }
-        const recSchema = options.recommendations
-            ? `"<remediation action if not met, or null>"`
-            : `null`;
-        const findingsRecSchema = options.recommendations
-            ? `"<recommended action or null>"`
-            : `null`;
-        return `{
-  "overallVerdict": "<compliant | partial | non_compliant | unknown>",
-  "riskLevel": "<low | medium | high>",
-  "confidence": <number 0-1>,
-  "summary": {
-    "passed": <number>,
-    "failed": <number>,
-    "partial": <number>,
-    "unknown": <number>
-  },
-  "requirements": [
-    {
-      "requirement": "<the specific requirement being evaluated>",
-      "status": "<met | partial | unmet | unknown>",
-      "reason": "<explanation of the verdict>",
-      "evidence": "<verbatim or paraphrased document text supporting this decision, or null>",
-      "pageNumber": <number or null>,
-      "clauseReference": "<section or null>",
-      "confidence": <number 0-1>,
-      "recommendation": ${recSchema}
-    }
-  ],
-  "findings": [
-    {
-      "title": "<short descriptive title>",
-      "description": "<detailed explanation>",
-      "severity": "<info | low | medium | high | critical>",
-      "category": "<legal | compliance | financial | security | operational>",
-      "affectedRequirement": "<requirement string or null>",
-      "pageNumber": <number or null>,
-      "clauseReference": "<section or null>",
-      "excerpt": "<exact quotation from document, or null>",
-      "recommendation": ${findingsRecSchema},
-      "metadata": {}
-    }
-  ]
-}`;
+        const recSchema = options.recommendations ? `""` : `null`;
+        const findingsRecSchema = options.recommendations ? `""` : `null`;
+        return `{"overallVerdict":"<compliant|partial|non_compliant|unknown>","riskLevel":"<low|medium|high>","confidence":0,"summary":{"passed":0,"failed":0,"partial":0,"unknown":0},"requirements":[{"requirement":"","status":"<met|partial|unmet|unknown>","reason":"","evidence":null,"pageNumber":null,"clauseReference":null,"confidence":0,"recommendation":${recSchema}}],"findings":[{"title":"","description":"","severity":"<info|low|medium|high|critical>","category":"<legal|compliance|financial|security|operational>","affectedRequirement":null,"pageNumber":null,"clauseReference":null,"excerpt":null,"recommendation":${findingsRecSchema},"metadata":{}}]}`;
     }
     buildUserPrompt(userQuery, chunks, options) {
         return [
             this.userRequestSection(userQuery),
             this.userAnalysisSection(options),
             this.userDocumentContext(chunks),
-            this.userClosingInstruction(userQuery, options),
+            `Return the JSON object now, matching the schema exactly.`,
         ].join('\n\n');
     }
     userRequestSection(userQuery) {
         const trimmed = userQuery?.trim();
         if (!trimmed) {
-            return `USER REQUEST
-============
-No specific question was asked. For the "answer" field, provide only a brief
-1–2 sentence orientation to the document (what kind of document it is, and
-the main parties involved). Do not put analysis here — that belongs in
-"summary", "contract", and "compliance".`;
+            return `No user question was asked — "answer" should just be a 1-2 sentence orientation (document type, main parties).`;
         }
-        return `USER REQUEST — this drives the "answer" field ONLY
-====================================================
-"${trimmed}"
-
-Answer this directly and completely in the "answer" field. If the request
-includes a formatting constraint (a word/character limit, "one sentence",
-"yes or no", a bullet list, a specific number of items, etc), treat it as a
-hard requirement. Do not answer with a generic compliance report — answer
-exactly what was asked, nothing more. This request has no bearing on
-"summary", "contract", or "compliance" — those are built independently, per
-the instructions below.`;
+        return `USER REQUEST (drives "answer" only): "${trimmed}"\nAnswer directly, honor any format constraint, no padding. Does not affect summary/contract/compliance.`;
     }
     userAnalysisSection(options) {
-        const steps = [];
-        const contractBullets = [];
+        const bullets = [];
         if (options.contract.parties)
-            contractBullets.push('parties');
+            bullets.push('parties');
         if (options.contract.obligations)
-            contractBullets.push('obligations');
+            bullets.push('obligations');
         if (options.contract.paymentTerms)
-            contractBullets.push('paymentTerms');
+            bullets.push('paymentTerms');
         if (options.contract.penalties)
-            contractBullets.push('penalties');
+            bullets.push('penalties');
         if (options.contract.renewalTerms)
-            contractBullets.push('renewal terms and termination conditions');
+            bullets.push('renewal/termination terms');
         if (options.contract.importantDates)
-            contractBullets.push('important dates');
+            bullets.push('important dates');
         if (options.missingClauses)
-            contractBullets.push('missing clauses');
-        if (contractBullets.length > 0) {
-            steps.push(`Step 1 — Extract the requested contract structure.
-  • Identify: ${contractBullets.join(', ')}.
-  • Keep all other contract structure keys as null.`);
-        }
-        else {
-            steps.push(`Step 1 — Skip contract structure extraction (all contract toggles disabled). Set contract sub-fields to null (except expirationDate/governingLaw if present).`);
+            bullets.push('missing clauses');
+        const lines = [
+            `STANDALONE ANALYSIS (always run, regardless of user request):`,
+            bullets.length > 0
+                ? `Extract: ${bullets.join(', ')}. All other contract keys stay null.`
+                : `All contract toggles disabled — set contract sub-fields to null (except expirationDate/governingLaw).`,
+        ];
+        if (options.missingClauses) {
+            const specific = options.specificMissingClauses;
+            lines.push(Array.isArray(specific) && specific.length > 0
+                ? `Missing clauses: ONLY check for ${specific.join(', ')}; report which are absent/insufficient.`
+                : `Missing clauses: identify standard clauses absent for this contract type (e.g. limitation of liability, dispute resolution, confidentiality, force majeure, governing law).`);
         }
         if (options.compliance) {
-            const recInstruction = options.recommendations
-                ? 'and give a recommendation where not fully met'
-                : 'do NOT provide recommendations (set them to null)';
-            steps.push(`Step 2 — Evaluate general legal/compliance risk.
-  • Assess the document against standard contract-review criteria: missing or weak clauses, unfavorable or one-sided terms, ambiguous obligations, conflicting clauses, and regulatory red flags relevant to the contract type.
-  • For each identified requirement/criterion, assign a status (met / partial / unmet / unknown), cite evidence, ${recInstruction}.
-  • Aggregate results into compliance.summary counts, and determine overallVerdict and riskLevel from the requirement evaluations.`);
-            const findingsRecInstruction = options.recommendations
-                ? 'Include recommendations where applicable.'
-                : 'Set the recommendation field to null for all findings.';
-            steps.push(`Step 3 — Report findings.
-  • Include at least one finding. Findings may cover risks, conflicts, missing clauses, or plain observations — not only compliance failures.
-  • Link each finding to an affectedRequirement where applicable.
-  • ${findingsRecInstruction}`);
+            lines.push(`Compliance: assess against standard contract-review criteria (weak/missing clauses, unfavorable terms, ambiguous obligations, conflicts, red flags). Give each requirement a status, evidence${options.recommendations ? ', and a recommendation if not fully met' : ' (recommendations null)'}. Aggregate into summary counts + overallVerdict/riskLevel.`, `Findings: ≥1 item, may include risks/conflicts/observations, link to affectedRequirement where relevant.${options.recommendations ? '' : ' recommendation fields null.'}`);
         }
         else {
-            steps.push(`Step 2 & 3 — Skip compliance analysis. The "compliance" field must be null.`);
+            lines.push(`Compliance disabled — "compliance" field must be null.`);
         }
-        steps.push(`Step 4 — Write the executive summary.
-  • 2–5 sentences summarizing the document as a whole, independent of whatever was asked in the user request.`);
-        return `STANDALONE ANALYSIS — compute fields based on the requested options
-========================================================================
-This section runs regardless of the user request above.
-
-${steps.join('\n\n')}
-
-All of this must be grounded in the document chunks provided below.`;
+        lines.push(`Write a 2-5 sentence executive summary independent of the user request.`);
+        return lines.join('\n');
     }
     userDocumentContext(chunks) {
         const documentContext = chunks
-            .map((c) => {
-            const label = c.pageNumber
-                ? `Page ${c.pageNumber}`
-                : `Chunk ${c.chunkIndex}`;
-            return `--- ${label} ---\n${c.content}`;
-        })
+            .map((c) => `--- ${c.pageNumber ? `Page ${c.pageNumber}` : `Chunk ${c.chunkIndex}`} ---\n${c.content}`)
             .join('\n\n');
         return `DOCUMENT CONTENT\n================\n${documentContext}`;
-    }
-    userClosingInstruction(userQuery, options) {
-        const trimmed = userQuery?.trim();
-        const answerReminder = trimmed
-            ? `Remember: "answer" responds to the user request above and to nothing else; other fields are the standalone analysis and must not be shaped by that request.`
-            : `Remember: "answer" is just a brief orientation since no question was asked; other fields are the standalone analysis.`;
-        return `Now analyze the document and return the JSON object exactly matching the required schema.\n${answerReminder}`;
     }
 };
 exports.PromptBuilderService = PromptBuilderService;

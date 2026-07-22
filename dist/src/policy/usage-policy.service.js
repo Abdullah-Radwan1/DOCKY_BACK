@@ -21,13 +21,13 @@ exports.LIMITS = {
         UPLOADS: 3,
         ANALYSES: 3,
     },
-    GROWTH: {
-        UPLOADS: -1,
-        ANALYSES: -1,
+    PROFESSIONAL: {
+        UPLOADS: 10,
+        ANALYSES: 10,
     },
-    ENTERPRISE: {
-        UPLOADS: -1,
-        ANALYSES: -1,
+    ELITE: {
+        UPLOADS: 50,
+        ANALYSES: 50,
     },
 };
 let UsagePolicyService = class UsagePolicyService {
@@ -50,7 +50,8 @@ let UsagePolicyService = class UsagePolicyService {
         });
         if (!profile)
             throw new common_1.NotFoundException('User not found');
-        const limit = exports.LIMITS[profile.plan.toUpperCase()]?.UPLOADS ?? exports.LIMITS.FREE.UPLOADS;
+        const limit = exports.LIMITS[profile.plan.toUpperCase()]?.UPLOADS ??
+            exports.LIMITS.FREE.UPLOADS;
         if (limit === -1)
             return;
         const used = profile.usageQuota?.uploadsUsed ?? 0;
@@ -85,7 +86,8 @@ let UsagePolicyService = class UsagePolicyService {
         });
         if (!profile)
             throw new common_1.NotFoundException('User not found');
-        const limit = exports.LIMITS[profile.plan.toUpperCase()]?.ANALYSES ?? exports.LIMITS.FREE.ANALYSES;
+        const limit = exports.LIMITS[profile.plan.toUpperCase()]?.ANALYSES ??
+            exports.LIMITS.FREE.ANALYSES;
         if (limit === -1)
             return;
         const used = profile.usageQuota?.analysesUsed ?? 0;

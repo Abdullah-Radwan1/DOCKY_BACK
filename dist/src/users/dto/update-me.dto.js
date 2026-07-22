@@ -17,6 +17,8 @@ class UpdateMeDto {
     allowExpiryReminders;
     allowRiskAlerts;
     allowAnalysisAlerts;
+    usageQuota;
+    plan;
 }
 exports.UpdateMeDto = UpdateMeDto;
 __decorate([
@@ -46,4 +48,15 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Boolean)
 ], UpdateMeDto.prototype, "allowAnalysisAlerts", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], UpdateMeDto.prototype, "usageQuota", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsIn)(['Free', 'Professional', 'Elite']),
+    __metadata("design:type", String)
+], UpdateMeDto.prototype, "plan", void 0);
 //# sourceMappingURL=update-me.dto.js.map

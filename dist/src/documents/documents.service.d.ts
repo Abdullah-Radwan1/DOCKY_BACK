@@ -34,11 +34,11 @@ export declare class DocumentsService {
             allowExpiryReminders: boolean;
             allowRiskAlerts: boolean;
             allowAnalysisAlerts: boolean;
+            plan: import("src/generated/prisma/enums").PlanType;
             id: string;
             passwordHash: string | null;
             createdAt: Date;
             updatedAt: Date;
-            plan: import("src/generated/prisma/enums").PlanType;
         } | null;
         chunks: {
             id: string;

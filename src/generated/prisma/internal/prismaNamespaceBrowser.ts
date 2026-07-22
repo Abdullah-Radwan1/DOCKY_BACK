@@ -61,7 +61,8 @@ export const ModelName = {
   AnalysisRequest: 'AnalysisRequest',
   AIResponse: 'AIResponse',
   PasswordResetToken: 'PasswordResetToken',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  PaddleSubscription: 'PaddleSubscription'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -250,6 +251,22 @@ export const NotificationScalarFieldEnum = {
 } as const
 
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const PaddleSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  paddleCustomerId: 'paddleCustomerId',
+  paddleSubscriptionId: 'paddleSubscriptionId',
+  plan: 'plan',
+  billingCycle: 'billingCycle',
+  status: 'status',
+  currentPeriodEnd: 'currentPeriodEnd',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaddleSubscriptionScalarFieldEnum = (typeof PaddleSubscriptionScalarFieldEnum)[keyof typeof PaddleSubscriptionScalarFieldEnum]
 
 
 export const SortOrder = {

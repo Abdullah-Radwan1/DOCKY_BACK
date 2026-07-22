@@ -10,6 +10,7 @@ describe('UsersService', () => {
   let prisma: {
     profile: {
       update: jest.Mock;
+      findUnique: jest.Mock;
     };
   };
 
@@ -17,6 +18,7 @@ describe('UsersService', () => {
     prisma = {
       profile: {
         update: jest.fn(),
+        findUnique: jest.fn(),
       },
     };
 
@@ -36,9 +38,12 @@ describe('UsersService', () => {
       allowExpiryReminders: false,
       allowRiskAlerts: true,
       allowAnalysisAlerts: false,
+      plan: 'free',
+      usageQuota: null,
     };
 
     prisma.profile.update.mockResolvedValue(updatedProfile);
+    prisma.profile.findUnique.mockResolvedValue(updatedProfile);
 
     const result = await service.updateMe('user-1', {
       allowEmailNotifications: false,
@@ -65,10 +70,48 @@ describe('UsersService', () => {
       role: 'viewer',
       created_at: updatedProfile.createdAt,
       updated_at: updatedProfile.updatedAt,
-      allow_email_notifications: false,
-      allow_expiry_reminders: false,
-      allow_risk_alerts: true,
-      allow_analysis_alerts: false,
+      plan: 'free',
+      usage_quota: null,
+      notification_preferences: {
+        allow_email_notifications: false,
+        allow_expiry_reminders: false,
+        allow_risk_alerts: true,
+        allow_analysis_alerts: false,
+      },
     });
+  });
+
+  it('persists a plan change when updating the current user', async () => {
+    const updatedProfile = {
+      id: 'user-1',
+      email: 'user@example.com',
+      fullName: 'Jane Doe',
+      avatarUrl: null,
+      role: 'viewer',
+      createdAt: new Date('2024-01-01T00:00:00.000Z'),
+      updatedAt: new Date('2024-01-01T00:00:00.000Z'),
+      allowEmailNotifications: true,
+      allowExpiryReminders: true,
+      allowRiskAlerts: true,
+      allowAnalysisAlerts: true,
+      plan: 'growth',
+      usageQuota: null,
+    };
+
+    prisma.profile.update.mockResolvedValue(updatedProfile);
+    prisma.profile.findUnique.mockResolvedValue(updatedProfile);
+
+    const result = await service.updateMe('user-1', {
+      plan: 'growth',
+    });
+
+    expect(prisma.profile.update).toHaveBeenCalledWith({
+      where: { id: 'user-1' },
+      data: {
+        plan: 'growth',
+      },
+    });
+
+    expect(result.plan).toBe('growth');
   });
 });

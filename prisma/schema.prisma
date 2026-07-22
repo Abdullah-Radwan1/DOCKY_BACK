@@ -21,6 +21,11 @@ enum PlanType {
   Elite
 }
 
+enum BillingCycle {
+  monthly
+  yearly
+}
+
 enum DocumentStatus {
   uploaded
   extracting
@@ -122,6 +127,8 @@ model Profile {
   plan PlanType @default(free)
 
   usageQuota UsageQuota?
+
+  paddleSubscription PaddleSubscription?
 
   // Notification Preference Toggles
   allowEmailNotifications Boolean           @default(true) @map("allow_email_notifications")
@@ -337,4 +344,21 @@ model Notification {
   @@index([userId, status, createdAt])
   @@index([documentId])
   @@map("notifications")
+}
+
+model PaddleSubscription {
+  id                   String       @id @default(uuid()) @db.Uuid
+  userId               String       @unique @map("user_id") @db.Uuid
+  paddleCustomerId     String       @map("paddle_customer_id")
+  paddleSubscriptionId String       @unique @map("paddle_subscription_id")
+  plan                 PlanType
+  billingCycle         BillingCycle @map("billing_cycle")
+  status               String
+  currentPeriodEnd     DateTime?    @map("current_period_end") @db.Timestamptz
+  createdAt            DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt            DateTime     @updatedAt @map("updated_at") @db.Timestamptz
+
+  user                 Profile      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("paddle_subscriptions")
 }

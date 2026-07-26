@@ -66,18 +66,18 @@ export declare class UsersController {
     }>;
     create(createDto: CreateProfileDto): Promise<{
         email: string;
-        id: string;
-        plan: import("src/generated/prisma").PlanType;
-        createdAt: Date;
-        updatedAt: Date;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
-        passwordHash: string | null;
         allowEmailNotifications: boolean;
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
         allowAnalysisAlerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
+        id: string;
+        passwordHash: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     get(id: string): Promise<{
         usageQuota: {
@@ -91,47 +91,47 @@ export declare class UsersController {
         } | null;
     } & {
         email: string;
-        id: string;
-        plan: import("src/generated/prisma").PlanType;
-        createdAt: Date;
-        updatedAt: Date;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
-        passwordHash: string | null;
         allowEmailNotifications: boolean;
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
         allowAnalysisAlerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
+        id: string;
+        passwordHash: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     update(id: string, updateDto: UpdateProfileDto): Promise<{
         email: string;
-        id: string;
-        plan: import("src/generated/prisma").PlanType;
-        createdAt: Date;
-        updatedAt: Date;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
-        passwordHash: string | null;
         allowEmailNotifications: boolean;
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
         allowAnalysisAlerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
+        id: string;
+        passwordHash: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     delete(id: string): Promise<{
         email: string;
-        id: string;
-        plan: import("src/generated/prisma").PlanType;
-        createdAt: Date;
-        updatedAt: Date;
         fullName: string | null;
         avatarUrl: string | null;
         role: import("src/generated/prisma").UserRole;
-        passwordHash: string | null;
         allowEmailNotifications: boolean;
         allowExpiryReminders: boolean;
         allowRiskAlerts: boolean;
         allowAnalysisAlerts: boolean;
+        plan: import("src/generated/prisma").PlanType;
+        id: string;
+        passwordHash: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
 }

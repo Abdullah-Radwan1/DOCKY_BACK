@@ -47,16 +47,19 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const prisma_service_1 = require("../prisma/prisma.service");
 const notifications_service_1 = require("../notifications/notifications.service");
+const mailer_service_1 = require("./mailer.service");
 const bcrypt = __importStar(require("bcryptjs"));
 const crypto = __importStar(require("crypto"));
 let AuthService = class AuthService {
     prisma;
     jwtService;
     notificationsService;
-    constructor(prisma, jwtService, notificationsService) {
+    mailerService;
+    constructor(prisma, jwtService, notificationsService, mailerService) {
         this.prisma = prisma;
         this.jwtService = jwtService;
         this.notificationsService = notificationsService;
+        this.mailerService = mailerService;
     }
     async register(dto) {
         const existing = await this.prisma.profile.findUnique({
@@ -137,16 +140,30 @@ let AuthService = class AuthService {
         return { message: 'Password updated successfully.' };
     }
     async forgotPassword(dto) {
+        const genericResponse = {
+            message: "If an account exists with this email, you'll receive password reset instructions shortly.",
+        };
         const profile = await this.prisma.profile.findUnique({
             where: { email: dto.email },
         });
-        const genericResponse = {
-            message: 'If an account with that email exists, a password reset link has been sent.',
-        };
         if (!profile) {
             return genericResponse;
         }
-        const token = crypto.randomBytes(32).toString('hex');
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+        const recentRequests = await this.prisma.passwordResetToken.count({
+            where: {
+                userId: profile.id,
+                createdAt: { gte: oneHourAgo },
+            },
+        });
+        if (recentRequests >= 3) {
+            return genericResponse;
+        }
+        const rawToken = crypto.randomBytes(32).toString('hex');
+        const tokenHash = crypto
+            .createHash('sha256')
+            .update(rawToken)
+            .digest('hex');
         const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
         await this.prisma.passwordResetToken.updateMany({
             where: { userId: profile.id, usedAt: null },
@@ -155,18 +172,14 @@ let AuthService = class AuthService {
         await this.prisma.passwordResetToken.create({
             data: {
                 userId: profile.id,
-                token,
+                token: tokenHash,
                 expiresAt,
             },
         });
-        void this.notificationsService
-            .createNotification({
-            userId: profile.id,
-            title: 'Password Reset Requested',
-            message: `A password reset was requested for your account. Use token: ${token} (expires in 1 hour). If you did not request this, ignore this message.`,
-            type: 'system_alert',
-            deliveryChannel: 'email',
-        })
+        const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:5173';
+        const resetUrl = `${frontendUrl}/reset-password?token=${rawToken}`;
+        void this.mailerService
+            .sendPasswordResetEmail(profile.email, resetUrl)
             .catch(() => { });
         return genericResponse;
     }
@@ -174,8 +187,12 @@ let AuthService = class AuthService {
         if (dto.newPassword !== dto.confirmPassword) {
             throw new common_1.BadRequestException('New password and confirmation do not match.');
         }
+        const tokenHash = crypto
+            .createHash('sha256')
+            .update(dto.token)
+            .digest('hex');
         const tokenRecord = await this.prisma.passwordResetToken.findUnique({
-            where: { token: dto.token },
+            where: { token: tokenHash },
         });
         if (!tokenRecord) {
             throw new common_1.NotFoundException('Invalid or expired reset token.');
@@ -227,6 +244,7 @@ exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         jwt_1.JwtService,
-        notifications_service_1.NotificationsService])
+        notifications_service_1.NotificationsService,
+        mailer_service_1.MailerService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

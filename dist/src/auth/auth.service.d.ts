@@ -1,6 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { MailerService } from './mailer.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -10,7 +11,8 @@ export declare class AuthService {
     private readonly prisma;
     private readonly jwtService;
     private readonly notificationsService;
-    constructor(prisma: PrismaService, jwtService: JwtService, notificationsService: NotificationsService);
+    private readonly mailerService;
+    constructor(prisma: PrismaService, jwtService: JwtService, notificationsService: NotificationsService, mailerService: MailerService);
     register(dto: RegisterDto): Promise<{
         token: string;
         user: {

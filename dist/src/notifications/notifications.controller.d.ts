@@ -17,14 +17,14 @@ export declare class NotificationsController {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            status: import("src/generated/prisma").NotificationStatus;
-            documentId: string | null;
-            title: string;
             userId: string;
+            title: string;
             message: string;
             type: import("src/generated/prisma").NotificationType;
             deliveryChannel: import("src/generated/prisma").DeliveryChannel;
+            documentId: string | null;
             scheduledFor: Date | null;
+            status: import("src/generated/prisma").NotificationStatus;
             sentAt: Date | null;
         })[];
         meta: {
@@ -50,14 +50,14 @@ export declare class NotificationsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import("src/generated/prisma").NotificationStatus;
-        documentId: string | null;
-        title: string;
         userId: string;
+        title: string;
         message: string;
         type: import("src/generated/prisma").NotificationType;
         deliveryChannel: import("src/generated/prisma").DeliveryChannel;
+        documentId: string | null;
         scheduledFor: Date | null;
+        status: import("src/generated/prisma").NotificationStatus;
         sentAt: Date | null;
     }>;
     readAll(req: Request & {

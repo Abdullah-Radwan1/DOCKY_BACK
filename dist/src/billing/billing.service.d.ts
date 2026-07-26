@@ -19,15 +19,15 @@ export declare class BillingService {
         status: import("@paddle/paddle-node-sdk").SubscriptionStatus;
     }>;
     getSubscription(userId: string): Promise<{
-        id: string;
         plan: PlanType;
+        id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: string;
         userId: string;
-        paddleCustomerId: string;
-        paddleSubscriptionId: string;
+        status: string;
         billingCycle: BillingCycle;
+        paddleSubscriptionId: string;
+        paddleCustomerId: string;
         currentPeriodEnd: Date | null;
     } | null>;
     cancelSubscription(userId: string): Promise<{

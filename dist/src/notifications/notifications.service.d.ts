@@ -18,14 +18,14 @@ export declare class NotificationsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: NotificationStatus;
-        documentId: string | null;
-        title: string;
         userId: string;
+        title: string;
         message: string;
         type: import("src/generated/prisma/enums").NotificationType;
         deliveryChannel: import("src/generated/prisma/enums").DeliveryChannel;
+        documentId: string | null;
         scheduledFor: Date | null;
+        status: NotificationStatus;
         sentAt: Date | null;
     }>;
     private isEmailAllowedForUser;
@@ -38,14 +38,14 @@ export declare class NotificationsService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            status: NotificationStatus;
-            documentId: string | null;
-            title: string;
             userId: string;
+            title: string;
             message: string;
             type: import("src/generated/prisma/enums").NotificationType;
             deliveryChannel: import("src/generated/prisma/enums").DeliveryChannel;
+            documentId: string | null;
             scheduledFor: Date | null;
+            status: NotificationStatus;
             sentAt: Date | null;
         })[];
         meta: {
@@ -63,14 +63,14 @@ export declare class NotificationsService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: NotificationStatus;
-        documentId: string | null;
-        title: string;
         userId: string;
+        title: string;
         message: string;
         type: import("src/generated/prisma/enums").NotificationType;
         deliveryChannel: import("src/generated/prisma/enums").DeliveryChannel;
+        documentId: string | null;
         scheduledFor: Date | null;
+        status: NotificationStatus;
         sentAt: Date | null;
     }>;
     markAllAsRead(userId: string): Promise<{

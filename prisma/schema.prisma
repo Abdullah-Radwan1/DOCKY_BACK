@@ -1,165 +1,364 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-model Organization {
-  id             String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name           String
-  slug           String    @unique
-  plan           String    @default("free")
-  documentsLimit Int?      @map("documents_limit") @default(3)
-  createdAt      DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
-  updatedAt      DateTime? @map("updated_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+enum UserRole {
+  admin
+  compliance_manager
+  auditor
+  viewer
+}
 
-  profiles     Profile[]
-  documents    Document[]
-  activityLogs ActivityLog[]
+enum PlanType {
+  free
+  Professional
+  Elite
+}
 
-  @@map("organizations")
+enum BillingCycle {
+  monthly
+  yearly
+}
+
+enum DocumentStatus {
+  uploaded
+  extracting
+  chunking
+  ready
+  failed
+}
+
+enum RiskLevel {
+  low
+  medium
+  high
+}
+
+enum AnalysisRequestStatus {
+  pending
+  processing
+  completed
+  failed
+}
+
+enum NotificationStatus {
+  unread
+  read
+  archived
+}
+
+enum NotificationType {
+  expiration_warning
+  compliance_alert
+  system_alert
+}
+
+enum DeliveryChannel {
+  in_app
+  email
+  push
+  sms
+}
+
+enum FindingSeverity {
+  info
+  low
+  medium
+  high
+  critical
+}
+
+enum FindingStatus {
+  open
+  resolved
+}
+
+enum AnalysisVerdict {
+  compliant
+  non_compliant
+  partial
+  unknown
+}
+
+model UsageQuota {
+  id String @id @default(uuid()) @db.Uuid
+
+  userId  String? @unique @map("user_id") @db.Uuid
+  guestId String? @unique @map("guest_id")
+
+  uploadsUsed  Int @default(0) @map("uploads_used")
+  analysesUsed Int @default(0) @map("analyses_used")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  user Profile? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([guestId])
+  @@map("usage_quotas")
 }
 
 model Profile {
-  id             String    @id @db.Uuid
-  email          String
-  fullName       String?   @map("full_name")
-  avatarUrl      String?   @map("avatar_url")
-  role           String    @default("viewer") // admin, compliance_manager, auditor, viewer
-  organizationId String?   @map("organization_id") @db.Uuid
-  createdAt      DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
-  updatedAt      DateTime? @map("updated_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+  id String @id @default(uuid()) @db.Uuid
 
-  organization      Organization?      @relation(fields: [organizationId], references: [id], onDelete: SetNull)
-  documents         Document[]         @relation("UploadedBy")
-  activityLogs      ActivityLog[]
-  complianceQueries ComplianceQuery[]
-  notifications     Notification[]
+  email String @unique
 
+  fullName String? @map("full_name")
+
+  avatarUrl String? @map("avatar_url")
+
+  passwordHash String? @map("password_hash")
+
+  role UserRole @default(viewer)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  documents Document[] @relation("UploadedBy")
+
+  plan PlanType @default(free)
+
+  usageQuota UsageQuota?
+
+  paddleSubscription PaddleSubscription?
+
+  // Notification Preference Toggles
+  allowEmailNotifications Boolean           @default(true) @map("allow_email_notifications")
+  allowExpiryReminders    Boolean           @default(true) @map("allow_expiry_reminders")
+  allowRiskAlerts         Boolean           @default(true) @map("allow_risk_alerts")
+  allowAnalysisAlerts     Boolean           @default(true) @map("allow_analysis_alerts")
+  analysisRequests        AnalysisRequest[]
+
+  notifications Notification[]
+
+  activityLogs ActivityLog[]
+
+  passwordResetTokens PasswordResetToken[]
+
+  @@index([createdAt])
   @@map("profiles")
 }
 
 model Document {
-  id              String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  organizationId  String    @map("organization_id") @db.Uuid
-  uploadedBy      String    @map("uploaded_by") @db.Uuid
-  filename        String
-  fileSize        Int?      @map("file_size")
-  status          String    @default("pending") // pending, analyzing, analyzed, failed
-  complianceScore Int?      @map("compliance_score")
-  riskLevel       String?   @map("risk_level") // low, medium, high
-  expirationDate  DateTime? @map("expiration_date") @db.Timestamptz // Added for expiration reminder notifications
-  createdAt       DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
-  updatedAt       DateTime? @map("updated_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+  id String @id @default(uuid()) @db.Uuid
 
-  organization      Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  uploader          Profile            @relation("UploadedBy", fields: [uploadedBy], references: [id], onDelete: Cascade)
-  analyses          DocumentAnalysis[]
-  complianceQueries ComplianceQuery[]
-  notifications     Notification[]
+  // NEW: guest upload support
+  guestToken String? @unique @map("guest_token")
+  isGuest    Boolean @default(false) @map("is_guest")
 
+  uploadedBy String? @db.Uuid
+
+  originalFileName String @map("original_file_name")
+
+  mimeType String? @map("mime_type")
+
+  checksum String?
+
+  fileSize Int? @map("file_size")
+
+  pageCount Int? @map("page_count")
+
+  totalChunks Int? @map("total_chunks")
+
+  language String?
+
+  status DocumentStatus @default(uploaded)
+
+  expirationDate DateTime? @map("expiration_date") @db.Timestamptz
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  uploader Profile? @relation("UploadedBy", fields: [uploadedBy], references: [id], onDelete: Cascade)
+
+  chunks DocumentChunk[]
+
+  analysisRequests AnalysisRequest[]
+
+  notifications Notification[]
+
+  @@index([uploadedBy])
+  @@index([status])
+  @@index([createdAt])
   @@map("documents")
 }
 
-model DocumentAnalysis {
-  id                    String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  documentId            String    @map("document_id") @db.Uuid
-  executiveSummary      String?   @map("executive_summary")
-  parties               Json?
-  obligations           Json?
-  paymentTerms          Json?     @map("payment_terms")
-  renewalTerms          Json?     @map("renewal_terms")
-  penalties             Json?
-  governingLaw          String?   @map("governing_law")
-  missingClauses        Json?     @map("missing_clauses")
-  unusualConditions     Json?     @map("unusual_conditions")
-  complianceRequirements Json?    @map("compliance_requirements")
-  policyViolations      Json?     @map("policy_violations")
-  regulatoryIssues      Json?     @map("regulatory_issues")
-  missingSignatures     Json?     @map("missing_signatures")
-  expirationDetected    Boolean?  @map("expiration_detected") @default(false)
-  risks                 Json?
-  recommendations       Json?
-  importantDates        Json?     @map("important_dates")
-  createdAt             DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+model DocumentChunk {
+  id String @id @default(uuid()) @db.Uuid
+
+  documentId String @db.Uuid
+
+  chunkIndex Int
+
+  content String
+
+  pageNumber Int?
+
+  tokenCount Int?
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
 
   document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, chunkIndex])
+  @@index([documentId])
+  @@index([documentId, pageNumber])
+  @@map("document_chunks")
+}
+
+model AnalysisResult {
+  id             String           @id @default(uuid()) @db.Uuid
+  summary        String?          @map("executive_summary")
+  overallVerdict AnalysisVerdict? @map("overall_verdict")
+  confidence     Float?           @map("confidence_score")
+  riskLevel      RiskLevel?
+
+  createdAt  DateTime @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamptz
+  responseId String   @unique @db.Uuid
+
+  Response AIResponse @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  findings Finding[]
 
   @@map("document_analyses")
 }
 
+model Finding {
+  id              String          @id @default(uuid()) @db.Uuid
+  analysisId      String          @map("analysis_id") @db.Uuid
+  title           String
+  description     String?
+  severity        FindingSeverity @default(info)
+  /// Lifecycle status of the finding — open (active) or resolved (addressed).
+  status          FindingStatus   @default(open)
+  clauseReference String?         @map("clause_reference")
+  pageNumber      Int?            @map("page_number")
+  excerpt         String?
+  recommendation  String?
+  metadata        Json?
+  resolvedAt      DateTime?       @map("resolved_at") @db.Timestamptz
+  createdAt       DateTime        @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamptz
+
+  analysis AnalysisResult @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+
+  @@index([analysisId, severity])
+  @@index([analysisId, status])
+  @@map("findings")
+}
+
 model ActivityLog {
-  id             String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  organizationId String    @map("organization_id") @db.Uuid
-  userId         String?   @map("user_id") @db.Uuid
-  action         String
-  entityType     String?   @map("entity_type")
-  entityId       String?   @map("entity_id") @db.Uuid
-  metadata       Json?
-  createdAt      DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String?  @map("user_id") @db.Uuid
+  action     String
+  entityType String?  @map("entity_type")
+  entityId   String?  @map("entity_id") @db.Uuid
+  metadata   Json?
+  createdAt  DateTime @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamptz
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  user         Profile?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user Profile? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
+  @@index([userId, createdAt])
+  @@index([entityType, entityId])
   @@map("activity_log")
 }
 
-// Model for compliance queries (user questions regarding policy/regulations on a document)
-model ComplianceQuery {
-  id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  queryText  String    @map("query_text")
-  status     String    @default("pending") // pending, processing, completed, failed
-  documentId String?   @map("document_id") @db.Uuid
-  userId     String    @map("user_id") @db.Uuid
-  createdAt  DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
-  updatedAt  DateTime? @map("updated_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+model AnalysisRequest {
+  id                   String                @id @default(uuid()) @db.Uuid
+  queryText            String                @map("query_text")
+  status               AnalysisRequestStatus @default(pending)
+  documentId           String?               @map("document_id") @db.Uuid
+  userId               String?               @map("user_id") @db.Uuid
+  guestId              String?               @map("guest_id")
+  attemptCount         Int                   @default(0) @map("attempt_count")
+  errorMessage         String?               @map("error_message")
+  processingStartedAt  DateTime?             @map("processing_started_at") @db.Timestamptz
+  processingFinishedAt DateTime?             @map("processing_finished_at") @db.Timestamptz
+  createdAt            DateTime              @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamptz
+  updatedAt            DateTime              @default(dbgenerated("NOW()")) @map("updated_at") @db.Timestamptz
 
-  document Document?    @relation(fields: [documentId], references: [id], onDelete: SetNull)
-  user     Profile      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  responses AIResponse[]
+  document Document?   @relation(fields: [documentId], references: [id], onDelete: SetNull)
+  user     Profile?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  response AIResponse? // 1:1 on this side is fine
 
+  @@index([userId, createdAt])
+  @@index([documentId, createdAt])
+  @@index([status, createdAt])
   @@map("compliance_queries")
 }
 
-// Model for AI compliance checker responses
 model AIResponse {
-  id              String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  queryId         String    @map("query_id") @db.Uuid
-  responseText    String    @map("response_text")
-  confidenceScore Float?    @map("confidence_score")
-  metadata        Json?     // store model name, prompt tokens, execution time, etc.
-  createdAt       DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+  id              String          @id @default(uuid()) @db.Uuid
+  requestId       String          @unique @map("query_id") @db.Uuid
+  response        Json            @map("response_text")
+  confidenceScore Float?          @map("confidence_score")
+  metadata        Json?
+  createdAt       DateTime        @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamptz
+  matchedChunks   Json?
+  AnalysisRequest AnalysisRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  // This side must be marked optional (?) because an AIResponse can exist before the analysis calculation finishes.
+  AnalysisResult  AnalysisResult?
 
-  complianceQuery ComplianceQuery @relation(fields: [queryId], references: [id], onDelete: Cascade)
-
+  @@index([requestId, createdAt])
   @@map("ai_responses")
 }
 
-// Modular, extensible notification engine schema
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  token     String    @unique
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz
+  usedAt    DateTime? @map("used_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+
+  user Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@map("password_reset_tokens")
+}
+
 model Notification {
-  id              String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  userId          String    @map("user_id") @db.Uuid
+  id              String             @id @default(uuid()) @db.Uuid
+  userId          String             @map("user_id") @db.Uuid
   title           String
   message         String
-  type            String    // e.g. "expiration_warning", "compliance_alert", "system_alert"
-  status          String    @default("unread") // e.g. "unread", "read", "archived"
-  deliveryChannel String    @map("delivery_channel") @default("in_app") // e.g. "in_app", "email", "push", "sms"
-  documentId      String?   @map("document_id") @db.Uuid
-  scheduledFor    DateTime? @map("scheduled_for") @db.Timestamptz
-  sentAt          DateTime? @map("sent_at") @db.Timestamptz
-  createdAt       DateTime? @map("created_at") @default(dbgenerated("NOW()")) @db.Timestamptz
-  updatedAt       DateTime? @map("updated_at") @default(dbgenerated("NOW()")) @db.Timestamptz
+  type            NotificationType
+  status          NotificationStatus @default(unread)
+  deliveryChannel DeliveryChannel    @default(in_app) @map("delivery_channel")
+  documentId      String?            @map("document_id") @db.Uuid
+  scheduledFor    DateTime?          @map("scheduled_for") @db.Timestamptz
+  sentAt          DateTime?          @map("sent_at") @db.Timestamptz
+  createdAt       DateTime           @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime           @default(dbgenerated("NOW()")) @map("updated_at") @db.Timestamptz
 
   user     Profile   @relation(fields: [userId], references: [id], onDelete: Cascade)
   document Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
 
+  @@index([userId, status, createdAt])
+  @@index([documentId])
   @@map("notifications")
+}
+
+model PaddleSubscription {
+  id                   String       @id @default(uuid()) @db.Uuid
+  userId               String       @unique @map("user_id") @db.Uuid
+  paddleCustomerId     String       @map("paddle_customer_id")
+  paddleSubscriptionId String       @unique @map("paddle_subscription_id")
+  plan                 PlanType
+  billingCycle         BillingCycle @map("billing_cycle")
+  status               String
+  currentPeriodEnd     DateTime?    @map("current_period_end") @db.Timestamptz
+  createdAt            DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt            DateTime     @updatedAt @map("updated_at") @db.Timestamptz
+
+  user                 Profile      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("paddle_subscriptions")
 }

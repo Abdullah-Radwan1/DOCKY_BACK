@@ -1,26 +1,55 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateProfileDto } from './dto/create-profile.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { UpdateMeDto } from './dto/update-me.dto';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createUser(data: {
-    id: string; // Auth UUID
-    email: string;
-    fullName?: string;
-    avatarUrl?: string;
-    role?: string;
-    organizationId?: string;
-  }) {
+  private async getProfileResponse(userId: string) {
+    const profile = await this.prisma.profile.findUnique({
+      where: { id: userId },
+      include: {
+        usageQuota: true,
+      },
+    });
+
+    if (!profile) {
+      throw new NotFoundException('User profile not found');
+    }
+
+    return {
+      id: profile.id,
+      email: profile.email,
+      full_name: profile.fullName,
+      avatar_url: profile.avatarUrl,
+      role: profile.role,
+
+      created_at: profile.createdAt,
+      updated_at: profile.updatedAt,
+
+      plan: profile.plan,
+
+      usage_quota: profile.usageQuota,
+
+      notification_preferences: {
+        allow_email_notifications: profile.allowEmailNotifications,
+        allow_expiry_reminders: profile.allowExpiryReminders,
+        allow_risk_alerts: profile.allowRiskAlerts,
+        allow_analysis_alerts: profile.allowAnalysisAlerts,
+      },
+    };
+  }
+
+  async createUser(data: CreateProfileDto) {
     return this.prisma.profile.create({
       data: {
-        id: data.id,
         email: data.email,
         fullName: data.fullName,
         avatarUrl: data.avatarUrl,
-        role: data.role || 'viewer',
-        organizationId: data.organizationId || null,
+        role: data.role,
       },
     });
   }
@@ -29,31 +58,27 @@ export class UsersService {
     const profile = await this.prisma.profile.findUnique({
       where: { id },
       include: {
-        organization: true,
+        usageQuota: true,
       },
     });
+
     if (!profile) {
       throw new NotFoundException(`User profile with ID ${id} not found`);
     }
+
     return profile;
   }
 
-  async updateUser(
-    id: string,
-    data: {
-      fullName?: string;
-      avatarUrl?: string;
-      role?: string;
-      organizationId?: string;
-    },
-  ) {
+  async updateUser(id: string, data: UpdateProfileDto) {
     try {
       return await this.prisma.profile.update({
         where: { id },
         data,
       });
     } catch {
-      throw new NotFoundException(`User profile with ID ${id} not found to update`);
+      throw new NotFoundException(
+        `User profile with ID ${id} not found to update`,
+      );
     }
   }
 
@@ -63,7 +88,41 @@ export class UsersService {
         where: { id },
       });
     } catch {
-      throw new NotFoundException(`User profile with ID ${id} not found to delete`);
+      throw new NotFoundException(
+        `User profile with ID ${id} not found to delete`,
+      );
     }
+  }
+
+  async getMe(userId: string) {
+    return this.getProfileResponse(userId);
+  }
+
+  async updateMe(userId: string, dto: UpdateMeDto) {
+    await this.prisma.profile.update({
+      where: { id: userId },
+      data: {
+        ...(dto.fullName !== undefined && {
+          fullName: dto.fullName,
+        }),
+        ...(dto.allowEmailNotifications !== undefined && {
+          allowEmailNotifications: dto.allowEmailNotifications,
+        }),
+        ...(dto.allowExpiryReminders !== undefined && {
+          allowExpiryReminders: dto.allowExpiryReminders,
+        }),
+        ...(dto.allowRiskAlerts !== undefined && {
+          allowRiskAlerts: dto.allowRiskAlerts,
+        }),
+        ...(dto.allowAnalysisAlerts !== undefined && {
+          allowAnalysisAlerts: dto.allowAnalysisAlerts,
+        }),
+        ...(dto.plan !== undefined && {
+          plan: dto.plan as any,
+        }),
+      },
+    });
+
+    return this.getProfileResponse(userId);
   }
 }

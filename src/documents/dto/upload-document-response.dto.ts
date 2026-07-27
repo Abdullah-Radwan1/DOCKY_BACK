@@ -1,4 +1,4 @@
-import { DocumentStatus } from 'src/generated/prisma';
+import { DocumentStatus } from '../../generated/prisma/client.js';
 
 /**
  * Shape of the JSON response returned after a successful PDF upload.

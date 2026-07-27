@@ -10,7 +10,7 @@ import { PdfValidatorService } from './pdf-validator.service';
 import { PdfExtractorService } from './pdf-extractor.service';
 import { ChunkingService } from './chunking.service';
 import { createHash } from 'crypto';
-import { DocumentStatus, Document } from '../../generated/prisma';
+import { DocumentStatus, Document } from '../../generated/prisma/client.js';
 import { UsagePolicyService } from '../../policy/usage-policy.service';
 import { NotificationsService } from '../../notifications/notifications.service';
 

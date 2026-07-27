@@ -1,4 +1,4 @@
-import { AnalysisRequestStatus } from 'src/generated/prisma';
+import { AnalysisRequestStatus } from '../../generated/prisma/client.js';
 
 export class ComplianceQueryEntity {
   id: string;

@@ -1,4 +1,4 @@
-import { FindingSeverity } from 'src/generated/prisma';
+import { FindingSeverity } from '../../generated/prisma/client.js';
 
 export class FindingEntity {
   id: string;

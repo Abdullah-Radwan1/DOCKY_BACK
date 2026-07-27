@@ -2,7 +2,7 @@ import {
   DeliveryChannel,
   NotificationStatus,
   NotificationType,
-} from 'src/generated/prisma';
+} from '../../generated/prisma/client.js';
 
 export class NotificationEntity {
   id: string;

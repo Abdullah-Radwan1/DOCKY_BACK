@@ -4,7 +4,7 @@ import {
   FindingSeverity,
   FindingStatus,
   RiskLevel,
-} from '../../generated/prisma';
+} from '../../generated/prisma/client.js';
 
 // ── Nested response DTOs ─────────────────────────────────────────────────────
 

@@ -1,4 +1,4 @@
-import { DocumentStatus } from 'src/generated/prisma';
+import { DocumentStatus } from '../../generated/prisma/client.js';
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateDocumentDto } from './create-document.dto';
 import { IsOptional, IsEnum } from 'class-validator';

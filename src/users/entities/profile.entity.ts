@@ -1,4 +1,4 @@
-import { UserRole } from 'src/generated/prisma';
+import { UserRole } from '../../generated/prisma/client.js';
 
 export class ProfileEntity {
   id: string;

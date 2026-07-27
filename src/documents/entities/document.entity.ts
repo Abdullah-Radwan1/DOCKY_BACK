@@ -1,4 +1,4 @@
-import { DocumentStatus } from 'src/generated/prisma';
+import { DocumentStatus } from '../../generated/prisma/client.js';
 
 export class DocumentEntity {
   id: string;

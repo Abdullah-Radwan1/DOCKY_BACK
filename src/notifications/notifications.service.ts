@@ -6,7 +6,7 @@ import { PushDispatcher } from './dispatchers/push.dispatcher';
 import { NotificationDispatcher } from './interfaces/notification-dispatcher.interface';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import { NotificationStatus } from '../generated/prisma';
+import { NotificationStatus } from '../generated/prisma/client.js';
 
 @Injectable()
 export class NotificationsService {

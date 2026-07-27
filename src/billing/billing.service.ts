@@ -7,7 +7,7 @@ import {
 import { Environment, Paddle } from '@paddle/paddle-node-sdk';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificationsService } from '../notifications/notifications.service';
-import { PlanType, BillingCycle } from '../generated/prisma';
+import { PlanType, BillingCycle } from '../generated/prisma/client.js';
 
 @Injectable()
 export class BillingService {

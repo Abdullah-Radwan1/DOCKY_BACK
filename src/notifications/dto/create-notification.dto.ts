@@ -1,4 +1,4 @@
-import { NotificationType, DeliveryChannel } from 'src/generated/prisma';
+import { NotificationType, DeliveryChannel } from '../../generated/prisma/client.js';
 import {
   IsString,
   IsOptional,

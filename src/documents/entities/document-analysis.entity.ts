@@ -1,4 +1,4 @@
-import { AnalysisVerdict } from 'src/generated/prisma';
+import { AnalysisVerdict } from '../../generated/prisma/client.js';
 
 export class DocumentAnalysisEntity {
   id: string;

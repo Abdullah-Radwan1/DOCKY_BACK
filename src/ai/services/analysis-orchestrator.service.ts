@@ -17,7 +17,7 @@ import type {
   AiAnalysisResponse,
   AiFinding,
 } from '../interfaces/ai-analysis-response.interface';
-import type { Prisma } from '../../generated/prisma';
+import type { Prisma } from '../../generated/prisma/client.js';
 import { AiProviderError, AiResponseParseError } from '../errors/ai.errors';
 import { ChunkRetrievalService } from './chunk-retrieval.service';
 import { PromptBuilderService } from './prompt-builder.service';
@@ -26,7 +26,7 @@ import {
   AnalysisVerdict,
   FindingSeverity,
   RiskLevel,
-} from '../../generated/prisma';
+} from '../../generated/prisma/client.js';
 import {
   AnalysisOptions,
   DEFAULT_ANALYSIS_OPTIONS,

@@ -2,7 +2,7 @@ import {
   NotificationStatus,
   NotificationType,
   DeliveryChannel,
-} from 'src/generated/prisma';
+} from '../../generated/prisma/client.js';
 
 export class NotificationResponseDto {
   id: string;

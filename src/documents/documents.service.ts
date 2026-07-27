@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { DocumentStatus } from '../generated/prisma';
+import { DocumentStatus } from '../generated/prisma/client.js';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';

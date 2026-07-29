@@ -156,7 +156,6 @@ export class DashboardService {
                 select: {
                   overallVerdict: true,
                   riskLevel: true,
-                  confidence: true,
                 },
               },
             },
@@ -253,7 +252,7 @@ export class DashboardService {
         requestStatus: req.status as RecentAnalysisDto['requestStatus'],
         verdict: (result?.overallVerdict ?? null) as RecentAnalysisDto['verdict'],
         riskLevel: (result?.riskLevel ?? null) as RecentAnalysisDto['riskLevel'],
-        confidenceScore: result?.confidence ?? null,
+        confidenceScore: null,
         createdAt: req.createdAt.toISOString(),
       };
     });

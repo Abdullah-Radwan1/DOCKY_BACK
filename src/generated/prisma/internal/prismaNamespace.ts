@@ -1412,7 +1412,6 @@ export const AnalysisResultScalarFieldEnum = {
   id: 'id',
   summary: 'summary',
   overallVerdict: 'overallVerdict',
-  confidence: 'confidence',
   riskLevel: 'riskLevel',
   createdAt: 'createdAt',
   responseId: 'responseId'
@@ -1475,7 +1474,6 @@ export const AIResponseScalarFieldEnum = {
   id: 'id',
   requestId: 'requestId',
   response: 'response',
-  confidenceScore: 'confidenceScore',
   metadata: 'metadata',
   createdAt: 'createdAt',
   matchedChunks: 'matchedChunks'
@@ -1690,20 +1688,6 @@ export type ListEnumAnalysisVerdictFieldRefInput<$PrismaModel> = FieldRefInputTy
 
 
 /**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-/**
  * Reference to a field of type 'RiskLevel'
  */
 export type EnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel'>
@@ -1826,6 +1810,20 @@ export type EnumBillingCycleFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'BillingCycle[]'
  */
 export type ListEnumBillingCycleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingCycle[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**

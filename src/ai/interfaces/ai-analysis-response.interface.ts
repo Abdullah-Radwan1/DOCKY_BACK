@@ -113,10 +113,9 @@ export interface AiContractMissingClause {
 
 /**
  * All contractual facts extracted from the document.
- * This data SUPPORTS the compliance assessment; it is secondary to it.
  *
  * Sub-arrays are `null` (not `[]`) when the corresponding section was excluded
- * by `AnalysisOptions`.  The frontend uses null to distinguish "not requested"
+ * by `AnalysisOptions`. The frontend uses null to distinguish "not requested"
  * from "requested but nothing found" (which stays as `[]`).
  */
 export interface AiContractData {
@@ -134,8 +133,6 @@ export interface AiContractData {
   renewalTerms: AiContractRenewalTerm[] | null;
   /** null = section was not requested (paired with renewalTerms toggle) */
   terminationTerms: AiContractTerminationTerms | null;
-  /** Governing law / jurisdiction or null. Always returned. */
-  governingLaw: string | null;
   /** null = section was not requested via AnalysisOptions.contract.importantDates */
   importantDates: AiContractImportantDate[] | null;
   /** null = section was not requested via AnalysisOptions.missingClauses */
@@ -148,19 +145,12 @@ export interface AiContractData {
  * Evaluation of a single compliance requirement stated by the user.
  */
 export interface AiComplianceRequirement {
-  /** The specific requirement being evaluated. */
   requirement: string;
-  /** Whether the document satisfies the requirement. */
   status: 'met' | 'partial' | 'unmet' | 'unknown';
-  /** Explanation of why this status was assigned. */
   reason: string;
-  /** Exact text or paraphrase from the document supporting the decision. */
   evidence: string | null;
   pageNumber: number | null;
   clauseReference: string | null;
-  /** Confidence in this specific evaluation (0–1). */
-  confidence: number;
-  /** Suggested remediation if status is not "met". */
   recommendation: string | null;
 }
 
@@ -176,7 +166,6 @@ export interface AiFinding {
   affectedRequirement: string | null;
   pageNumber: number | null;
   clauseReference: string | null;
-  /** Verbatim quotation from the document, or null. */
   excerpt: string | null;
   recommendation: string | null;
   metadata: Record<string, unknown>;
@@ -192,17 +181,12 @@ export interface AiComplianceSummary {
 
 /**
  * The full compliance evaluation.
- * This is the PRIMARY result of every analysis.
  */
 export interface AiComplianceData {
   overallVerdict: 'compliant' | 'partial' | 'non_compliant' | 'unknown';
   riskLevel: 'low' | 'medium' | 'high';
-  /** Overall confidence across all requirement evaluations (0–1). */
-  confidence: number;
   summary: AiComplianceSummary;
-  /** One entry per requirement stated by the user. */
   requirements: AiComplianceRequirement[];
-  /** Broad findings and risks discovered during the analysis. Must contain ≥1 item. */
   findings: AiFinding[];
 }
 
@@ -211,15 +195,12 @@ export interface AiComplianceData {
 /**
  * The complete AI analysis response.
  *
- * `compliance` is the primary output; `contract` is the supporting extraction.
- *
  * Fields may be `null` when the corresponding `AnalysisOptions` flag was false.
  */
 export interface AiAnalysisResponse {
   /**
    * Direct response to the user's question (or a brief document orientation
-   * when no question was asked).  Populated independently of the structured
-   * analysis — never biased by the analysis fields and vice-versa.
+   * when no question was asked).
    */
   answer: string;
   /** 2–5 sentence executive summary of the full analysis. */

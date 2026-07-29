@@ -20,25 +20,14 @@ export type AnalysisResultModel = runtime.Types.Result.DefaultSelection<Prisma.$
 
 export type AggregateAnalysisResult = {
   _count: AnalysisResultCountAggregateOutputType | null
-  _avg: AnalysisResultAvgAggregateOutputType | null
-  _sum: AnalysisResultSumAggregateOutputType | null
   _min: AnalysisResultMinAggregateOutputType | null
   _max: AnalysisResultMaxAggregateOutputType | null
-}
-
-export type AnalysisResultAvgAggregateOutputType = {
-  confidence: number | null
-}
-
-export type AnalysisResultSumAggregateOutputType = {
-  confidence: number | null
 }
 
 export type AnalysisResultMinAggregateOutputType = {
   id: string | null
   summary: string | null
   overallVerdict: $Enums.AnalysisVerdict | null
-  confidence: number | null
   riskLevel: $Enums.RiskLevel | null
   createdAt: Date | null
   responseId: string | null
@@ -48,7 +37,6 @@ export type AnalysisResultMaxAggregateOutputType = {
   id: string | null
   summary: string | null
   overallVerdict: $Enums.AnalysisVerdict | null
-  confidence: number | null
   riskLevel: $Enums.RiskLevel | null
   createdAt: Date | null
   responseId: string | null
@@ -58,7 +46,6 @@ export type AnalysisResultCountAggregateOutputType = {
   id: number
   summary: number
   overallVerdict: number
-  confidence: number
   riskLevel: number
   createdAt: number
   responseId: number
@@ -66,19 +53,10 @@ export type AnalysisResultCountAggregateOutputType = {
 }
 
 
-export type AnalysisResultAvgAggregateInputType = {
-  confidence?: true
-}
-
-export type AnalysisResultSumAggregateInputType = {
-  confidence?: true
-}
-
 export type AnalysisResultMinAggregateInputType = {
   id?: true
   summary?: true
   overallVerdict?: true
-  confidence?: true
   riskLevel?: true
   createdAt?: true
   responseId?: true
@@ -88,7 +66,6 @@ export type AnalysisResultMaxAggregateInputType = {
   id?: true
   summary?: true
   overallVerdict?: true
-  confidence?: true
   riskLevel?: true
   createdAt?: true
   responseId?: true
@@ -98,7 +75,6 @@ export type AnalysisResultCountAggregateInputType = {
   id?: true
   summary?: true
   overallVerdict?: true
-  confidence?: true
   riskLevel?: true
   createdAt?: true
   responseId?: true
@@ -143,18 +119,6 @@ export type AnalysisResultAggregateArgs<ExtArgs extends runtime.Types.Extensions
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: AnalysisResultAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: AnalysisResultSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: AnalysisResultMinAggregateInputType
@@ -185,8 +149,6 @@ export type AnalysisResultGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   _count?: AnalysisResultCountAggregateInputType | true
-  _avg?: AnalysisResultAvgAggregateInputType
-  _sum?: AnalysisResultSumAggregateInputType
   _min?: AnalysisResultMinAggregateInputType
   _max?: AnalysisResultMaxAggregateInputType
 }
@@ -195,13 +157,10 @@ export type AnalysisResultGroupByOutputType = {
   id: string
   summary: string | null
   overallVerdict: $Enums.AnalysisVerdict | null
-  confidence: number | null
   riskLevel: $Enums.RiskLevel | null
   createdAt: Date
   responseId: string
   _count: AnalysisResultCountAggregateOutputType | null
-  _avg: AnalysisResultAvgAggregateOutputType | null
-  _sum: AnalysisResultSumAggregateOutputType | null
   _min: AnalysisResultMinAggregateOutputType | null
   _max: AnalysisResultMaxAggregateOutputType | null
 }
@@ -228,7 +187,6 @@ export type AnalysisResultWhereInput = {
   id?: Prisma.UuidFilter<"AnalysisResult"> | string
   summary?: Prisma.StringNullableFilter<"AnalysisResult"> | string | null
   overallVerdict?: Prisma.EnumAnalysisVerdictNullableFilter<"AnalysisResult"> | $Enums.AnalysisVerdict | null
-  confidence?: Prisma.FloatNullableFilter<"AnalysisResult"> | number | null
   riskLevel?: Prisma.EnumRiskLevelNullableFilter<"AnalysisResult"> | $Enums.RiskLevel | null
   createdAt?: Prisma.DateTimeFilter<"AnalysisResult"> | Date | string
   responseId?: Prisma.UuidFilter<"AnalysisResult"> | string
@@ -240,7 +198,6 @@ export type AnalysisResultOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   summary?: Prisma.SortOrderInput | Prisma.SortOrder
   overallVerdict?: Prisma.SortOrderInput | Prisma.SortOrder
-  confidence?: Prisma.SortOrderInput | Prisma.SortOrder
   riskLevel?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   responseId?: Prisma.SortOrder
@@ -256,7 +213,6 @@ export type AnalysisResultWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.AnalysisResultWhereInput | Prisma.AnalysisResultWhereInput[]
   summary?: Prisma.StringNullableFilter<"AnalysisResult"> | string | null
   overallVerdict?: Prisma.EnumAnalysisVerdictNullableFilter<"AnalysisResult"> | $Enums.AnalysisVerdict | null
-  confidence?: Prisma.FloatNullableFilter<"AnalysisResult"> | number | null
   riskLevel?: Prisma.EnumRiskLevelNullableFilter<"AnalysisResult"> | $Enums.RiskLevel | null
   createdAt?: Prisma.DateTimeFilter<"AnalysisResult"> | Date | string
   Response?: Prisma.XOR<Prisma.AIResponseScalarRelationFilter, Prisma.AIResponseWhereInput>
@@ -267,15 +223,12 @@ export type AnalysisResultOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   summary?: Prisma.SortOrderInput | Prisma.SortOrder
   overallVerdict?: Prisma.SortOrderInput | Prisma.SortOrder
-  confidence?: Prisma.SortOrderInput | Prisma.SortOrder
   riskLevel?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   responseId?: Prisma.SortOrder
   _count?: Prisma.AnalysisResultCountOrderByAggregateInput
-  _avg?: Prisma.AnalysisResultAvgOrderByAggregateInput
   _max?: Prisma.AnalysisResultMaxOrderByAggregateInput
   _min?: Prisma.AnalysisResultMinOrderByAggregateInput
-  _sum?: Prisma.AnalysisResultSumOrderByAggregateInput
 }
 
 export type AnalysisResultScalarWhereWithAggregatesInput = {
@@ -285,7 +238,6 @@ export type AnalysisResultScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"AnalysisResult"> | string
   summary?: Prisma.StringNullableWithAggregatesFilter<"AnalysisResult"> | string | null
   overallVerdict?: Prisma.EnumAnalysisVerdictNullableWithAggregatesFilter<"AnalysisResult"> | $Enums.AnalysisVerdict | null
-  confidence?: Prisma.FloatNullableWithAggregatesFilter<"AnalysisResult"> | number | null
   riskLevel?: Prisma.EnumRiskLevelNullableWithAggregatesFilter<"AnalysisResult"> | $Enums.RiskLevel | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AnalysisResult"> | Date | string
   responseId?: Prisma.UuidWithAggregatesFilter<"AnalysisResult"> | string
@@ -295,7 +247,6 @@ export type AnalysisResultCreateInput = {
   id?: string
   summary?: string | null
   overallVerdict?: $Enums.AnalysisVerdict | null
-  confidence?: number | null
   riskLevel?: $Enums.RiskLevel | null
   createdAt?: Date | string
   Response: Prisma.AIResponseCreateNestedOneWithoutAnalysisResultInput
@@ -306,7 +257,6 @@ export type AnalysisResultUncheckedCreateInput = {
   id?: string
   summary?: string | null
   overallVerdict?: $Enums.AnalysisVerdict | null
-  confidence?: number | null
   riskLevel?: $Enums.RiskLevel | null
   createdAt?: Date | string
   responseId: string
@@ -317,7 +267,6 @@ export type AnalysisResultUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   overallVerdict?: Prisma.NullableEnumAnalysisVerdictFieldUpdateOperationsInput | $Enums.AnalysisVerdict | null
-  confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Response?: Prisma.AIResponseUpdateOneRequiredWithoutAnalysisResultNestedInput
@@ -328,7 +277,6 @@ export type AnalysisResultUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   overallVerdict?: Prisma.NullableEnumAnalysisVerdictFieldUpdateOperationsInput | $Enums.AnalysisVerdict | null
-  confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responseId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -339,7 +287,6 @@ export type AnalysisResultCreateManyInput = {
   id?: string
   summary?: string | null
   overallVerdict?: $Enums.AnalysisVerdict | null
-  confidence?: number | null
   riskLevel?: $Enums.RiskLevel | null
   createdAt?: Date | string
   responseId: string
@@ -349,7 +296,6 @@ export type AnalysisResultUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   overallVerdict?: Prisma.NullableEnumAnalysisVerdictFieldUpdateOperationsInput | $Enums.AnalysisVerdict | null
-  confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -358,7 +304,6 @@ export type AnalysisResultUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   overallVerdict?: Prisma.NullableEnumAnalysisVerdictFieldUpdateOperationsInput | $Enums.AnalysisVerdict | null
-  confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responseId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -368,21 +313,15 @@ export type AnalysisResultCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   overallVerdict?: Prisma.SortOrder
-  confidence?: Prisma.SortOrder
   riskLevel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   responseId?: Prisma.SortOrder
-}
-
-export type AnalysisResultAvgOrderByAggregateInput = {
-  confidence?: Prisma.SortOrder
 }
 
 export type AnalysisResultMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   overallVerdict?: Prisma.SortOrder
-  confidence?: Prisma.SortOrder
   riskLevel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   responseId?: Prisma.SortOrder
@@ -392,14 +331,9 @@ export type AnalysisResultMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   summary?: Prisma.SortOrder
   overallVerdict?: Prisma.SortOrder
-  confidence?: Prisma.SortOrder
   riskLevel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   responseId?: Prisma.SortOrder
-}
-
-export type AnalysisResultSumOrderByAggregateInput = {
-  confidence?: Prisma.SortOrder
 }
 
 export type AnalysisResultScalarRelationFilter = {
@@ -414,14 +348,6 @@ export type AnalysisResultNullableScalarRelationFilter = {
 
 export type NullableEnumAnalysisVerdictFieldUpdateOperationsInput = {
   set?: $Enums.AnalysisVerdict | null
-}
-
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type NullableEnumRiskLevelFieldUpdateOperationsInput = {
@@ -478,7 +404,6 @@ export type AnalysisResultCreateWithoutFindingsInput = {
   id?: string
   summary?: string | null
   overallVerdict?: $Enums.AnalysisVerdict | null
-  confidence?: number | null
   riskLevel?: $Enums.RiskLevel | null
   createdAt?: Date | string
   Response: Prisma.AIResponseCreateNestedOneWithoutAnalysisResultInput
@@ -488,7 +413,6 @@ export type AnalysisResultUncheckedCreateWithoutFindingsInput = {
   id?: string
   summary?: string | null
   overallVerdict?: $Enums.AnalysisVerdict | null
-  confidence?: number | null
   riskLevel?: $Enums.RiskLevel | null
   createdAt?: Date | string
   responseId: string
@@ -514,7 +438,6 @@ export type AnalysisResultUpdateWithoutFindingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   overallVerdict?: Prisma.NullableEnumAnalysisVerdictFieldUpdateOperationsInput | $Enums.AnalysisVerdict | null
-  confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   Response?: Prisma.AIResponseUpdateOneRequiredWithoutAnalysisResultNestedInput
@@ -524,7 +447,6 @@ export type AnalysisResultUncheckedUpdateWithoutFindingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   overallVerdict?: Prisma.NullableEnumAnalysisVerdictFieldUpdateOperationsInput | $Enums.AnalysisVerdict | null
-  confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responseId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -534,7 +456,6 @@ export type AnalysisResultCreateWithoutResponseInput = {
   id?: string
   summary?: string | null
   overallVerdict?: $Enums.AnalysisVerdict | null
-  confidence?: number | null
   riskLevel?: $Enums.RiskLevel | null
   createdAt?: Date | string
   findings?: Prisma.FindingCreateNestedManyWithoutAnalysisInput
@@ -544,7 +465,6 @@ export type AnalysisResultUncheckedCreateWithoutResponseInput = {
   id?: string
   summary?: string | null
   overallVerdict?: $Enums.AnalysisVerdict | null
-  confidence?: number | null
   riskLevel?: $Enums.RiskLevel | null
   createdAt?: Date | string
   findings?: Prisma.FindingUncheckedCreateNestedManyWithoutAnalysisInput
@@ -570,7 +490,6 @@ export type AnalysisResultUpdateWithoutResponseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   overallVerdict?: Prisma.NullableEnumAnalysisVerdictFieldUpdateOperationsInput | $Enums.AnalysisVerdict | null
-  confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   findings?: Prisma.FindingUpdateManyWithoutAnalysisNestedInput
@@ -580,7 +499,6 @@ export type AnalysisResultUncheckedUpdateWithoutResponseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   overallVerdict?: Prisma.NullableEnumAnalysisVerdictFieldUpdateOperationsInput | $Enums.AnalysisVerdict | null
-  confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   riskLevel?: Prisma.NullableEnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   findings?: Prisma.FindingUncheckedUpdateManyWithoutAnalysisNestedInput
@@ -621,7 +539,6 @@ export type AnalysisResultSelect<ExtArgs extends runtime.Types.Extensions.Intern
   id?: boolean
   summary?: boolean
   overallVerdict?: boolean
-  confidence?: boolean
   riskLevel?: boolean
   createdAt?: boolean
   responseId?: boolean
@@ -634,7 +551,6 @@ export type AnalysisResultSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   summary?: boolean
   overallVerdict?: boolean
-  confidence?: boolean
   riskLevel?: boolean
   createdAt?: boolean
   responseId?: boolean
@@ -645,7 +561,6 @@ export type AnalysisResultSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   summary?: boolean
   overallVerdict?: boolean
-  confidence?: boolean
   riskLevel?: boolean
   createdAt?: boolean
   responseId?: boolean
@@ -656,13 +571,12 @@ export type AnalysisResultSelectScalar = {
   id?: boolean
   summary?: boolean
   overallVerdict?: boolean
-  confidence?: boolean
   riskLevel?: boolean
   createdAt?: boolean
   responseId?: boolean
 }
 
-export type AnalysisResultOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "summary" | "overallVerdict" | "confidence" | "riskLevel" | "createdAt" | "responseId", ExtArgs["result"]["analysisResult"]>
+export type AnalysisResultOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "summary" | "overallVerdict" | "riskLevel" | "createdAt" | "responseId", ExtArgs["result"]["analysisResult"]>
 export type AnalysisResultInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Response?: boolean | Prisma.AIResponseDefaultArgs<ExtArgs>
   findings?: boolean | Prisma.AnalysisResult$findingsArgs<ExtArgs>
@@ -685,7 +599,6 @@ export type $AnalysisResultPayload<ExtArgs extends runtime.Types.Extensions.Inte
     id: string
     summary: string | null
     overallVerdict: $Enums.AnalysisVerdict | null
-    confidence: number | null
     riskLevel: $Enums.RiskLevel | null
     createdAt: Date
     responseId: string
@@ -1117,7 +1030,6 @@ export interface AnalysisResultFieldRefs {
   readonly id: Prisma.FieldRef<"AnalysisResult", 'String'>
   readonly summary: Prisma.FieldRef<"AnalysisResult", 'String'>
   readonly overallVerdict: Prisma.FieldRef<"AnalysisResult", 'AnalysisVerdict'>
-  readonly confidence: Prisma.FieldRef<"AnalysisResult", 'Float'>
   readonly riskLevel: Prisma.FieldRef<"AnalysisResult", 'RiskLevel'>
   readonly createdAt: Prisma.FieldRef<"AnalysisResult", 'DateTime'>
   readonly responseId: Prisma.FieldRef<"AnalysisResult", 'String'>

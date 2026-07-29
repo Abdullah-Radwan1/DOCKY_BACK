@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser');
 
 let cachedServer: any;
 
+const isVercel = process.env.VERCEL === '1' || process.env.VERCEL === 'true';
+
 async function bootstrap() {
   if (cachedServer) return cachedServer;
 
@@ -27,7 +29,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   // Only listen on port if NOT running in Vercel environment
-  if (!process.env.VERCEL) {
+  if (!isVercel) {
     await app.listen(process.env.PORT ?? 3000);
     console.log(
       `🚀 Backend running on http://localhost:${process.env.PORT ?? 3000}`,
@@ -41,7 +43,7 @@ async function bootstrap() {
 }
 
 // Local execution
-if (!process.env.VERCEL) {
+if (!isVercel) {
   bootstrap();
 }
 

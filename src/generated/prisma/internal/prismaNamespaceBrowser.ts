@@ -151,7 +151,6 @@ export const AnalysisResultScalarFieldEnum = {
   id: 'id',
   summary: 'summary',
   overallVerdict: 'overallVerdict',
-  confidence: 'confidence',
   riskLevel: 'riskLevel',
   createdAt: 'createdAt',
   responseId: 'responseId'
@@ -214,7 +213,6 @@ export const AIResponseScalarFieldEnum = {
   id: 'id',
   requestId: 'requestId',
   response: 'response',
-  confidenceScore: 'confidenceScore',
   metadata: 'metadata',
   createdAt: 'createdAt',
   matchedChunks: 'matchedChunks'

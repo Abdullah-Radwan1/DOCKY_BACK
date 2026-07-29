@@ -20,31 +20,19 @@ export type AIResponseModel = runtime.Types.Result.DefaultSelection<Prisma.$AIRe
 
 export type AggregateAIResponse = {
   _count: AIResponseCountAggregateOutputType | null
-  _avg: AIResponseAvgAggregateOutputType | null
-  _sum: AIResponseSumAggregateOutputType | null
   _min: AIResponseMinAggregateOutputType | null
   _max: AIResponseMaxAggregateOutputType | null
-}
-
-export type AIResponseAvgAggregateOutputType = {
-  confidenceScore: number | null
-}
-
-export type AIResponseSumAggregateOutputType = {
-  confidenceScore: number | null
 }
 
 export type AIResponseMinAggregateOutputType = {
   id: string | null
   requestId: string | null
-  confidenceScore: number | null
   createdAt: Date | null
 }
 
 export type AIResponseMaxAggregateOutputType = {
   id: string | null
   requestId: string | null
-  confidenceScore: number | null
   createdAt: Date | null
 }
 
@@ -52,7 +40,6 @@ export type AIResponseCountAggregateOutputType = {
   id: number
   requestId: number
   response: number
-  confidenceScore: number
   metadata: number
   createdAt: number
   matchedChunks: number
@@ -60,25 +47,15 @@ export type AIResponseCountAggregateOutputType = {
 }
 
 
-export type AIResponseAvgAggregateInputType = {
-  confidenceScore?: true
-}
-
-export type AIResponseSumAggregateInputType = {
-  confidenceScore?: true
-}
-
 export type AIResponseMinAggregateInputType = {
   id?: true
   requestId?: true
-  confidenceScore?: true
   createdAt?: true
 }
 
 export type AIResponseMaxAggregateInputType = {
   id?: true
   requestId?: true
-  confidenceScore?: true
   createdAt?: true
 }
 
@@ -86,7 +63,6 @@ export type AIResponseCountAggregateInputType = {
   id?: true
   requestId?: true
   response?: true
-  confidenceScore?: true
   metadata?: true
   createdAt?: true
   matchedChunks?: true
@@ -131,18 +107,6 @@ export type AIResponseAggregateArgs<ExtArgs extends runtime.Types.Extensions.Int
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: AIResponseAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: AIResponseSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: AIResponseMinAggregateInputType
@@ -173,8 +137,6 @@ export type AIResponseGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   _count?: AIResponseCountAggregateInputType | true
-  _avg?: AIResponseAvgAggregateInputType
-  _sum?: AIResponseSumAggregateInputType
   _min?: AIResponseMinAggregateInputType
   _max?: AIResponseMaxAggregateInputType
 }
@@ -183,13 +145,10 @@ export type AIResponseGroupByOutputType = {
   id: string
   requestId: string
   response: runtime.JsonValue
-  confidenceScore: number | null
   metadata: runtime.JsonValue | null
   createdAt: Date
   matchedChunks: runtime.JsonValue | null
   _count: AIResponseCountAggregateOutputType | null
-  _avg: AIResponseAvgAggregateOutputType | null
-  _sum: AIResponseSumAggregateOutputType | null
   _min: AIResponseMinAggregateOutputType | null
   _max: AIResponseMaxAggregateOutputType | null
 }
@@ -216,7 +175,6 @@ export type AIResponseWhereInput = {
   id?: Prisma.UuidFilter<"AIResponse"> | string
   requestId?: Prisma.UuidFilter<"AIResponse"> | string
   response?: Prisma.JsonFilter<"AIResponse">
-  confidenceScore?: Prisma.FloatNullableFilter<"AIResponse"> | number | null
   metadata?: Prisma.JsonNullableFilter<"AIResponse">
   createdAt?: Prisma.DateTimeFilter<"AIResponse"> | Date | string
   matchedChunks?: Prisma.JsonNullableFilter<"AIResponse">
@@ -228,7 +186,6 @@ export type AIResponseOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
   response?: Prisma.SortOrder
-  confidenceScore?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   matchedChunks?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -243,7 +200,6 @@ export type AIResponseWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.AIResponseWhereInput[]
   NOT?: Prisma.AIResponseWhereInput | Prisma.AIResponseWhereInput[]
   response?: Prisma.JsonFilter<"AIResponse">
-  confidenceScore?: Prisma.FloatNullableFilter<"AIResponse"> | number | null
   metadata?: Prisma.JsonNullableFilter<"AIResponse">
   createdAt?: Prisma.DateTimeFilter<"AIResponse"> | Date | string
   matchedChunks?: Prisma.JsonNullableFilter<"AIResponse">
@@ -255,15 +211,12 @@ export type AIResponseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
   response?: Prisma.SortOrder
-  confidenceScore?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   matchedChunks?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AIResponseCountOrderByAggregateInput
-  _avg?: Prisma.AIResponseAvgOrderByAggregateInput
   _max?: Prisma.AIResponseMaxOrderByAggregateInput
   _min?: Prisma.AIResponseMinOrderByAggregateInput
-  _sum?: Prisma.AIResponseSumOrderByAggregateInput
 }
 
 export type AIResponseScalarWhereWithAggregatesInput = {
@@ -273,7 +226,6 @@ export type AIResponseScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"AIResponse"> | string
   requestId?: Prisma.UuidWithAggregatesFilter<"AIResponse"> | string
   response?: Prisma.JsonWithAggregatesFilter<"AIResponse">
-  confidenceScore?: Prisma.FloatNullableWithAggregatesFilter<"AIResponse"> | number | null
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"AIResponse">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AIResponse"> | Date | string
   matchedChunks?: Prisma.JsonNullableWithAggregatesFilter<"AIResponse">
@@ -282,7 +234,6 @@ export type AIResponseScalarWhereWithAggregatesInput = {
 export type AIResponseCreateInput = {
   id?: string
   response: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -294,7 +245,6 @@ export type AIResponseUncheckedCreateInput = {
   id?: string
   requestId: string
   response: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -304,7 +254,6 @@ export type AIResponseUncheckedCreateInput = {
 export type AIResponseUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -316,7 +265,6 @@ export type AIResponseUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
   response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -327,7 +275,6 @@ export type AIResponseCreateManyInput = {
   id?: string
   requestId: string
   response: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -336,7 +283,6 @@ export type AIResponseCreateManyInput = {
 export type AIResponseUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -346,7 +292,6 @@ export type AIResponseUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
   response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -366,32 +311,21 @@ export type AIResponseCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
   response?: Prisma.SortOrder
-  confidenceScore?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   matchedChunks?: Prisma.SortOrder
 }
 
-export type AIResponseAvgOrderByAggregateInput = {
-  confidenceScore?: Prisma.SortOrder
-}
-
 export type AIResponseMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
-  confidenceScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type AIResponseMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
-  confidenceScore?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-}
-
-export type AIResponseSumOrderByAggregateInput = {
-  confidenceScore?: Prisma.SortOrder
 }
 
 export type AIResponseCreateNestedOneWithoutAnalysisResultInput = {
@@ -443,7 +377,6 @@ export type AIResponseUncheckedUpdateOneWithoutAnalysisRequestNestedInput = {
 export type AIResponseCreateWithoutAnalysisResultInput = {
   id?: string
   response: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -454,7 +387,6 @@ export type AIResponseUncheckedCreateWithoutAnalysisResultInput = {
   id?: string
   requestId: string
   response: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -479,7 +411,6 @@ export type AIResponseUpdateToOneWithWhereWithoutAnalysisResultInput = {
 export type AIResponseUpdateWithoutAnalysisResultInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -490,7 +421,6 @@ export type AIResponseUncheckedUpdateWithoutAnalysisResultInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
   response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -499,7 +429,6 @@ export type AIResponseUncheckedUpdateWithoutAnalysisResultInput = {
 export type AIResponseCreateWithoutAnalysisRequestInput = {
   id?: string
   response: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -509,7 +438,6 @@ export type AIResponseCreateWithoutAnalysisRequestInput = {
 export type AIResponseUncheckedCreateWithoutAnalysisRequestInput = {
   id?: string
   response: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -535,7 +463,6 @@ export type AIResponseUpdateToOneWithWhereWithoutAnalysisRequestInput = {
 export type AIResponseUpdateWithoutAnalysisRequestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -545,7 +472,6 @@ export type AIResponseUpdateWithoutAnalysisRequestInput = {
 export type AIResponseUncheckedUpdateWithoutAnalysisRequestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   response?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  confidenceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   matchedChunks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -558,7 +484,6 @@ export type AIResponseSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   id?: boolean
   requestId?: boolean
   response?: boolean
-  confidenceScore?: boolean
   metadata?: boolean
   createdAt?: boolean
   matchedChunks?: boolean
@@ -570,7 +495,6 @@ export type AIResponseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   requestId?: boolean
   response?: boolean
-  confidenceScore?: boolean
   metadata?: boolean
   createdAt?: boolean
   matchedChunks?: boolean
@@ -581,7 +505,6 @@ export type AIResponseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   requestId?: boolean
   response?: boolean
-  confidenceScore?: boolean
   metadata?: boolean
   createdAt?: boolean
   matchedChunks?: boolean
@@ -592,13 +515,12 @@ export type AIResponseSelectScalar = {
   id?: boolean
   requestId?: boolean
   response?: boolean
-  confidenceScore?: boolean
   metadata?: boolean
   createdAt?: boolean
   matchedChunks?: boolean
 }
 
-export type AIResponseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "requestId" | "response" | "confidenceScore" | "metadata" | "createdAt" | "matchedChunks", ExtArgs["result"]["aIResponse"]>
+export type AIResponseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "requestId" | "response" | "metadata" | "createdAt" | "matchedChunks", ExtArgs["result"]["aIResponse"]>
 export type AIResponseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   AnalysisRequest?: boolean | Prisma.AnalysisRequestDefaultArgs<ExtArgs>
   AnalysisResult?: boolean | Prisma.AIResponse$AnalysisResultArgs<ExtArgs>
@@ -620,7 +542,6 @@ export type $AIResponsePayload<ExtArgs extends runtime.Types.Extensions.Internal
     id: string
     requestId: string
     response: runtime.JsonValue
-    confidenceScore: number | null
     metadata: runtime.JsonValue | null
     createdAt: Date
     matchedChunks: runtime.JsonValue | null
@@ -1052,7 +973,6 @@ export interface AIResponseFieldRefs {
   readonly id: Prisma.FieldRef<"AIResponse", 'String'>
   readonly requestId: Prisma.FieldRef<"AIResponse", 'String'>
   readonly response: Prisma.FieldRef<"AIResponse", 'Json'>
-  readonly confidenceScore: Prisma.FieldRef<"AIResponse", 'Float'>
   readonly metadata: Prisma.FieldRef<"AIResponse", 'Json'>
   readonly createdAt: Prisma.FieldRef<"AIResponse", 'DateTime'>
   readonly matchedChunks: Prisma.FieldRef<"AIResponse", 'Json'>

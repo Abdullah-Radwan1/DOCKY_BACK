@@ -184,4 +184,36 @@ export class DocumentsController {
   ) {
     return this.documentsService.deleteDocumentForUser(id, req.user.id);
   }
+
+  // ── Analysis endpoints ───────────────────────────────────────────────────
+
+  /**
+   * POST /documents/:id/analyze
+   *
+   * Trigger AI analysis for a document that hasn't been analyzed yet.
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/analyze')
+  @HttpCode(HttpStatus.OK)
+  async analyze(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    return this.documentsService.analyzeDocument(id, req.user.id);
+  }
+
+  /**
+   * DELETE /documents/:id/findings
+   *
+   * Permanently remove all findings/risks/compliance issues for a document.
+   */
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id/findings')
+  @HttpCode(HttpStatus.OK)
+  async resolveFindings(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    return this.documentsService.resolveFindings(id, req.user.id);
+  }
 }

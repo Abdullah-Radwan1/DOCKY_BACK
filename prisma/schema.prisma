@@ -219,7 +219,6 @@ model AnalysisResult {
   id             String           @id @default(uuid()) @db.Uuid
   summary        String?          @map("executive_summary")
   overallVerdict AnalysisVerdict? @map("overall_verdict")
-  confidence     Float?           @map("confidence_score")
   riskLevel      RiskLevel?
 
   createdAt  DateTime @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamptz
@@ -298,7 +297,6 @@ model AIResponse {
   id              String          @id @default(uuid()) @db.Uuid
   requestId       String          @unique @map("query_id") @db.Uuid
   response        Json            @map("response_text")
-  confidenceScore Float?          @map("confidence_score")
   metadata        Json?
   createdAt       DateTime        @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamptz
   matchedChunks   Json?

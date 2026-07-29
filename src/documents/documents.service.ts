@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { DocumentStatus } from '../generated/prisma/client.js';
+import { DocumentStatus, AnalysisVerdict } from '../generated/prisma/client.js';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
@@ -8,10 +8,15 @@ import {
   paginatePrisma,
   PaginatedResult,
 } from '../common/utils/pagination.utils';
+import { AnalysisOrchestratorService } from '../ai/services/analysis-orchestrator.service';
+import { DEFAULT_ANALYSIS_OPTIONS } from '../ai/interfaces/analysis-options.interface';
 
 @Injectable()
 export class DocumentsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly orchestrator: AnalysisOrchestratorService,
+  ) {}
 
   /**
    * Create a document owned by an authenticated user.
@@ -225,5 +230,90 @@ export class DocumentsService {
         guestToken: null,
       },
     });
+  }
+
+  /**
+   * Trigger a fresh AI analysis for a document that has not yet been analyzed.
+   * Throws if the document already has a completed analysis.
+   */
+  async analyzeDocument(id: string, userId: string): Promise<{ requestId: string }> {
+    const document = await this.prisma.document.findFirst({
+      where: { id, uploadedBy: userId, isGuest: false },
+      select: { id: true, status: true },
+    });
+
+    if (!document) throw new NotFoundException('Document not found');
+
+    if (document.status !== DocumentStatus.ready) {
+      throw new BadRequestException(
+        `Document is not ready for analysis (status: ${document.status}).`,
+      );
+    }
+
+    // Check for existing completed analysis
+    const existingRequest = await this.prisma.analysisRequest.findFirst({
+      where: { documentId: id, status: 'completed' },
+      select: { id: true },
+    });
+
+    if (existingRequest) {
+      throw new BadRequestException('Document has already been analyzed.');
+    }
+
+    // Create analysis request and run pipeline
+    const request = await this.prisma.analysisRequest.create({
+      data: {
+        queryText: '',
+        userId,
+        documentId: id,
+        status: 'pending',
+      },
+    });
+
+    // Run analysis (synchronous)
+    await this.orchestrator.analyzeDocument(request.id, DEFAULT_ANALYSIS_OPTIONS);
+
+    return { requestId: request.id };
+  }
+
+  /**
+   * Permanently clears all findings for a document's latest analysis.
+   * Resets the overallVerdict on AnalysisResult but keeps the document and analysis metadata.
+   */
+  async resolveFindings(id: string, userId: string): Promise<{ success: boolean; deletedCount: number }> {
+    const document = await this.prisma.document.findFirst({
+      where: { id, uploadedBy: userId, isGuest: false },
+      select: { id: true },
+    });
+
+    if (!document) throw new NotFoundException('Document not found');
+
+    // Get the latest completed analysis result for this document
+    const latestRequest = await this.prisma.analysisRequest.findFirst({
+      where: { documentId: id, status: 'completed' },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        response: {
+          include: { AnalysisResult: { select: { id: true } } },
+        },
+      },
+    });
+
+    const analysisResultId = latestRequest?.response?.AnalysisResult?.id;
+    if (!analysisResultId) {
+      return { success: true, deletedCount: 0 };
+    }
+
+    const { count } = await this.prisma.finding.deleteMany({
+      where: { analysisId: analysisResultId },
+    });
+
+    // Reset verdict to reflect cleared state
+    await this.prisma.analysisResult.update({
+      where: { id: analysisResultId },
+      data: { overallVerdict: AnalysisVerdict.unknown },
+    });
+
+    return { success: true, deletedCount: count };
   }
 }

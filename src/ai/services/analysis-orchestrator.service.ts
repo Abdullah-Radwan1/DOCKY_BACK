@@ -164,13 +164,6 @@ export class CombinedAnalysisStage implements AnalysisStage {
         );
       }
 
-      if (typeof compliance.confidence !== 'number') {
-        throw new AiResponseParseError(
-          'Missing or invalid "compliance.confidence"',
-          raw,
-        );
-      }
-
       if (!compliance.riskLevel) {
         throw new AiResponseParseError('Missing "compliance.riskLevel"', raw);
       }
@@ -395,7 +388,6 @@ export class AnalysisOrchestratorService {
         data: {
           requestId,
           response: parsed as unknown as Prisma.InputJsonValue,
-          confidenceScore: parsed.compliance?.confidence ?? null,
           metadata: {
             stages: this.stages.map((s) => s.name),
             chunksUsed: chunks.length,
@@ -417,7 +409,6 @@ export class AnalysisOrchestratorService {
           overallVerdict: parsed.compliance
             ? this.mapVerdict(parsed.compliance.overallVerdict)
             : AnalysisVerdict.unknown,
-          confidence: parsed.compliance?.confidence ?? null,
           riskLevel: parsed.compliance
             ? this.mapRiskLevel(parsed.compliance.riskLevel)
             : RiskLevel.medium,

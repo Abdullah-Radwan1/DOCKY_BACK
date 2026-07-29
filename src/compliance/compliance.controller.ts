@@ -63,4 +63,12 @@ export class ComplianceController {
   ) {
     return this.complianceService.getQueriesByDocument(documentId);
   }
+
+  @UseGuards(OptionalJwtAuthGuard)
+  @Get('document/:documentId/status')
+  async getAnalysisStatus(
+    @Param('documentId', new ParseUUIDPipe()) documentId: string,
+  ) {
+    return this.complianceService.getLatestAnalysisStatus(documentId);
+  }
 }

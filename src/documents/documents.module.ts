@@ -10,12 +10,14 @@ import { ChunkingService } from './services/chunking.service';
 import { DocumentExpirySchedulerService } from './services/document-expiry-scheduler.service';
 import { PolicyModule } from '../policy/policy.module';
 import { NotificationsModule } from '../notifications/notifications.module';
+import { AiModule } from '../ai/ai.module';
 
 @Module({
   imports: [
     MulterModule.register({ storage: memoryStorage() }),
     PolicyModule,
     NotificationsModule,
+    AiModule,
   ],
   controllers: [DocumentsController],
   providers: [

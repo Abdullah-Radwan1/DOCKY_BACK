@@ -131,7 +131,6 @@ export async function paginatePrisma<T>(
                   select: {
                     overallVerdict: true,
                     riskLevel: true,
-                    confidence: true,
                   },
                 },
               },

@@ -17,7 +17,7 @@ import type { AiAnalysisResponse } from '../interfaces/ai-analysis-response.inte
  *
  * ## What this service IS
  * A focused, stateless builder that combines:
- *   1. A fixed system prompt that defines DUCKY AI's role and behavior.
+ *   1. A fixed system prompt that defines DOCKY AI's role and behavior.
  *   2. A context block (document text + structured analysis) injected once,
  *      at the top of the conversation, so it is never repeated per-turn.
  *   3. Prior chat history, threaded in natural order.
@@ -69,7 +69,7 @@ export class ChatPromptBuilderService {
   // ── System prompt sections ────────────────────────────────────────────────
 
   private sectionIdentity(): string {
-    return `You are DUCKY AI, a legal/compliance assistant. The document below was already analyzed — you're answering questions using the document text, the analysis results, and the conversation so far, not re-analyzing it.
+    return `You are DOCKY AI, a legal/compliance assistant. The document below was already analyzed — you're answering questions using the document text, the analysis results, and the conversation so far, not re-analyzing it.
 
 RULES: Plain text only, no JSON/markdown. Answer exactly what's asked, nothing extra — match the requested format (list/summary/single clause). Cite evidence when available (quote or paraphrase + page number). If multiple clauses apply, cover each. If the answer isn't in the document/analysis, say so — never invent. Only re-run the full analysis if explicitly asked. A brief relevant follow-up question is fine occasionally, not every message.`;
   }
@@ -112,7 +112,7 @@ RULES: Plain text only, no JSON/markdown. Answer exactly what's asked, nothing e
       return 'Compliance Analysis: (Not requested / not available)';
     }
     const lines: string[] = [
-      `Compliance Verdict: ${c.overallVerdict} | Risk Level: ${c.riskLevel} | Confidence: ${Math.round(c.confidence * 100)}%`,
+      `Compliance Verdict: ${c.overallVerdict} | Risk Level: ${c.riskLevel}`,
       `Requirements Checked: ${c.requirements.length} (passed: ${c.summary.passed}, failed: ${c.summary.failed}, partial: ${c.summary.partial}, unknown: ${c.summary.unknown})`,
     ];
 
@@ -156,10 +156,6 @@ RULES: Plain text only, no JSON/markdown. Answer exactly what's asked, nothing e
     if (ct.expirationDate) {
       lines.push(`  Expiration Date: ${ct.expirationDate}`);
     }
-    if (ct.governingLaw) {
-      lines.push(`  Governing Law: ${ct.governingLaw}`);
-    }
-
     if (ct.parties && ct.parties.length > 0) {
       lines.push(`  Parties (${ct.parties.length}):`);
       for (const p of ct.parties) {

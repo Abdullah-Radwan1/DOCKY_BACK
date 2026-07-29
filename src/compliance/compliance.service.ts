@@ -191,4 +191,17 @@ export class ComplianceService {
       orderBy: { createdAt: 'desc' },
     });
   }
+
+  /**
+   * Returns the latest analysis request status for a document.
+   * Used by the frontend progress bar to poll analysis state.
+   */
+  async getLatestAnalysisStatus(documentId: string) {
+    const request = await this.prisma.analysisRequest.findFirst({
+      where: { documentId },
+      orderBy: { createdAt: 'desc' },
+      select: { id: true, status: true, errorMessage: true, createdAt: true },
+    });
+    return request ?? { id: null, status: null, errorMessage: null };
+  }
 }

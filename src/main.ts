@@ -31,9 +31,7 @@ async function bootstrap() {
   // Only listen on port if NOT running in Vercel environment
   if (!isVercel) {
     await app.listen(process.env.PORT ?? 3000);
-    console.log(
-      `🚀 Backend running on http://localhost:${process.env.PORT ?? 3000}`,
-    );
+
   } else {
     await app.init();
     cachedServer = app.getHttpAdapter().getInstance();

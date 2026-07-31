@@ -95,14 +95,45 @@ export class CombinedAnalysisStage implements AnalysisStage {
   }
 
   async run(ctx: AnalysisStageContext): Promise<Partial<AiAnalysisResponse>> {
-    const messages = this.promptBuilder.buildAnalysisPrompt(
-      ctx.queryText,
-      ctx.chunks,
-      ctx.options,
-    );
+    // ── Fast path: compliance disabled → single call ─────────────────────────
+    if (!ctx.options.compliance) {
+      const messages = this.promptBuilder.buildAnalysisPrompt(
+        ctx.queryText,
+        ctx.chunks,
+        ctx.options,
+      );
+      const aiResult = await this.callAi(messages);
+      return this.parseAiResponse(aiResult.content, ctx.options);
+    }
 
-    const aiResult = await this.callAi(messages);
-    return this.parseAiResponse(aiResult.content, ctx.options);
+    // ── Parallel path: contract extraction + compliance evaluation ────────────
+    //
+    // Splitting the work into two focused calls and running them concurrently
+    // cuts wall time from (T_contract + T_compliance) to max(T_contract, T_compliance).
+    // Each call also has a smaller output schema, so token generation is faster.
+    const [contractRaw, complianceRaw] = await Promise.all([
+      this.callAi(
+        this.promptBuilder.buildContractExtractionPrompt(
+          ctx.queryText,
+          ctx.chunks,
+          ctx.options,
+        ),
+      ),
+      this.callAi(
+        this.promptBuilder.buildComplianceEvaluationPrompt(
+          ctx.chunks,
+          ctx.options,
+        ),
+      ),
+    ]);
+
+    const contractPart = this.parseContractResponse(contractRaw.content);
+    const compliancePart = this.parseComplianceResponse(complianceRaw.content, ctx.options);
+
+    return {
+      ...contractPart,
+      compliance: compliancePart.compliance ?? null,
+    };
   }
 
   private async callAi(messages: AiChatMessage[]): Promise<AiCompletionResult> {
@@ -118,6 +149,7 @@ export class CombinedAnalysisStage implements AnalysisStage {
   /**
    * Parses and validates the raw AI content into our typed schema.
    * Strips markdown fences if the model wraps the JSON despite instructions.
+   * Used by the single-call (no-compliance) fast path.
    */
   private parseAiResponse(raw: string, options: AnalysisOptions): AiAnalysisResponse {
     const cleaned = this.stripMarkdownFences(raw);
@@ -131,6 +163,83 @@ export class CombinedAnalysisStage implements AnalysisStage {
 
     this.validateResponse(parsed, raw, options);
     return parsed;
+  }
+
+  /**
+   * Parses the contract-extraction leg of the parallel pipeline.
+   * Expects { answer, summary, contract } — no compliance fields.
+   */
+  private parseContractResponse(raw: string): Omit<AiAnalysisResponse, 'compliance'> {
+    const cleaned = this.stripMarkdownFences(raw);
+    let parsed: any;
+    try {
+      parsed = JSON.parse(cleaned);
+    } catch {
+      throw new AiResponseParseError(
+        'Invalid JSON from AI model (contract extraction)',
+        raw,
+      );
+    }
+    if (!parsed.summary || typeof parsed.summary !== 'string') {
+      throw new AiResponseParseError(
+        'Missing or invalid "summary" in contract extraction response',
+        raw,
+      );
+    }
+    if (!parsed.contract) {
+      throw new AiResponseParseError(
+        'Missing "contract" domain in contract extraction response',
+        raw,
+      );
+    }
+    return parsed as Omit<AiAnalysisResponse, 'compliance'>;
+  }
+
+  /**
+   * Parses the compliance-evaluation leg of the parallel pipeline.
+   * Expects { compliance: { overallVerdict, riskLevel, findings, requirements, summary } }.
+   */
+  private parseComplianceResponse(
+    raw: string,
+    options: AnalysisOptions,
+  ): { compliance: AiAnalysisResponse['compliance'] } {
+    const cleaned = this.stripMarkdownFences(raw);
+    let parsed: any;
+    try {
+      parsed = JSON.parse(cleaned);
+    } catch {
+      throw new AiResponseParseError(
+        'Invalid JSON from AI model (compliance evaluation)',
+        raw,
+      );
+    }
+
+    if (options.compliance) {
+      const { compliance } = parsed;
+      if (!compliance) {
+        throw new AiResponseParseError(
+          'Missing "compliance" domain in compliance evaluation response',
+          raw,
+        );
+      }
+      if (!compliance.overallVerdict) {
+        throw new AiResponseParseError('Missing "compliance.overallVerdict"', raw);
+      }
+      if (!compliance.riskLevel) {
+        throw new AiResponseParseError('Missing "compliance.riskLevel"', raw);
+      }
+      if (!Array.isArray(compliance.findings)) {
+        throw new AiResponseParseError('"compliance.findings" must be an array', raw);
+      }
+      if (!Array.isArray(compliance.requirements)) {
+        throw new AiResponseParseError(
+          '"compliance.requirements" must be an array',
+          raw,
+        );
+      }
+    }
+
+    return { compliance: parsed.compliance ?? null };
   }
 
   private stripMarkdownFences(raw: string): string {

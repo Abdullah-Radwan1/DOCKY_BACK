@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { DocumentStatus, AnalysisVerdict } from '../generated/prisma/client.js';
 import { CreateDocumentDto } from './dto/create-document.dto';
@@ -13,6 +13,8 @@ import { DEFAULT_ANALYSIS_OPTIONS } from '../ai/interfaces/analysis-options.inte
 
 @Injectable()
 export class DocumentsService {
+  private readonly logger = new Logger(DocumentsService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly orchestrator: AnalysisOrchestratorService,
@@ -260,7 +262,7 @@ export class DocumentsService {
       throw new BadRequestException('Document has already been analyzed.');
     }
 
-    // Create analysis request and run pipeline
+    // Create analysis request record
     const request = await this.prisma.analysisRequest.create({
       data: {
         queryText: '',
@@ -270,8 +272,17 @@ export class DocumentsService {
       },
     });
 
-    // Run analysis (synchronous)
-    await this.orchestrator.analyzeDocument(request.id, DEFAULT_ANALYSIS_OPTIONS);
+    // Fire AI pipeline in background — return immediately so the HTTP
+    // response resolves in <500 ms instead of waiting 60-120 s.
+    // The frontend polls /compliance/document/:id/status for progress.
+    void this.orchestrator
+      .analyzeDocument(request.id, DEFAULT_ANALYSIS_OPTIONS)
+      .catch((err) => {
+        this.logger.error(
+          `Background analysis failed for request ${request.id}: ${(err as Error).message}`,
+          (err as Error).stack,
+        );
+      });
 
     return { requestId: request.id };
   }

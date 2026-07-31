@@ -8,6 +8,8 @@ import {
   UseGuards,
   Req,
   Ip,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { ComplianceService } from './compliance.service';
 import { CreateComplianceQueryDto } from './dto/create-compliance-query.dto';
@@ -24,6 +26,7 @@ export class ComplianceController {
 
   @UseGuards(OptionalJwtAuthGuard)
   @Post('analyze')
+  @HttpCode(HttpStatus.ACCEPTED)
   async analyzeDocument(
     @Body() dto: CreateAnalysisRequestDto,
     @Req() req: Request & { user?: { id: string } },

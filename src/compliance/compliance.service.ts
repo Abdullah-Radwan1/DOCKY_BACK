@@ -2,7 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
-  ForbiddenException,
+  Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AnalysisOrchestratorService } from '../ai/services/analysis-orchestrator.service';
@@ -14,6 +14,8 @@ import { AnalysisOptions } from '../ai/interfaces/analysis-options.interface';
 
 @Injectable()
 export class ComplianceService {
+  private readonly logger = new Logger(ComplianceService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly orchestrator: AnalysisOrchestratorService,
@@ -24,11 +26,12 @@ export class ComplianceService {
   // ── Analysis pipeline ──────────────────────────────────────────────────────
 
   /**
-   * Creates an AnalysisRequest and immediately runs the AI pipeline.
+   * Creates an AnalysisRequest and immediately fires the AI pipeline in the
+   * background. Returns { requestId } right away so the HTTP handler can
+   * respond in <500 ms instead of blocking for 60-120 s.
    */
-  async submitAnalysis(dto: CreateAnalysisRequestDto & { ip?: string }) {
+  async submitAnalysis(dto: CreateAnalysisRequestDto & { ip?: string }): Promise<{ requestId: string }> {
     // ── Enforce analysis limits ──────────────────────────────────────────
-    // The guest IP is passed down from the controller.
     const guestIp = dto.userId ? undefined : dto.ip;
     await this.policyService.enforceAnalysisLimit(dto.userId, guestIp);
 
@@ -74,35 +77,50 @@ export class ComplianceService {
     // Increment analysis count
     await this.policyService.incrementAnalysis(dto.userId, guestIp);
 
-    // ── Run the AI pipeline (synchronous in V1) ──────────────────────────
-    await this.orchestrator.analyzeDocument(request.id, dto.options);
+    // ── Fire the AI pipeline in background (non-blocking) ────────────────
+    // The orchestrator updates DB status (pending → processing → completed/failed).
+    // The frontend polls /compliance/document/:id/status for live progress.
+    void this.orchestrator
+      .analyzeDocument(request.id, dto.options)
+      .then(async () => {
+        if (!dto.userId) return;
+        try {
+          const result = await this.getAnalysisResult(request.id);
+          if (result.response?.AnalysisResult) {
+            const analysis = result.response.AnalysisResult;
+            const verdict = (analysis.overallVerdict as string) ?? 'unknown';
+            const risk = (analysis.riskLevel as string) ?? 'unknown';
+            const docName = result.document?.originalFileName ?? 'your document';
+            const isHighRisk = risk === 'high' || verdict === 'non_compliant';
 
-    // ── Return the full result ───────────────────────────────────────────
-    const result = await this.getAnalysisResult(request.id);
+            void this.notificationsService
+              .createNotification({
+                userId: dto.userId,
+                title: isHighRisk ? '⚠️ Risk Alert Detected' : 'Analysis Complete',
+                message: isHighRisk
+                  ? `High-risk issues found in "${docName}". Verdict: ${verdict.replace('_', ' ')}, Risk: ${risk}. Review the findings immediately.`
+                  : `Analysis of "${docName}" is complete. Verdict: ${verdict.replace('_', ' ')}, Risk level: ${risk}.`,
+                type: 'compliance_alert',
+                deliveryChannel: 'in_app',
+                documentId: dto.documentId,
+              })
+              .catch(() => {});
+          }
+        } catch (notifErr) {
+          this.logger.error(
+            `Failed to send completion notification for request ${request.id}`,
+            notifErr,
+          );
+        }
+      })
+      .catch((err) => {
+        this.logger.error(
+          `Background analysis failed for request ${request.id}: ${(err as Error).message}`,
+          (err as Error).stack,
+        );
+      });
 
-    // ── Fire compliance alert notification (non-blocking) ────────────────
-    if (dto.userId && result.response?.AnalysisResult) {
-      const analysis = result.response.AnalysisResult;
-      const verdict = analysis.overallVerdict ?? 'unknown';
-      const risk = analysis.riskLevel ?? 'unknown';
-      const docName = result.document?.originalFileName ?? 'your document';
-      const isHighRisk = risk === 'high' || verdict === 'non_compliant';
-
-      void this.notificationsService
-        .createNotification({
-          userId: dto.userId,
-          title: isHighRisk ? '⚠️ Risk Alert Detected' : 'Analysis Complete',
-          message: isHighRisk
-            ? `High-risk issues found in "${docName}". Verdict: ${verdict.replace('_', ' ')}, Risk: ${risk}. Review the findings immediately.`
-            : `Analysis of "${docName}" is complete. Verdict: ${verdict.replace('_', ' ')}, Risk level: ${risk}.`,
-          type: 'compliance_alert',
-          deliveryChannel: 'in_app',
-          documentId: dto.documentId,
-        })
-        .catch(() => {});
-    }
-
-    return result;
+    return { requestId: request.id };
   }
 
   /**

@@ -26,6 +26,114 @@ export class PromptBuilderService {
     ];
   }
 
+  /**
+   * Prompt for contract-only extraction (parties, obligations, dates, summary…).
+   * Produces a smaller output schema than the combined prompt, so the model
+   * generates the response faster.
+   */
+  buildContractExtractionPrompt(
+    userQuery: string,
+    chunks: Array<{ content: string; pageNumber: number | null; chunkIndex: number }>,
+    options: AnalysisOptions = DEFAULT_ANALYSIS_OPTIONS,
+  ): AiChatMessage[] {
+    const schema = `{"answer":"","summary":"","contract":${this.contractSchema(options)}}`;
+
+    const disabled: string[] = [];
+    if (!options.contract.parties) disabled.push('parties');
+    if (!options.contract.obligations) disabled.push('obligations');
+    if (!options.contract.paymentTerms) disabled.push('paymentTerms');
+    if (!options.contract.penalties) disabled.push('penalties');
+    if (!options.contract.renewalTerms) disabled.push('renewalTerms', 'terminationTerms');
+    if (!options.contract.importantDates) disabled.push('importantDates');
+    if (!options.missingClauses) disabled.push('missingClauses');
+    if (options.missingClauses && Array.isArray(options.specificMissingClauses) && options.specificMissingClauses.length > 0) {
+      disabled.push(`(only check: ${options.specificMissingClauses.join(', ')})`);
+    }
+
+    const rules = [
+      'Return ONLY valid JSON matching the schema. No markdown, no extra keys.',
+      '"answer": respond to user request; if none, give a 1-2 sentence orientation. Never influences summary/contract.',
+      '"summary": 2-5 sentence executive summary, always independent of user request.',
+      'expirationDate: ISO 8601 (YYYY-MM-DD) or null.',
+      'Use null for unrequested fields; [] for requested sections with no data found.',
+      ...(disabled.length > 0 ? [`Set these contract keys to null: ${disabled.join(', ')}.`] : []),
+    ];
+
+    const systemPrompt = [
+      'You are a contract analyst. Extract the structured contract data from the provided document.',
+      `RULES:\n${rules.map((r, i) => `${i + 1}. ${r}`).join('\n')}`,
+      `SCHEMA:\n${schema}`,
+    ].join('\n\n');
+
+    const extracts: string[] = [];
+    if (options.contract.parties) extracts.push('parties');
+    if (options.contract.obligations) extracts.push('obligations');
+    if (options.contract.paymentTerms) extracts.push('paymentTerms');
+    if (options.contract.penalties) extracts.push('penalties');
+    if (options.contract.renewalTerms) extracts.push('renewal + termination terms');
+    if (options.contract.importantDates) extracts.push('important dates');
+    if (options.missingClauses) extracts.push('missing clauses');
+
+    const documentContext = chunks
+      .map((c) => `--- ${c.pageNumber ? `Page ${c.pageNumber}` : `Chunk ${c.chunkIndex}`} ---\n${c.content}`)
+      .join('\n\n');
+
+    const trimmed = userQuery?.trim();
+    const userPrompt = [
+      trimmed
+        ? `USER REQUEST (for "answer" only): "${trimmed}"\nAnswer directly. Does not affect structured extraction.`
+        : `No user question — "answer" should be a 1-2 sentence orientation.`,
+      extracts.length > 0 ? `EXTRACT: ${extracts.join('; ')}.` : 'All contract extractions disabled — set sub-fields to null.',
+      `SUMMARY: 2-5 sentence executive summary.`,
+      `DOCUMENT CONTENT\n================\n${documentContext}`,
+    ].join('\n\n');
+
+    return [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
+    ];
+  }
+
+  /**
+   * Prompt for compliance-only evaluation.
+   * Produces a compliance-focused schema, so the model can concentrate
+   * on risk assessment without re-extracting contract metadata.
+   */
+  buildComplianceEvaluationPrompt(
+    chunks: Array<{ content: string; pageNumber: number | null; chunkIndex: number }>,
+    options: AnalysisOptions = DEFAULT_ANALYSIS_OPTIONS,
+  ): AiChatMessage[] {
+    const schema = `{"compliance":${this.complianceSchema(options)}}`;
+
+    const rec = options.recommendations ? 'include recommendation when status ≠ met' : 'recommendation = null';
+    const rules = [
+      'Return ONLY valid JSON matching the schema. No markdown, no extra keys.',
+      `compliance.findings must have ≥1 item. Evidence required; use null+reason when absent.`,
+      `Per requirement: status + evidence + ${rec}.`,
+    ];
+
+    const systemPrompt = [
+      'You are a legal compliance analyst. Evaluate the contract for compliance, risk, and legal issues.',
+      `RULES:\n${rules.map((r, i) => `${i + 1}. ${r}`).join('\n')}`,
+      `SCHEMA:\n${schema}`,
+    ].join('\n\n');
+
+    const documentContext = chunks
+      .map((c) => `--- ${c.pageNumber ? `Page ${c.pageNumber}` : `Chunk ${c.chunkIndex}`} ---\n${c.content}`)
+      .join('\n\n');
+
+    const userPrompt = [
+      'COMPLIANCE: evaluate weak/missing clauses, unfavorable terms, ambiguous obligations, conflicts, and red flags.',
+      'Aggregate into summary counts + overallVerdict + riskLevel. ≥1 finding required.',
+      `DOCUMENT CONTENT\n================\n${documentContext}`,
+    ].join('\n\n');
+
+    return [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
+    ];
+  }
+
   // ── System prompt ──────────────────────────────────────────────────────────
 
   private buildSystemPrompt(options: AnalysisOptions): string {

@@ -13,69 +13,149 @@ export class SchedulerService {
   ) {}
 
   /**
-   * Standard daily cron task running at midnight.
+   * ⚠️ TESTING: Running every minute. Change back to EVERY_DAY_AT_MIDNIGHT for production.
+   * Production cron: '0 0 * * *'
    */
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async handleDailyCron() {
-    this.logger.log('Executing daily cron job to check for expiring documents...');
+    this.logger.log('⏰ Cron triggered — checking for expiring documents...');
     await this.checkExpiringDocuments();
   }
 
   /**
-   * Scans the database for documents expiring in 30, 14, 7, or 1 days,
-   * and also for documents that have already expired.
-   * Creates expiration_warning notifications and avoids duplicates.
+   * Scans the database for documents expiring within the next 30 days.
+   *
+   * Strategy:
+   *  - INITIAL ALERT (≤30 days): Any doc expiring within 30 days with NO prior
+   *    expiration_warning notification gets a first alert. This catches documents
+   *    expiring in 5, 12, 25 days — not just exactly on day 30.
+   *  - REMINDER ALERTS (≤14, ≤7, ≤1 days): Tighter follow-up reminders sent
+   *    only if that specific threshold message hasn't been sent yet.
+   *  - EXPIRED: Docs already past their expiration date with no "expired on" notice.
+   *
+   * Duplicate guard: Each threshold check looks for a prior notification
+   * containing a unique marker string before creating a new one.
    */
   async checkExpiringDocuments() {
-    const thresholds = [30, 14, 7, 1]; // days ahead to warn
-    const today = new Date();
+    const now = new Date();
 
-    // ─── 1. Upcoming expiration warnings ────────────────────────────────────────
-    for (const days of thresholds) {
-      const targetDate = new Date();
-      targetDate.setDate(today.getDate() + days);
+    // ─── 1. INITIAL 30-day alert ─────────────────────────────────────────────────
+    // Find ALL docs expiring within the next 30 days that have NEVER received
+    // any expiration_warning notification. This is the key fix — previously the
+    // code only matched docs expiring on exactly day 30, missing everything in between.
+    const thirtyDaysFromNow = new Date(now);
+    thirtyDaysFromNow.setDate(now.getDate() + 30);
+    thirtyDaysFromNow.setHours(23, 59, 59, 999);
 
-      const startOfDay = new Date(targetDate);
-      startOfDay.setHours(0, 0, 0, 0);
-      const endOfDay = new Date(targetDate);
-      endOfDay.setHours(23, 59, 59, 999);
+    const startOfTomorrow = new Date(now);
+    startOfTomorrow.setDate(now.getDate() + 1);
+    startOfTomorrow.setHours(0, 0, 0, 0);
 
-      this.logger.log(
-        `Scanning documents expiring between ${startOfDay.toISOString()} and ${endOfDay.toISOString()} (in ${days} days)...`,
+    this.logger.log(
+      `[30d] Scanning docs expiring between ${startOfTomorrow.toISOString()} and ${thirtyDaysFromNow.toISOString()}...`,
+    );
+
+    const docsWithin30Days = await this.prisma.document.findMany({
+      where: {
+        expirationDate: {
+          gte: startOfTomorrow,
+          lte: thirtyDaysFromNow,
+        },
+        uploadedBy: { not: null },
+      },
+    });
+
+    this.logger.log(
+      `[30d] Found ${docsWithin30Days.length} documents expiring within 30 days.`,
+    );
+
+    for (const doc of docsWithin30Days) {
+      const daysLeft = Math.ceil(
+        (doc.expirationDate!.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
       );
 
-      const expiringDocuments = await this.prisma.document.findMany({
+      // Check if ANY expiration_warning has been sent for this doc yet
+      const lastInitialWarning = await this.prisma.notification.findFirst({
         where: {
-          expirationDate: {
-            gte: startOfDay,
-            lte: endOfDay,
+          userId: doc.uploadedBy ?? '',
+          documentId: doc.id,
+          type: 'expiration_warning',
+          message: {
+            contains: '[initial-warning]',
           },
-          uploadedBy: { not: null },
+        },
+        orderBy: {
+          createdAt: 'desc',
         },
       });
 
-      this.logger.log(`Found ${expiringDocuments.length} documents expiring in ${days} days.`);
+      const FIFTEEN_DAYS = 15 * 24 * 60 * 60 * 1000;
 
-      for (const doc of expiringDocuments) {
-        const reminderMessage = `Your document "${doc.originalFileName}" is expiring in ${days} day${days === 1 ? '' : 's'} on ${doc.expirationDate?.toLocaleDateString()}.`;
+      const shouldSendInitialWarning =
+        !lastInitialWarning ||
+        now.getTime() - lastInitialWarning.createdAt.getTime() >= FIFTEEN_DAYS;
+      if (shouldSendInitialWarning) {
+        const message = `[initial-warning] Your document "${doc.originalFileName}" is expiring in ${daysLeft} day${daysLeft === 1 ? '' : 's'} on ${doc.expirationDate?.toLocaleDateString()}.`;
 
-        const existingNotification = await this.prisma.notification.findFirst({
+        this.logger.log(
+          `[30d] 🔔 Sending initial warning for "${doc.originalFileName}" (${daysLeft} days left).`,
+        );
+
+        await this.notificationsService.createNotification({
+          userId: doc.uploadedBy ?? '',
+          title: `📄 Document Expiring in ${daysLeft} Day${daysLeft === 1 ? '' : 's'}`,
+          message,
+          type: 'expiration_warning',
+          deliveryChannel: 'in_app',
+          documentId: doc.id,
+        });
+
+        await this.notificationsService.createNotification({
+          userId: doc.uploadedBy ?? '',
+          title: `📄 Document Expiring in ${daysLeft} Day${daysLeft === 1 ? '' : 's'}`,
+          message,
+          type: 'expiration_warning',
+          deliveryChannel: 'email',
+          documentId: doc.id,
+        });
+      }
+
+      // ----------------------------------------------------
+      // Always check reminder thresholds.
+      //
+      // These reminders are independent from the 15-day rule.
+      // If today is inside the 14-day, 7-day or 1-day window,
+      // send the reminder if it hasn't been sent before.
+      // ----------------------------------------------------
+
+      const reminderThresholds = [14, 7, 1];
+
+      for (const days of reminderThresholds) {
+        if (daysLeft > days) continue;
+
+        const markerText = `reminder-${days}d:${doc.id}`;
+
+        const reminderExists = await this.prisma.notification.findFirst({
           where: {
             userId: doc.uploadedBy ?? '',
             documentId: doc.id,
             type: 'expiration_warning',
-            message: { contains: `expiring in ${days} day` },
+            message: {
+              contains: markerText,
+            },
           },
         });
 
-        if (!existingNotification) {
+        if (!reminderExists) {
+          const reminderMessage = `[reminder-${days}d:${doc.id}] ⚠️ Urgent: Your document "${doc.originalFileName}" expires in ${daysLeft} day${daysLeft === 1 ? '' : 's'} on ${doc.expirationDate?.toLocaleDateString()}.`;
+
           this.logger.log(
-            `Triggering warning for document "${doc.originalFileName}" (ID: ${doc.id}) expiring in ${days} days.`,
+            `[${days}d reminder] Sending reminder for "${doc.originalFileName}".`,
           );
 
           await this.notificationsService.createNotification({
             userId: doc.uploadedBy ?? '',
-            title: 'Document Expiration Warning',
+            title: `⚠️ Urgent: Document Expiring in ${daysLeft} Day${daysLeft === 1 ? '' : 's'}`,
             message: reminderMessage,
             type: 'expiration_warning',
             deliveryChannel: 'in_app',
@@ -84,25 +164,24 @@ export class SchedulerService {
 
           await this.notificationsService.createNotification({
             userId: doc.uploadedBy ?? '',
-            title: 'Document Expiration Warning',
+            title: `⚠️ Urgent: Document Expiring in ${daysLeft} Day${daysLeft === 1 ? '' : 's'}`,
             message: reminderMessage,
             type: 'expiration_warning',
             deliveryChannel: 'email',
             documentId: doc.id,
           });
-        } else {
-          this.logger.log(
-            `Skipped. Warning already sent for document "${doc.originalFileName}" at ${days}-day threshold.`,
-          );
+
+          // Only send the highest-priority reminder tonight.
+          break;
         }
       }
     }
 
-    // ─── 2. Already-expired documents ───────────────────────────────────────────
-    const startOfToday = new Date(today);
+    // ─── 3. Already-expired documents ────────────────────────────────────────────
+    const startOfToday = new Date(now);
     startOfToday.setHours(0, 0, 0, 0);
 
-    this.logger.log('Scanning for already-expired documents...');
+    this.logger.log('[expired] Scanning for already-expired documents...');
 
     const expiredDocuments = await this.prisma.document.findMany({
       where: {
@@ -111,7 +190,9 @@ export class SchedulerService {
       },
     });
 
-    this.logger.log(`Found ${expiredDocuments.length} already-expired documents.`);
+    this.logger.log(
+      `[expired] Found ${expiredDocuments.length} expired documents.`,
+    );
 
     for (const doc of expiredDocuments) {
       const expiredMessage = `Your document "${doc.originalFileName}" expired on ${doc.expirationDate?.toLocaleDateString()}. Please renew or archive it.`;
@@ -127,12 +208,12 @@ export class SchedulerService {
 
       if (!existingExpiredNotif) {
         this.logger.log(
-          `Triggering expired-document notification for "${doc.originalFileName}" (ID: ${doc.id}).`,
+          `[expired] 🔴 Sending expired notice for "${doc.originalFileName}" (ID: ${doc.id}).`,
         );
 
         await this.notificationsService.createNotification({
           userId: doc.uploadedBy ?? '',
-          title: 'Document Has Expired',
+          title: '🔴 Document Has Expired',
           message: expiredMessage,
           type: 'expiration_warning',
           deliveryChannel: 'in_app',
@@ -141,7 +222,7 @@ export class SchedulerService {
 
         await this.notificationsService.createNotification({
           userId: doc.uploadedBy ?? '',
-          title: 'Document Has Expired',
+          title: '🔴 Document Has Expired',
           message: expiredMessage,
           type: 'expiration_warning',
           deliveryChannel: 'email',
@@ -149,9 +230,11 @@ export class SchedulerService {
         });
       } else {
         this.logger.log(
-          `Skipped. Expired notification already sent for "${doc.originalFileName}".`,
+          `[expired] Skipped — already notified for "${doc.originalFileName}".`,
         );
       }
     }
+
+    this.logger.log('✅ Expiration check complete.');
   }
 }

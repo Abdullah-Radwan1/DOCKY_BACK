@@ -1,9 +1,6 @@
 {
   "version": 2,
   "functions": {
-    "dist/main.js": {
-      "maxDuration": 300
-    },
     "api/**": {
       "maxDuration": 300
     }

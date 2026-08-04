@@ -36,6 +36,7 @@ export class OpenRouterService implements AiProvider {
   }
 
   async complete(options: AiCompletionOptions): Promise<AiCompletionResult> {
+    const fetchStart = Date.now();
     const url = `${this.baseUrl}/chat/completions`;
 
     const body = {
@@ -49,13 +50,17 @@ export class OpenRouterService implements AiProvider {
     };
 
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), this.timeoutMs);
+    const timer = setTimeout(() => {
+      this.logger.error(`[OPENROUTER TIMEOUT TRIGGERED] Request exceeded timeoutMs: ${this.timeoutMs}`);
+      controller.abort();
+    }, this.timeoutMs);
 
     try {
       this.logger.log(
-        `Calling OpenRouter model="${options.model}" messages=${options.messages.length}`,
+        `[OPENROUTER START] Calling OpenRouter model="${options.model}" messages=${options.messages.length} timeoutMs=${this.timeoutMs}`
       );
 
+      this.logger.log(`[AWAIT START] fetch URL: ${url}`);
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -67,15 +72,21 @@ export class OpenRouterService implements AiProvider {
         body: JSON.stringify(body),
         signal: controller.signal,
       });
+      this.logger.log(`[AWAIT END] fetch completed in ${Date.now() - fetchStart}ms, status: ${response.status} ${response.statusText}`);
 
       if (!response.ok) {
+        this.logger.error(`[OPENROUTER ERROR] HTTP status not OK: ${response.status}`);
         await this.handleHttpError(response);
       }
 
+      this.logger.log(`[AWAIT START] response.json() parsing`);
+      const parseStart = Date.now();
       const json = (await response.json()) as OpenRouterResponse;
+      this.logger.log(`[AWAIT END] response.json() parsing took ${Date.now() - parseStart}ms`);
 
       const choice = json.choices?.[0];
       if (!choice?.message?.content) {
+        this.logger.error(`[OPENROUTER ERROR] Empty content response: ${JSON.stringify(json)}`);
         throw new AiProviderError(
           'OpenRouter returned an empty response — no choices or content',
           true,
@@ -91,8 +102,8 @@ export class OpenRouterService implements AiProvider {
       };
 
       this.logger.log(
-        `OpenRouter response: model="${result.model}" tokens=${result.totalTokens} ` +
-          `(prompt=${result.promptTokens}, completion=${result.completionTokens})`,
+        `[OPENROUTER SUCCESS] response received: model="${result.model}" tokens=${result.totalTokens} ` +
+          `(prompt=${result.promptTokens}, completion=${result.completionTokens}) totalTime=${Date.now() - fetchStart}ms`
       );
 
       return result;
@@ -100,11 +111,12 @@ export class OpenRouterService implements AiProvider {
       if (err instanceof AiProviderError) throw err;
 
       if ((err as Error).name === 'AbortError') {
+        this.logger.error(`[OPENROUTER ABORT] Request aborted/timed out in ${Date.now() - fetchStart}ms`);
         throw new AiTimeoutError(this.timeoutMs);
       }
 
       this.logger.error(
-        `OpenRouter request failed: ${(err as Error).message}`,
+        `[OPENROUTER EXCEPTION] request failed: ${(err as Error).message}`,
         (err as Error).stack,
       );
       throw new AiProviderError(

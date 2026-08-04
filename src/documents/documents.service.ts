@@ -239,30 +239,46 @@ export class DocumentsService {
    * Throws if the document already has a completed analysis.
    */
   async analyzeDocument(id: string, userId: string): Promise<{ requestId: string }> {
+    const methodStart = Date.now();
+    this.logger.log(`[FLOW START] analyzeDocument for documentId: ${id}, userId: ${userId}`);
+
+    this.logger.log(`[AWAIT START] prisma.document.findFirst`);
+    const docStart = Date.now();
     const document = await this.prisma.document.findFirst({
       where: { id, uploadedBy: userId, isGuest: false },
       select: { id: true, status: true },
     });
+    this.logger.log(`[AWAIT END] prisma.document.findFirst took ${Date.now() - docStart}ms`);
 
-    if (!document) throw new NotFoundException('Document not found');
+    if (!document) {
+      this.logger.warn(`[FLOW ERROR] Document ${id} not found or not owned by user ${userId}`);
+      throw new NotFoundException('Document not found');
+    }
 
     if (document.status !== DocumentStatus.ready) {
+      this.logger.warn(`[FLOW ERROR] Document ${id} not ready (status: ${document.status})`);
       throw new BadRequestException(
         `Document is not ready for analysis (status: ${document.status}).`,
       );
     }
 
     // Check for existing completed analysis
+    this.logger.log(`[AWAIT START] prisma.analysisRequest.findFirst (check completed)`);
+    const existStart = Date.now();
     const existingRequest = await this.prisma.analysisRequest.findFirst({
       where: { documentId: id, status: 'completed' },
       select: { id: true },
     });
+    this.logger.log(`[AWAIT END] prisma.analysisRequest.findFirst took ${Date.now() - existStart}ms`);
 
     if (existingRequest) {
+      this.logger.warn(`[FLOW ERROR] Document ${id} has already been analyzed`);
       throw new BadRequestException('Document has already been analyzed.');
     }
 
     // Create analysis request record
+    this.logger.log(`[AWAIT START] prisma.analysisRequest.create pending`);
+    const createStart = Date.now();
     const request = await this.prisma.analysisRequest.create({
       data: {
         queryText: '',
@@ -271,19 +287,26 @@ export class DocumentsService {
         status: 'pending',
       },
     });
+    this.logger.log(`[AWAIT END] prisma.analysisRequest.create took ${Date.now() - createStart}ms, requestId: ${request.id}`);
 
     // Fire AI pipeline in background — return immediately so the HTTP
     // response resolves in <500 ms instead of waiting 60-120 s.
     // The frontend polls /compliance/document/:id/status for progress.
+    this.logger.log(`[FLOW BACKGROUND TRIGGER] Firing orchestrator.analyzeDocument in background for requestId: ${request.id}`);
+    const bgStart = Date.now();
     void this.orchestrator
       .analyzeDocument(request.id, DEFAULT_ANALYSIS_OPTIONS)
+      .then(() => {
+        this.logger.log(`[FLOW BACKGROUND SUCCESS] orchestrator.analyzeDocument resolved in ${Date.now() - bgStart}ms for requestId: ${request.id}`);
+      })
       .catch((err) => {
         this.logger.error(
-          `Background analysis failed for request ${request.id}: ${(err as Error).message}`,
+          `[FLOW BACKGROUND ERROR] Background analysis failed for request ${request.id}: ${(err as Error).message}`,
           (err as Error).stack,
         );
       });
 
+    this.logger.log(`[FLOW RETURN] analyzeDocument returning requestId: ${request.id} (total response time: ${Date.now() - methodStart}ms)`);
     return { requestId: request.id };
   }
 

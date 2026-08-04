@@ -95,6 +95,7 @@ export class CombinedAnalysisStage implements AnalysisStage {
   }
 
   async run(ctx: AnalysisStageContext): Promise<Partial<AiAnalysisResponse>> {
+    const stageStart = Date.now();
     // ── Fast path: compliance disabled → single call ─────────────────────────
     if (!ctx.options.compliance) {
       const messages = this.promptBuilder.buildAnalysisPrompt(
@@ -102,7 +103,9 @@ export class CombinedAnalysisStage implements AnalysisStage {
         ctx.chunks,
         ctx.options,
       );
+      console.log(`[STAGE COMBINED] [FAST PATH] [AWAIT START] callAi (single call)`);
       const aiResult = await this.callAi(messages);
+      console.log(`[STAGE COMBINED] [FAST PATH] [AWAIT END] callAi finished in ${Date.now() - stageStart}ms`);
       return this.parseAiResponse(aiResult.content, ctx.options);
     }
 
@@ -111,6 +114,8 @@ export class CombinedAnalysisStage implements AnalysisStage {
     // Splitting the work into two focused calls and running them concurrently
     // cuts wall time from (T_contract + T_compliance) to max(T_contract, T_compliance).
     // Each call also has a smaller output schema, so token generation is faster.
+    console.log(`[STAGE COMBINED] [PARALLEL PATH] [AWAIT START] callAi contract + compliance starting in parallel`);
+    const parallelStart = Date.now();
     const [contractRaw, complianceRaw] = await Promise.all([
       this.callAi(
         this.promptBuilder.buildContractExtractionPrompt(
@@ -126,6 +131,7 @@ export class CombinedAnalysisStage implements AnalysisStage {
         ),
       ),
     ]);
+    console.log(`[STAGE COMBINED] [PARALLEL PATH] [AWAIT END] both callAi parallel calls resolved in ${Date.now() - parallelStart}ms`);
 
     const contractPart = this.parseContractResponse(contractRaw.content);
     const compliancePart = this.parseComplianceResponse(complianceRaw.content, ctx.options);
@@ -348,17 +354,25 @@ export class AnalysisOrchestratorService {
     requestId: string,
     options: AnalysisOptions = DEFAULT_ANALYSIS_OPTIONS,
   ): Promise<void> {
+    const pipelineStart = Date.now();
+    this.logger.log(`[PIPELINE START] analyzeDocument for requestId: ${requestId}`);
+
     // ── 1. Load request + document ─────────────────────────────────────────
+    this.logger.log(`[AWAIT START] prisma.analysisRequest.findUnique`);
+    const reqFetchStart = Date.now();
     const request = await this.prisma.analysisRequest.findUnique({
       where: { id: requestId },
       include: { document: true },
     });
+    this.logger.log(`[AWAIT END] prisma.analysisRequest.findUnique took ${Date.now() - reqFetchStart}ms`);
 
     if (!request) {
+      this.logger.error(`[PIPELINE ERROR] AnalysisRequest ${requestId} not found`);
       throw new NotFoundException(`AnalysisRequest ${requestId} not found`);
     }
 
     if (!request.document) {
+      this.logger.error(`[PIPELINE ERROR] AnalysisRequest ${requestId} has no associated document`);
       throw new BadRequestException(
         `AnalysisRequest ${requestId} has no associated document`,
       );
@@ -366,10 +380,13 @@ export class AnalysisOrchestratorService {
 
     // ── 2. Validate document readiness ─────────────────────────────────────
     if (request.document.status !== 'ready') {
+      this.logger.warn(`[PIPELINE ERROR] Document status not ready (status: ${request.document.status})`);
+      this.logger.log(`[AWAIT START] markFailed`);
       await this.markFailed(
         requestId,
         `Document ${request.document.id} is not ready (status: ${request.document.status})`,
       );
+      this.logger.log(`[AWAIT END] markFailed completed`);
       throw new BadRequestException(
         `Document is not ready for analysis (status: ${request.document.status}). ` +
           'Upload and process the document first.',
@@ -378,16 +395,21 @@ export class AnalysisOrchestratorService {
 
     // ── 3. Guard retries ───────────────────────────────────────────────────
     if (request.attemptCount >= this.maxRetries) {
+      this.logger.warn(`[PIPELINE ERROR] Max retries (${this.maxRetries}) exceeded (current attemptCount: ${request.attemptCount})`);
+      this.logger.log(`[AWAIT START] markFailed`);
       await this.markFailed(
         requestId,
         `Max retries (${this.maxRetries}) exceeded`,
       );
+      this.logger.log(`[AWAIT END] markFailed completed`);
       throw new BadRequestException(
         `Analysis request ${requestId} has exceeded the maximum retry count (${this.maxRetries}).`,
       );
     }
 
     // ── 4. Mark processing ─────────────────────────────────────────────────
+    this.logger.log(`[AWAIT START] prisma.analysisRequest.update status to processing`);
+    const updateProcStart = Date.now();
     await this.prisma.analysisRequest.update({
       where: { id: requestId },
       data: {
@@ -397,13 +419,17 @@ export class AnalysisOrchestratorService {
         errorMessage: null,
       },
     });
+    this.logger.log(`[AWAIT END] prisma.analysisRequest.update took ${Date.now() - updateProcStart}ms`);
 
     try {
       // ── 5. Retrieve chunks ─────────────────────────────────────────────
+      this.logger.log(`[AWAIT START] chunkRetrieval.getRelevantChunks`);
+      const chunkFetchStart = Date.now();
       const chunks = await this.chunkRetrieval.getRelevantChunks(
         request.document.id,
         request.queryText,
       );
+      this.logger.log(`[AWAIT END] chunkRetrieval.getRelevantChunks took ${Date.now() - chunkFetchStart}ms (chunks returned: ${chunks.length})`);
 
       if (chunks.length === 0) {
         throw new BadRequestException(
@@ -414,10 +440,12 @@ export class AnalysisOrchestratorService {
 
       // ── 6. Run analysis stages ─────────────────────────────────────────
       this.logger.log(
-        `Running ${this.stages.length} analysis stage(s) for request ${requestId} ` +
+        `[FLOW] Running ${this.stages.length} analysis stage(s) for request ${requestId} ` +
           `(model stages: ${this.stages.map((s) => s.name).join(' → ')}, chunks=${chunks.length})`,
       );
 
+      this.logger.log(`[AWAIT START] runStages`);
+      const stagesStart = Date.now();
       const parsed = await this.runStages({
         requestId,
         documentId: request.document.id,
@@ -426,12 +454,16 @@ export class AnalysisOrchestratorService {
         result: {},
         options,
       });
+      this.logger.log(`[AWAIT END] runStages took ${Date.now() - stagesStart}ms`);
 
       // ── 7. Persist everything in a single transaction ──────────────────
+      this.logger.log(`[AWAIT START] persist (sequential db writes)`);
+      const persistStart = Date.now();
       await this.persist(requestId, request.document.id, parsed, chunks, options);
+      this.logger.log(`[AWAIT END] persist took ${Date.now() - persistStart}ms`);
 
       this.logger.log(
-        `Analysis ${requestId} completed: ` +
+        `[PIPELINE SUCCESS] Analysis ${requestId} completed in ${Date.now() - pipelineStart}ms: ` +
           `verdict=${parsed.compliance?.overallVerdict ?? 'skipped'}, ` +
           `risk=${parsed.compliance?.riskLevel ?? 'skipped'}, ` +
           `findings=${parsed.compliance?.findings?.length ?? 0}, ` +
@@ -440,10 +472,13 @@ export class AnalysisOrchestratorService {
     } catch (err) {
       const message = (err as Error).message ?? 'Unknown error';
       this.logger.error(
-        `Analysis ${requestId} failed: ${message}`,
+        `[PIPELINE FAILURE] Analysis ${requestId} failed: ${message}`,
         (err as Error).stack,
       );
+      this.logger.log(`[AWAIT START] markFailed after error`);
+      const failStart = Date.now();
       await this.markFailed(requestId, message);
+      this.logger.log(`[AWAIT END] markFailed took ${Date.now() - failStart}ms`);
       throw err;
     }
   }
@@ -460,8 +495,10 @@ export class AnalysisOrchestratorService {
     ctx: AnalysisStageContext,
   ): Promise<AiAnalysisResponse> {
     for (const stage of this.stages) {
-      this.logger.log(`Executing stage: ${stage.name}`);
+      this.logger.log(`[STAGE START] Executing stage: ${stage.name}`);
+      const stageStart = Date.now();
       const partial = await stage.run(ctx);
+      this.logger.log(`[STAGE END] Stage: ${stage.name} finished in ${Date.now() - stageStart}ms`);
       ctx.result = this.mergePartial(ctx.result, partial);
     }
 

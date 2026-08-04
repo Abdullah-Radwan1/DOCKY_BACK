@@ -155,25 +155,25 @@ export class DocumentUploadService {
 
       const chunks = this.chunker.chunk(text, file.originalname);
 
-      const finalDocument = await this.prisma.$transaction(async (tx) => {
-        await tx.documentChunk.createMany({
-          data: chunks.map((c) => ({
-            documentId,
-            chunkIndex: c.chunkIndex,
-            content: c.content,
-            pageNumber: c.pageNumber,
-            tokenCount: c.tokenCount,
-          })),
-        });
+      // NOTE: Sequential awaits instead of $transaction — Neon's transaction-mode
+      // pooler does not support interactive transactions (Prisma P2028).
+      await this.prisma.documentChunk.createMany({
+        data: chunks.map((c) => ({
+          documentId,
+          chunkIndex: c.chunkIndex,
+          content: c.content,
+          pageNumber: c.pageNumber,
+          tokenCount: c.tokenCount,
+        })),
+      });
 
-        return tx.document.update({
-          where: { id: documentId },
-          data: {
-            status: 'ready',
-            pageCount,
-            totalChunks: chunks.length,
-          },
-        });
+      const finalDocument = await this.prisma.document.update({
+        where: { id: documentId },
+        data: {
+          status: 'ready',
+          pageCount,
+          totalChunks: chunks.length,
+        },
       });
 
       this.logger.log(

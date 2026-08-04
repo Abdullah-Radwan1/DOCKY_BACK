@@ -491,83 +491,84 @@ export class AnalysisOrchestratorService {
     chunks: Awaited<ReturnType<ChunkRetrievalService['getRelevantChunks']>>,
     options: AnalysisOptions,
   ): Promise<void> {
-    await this.prisma.$transaction(async (tx) => {
-      // 1. Store the raw AI response (both domains preserved as JSON)
-      const aiResponse = await tx.aIResponse.create({
-        data: {
-          requestId,
-          response: parsed as unknown as Prisma.InputJsonValue,
-          metadata: {
-            stages: this.stages.map((s) => s.name),
-            chunksUsed: chunks.length,
-            options,
-          } as any,
-          matchedChunks: chunks.map((c) => ({
-            chunkId: c.id,
-            chunkIndex: c.chunkIndex,
-            pageNumber: c.pageNumber,
-          })),
-        },
-      });
+    // NOTE: We use sequential awaits instead of prisma.$transaction(async tx=>{...})
+    // because Neon's transaction-mode pooler (used in production) does NOT support
+    // interactive transactions (Prisma P2028). Each step is idempotent-ish and the
+    // outer try/catch in analyzeDocument() calls markFailed() on any error.
 
-      // 2. Create the normalised AnalysisResult row
-      const analysisResult = await tx.analysisResult.create({
-        data: {
-          responseId: aiResponse.id,
-          summary: parsed.summary,
-          overallVerdict: parsed.compliance
-            ? this.mapVerdict(parsed.compliance.overallVerdict)
-            : AnalysisVerdict.unknown,
-          riskLevel: parsed.compliance
-            ? this.mapRiskLevel(parsed.compliance.riskLevel)
-            : RiskLevel.medium,
-        },
-      });
-
-      // 3. Persist finding rows
-      if (parsed.compliance && Array.isArray(parsed.compliance.findings) && parsed.compliance.findings.length > 0) {
-        await tx.finding.createMany({
-          data: parsed.compliance.findings.map((f: AiFinding) => ({
-            analysisId: analysisResult.id,
-            title: f.title,
-            description: f.description ?? null,
-            severity: this.mapSeverity(f.severity),
-            clauseReference: f.clauseReference ?? null,
-            pageNumber: f.pageNumber ?? null,
-            excerpt: f.excerpt ?? null,
-            recommendation: f.recommendation ?? null,
-            // affectedRequirement and category are not DB columns (per spec);
-            // they are stored in the parent AIResponse.response JSON blob.
-            metadata: {
-              ...(f.metadata ?? {}),
-              category: f.category ?? null,
-              affectedRequirement: f.affectedRequirement ?? null,
-            } as Prisma.InputJsonValue,
-          })),
-        });
-      }
-
-      // 4. Mark request as completed
-      await tx.analysisRequest.update({
-        where: { id: requestId },
-        data: {
-          status: AnalysisRequestStatus.completed,
-          processingFinishedAt: new Date(),
-          errorMessage: null,
-        },
-      });
-
-      // 5. Propagate expiration date to the Document record
-      await this.updateExpirationDate(
-        tx,
-        documentId,
-        parsed.contract.expirationDate,
-      );
+    // 1. Store the raw AI response (both domains preserved as JSON)
+    const aiResponse = await this.prisma.aIResponse.create({
+      data: {
+        requestId,
+        response: parsed as unknown as Prisma.InputJsonValue,
+        metadata: {
+          stages: this.stages.map((s) => s.name),
+          chunksUsed: chunks.length,
+          options,
+        } as any,
+        matchedChunks: chunks.map((c) => ({
+          chunkId: c.id,
+          chunkIndex: c.chunkIndex,
+          pageNumber: c.pageNumber,
+        })),
+      },
     });
+
+    // 2. Create the normalised AnalysisResult row
+    const analysisResult = await this.prisma.analysisResult.create({
+      data: {
+        responseId: aiResponse.id,
+        summary: parsed.summary,
+        overallVerdict: parsed.compliance
+          ? this.mapVerdict(parsed.compliance.overallVerdict)
+          : AnalysisVerdict.unknown,
+        riskLevel: parsed.compliance
+          ? this.mapRiskLevel(parsed.compliance.riskLevel)
+          : RiskLevel.medium,
+      },
+    });
+
+    // 3. Persist finding rows
+    if (parsed.compliance && Array.isArray(parsed.compliance.findings) && parsed.compliance.findings.length > 0) {
+      await this.prisma.finding.createMany({
+        data: parsed.compliance.findings.map((f: AiFinding) => ({
+          analysisId: analysisResult.id,
+          title: f.title,
+          description: f.description ?? null,
+          severity: this.mapSeverity(f.severity),
+          clauseReference: f.clauseReference ?? null,
+          pageNumber: f.pageNumber ?? null,
+          excerpt: f.excerpt ?? null,
+          recommendation: f.recommendation ?? null,
+          // affectedRequirement and category are not DB columns (per spec);
+          // they are stored in the parent AIResponse.response JSON blob.
+          metadata: {
+            ...(f.metadata ?? {}),
+            category: f.category ?? null,
+            affectedRequirement: f.affectedRequirement ?? null,
+          } as Prisma.InputJsonValue,
+        })),
+      });
+    }
+
+    // 4. Mark request as completed
+    await this.prisma.analysisRequest.update({
+      where: { id: requestId },
+      data: {
+        status: AnalysisRequestStatus.completed,
+        processingFinishedAt: new Date(),
+        errorMessage: null,
+      },
+    });
+
+    // 5. Propagate expiration date to the Document record
+    await this.updateExpirationDate(
+      documentId,
+      parsed.contract.expirationDate,
+    );
   }
 
   private async updateExpirationDate(
-    tx: Parameters<Parameters<PrismaService['$transaction']>[0]>[0],
     documentId: string,
     expirationDate: string | null,
   ): Promise<void> {
@@ -581,7 +582,7 @@ export class AnalysisOrchestratorService {
       return;
     }
 
-    await tx.document.update({
+    await this.prisma.document.update({
       where: { id: documentId },
       data: { expirationDate: parsedDate },
     });

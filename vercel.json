@@ -1,14 +1,15 @@
 {
   "version": 2,
   "functions": {
-    "api/**": {
+    "dist/main.js": {
       "maxDuration": 300
     }
   },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/api"
+      "destination": "/dist/main.js"
     }
   ]
 }
+

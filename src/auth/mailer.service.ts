@@ -17,10 +17,18 @@ export class MailerService {
   constructor() {
     this.from = process.env.SMTP_FROM ?? 'noreply@docky.app';
 
+    const smtpHost = process.env.SMTP_HOST;
+    const smtpPort = parseInt(process.env.SMTP_PORT ?? '587', 10);
+    const smtpSecure = process.env.SMTP_SECURE === 'true';
+
+    this.logger.log(
+      `MailerService configured: host=${smtpHost ?? 'unset'} port=${smtpPort} secure=${smtpSecure} from=${this.from} user=${process.env.SMTP_USER ? 'set' : 'unset'}`,
+    );
+
     this.transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT ?? '587', 10),
-      secure: process.env.SMTP_SECURE === 'true',
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpSecure,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
@@ -47,8 +55,13 @@ export class MailerService {
       });
       this.logger.log(`Password reset email sent to ${to}`);
     } catch (err) {
-      // Log but do not re-throw — caller already returned the generic response
-      this.logger.error(`Failed to send password reset email to ${to}:`, err);
+      const errorMessage =
+        err instanceof Error ? err.message : JSON.stringify(err);
+      const errorStack = err instanceof Error ? err.stack : undefined;
+      this.logger.error(
+        `Failed to send password reset email to ${to}: ${errorMessage}`,
+        errorStack,
+      );
     }
   }
 

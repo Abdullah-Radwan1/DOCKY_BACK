@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   UseGuards,
+  Logger,
 } from '@nestjs/common';
 import type { Response, Request } from 'express';
 import { AuthService } from './auth.service';
@@ -32,6 +33,7 @@ const COOKIE_OPTIONS: CookieOptions = {
 
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
   constructor(private readonly authService: AuthService) {}
 
   /** POST /auth/register */
@@ -81,6 +83,9 @@ export class AuthController {
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
   async forgotPassword(@Body() dto: ForgotPasswordDto) {
+    this.logger.log(
+      `/auth/forgot-password endpoint called for email=${dto.email}`,
+    );
     return this.authService.forgotPassword(dto);
   }
 

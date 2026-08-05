@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 
 /**
@@ -9,7 +9,7 @@ import * as nodemailer from 'nodemailer';
  * NotificationsService, which checks allowEmailNotifications toggles.
  */
 @Injectable()
-export class MailerService {
+export class MailerService implements OnModuleInit {
   private readonly logger = new Logger(MailerService.name);
   private readonly transporter: nodemailer.Transporter;
   private readonly from: string;
@@ -19,21 +19,49 @@ export class MailerService {
 
     const smtpHost = process.env.SMTP_HOST;
     const smtpPort = parseInt(process.env.SMTP_PORT ?? '587', 10);
-    const smtpSecure = process.env.SMTP_SECURE === 'true';
+    const smtpSecure = ['true', '1', 'yes'].includes(
+      (process.env.SMTP_SECURE ?? '').toLowerCase(),
+    );
 
     this.logger.log(
       `MailerService configured: host=${smtpHost ?? 'unset'} port=${smtpPort} secure=${smtpSecure} from=${this.from} user=${process.env.SMTP_USER ? 'set' : 'unset'}`,
     );
 
-    this.transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      secure: smtpSecure,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    // Log presence of env vars (never log secret values)
+    this.logEnvVarPresence();
+
+    try {
+      this.logger.log('Creating nodemailer transporter');
+      this.transporter = nodemailer.createTransport({
+        host: smtpHost,
+        port: smtpPort,
+        secure: smtpSecure,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      });
+      this.logger.log('Nodemailer transporter created');
+    } catch (err) {
+      this.logger.error(
+        'Error creating nodemailer transporter',
+        this.stringifyError(err),
+      );
+      throw err;
+    }
+  }
+
+  async onModuleInit(): Promise<void> {
+    try {
+      this.logger.log('MailerService.onModuleInit: verifying transporter');
+      await this.transporter.verify();
+      this.logger.log('MailerService: transporter.verify() succeeded');
+    } catch (err) {
+      this.logger.error(
+        'MailerService: transporter.verify() failed',
+        this.stringifyError(err),
+      );
+    }
   }
 
   /**
@@ -46,7 +74,8 @@ export class MailerService {
     const html = this.buildResetEmailHtml(resetUrl);
 
     try {
-      await this.transporter.sendMail({
+      this.logger.log(`About to send password reset email to ${to}`);
+      const info = await this.transporter.sendMail({
         from: `"DOCKY" <${this.from}>`,
         to,
         subject: 'Reset your DOCKY password',
@@ -54,13 +83,15 @@ export class MailerService {
         html,
       });
       this.logger.log(`Password reset email sent to ${to}`);
+      try {
+        this.logger.log(`sendMail response: ${JSON.stringify(info)}`);
+      } catch {
+        this.logger.log('sendMail response received (unable to stringify)');
+      }
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : JSON.stringify(err);
-      const errorStack = err instanceof Error ? err.stack : undefined;
       this.logger.error(
-        `Failed to send password reset email to ${to}: ${errorMessage}`,
-        errorStack,
+        `Failed to send password reset email to ${to}`,
+        this.stringifyError(err),
       );
     }
   }
@@ -183,5 +214,39 @@ export class MailerService {
   </table>
 </body>
 </html>`;
+  }
+
+  private logEnvVarPresence(): void {
+    const vars = [
+      'SMTP_HOST',
+      'SMTP_PORT',
+      'SMTP_SECURE',
+      'SMTP_USER',
+      'SMTP_PASS',
+      'SMTP_FROM',
+      'FRONTEND_URL',
+    ];
+    for (const v of vars) {
+      try {
+        this.logger.log(`${v}: ${process.env[v] ? 'set' : 'unset'}`);
+      } catch {
+        // ignore
+      }
+    }
+  }
+
+  private stringifyError(err: any): string {
+    try {
+      if (err instanceof Error) {
+        const obj: Record<string, any> = {};
+        Object.getOwnPropertyNames(err).forEach(
+          (k) => (obj[k] = (err as any)[k]),
+        );
+        return JSON.stringify(obj);
+      }
+      return JSON.stringify(err);
+    } catch {
+      return String(err);
+    }
   }
 }

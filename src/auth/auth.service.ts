@@ -4,6 +4,7 @@ import {
   ConflictException,
   BadRequestException,
   NotFoundException,
+  Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
@@ -19,6 +20,7 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
@@ -152,6 +154,7 @@ export class AuthService {
    * Always returns a generic response to prevent email enumeration.
    */
   async forgotPassword(dto: ForgotPasswordDto) {
+    this.logger.log(`/auth/forgot-password called for email=${dto.email}`);
     // Always respond the same way to prevent email enumeration
     const genericResponse = {
       message:
@@ -163,8 +166,13 @@ export class AuthService {
     });
 
     if (!profile) {
+      this.logger.log(
+        `forgotPassword: no profile found for email=${dto.email}`,
+      );
       return genericResponse;
     }
+
+    this.logger.log(`forgotPassword: profile found userId=${profile.id}`);
 
     // ── Rate limit: max 3 reset requests per email per hour ──────────────────
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
@@ -175,7 +183,11 @@ export class AuthService {
       },
     });
 
+    this.logger.log(`forgotPassword: recentRequests=${recentRequests}`);
     if (recentRequests >= 3) {
+      this.logger.log(
+        'forgotPassword: rate limit reached, returning generic response',
+      );
       // Silently return — do not reveal that the limit was hit
       return genericResponse;
     }
@@ -186,6 +198,10 @@ export class AuthService {
       .createHash('sha256')
       .update(rawToken)
       .digest('hex');
+    this.logger.log(
+      'forgotPassword: generated reset token (raw token not logged)',
+    );
+    this.logger.log(`forgotPassword: tokenHash=${tokenHash}`);
 
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
@@ -194,6 +210,7 @@ export class AuthService {
       where: { userId: profile.id, usedAt: null },
       data: { usedAt: new Date() },
     });
+    this.logger.log('forgotPassword: invalidated existing unused tokens');
 
     // Store only the hashed token — the raw token is never persisted
     await this.prisma.passwordResetToken.create({
@@ -203,15 +220,29 @@ export class AuthService {
         expiresAt,
       },
     });
+    this.logger.log('forgotPassword: persisted hashed token to database');
 
     // ── Send branded HTML reset email (bypasses notification preferences) ────
-    const frontendUrl =
-      process.env.FRONTEND_URL ?? 'http://localhost:5173';
+    const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:5173';
     const resetUrl = `${frontendUrl}/reset-password?token=${rawToken}`;
+    this.logger.log(
+      `forgotPassword: generated resetUrl (not logging raw token)`,
+    );
 
-    void this.mailerService
-      .sendPasswordResetEmail(profile.email, resetUrl)
-      .catch(() => {});
+    try {
+      this.logger.log(
+        'forgotPassword: calling mailerService.sendPasswordResetEmail',
+      );
+      await this.mailerService.sendPasswordResetEmail(profile.email, resetUrl);
+      this.logger.log(
+        'forgotPassword: mailerService.sendPasswordResetEmail completed successfully',
+      );
+    } catch (err) {
+      this.logger.error(
+        'forgotPassword: mailerService.sendPasswordResetEmail failed',
+        this.stringifyError(err),
+      );
+    }
 
     return genericResponse;
   }
@@ -313,5 +344,20 @@ export class AuthService {
       plan: profile.plan,
       usage_quota: profile.usageQuota,
     };
+  }
+
+  private stringifyError(err: any): string {
+    try {
+      if (err instanceof Error) {
+        const obj: Record<string, any> = {};
+        Object.getOwnPropertyNames(err).forEach(
+          (k) => (obj[k] = (err as any)[k]),
+        );
+        return JSON.stringify(obj);
+      }
+      return JSON.stringify(err);
+    } catch {
+      return String(err);
+    }
   }
 }

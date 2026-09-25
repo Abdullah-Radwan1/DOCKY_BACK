@@ -18,7 +18,11 @@ import type {
   AiFinding,
 } from '../interfaces/ai-analysis-response.interface';
 import type { Prisma } from '../../generated/prisma/client.js';
-import { AiProviderError, AiResponseParseError } from '../errors/ai.errors';
+import {
+  AiProviderError,
+  AiRateLimitError,
+  AiResponseParseError,
+} from '../errors/ai.errors';
 import { ChunkRetrievalService } from './chunk-retrieval.service';
 import { PromptBuilderService } from './prompt-builder.service';
 import {
@@ -91,7 +95,11 @@ export class CombinedAnalysisStage implements AnalysisStage {
       'OPENROUTER_MODEL',
       'qwen/qwen3-235b-a22b',
     );
-    this.maxTokens = this.config.get<number>('OPENROUTER_MAX_TOKENS', 4096);
+    // ConfigService returns env vars as strings; parseInt ensures a real number.
+    this.maxTokens = parseInt(
+      this.config.get<string>('OPENROUTER_MAX_TOKENS', '4096'),
+      10,
+    );
   }
 
   async run(ctx: AnalysisStageContext): Promise<Partial<AiAnalysisResponse>> {
@@ -106,26 +114,26 @@ export class CombinedAnalysisStage implements AnalysisStage {
       return this.parseAiResponse(aiResult.content, ctx.options);
     }
 
-    // ── Parallel path: contract extraction + compliance evaluation ────────────
+    // ── Sequential path: contract extraction then compliance evaluation ──────
     //
-    // Splitting the work into two focused calls and running them concurrently
-    // cuts wall time from (T_contract + T_compliance) to max(T_contract, T_compliance).
-    // Each call also has a smaller output schema, so token generation is faster.
-    const [contractRaw, complianceRaw] = await Promise.all([
-      this.callAi(
-        this.promptBuilder.buildContractExtractionPrompt(
-          ctx.queryText,
-          ctx.chunks,
-          ctx.options,
-        ),
+    // Free-tier models share a single upstream pool with strict concurrency
+    // limits (often 1 req/s or 1 req/min).  Firing two simultaneous requests
+    // via Promise.all reliably triggers a 429 on at least one of them.
+    // Sequential calls are slower by T_compliance but never race the limiter.
+    const contractRaw = await this.callAiWithRetry(
+      this.promptBuilder.buildContractExtractionPrompt(
+        ctx.queryText,
+        ctx.chunks,
+        ctx.options,
       ),
-      this.callAi(
-        this.promptBuilder.buildComplianceEvaluationPrompt(
-          ctx.chunks,
-          ctx.options,
-        ),
+    );
+
+    const complianceRaw = await this.callAiWithRetry(
+      this.promptBuilder.buildComplianceEvaluationPrompt(
+        ctx.chunks,
+        ctx.options,
       ),
-    ]);
+    );
 
     const contractPart = this.parseContractResponse(contractRaw.content);
     const compliancePart = this.parseComplianceResponse(
@@ -137,6 +145,46 @@ export class CombinedAnalysisStage implements AnalysisStage {
       ...contractPart,
       compliance: compliancePart.compliance ?? null,
     };
+  }
+
+  /**
+   * Calls the AI with automatic retry on rate-limit (429) responses.
+   *
+   * Free-tier models on OpenRouter's shared pool may return a 429 even when
+   * the account has credits, because the upstream provider enforces its own
+   * per-pool concurrency cap.  A short exponential back-off resolves most
+   * transient 429s without surfacing an error to the user.
+   *
+   * Retry schedule (default): 5s → 15s → 45s  (3 attempts, factor 3×)
+   * Configured via OPENROUTER_RETRY_BASE_MS and OPENROUTER_RETRY_MAX_ATTEMPTS.
+   */
+  private async callAiWithRetry(
+    messages: AiChatMessage[],
+    attempt = 1,
+  ): Promise<AiCompletionResult> {
+    const maxAttempts = this.config.get<number>(
+      'OPENROUTER_RETRY_MAX_ATTEMPTS',
+      3,
+    );
+    try {
+      return await this.callAi(messages);
+    } catch (err) {
+      if (err instanceof AiRateLimitError && attempt < maxAttempts) {
+        const baseMs = parseInt(
+          this.config.get<string>('OPENROUTER_RETRY_BASE_MS', '5000'),
+          10,
+        );
+        // Honor the Retry-After header when present, otherwise use backoff.
+        const delayMs = err.retryAfterMs ?? baseMs * Math.pow(3, attempt - 1);
+        // this.logger.warn(
+        //   `[RATE LIMIT] 429 received (attempt ${attempt}/${maxAttempts}). ` +
+        //     `Retrying in ${delayMs}ms…`,
+        // );
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+        return this.callAiWithRetry(messages, attempt + 1);
+      }
+      throw err;
+    }
   }
 
   private async callAi(messages: AiChatMessage[]): Promise<AiCompletionResult> {

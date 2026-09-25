@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../../prisma/prisma.service';
 
 /** Approximate characters per token (matches ChunkingService heuristic). */
@@ -14,7 +15,27 @@ const CHARS_PER_TOKEN = 4;
 export class ChunkRetrievalService {
   private readonly logger = new Logger(ChunkRetrievalService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  /**
+   * Maximum input tokens to send to the model per call.
+   *
+   * Rule of thumb: keep this to ~60-70 % of the model's context window so
+   * the remaining budget is available for the system prompt + output JSON.
+   *
+   * Configured via CHUNK_TOKEN_BUDGET (default 6 000).
+   * Raise this only when the account has enough credits for larger calls.
+   */
+  private readonly tokenBudget: number;
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly config: ConfigService,
+  ) {
+    // ConfigService returns env values as strings, so parseInt is required.
+    this.tokenBudget = parseInt(
+      this.config.get<string>('CHUNK_TOKEN_BUDGET', '6000'),
+      10,
+    );
+  }
 
   /**
    * Returns all chunks for a document, ordered by chunk index.
@@ -34,13 +55,13 @@ export class ChunkRetrievalService {
    * before applying the budget.
    *
    * @param documentId  Document UUID.
-   * @param _query      Compliance query (reserved for future relevance scoring).
-   * @param tokenBudget Max total tokens to include. Defaults to 30 000 (~120 KB).
+   * @param _query      Compliance query (reserved for future relevance scoring)
+   * @param tokenBudget Override the default budget (from CHUNK_TOKEN_BUDGET).
    */
   async getRelevantChunks(
     documentId: string,
     _query: string,
-    tokenBudget = 30_000,
+    tokenBudget: number = this.tokenBudget,
   ) {
     const allChunks = await this.getChunksForDocument(documentId);
 
@@ -65,7 +86,7 @@ export class ChunkRetrievalService {
 
     this.logger.log(
       `Retrieved ${selected.length} chunk(s) for document ${documentId} ` +
-        `(~${tokensUsed} tokens)`,
+        `(~${tokensUsed} tokens, budget=${tokenBudget})`,
     );
 
     return selected;

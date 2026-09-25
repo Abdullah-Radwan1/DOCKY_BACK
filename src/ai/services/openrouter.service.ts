@@ -85,7 +85,11 @@ export class OpenRouterService implements AiProvider {
       this.logger.log(`[AWAIT END] response.json() parsing took ${Date.now() - parseStart}ms`);
 
       const choice = json.choices?.[0];
-      if (!choice?.message?.content) {
+      // Some reasoning/thinking models (e.g. poolside/laguna-xs) put their
+      // output in `message.reasoning` and leave `message.content` null.
+      // Fall back to reasoning so we work with both model types transparently.
+      const rawContent = choice?.message?.content ?? choice?.message?.reasoning;
+      if (!rawContent) {
         this.logger.error(`[OPENROUTER ERROR] Empty content response: ${JSON.stringify(json)}`);
         throw new AiProviderError(
           'OpenRouter returned an empty response — no choices or content',
@@ -94,7 +98,7 @@ export class OpenRouterService implements AiProvider {
       }
 
       const result: AiCompletionResult = {
-        content: choice.message.content,
+        content: rawContent,
         model: json.model ?? options.model,
         promptTokens: json.usage?.prompt_tokens ?? 0,
         completionTokens: json.usage?.completion_tokens ?? 0,
@@ -174,7 +178,10 @@ interface OpenRouterResponse {
   choices?: Array<{
     message?: {
       role: string;
-      content: string;
+      /** Standard output — null for reasoning/thinking models. */
+      content: string | null;
+      /** Reasoning models (e.g. poolside/laguna-xs) put output here. */
+      reasoning?: string | null;
     };
     finish_reason?: string;
   }>;

@@ -4,7 +4,6 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { PlanType } from '../generated/prisma/client.js';
 
 export const LIMITS = {
   GUEST: {

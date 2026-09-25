@@ -95,7 +95,6 @@ export class CombinedAnalysisStage implements AnalysisStage {
   }
 
   async run(ctx: AnalysisStageContext): Promise<Partial<AiAnalysisResponse>> {
-    const stageStart = Date.now();
     // ── Fast path: compliance disabled → single call ─────────────────────────
     if (!ctx.options.compliance) {
       const messages = this.promptBuilder.buildAnalysisPrompt(
@@ -103,9 +102,7 @@ export class CombinedAnalysisStage implements AnalysisStage {
         ctx.chunks,
         ctx.options,
       );
-      console.log(`[STAGE COMBINED] [FAST PATH] [AWAIT START] callAi (single call)`);
       const aiResult = await this.callAi(messages);
-      console.log(`[STAGE COMBINED] [FAST PATH] [AWAIT END] callAi finished in ${Date.now() - stageStart}ms`);
       return this.parseAiResponse(aiResult.content, ctx.options);
     }
 
@@ -114,8 +111,6 @@ export class CombinedAnalysisStage implements AnalysisStage {
     // Splitting the work into two focused calls and running them concurrently
     // cuts wall time from (T_contract + T_compliance) to max(T_contract, T_compliance).
     // Each call also has a smaller output schema, so token generation is faster.
-    console.log(`[STAGE COMBINED] [PARALLEL PATH] [AWAIT START] callAi contract + compliance starting in parallel`);
-    const parallelStart = Date.now();
     const [contractRaw, complianceRaw] = await Promise.all([
       this.callAi(
         this.promptBuilder.buildContractExtractionPrompt(
@@ -131,10 +126,12 @@ export class CombinedAnalysisStage implements AnalysisStage {
         ),
       ),
     ]);
-    console.log(`[STAGE COMBINED] [PARALLEL PATH] [AWAIT END] both callAi parallel calls resolved in ${Date.now() - parallelStart}ms`);
 
     const contractPart = this.parseContractResponse(contractRaw.content);
-    const compliancePart = this.parseComplianceResponse(complianceRaw.content, ctx.options);
+    const compliancePart = this.parseComplianceResponse(
+      complianceRaw.content,
+      ctx.options,
+    );
 
     return {
       ...contractPart,
@@ -157,7 +154,10 @@ export class CombinedAnalysisStage implements AnalysisStage {
    * Strips markdown fences if the model wraps the JSON despite instructions.
    * Used by the single-call (no-compliance) fast path.
    */
-  private parseAiResponse(raw: string, options: AnalysisOptions): AiAnalysisResponse {
+  private parseAiResponse(
+    raw: string,
+    options: AnalysisOptions,
+  ): AiAnalysisResponse {
     const cleaned = this.stripMarkdownFences(raw);
 
     let parsed: AiAnalysisResponse;
@@ -175,7 +175,9 @@ export class CombinedAnalysisStage implements AnalysisStage {
    * Parses the contract-extraction leg of the parallel pipeline.
    * Expects { answer, summary, contract } — no compliance fields.
    */
-  private parseContractResponse(raw: string): Omit<AiAnalysisResponse, 'compliance'> {
+  private parseContractResponse(
+    raw: string,
+  ): Omit<AiAnalysisResponse, 'compliance'> {
     const cleaned = this.stripMarkdownFences(raw);
     let parsed: any;
     try {
@@ -229,13 +231,19 @@ export class CombinedAnalysisStage implements AnalysisStage {
         );
       }
       if (!compliance.overallVerdict) {
-        throw new AiResponseParseError('Missing "compliance.overallVerdict"', raw);
+        throw new AiResponseParseError(
+          'Missing "compliance.overallVerdict"',
+          raw,
+        );
       }
       if (!compliance.riskLevel) {
         throw new AiResponseParseError('Missing "compliance.riskLevel"', raw);
       }
       if (!Array.isArray(compliance.findings)) {
-        throw new AiResponseParseError('"compliance.findings" must be an array', raw);
+        throw new AiResponseParseError(
+          '"compliance.findings" must be an array',
+          raw,
+        );
       }
       if (!Array.isArray(compliance.requirements)) {
         throw new AiResponseParseError(
@@ -251,12 +259,14 @@ export class CombinedAnalysisStage implements AnalysisStage {
   private stripMarkdownFences(raw: string): string {
     const trimmed = raw.trim();
     if (!trimmed.startsWith('```')) return trimmed;
-    return trimmed
-      .replace(/^```(?:json)?\s*/i, '')
-      .replace(/\s*```\s*$/, '');
+    return trimmed.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '');
   }
 
-  private validateResponse(parsed: AiAnalysisResponse, raw: string, options: AnalysisOptions): void {
+  private validateResponse(
+    parsed: AiAnalysisResponse,
+    raw: string,
+    options: AnalysisOptions,
+  ): void {
     if (!parsed.summary || typeof parsed.summary !== 'string') {
       throw new AiResponseParseError('Missing or invalid "summary"', raw);
     }
@@ -267,7 +277,10 @@ export class CombinedAnalysisStage implements AnalysisStage {
 
     if (options.compliance) {
       if (!parsed.compliance) {
-        throw new AiResponseParseError('Missing "compliance" domain when requested', raw);
+        throw new AiResponseParseError(
+          'Missing "compliance" domain when requested',
+          raw,
+        );
       }
 
       const { compliance } = parsed;
@@ -355,7 +368,9 @@ export class AnalysisOrchestratorService {
     options: AnalysisOptions = DEFAULT_ANALYSIS_OPTIONS,
   ): Promise<void> {
     const pipelineStart = Date.now();
-    this.logger.log(`[PIPELINE START] analyzeDocument for requestId: ${requestId}`);
+    this.logger.log(
+      `[PIPELINE START] analyzeDocument for requestId: ${requestId}`,
+    );
 
     // ── 1. Load request + document ─────────────────────────────────────────
     this.logger.log(`[AWAIT START] prisma.analysisRequest.findUnique`);
@@ -364,15 +379,21 @@ export class AnalysisOrchestratorService {
       where: { id: requestId },
       include: { document: true },
     });
-    this.logger.log(`[AWAIT END] prisma.analysisRequest.findUnique took ${Date.now() - reqFetchStart}ms`);
+    this.logger.log(
+      `[AWAIT END] prisma.analysisRequest.findUnique took ${Date.now() - reqFetchStart}ms`,
+    );
 
     if (!request) {
-      this.logger.error(`[PIPELINE ERROR] AnalysisRequest ${requestId} not found`);
+      this.logger.error(
+        `[PIPELINE ERROR] AnalysisRequest ${requestId} not found`,
+      );
       throw new NotFoundException(`AnalysisRequest ${requestId} not found`);
     }
 
     if (!request.document) {
-      this.logger.error(`[PIPELINE ERROR] AnalysisRequest ${requestId} has no associated document`);
+      this.logger.error(
+        `[PIPELINE ERROR] AnalysisRequest ${requestId} has no associated document`,
+      );
       throw new BadRequestException(
         `AnalysisRequest ${requestId} has no associated document`,
       );
@@ -380,7 +401,9 @@ export class AnalysisOrchestratorService {
 
     // ── 2. Validate document readiness ─────────────────────────────────────
     if (request.document.status !== 'ready') {
-      this.logger.warn(`[PIPELINE ERROR] Document status not ready (status: ${request.document.status})`);
+      this.logger.warn(
+        `[PIPELINE ERROR] Document status not ready (status: ${request.document.status})`,
+      );
       this.logger.log(`[AWAIT START] markFailed`);
       await this.markFailed(
         requestId,
@@ -395,7 +418,9 @@ export class AnalysisOrchestratorService {
 
     // ── 3. Guard retries ───────────────────────────────────────────────────
     if (request.attemptCount >= this.maxRetries) {
-      this.logger.warn(`[PIPELINE ERROR] Max retries (${this.maxRetries}) exceeded (current attemptCount: ${request.attemptCount})`);
+      this.logger.warn(
+        `[PIPELINE ERROR] Max retries (${this.maxRetries}) exceeded (current attemptCount: ${request.attemptCount})`,
+      );
       this.logger.log(`[AWAIT START] markFailed`);
       await this.markFailed(
         requestId,
@@ -408,7 +433,9 @@ export class AnalysisOrchestratorService {
     }
 
     // ── 4. Mark processing ─────────────────────────────────────────────────
-    this.logger.log(`[AWAIT START] prisma.analysisRequest.update status to processing`);
+    this.logger.log(
+      `[AWAIT START] prisma.analysisRequest.update status to processing`,
+    );
     const updateProcStart = Date.now();
     await this.prisma.analysisRequest.update({
       where: { id: requestId },
@@ -419,7 +446,9 @@ export class AnalysisOrchestratorService {
         errorMessage: null,
       },
     });
-    this.logger.log(`[AWAIT END] prisma.analysisRequest.update took ${Date.now() - updateProcStart}ms`);
+    this.logger.log(
+      `[AWAIT END] prisma.analysisRequest.update took ${Date.now() - updateProcStart}ms`,
+    );
 
     try {
       // ── 5. Retrieve chunks ─────────────────────────────────────────────
@@ -429,7 +458,9 @@ export class AnalysisOrchestratorService {
         request.document.id,
         request.queryText,
       );
-      this.logger.log(`[AWAIT END] chunkRetrieval.getRelevantChunks took ${Date.now() - chunkFetchStart}ms (chunks returned: ${chunks.length})`);
+      this.logger.log(
+        `[AWAIT END] chunkRetrieval.getRelevantChunks took ${Date.now() - chunkFetchStart}ms (chunks returned: ${chunks.length})`,
+      );
 
       if (chunks.length === 0) {
         throw new BadRequestException(
@@ -454,13 +485,23 @@ export class AnalysisOrchestratorService {
         result: {},
         options,
       });
-      this.logger.log(`[AWAIT END] runStages took ${Date.now() - stagesStart}ms`);
+      this.logger.log(
+        `[AWAIT END] runStages took ${Date.now() - stagesStart}ms`,
+      );
 
       // ── 7. Persist everything in a single transaction ──────────────────
       this.logger.log(`[AWAIT START] persist (sequential db writes)`);
       const persistStart = Date.now();
-      await this.persist(requestId, request.document.id, parsed, chunks, options);
-      this.logger.log(`[AWAIT END] persist took ${Date.now() - persistStart}ms`);
+      await this.persist(
+        requestId,
+        request.document.id,
+        parsed,
+        chunks,
+        options,
+      );
+      this.logger.log(
+        `[AWAIT END] persist took ${Date.now() - persistStart}ms`,
+      );
 
       this.logger.log(
         `[PIPELINE SUCCESS] Analysis ${requestId} completed in ${Date.now() - pipelineStart}ms: ` +
@@ -478,7 +519,9 @@ export class AnalysisOrchestratorService {
       this.logger.log(`[AWAIT START] markFailed after error`);
       const failStart = Date.now();
       await this.markFailed(requestId, message);
-      this.logger.log(`[AWAIT END] markFailed took ${Date.now() - failStart}ms`);
+      this.logger.log(
+        `[AWAIT END] markFailed took ${Date.now() - failStart}ms`,
+      );
       throw err;
     }
   }
@@ -498,7 +541,9 @@ export class AnalysisOrchestratorService {
       this.logger.log(`[STAGE START] Executing stage: ${stage.name}`);
       const stageStart = Date.now();
       const partial = await stage.run(ctx);
-      this.logger.log(`[STAGE END] Stage: ${stage.name} finished in ${Date.now() - stageStart}ms`);
+      this.logger.log(
+        `[STAGE END] Stage: ${stage.name} finished in ${Date.now() - stageStart}ms`,
+      );
       ctx.result = this.mergePartial(ctx.result, partial);
     }
 
@@ -566,7 +611,11 @@ export class AnalysisOrchestratorService {
     });
 
     // 3. Persist finding rows
-    if (parsed.compliance && Array.isArray(parsed.compliance.findings) && parsed.compliance.findings.length > 0) {
+    if (
+      parsed.compliance &&
+      Array.isArray(parsed.compliance.findings) &&
+      parsed.compliance.findings.length > 0
+    ) {
       await this.prisma.finding.createMany({
         data: parsed.compliance.findings.map((f: AiFinding) => ({
           analysisId: analysisResult.id,
@@ -599,10 +648,7 @@ export class AnalysisOrchestratorService {
     });
 
     // 5. Propagate expiration date to the Document record
-    await this.updateExpirationDate(
-      documentId,
-      parsed.contract.expirationDate,
-    );
+    await this.updateExpirationDate(documentId, parsed.contract.expirationDate);
   }
 
   private async updateExpirationDate(
@@ -644,10 +690,7 @@ export class AnalysisOrchestratorService {
         },
       })
       .catch((err) =>
-        this.logger.error(
-          `Failed to mark request ${requestId} as failed`,
-          err,
-        ),
+        this.logger.error(`Failed to mark request ${requestId} as failed`, err),
       );
   }
 

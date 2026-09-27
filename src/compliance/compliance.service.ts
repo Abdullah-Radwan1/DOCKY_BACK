@@ -10,6 +10,7 @@ import { CreateComplianceQueryDto } from './dto/create-compliance-query.dto';
 import { CreateAnalysisRequestDto } from './dto/create-analysis-request.dto';
 import { UsagePolicyService } from '../policy/usage-policy.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { DEFAULT_ANALYSIS_OPTIONS } from '../ai/interfaces/analysis-options.interface';
 
 @Injectable()
 export class ComplianceService {
@@ -97,14 +98,14 @@ export class ComplianceService {
     const request = await this.prisma.analysisRequest.create({
       data: {
         queryText: dto.queryText ?? '',
-        userId: dto.userId || null,
-        guestId: dto.guestId || null,
-        documentId: dto.documentId,
         status: 'pending',
+        document: { connect: { id: dto.documentId } },
+        ...(dto.userId ? { user: { connect: { id: dto.userId } } } : {}),
+        ...(dto.guestId ? { guestId: dto.guestId } : {}),
       },
     });
     this.logger.log(
-      `[AWAIT END] prisma.analysisRequest.create took ${Date.now() - reqCreateStart}ms, requestId: ${request.id}`,
+      `[AWAIT END] prisma.analysisRequest.create took ${Date.now() - reqCreateStart}ms, requestId: ${request.id}, documentId: ${request.documentId}`,
     );
 
     // Increment analysis count
@@ -121,7 +122,7 @@ export class ComplianceService {
     );
     const bgStart = Date.now();
     void this.orchestrator
-      .analyzeDocument(request.id, dto.options)
+      .analyzeDocument(request.id, dto.options ?? DEFAULT_ANALYSIS_OPTIONS)
       .then(async () => {
         this.logger.log(
           `[FLOW BACKGROUND SUCCESS] orchestrator.analyzeDocument resolved in ${Date.now() - bgStart}ms for requestId: ${request.id}`,

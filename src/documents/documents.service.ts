@@ -282,12 +282,14 @@ export class DocumentsService {
     const request = await this.prisma.analysisRequest.create({
       data: {
         queryText: '',
-        userId,
-        documentId: id,
         status: 'pending',
+        document: { connect: { id } },
+        user: { connect: { id: userId } },
       },
     });
-    this.logger.log(`[AWAIT END] prisma.analysisRequest.create took ${Date.now() - createStart}ms, requestId: ${request.id}`);
+    this.logger.log(
+      `[AWAIT END] prisma.analysisRequest.create took ${Date.now() - createStart}ms, requestId: ${request.id}, documentId: ${request.documentId}`,
+    );
 
     // Fire AI pipeline in background — return immediately so the HTTP
     // response resolves in <500 ms instead of waiting 60-120 s.

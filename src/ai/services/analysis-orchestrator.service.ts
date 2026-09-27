@@ -696,7 +696,10 @@ export class AnalysisOrchestratorService {
     });
 
     // 5. Propagate expiration date to the Document record
-    await this.updateExpirationDate(documentId, parsed.contract.expirationDate);
+    await this.updateExpirationDate(
+      documentId,
+      parsed.contract?.expirationDate ?? null,
+    );
   }
 
   private async updateExpirationDate(
